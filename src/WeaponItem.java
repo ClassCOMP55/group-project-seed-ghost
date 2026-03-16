@@ -22,7 +22,7 @@ public class WeaponItem {
 		setRanged(false);
 		
 		applyWeaponType();
-		applyAffinity(affinity);
+		applyAffinity();
 	}
 	
 	/*
