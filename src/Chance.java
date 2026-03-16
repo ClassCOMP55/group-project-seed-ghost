@@ -23,4 +23,12 @@ public class Chance {
 	public static boolean coinflip (double percentage) {
 		return rgen.nextDouble() < percentage;
 	}
+	
+	/*
+	 * 
+	 */
+	public static String choose (String[] options) {
+		int i = rgen.nextInt(options.length);
+		return options[i];
+	}
 }
