@@ -4,6 +4,7 @@ import acm.program.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class MainApplication extends GraphicsProgram{
 	//Settings
@@ -14,7 +15,6 @@ public class MainApplication extends GraphicsProgram{
 	private WelcomePane welcomePane;
 	private DescriptionPane descriptionPane;
 	private GraphicsPane currentScreen;
-
 
 	public MainApplication() {
 		super();
