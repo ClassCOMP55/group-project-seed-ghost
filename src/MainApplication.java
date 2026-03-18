@@ -4,7 +4,6 @@ import acm.program.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 public class MainApplication extends GraphicsProgram{
 	//Settings
