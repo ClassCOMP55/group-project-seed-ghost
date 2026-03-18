@@ -13,6 +13,8 @@ public class Character extends Entity {
 	
 	/*
 	 * Default; null character
+	 * 
+	 * It's completely basic
 	 */
 	public Character () {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
