@@ -87,6 +87,9 @@ public class Character extends Entity {
 				tempCon = (int)Chance.range(20, 40);
 				tempSprite = "spr_Knight";
 				allowedArmors = new String[] {"light", "medium","heavy"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), "null");
 			break;
 			case "samurai":
 				tempHp = Chance.range(150, 300);
@@ -99,6 +102,9 @@ public class Character extends Entity {
 				tempWil = (int)Chance.range(20, 40);
 				tempSprite = "spr_Samurai";
 				allowedArmors = new String[] {"light", "medium"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"katana","dagger","rifle"}), "null");
 			break;
 			case "thief":
 				tempHp = Chance.range(100, 250);
@@ -110,6 +116,9 @@ public class Character extends Entity {
 				tempFth = 0;
 				tempSprite = "spr_Thief";
 				allowedArmors = new String[] {"light"};
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"dagger","pistol","crossbow"}), "null");
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 			break;
 			case "viking":
 				tempHp = Chance.range(200, 300);
@@ -119,12 +128,18 @@ public class Character extends Entity {
 				tempStr = (int)Chance.range(60, 90);
 				tempCon = (int)Chance.range(40, 60);
 				allowedArmors = new String[] {"light", "medium","heavy"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"axe","greatsword","hammer"}), "null");
 			break;
 			case "cleric":
 				tempWil = (int)Chance.range(40, 50);
 				tempFth = (int)Chance.range(60, 100);
 				tempArc = (int)Chance.range(10, 20);
 				allowedArmors = new String[] {"light", "medium"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), "holy");
 			break;
 			case "sorcerer":
 				tempWil = (int)Chance.range(40, 50);
@@ -132,22 +147,33 @@ public class Character extends Entity {
 				tempArc = (int)Chance.range(60, 100);
 				tempSprite = "spr_Sorcerer";
 				allowedArmors = new String[] {"light"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"stave","talisman"}), "magic");
 			break;
 			case "paladin":
 				tempStr = (int)Chance.range(40, 60);
 				tempCon = (int)Chance.range(10, 30);
 				tempFth = (int)Chance.range(50, 80);
 				allowedArmors = new String[] {"light", "medium","heavy"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","greatsword","hammer"}), "holy");
 			break;
 			case "ranger":
 				tempPrc = (int)Chance.range(40, 70);
 				tempDex = (int)Chance.range(40, 70);
 				allowedArmors = new String[] {"light", "medium"};
+				
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), "null");
 			break;
 			case "marksman":
 				tempPrc = (int)Chance.range(60, 160);
 				tempSprite = "spr_Marksman";
 				allowedArmors = new String[] {"light"};
+				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), "null");
 			break;
 		}
 		
@@ -207,8 +233,4 @@ public class Character extends Entity {
 	public static int getMaxSkills() {
 		return MAX_SKILLS;
 	}
-	
-	/*
-	 * Stat Initialization per Profession
-	 */
 }
