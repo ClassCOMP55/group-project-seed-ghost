@@ -1,3 +1,6 @@
+import java.awt.Color;
+
+import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
 public class CharacterSelectionPane extends GraphicsPane {
@@ -8,6 +11,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
+		addText()
 	}
 
 	@Override
@@ -16,6 +20,16 @@ public class CharacterSelectionPane extends GraphicsPane {
 			mainScreen.remove(item);
 		}
 		contents.clear();
+	}
+	
+	private void addText() {
+		GLabel title = new GLabel("Choose your character!", 100, 70);
+		title.setColor(Color.RED);
+		title.setFont("DialogInput-PLAIN-80");
+		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
+		
+		contents.add(title);
+		mainScreen.add(title);
 	}
 
 }
