@@ -31,7 +31,7 @@ public class ShopPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
-		showContent(); 
+		 addText(); 
 	//	itemLabels.clear();
 		
 	/*	GLabel title = new GLabel("Shop (Gold: " + player.getGold()+")");
