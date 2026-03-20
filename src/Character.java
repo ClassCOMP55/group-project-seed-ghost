@@ -5,6 +5,7 @@ public class Character extends Entity {
 	private ArmorItem myArmor;
 	//private Skill[] mySkills;
 	private String profession;
+	private String[] allowedArmors;
 	
 	/*
 	 * Constructors
@@ -22,6 +23,7 @@ public class Character extends Entity {
 		myArmor = null;
 		//mySkills = new Skill[]({null, null, null, null});
 		profession = "none";
+		allowedArmors = new String[] {"light"};
 		
 		setSprite("spr_Knight");
 	}
@@ -30,13 +32,22 @@ public class Character extends Entity {
 	 * Robust; Full control over character creation
 	 */
 	public Character (double hp, double mana, double deathResist, int str, int dex, int prc, int ist, int con, int wil, int fth, int arc, WeaponItem weapon, ArmorItem armor, String profession) {
-		super(hp,mana,deathResist,str,dex,prc,ist,con,wil,fth,arc);
+		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
 		
 		this.myWeapon = weapon;
 		this.myArmor = armor;
 		this.profession = profession;
 		
-		setSprite("spr_Knight");
+		applyProfession(profession);
+		
+		setHpMax(hp);
+		setHp(hp);
+		setManaMax(mana);
+		setMana(mana);
+		setDeathResist(deathResist);
+		
+		int[] stats = new int[] {str, dex, prc, ist, con, wil, fth, arc};
+		setStatSpread(stats);
 	}
 
 	/*
@@ -45,27 +56,144 @@ public class Character extends Entity {
 	public Character (String profession) {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
 		
-		//WIP
+		applyProfession(profession);
 	}
 	
+	private void applyProfession (String profession) {
+		this.profession = profession.toLowerCase();
+		String tempSprite = "spr_Knight";
+		
+		double tempHp = 1.0;
+		double tempMn = 1.0;
+		double tempDr = 0.0;
+		
+		int tempStr = (int)Chance.range(0, 15);
+		int tempDex = (int)Chance.range(0, 15);
+		int tempPrc = (int)Chance.range(0, 15);
+		int tempIst = (int)Chance.range(0, 15);
+		int tempCon = (int)Chance.range(0, 15);
+		int tempWil = (int)Chance.range(0, 15);
+		int tempFth = (int)Chance.range(0, 15);
+		int tempArc = (int)Chance.range(0, 15);
+		
+		switch (profession) {
+			case "knight": 
+				tempHp = Chance.range(200, 300);
+				tempMn = Chance.range(10, 100);
+				tempDr = 0.25;
+				
+				tempStr = (int)Chance.range(40, 90);
+				tempDex = (int)Chance.range(20, 50);
+				tempCon = (int)Chance.range(20, 40);
+				tempSprite = "spr_Knight";
+				allowedArmors = new String[] {"light", "medium","heavy"};
+			break;
+			case "samurai":
+				tempHp = Chance.range(150, 300);
+				tempMn = Chance.range(40, 100);
+				tempDr = 0.3;
+				
+				tempDex = (int)Chance.range(30, 60);
+				tempPrc = (int)Chance.range(30, 60);
+				tempIst = (int)Chance.range(10, 50);
+				tempWil = (int)Chance.range(20, 40);
+				tempSprite = "spr_Samurai";
+				allowedArmors = new String[] {"light", "medium"};
+			break;
+			case "thief":
+				tempHp = Chance.range(100, 250);
+				tempMn = Chance.range(50, 90);
+				tempDr = 0.1;
+				
+				tempDex = (int)Chance.range(30, 90);
+				tempPrc = (int)Chance.range(30, 90);
+				tempFth = 0;
+				tempSprite = "spr_Thief";
+				allowedArmors = new String[] {"light"};
+			break;
+			case "viking":
+				tempHp = Chance.range(200, 300);
+				tempMn = Chance.range(10, 100);
+				tempDr = 0.25;
+				
+				tempStr = (int)Chance.range(60, 90);
+				tempCon = (int)Chance.range(40, 60);
+				allowedArmors = new String[] {"light", "medium","heavy"};
+			break;
+			case "cleric":
+				tempWil = (int)Chance.range(40, 50);
+				tempFth = (int)Chance.range(60, 100);
+				tempArc = (int)Chance.range(10, 20);
+				allowedArmors = new String[] {"light", "medium"};
+			break;
+			case "sorcerer":
+				tempWil = (int)Chance.range(40, 50);
+				tempFth = (int)Chance.range(10, 20);
+				tempArc = (int)Chance.range(60, 100);
+				tempSprite = "spr_Sorcerer";
+				allowedArmors = new String[] {"light"};
+			break;
+			case "paladin":
+				tempStr = (int)Chance.range(40, 60);
+				tempCon = (int)Chance.range(10, 30);
+				tempFth = (int)Chance.range(50, 80);
+				allowedArmors = new String[] {"light", "medium","heavy"};
+			break;
+			case "ranger":
+				tempPrc = (int)Chance.range(40, 70);
+				tempDex = (int)Chance.range(40, 70);
+				allowedArmors = new String[] {"light", "medium"};
+			break;
+			case "marksman":
+				tempPrc = (int)Chance.range(60, 160);
+				tempSprite = "spr_Marksman";
+				allowedArmors = new String[] {"light"};
+			break;
+		}
+		
+		setHpMax(tempHp);
+		setHp(tempHp);
+		
+		setManaMax(tempMn);
+		setMana(tempMn);
+		
+		setDeathResist(tempDr);
+		
+		int[] stats = new int[] {tempStr, tempDex, tempPrc, tempIst, tempCon, tempWil, tempFth, tempArc};
+		setStatSpread(stats);
+		setSprite(tempSprite);
+	}
 	
 	/*
 	 * Setters and getters
 	 */
-	public WeaponItem getMyWeapon() {
+	public WeaponItem getWeapon() {
 		return myWeapon;
 	}
 
-	public void setMyWeapon(WeaponItem myWeapon) {
+	public void setWeapon(WeaponItem myWeapon) {
 		this.myWeapon = myWeapon;
 	}
 
-	public ArmorItem getMyArmor() {
+	public ArmorItem getArmor() {
 		return myArmor;
 	}
-
-	public void setMyArmor(ArmorItem myArmor) {
-		this.myArmor = myArmor;
+	
+	/*
+	 * Sets a character's armor
+	 * 
+	 * @param ArmorItem; the armor to be added
+	 * @return Boolean; If the character can't wear this armor, return false
+	 */
+	public boolean setArmor(ArmorItem myArmor) {
+		String weight = myArmor.getWeight();
+		for (int i = 0; i < allowedArmors.length; i++) {
+			if (weight == allowedArmors[i]) {
+				this.myArmor = myArmor;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public String getProfession() {
