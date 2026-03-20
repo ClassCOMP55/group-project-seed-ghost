@@ -1,4 +1,3 @@
-
 public class Character extends Entity {
 	public static final int MAX_SKILLS = 4;
 	
@@ -23,6 +22,8 @@ public class Character extends Entity {
 		myArmor = null;
 		//mySkills = new Skill[]({null, null, null, null});
 		profession = "none";
+		
+		setSprite("spr_Knight");
 	}
 	
 	/*
@@ -34,6 +35,8 @@ public class Character extends Entity {
 		this.myWeapon = weapon;
 		this.myArmor = armor;
 		this.profession = profession;
+		
+		setSprite("spr_Knight");
 	}
 
 	/*
@@ -76,4 +79,8 @@ public class Character extends Entity {
 	public static int getMaxSkills() {
 		return MAX_SKILLS;
 	}
+	
+	/*
+	 * Stat Initialization per Profession
+	 */
 }
