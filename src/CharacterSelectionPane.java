@@ -11,7 +11,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
-		addText()
+		addText();
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private void addText() {
 		GLabel title = new GLabel("Choose your character!", 100, 70);
 		title.setColor(Color.RED);
-		title.setFont("DialogInput-PLAIN-80");
+		title.setFont("DialogInput-PLAIN-50");
 		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
 		
 		contents.add(title);
