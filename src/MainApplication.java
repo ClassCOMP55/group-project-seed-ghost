@@ -17,7 +17,7 @@ public class MainApplication extends GraphicsProgram{
 	private GraphicsPane menuPane;
 	private GraphicsPane characterSelectionPane;
 	private SettingsPane settingPane;
-	private MapPane mapPane;
+	private ShopPane shopPane; 
 
 	public MainApplication() {
 		super();
@@ -43,7 +43,7 @@ public class MainApplication extends GraphicsProgram{
 		menuPane = new MenuPane(this);
 		characterSelectionPane = new CharacterSelectionPane(this);
 		settingPane = new SettingsPane(this);
-		mapPane = new MapPane(this);
+		shopPane = new ShopPane(this);
 
 		//TheDefaultPane
 		switchToScreen(welcomePane);
@@ -74,10 +74,9 @@ public class MainApplication extends GraphicsProgram{
 		switchToScreen(settingPane);
 	}
 	
-	public void switchToMapPane() {
-		switchToScreen(mapPane);
+	public void switchToShopPane() {
+		switchToScreen(shopPane); 
 	}
-	
 	
 	protected void switchToScreen(GraphicsPane newScreen) {
 		if(currentScreen != null) {
