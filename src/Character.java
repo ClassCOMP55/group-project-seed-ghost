@@ -155,6 +155,9 @@ public class Character extends Entity {
 				tempStr = (int)Chance.range(40, 60);
 				tempCon = (int)Chance.range(10, 30);
 				tempFth = (int)Chance.range(50, 80);
+				
+				tempSprite = "spr_Paladin";
+				
 				allowedArmors = new String[] {"light", "medium","heavy"};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
