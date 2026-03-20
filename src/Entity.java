@@ -1,8 +1,10 @@
+import acm.graphics.GImage;
 
 public class Entity {
 	private double hpMax, hp, manaMax, mana, deathResist;
 	private int[] statSpread;
 	private EntityStats mainStat;
+	private GImage sprite;
 	
 	public Entity (double hpMax, double manaMax, double deathResist, int str, int dex, int prc, int ist, int con, int wil, int fth, int arc) {
 		this.hp = hpMax;
@@ -10,6 +12,7 @@ public class Entity {
 		this.mana = manaMax;
 		this.manaMax = manaMax;
 		this.deathResist = deathResist;
+		this.sprite = null;
 		
 		int[] temp = new int[8];
 		
@@ -182,5 +185,17 @@ public class Entity {
 		} else if (index == EntityStats.ARC.ordinal()) {
 			setMainStat(EntityStats.ARC);
 		}
+	}
+
+	public GImage getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(GImage sprite) {
+		this.sprite = sprite;
+	}
+	
+	public void setSprite(String sprite) {
+		this.sprite = new GImage(sprite);
 	}
 }
