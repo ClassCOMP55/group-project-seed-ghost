@@ -15,6 +15,17 @@ public class Chance {
 	}
 	
 	/*
+	 * Returns a value within two bounds. Same thing as the other one but as an int now
+	 * 
+	 * @param low: the lower bound of the possible return value
+	 * @param high: the upper bound of the possible return value
+	 * @return int
+	 */
+	public static int range (int low, int high) {
+		return rgen.nextInt(high - low) + low;
+	}
+	
+	/*
 	 * Has a chance to return true and a chance to return false
 	 * 
 	 * @param percentage: A double between 0.0 and 1.0
