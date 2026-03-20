@@ -63,6 +63,10 @@ public class MenuPane extends GraphicsPane {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
 			mainScreen.switchToCharacterSelectionPane();
 		}
+		
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(3)) {
+			mainScreen.switchToSettingsPane();
+		}
 	}
 	
 
