@@ -57,5 +57,14 @@ public class MenuPane extends GraphicsPane {
 		
 		
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
+			mainScreen.switchToCharacterSelectionPane();
+		}
+	}
+	
+
 
 }
