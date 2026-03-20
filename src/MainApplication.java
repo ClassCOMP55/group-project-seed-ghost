@@ -14,6 +14,7 @@ public class MainApplication extends GraphicsProgram{
 	private WelcomePane welcomePane;
 	private DescriptionPane descriptionPane;
 	private GraphicsPane currentScreen;
+	private GraphicsPane menuPane;
 
 	public MainApplication() {
 		super();
@@ -36,6 +37,7 @@ public class MainApplication extends GraphicsProgram{
 		//Initialize all Panes
 		welcomePane = new WelcomePane(this);
 		descriptionPane = new DescriptionPane(this);
+		menuPane = new MenuPane(this);
 
 		//TheDefaultPane
 		switchToScreen(welcomePane);
@@ -52,6 +54,10 @@ public class MainApplication extends GraphicsProgram{
 	
 	public void switchToWelcomeScreen() {
 		switchToScreen(welcomePane);
+	}
+	
+	public void switchToMenuPane() {
+		switchToScreen(menuPane);
 	}
 	
 	
