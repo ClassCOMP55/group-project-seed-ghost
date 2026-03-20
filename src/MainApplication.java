@@ -15,6 +15,7 @@ public class MainApplication extends GraphicsProgram{
 	private DescriptionPane descriptionPane;
 	private GraphicsPane currentScreen;
 	private GraphicsPane menuPane;
+	private GraphicsPane characterSelectionPane;
 
 	public MainApplication() {
 		super();
@@ -38,6 +39,7 @@ public class MainApplication extends GraphicsProgram{
 		welcomePane = new WelcomePane(this);
 		descriptionPane = new DescriptionPane(this);
 		menuPane = new MenuPane(this);
+		characterSelectionPane = new CharacterSelectionPane(this);
 
 		//TheDefaultPane
 		switchToScreen(welcomePane);
@@ -58,6 +60,10 @@ public class MainApplication extends GraphicsProgram{
 	
 	public void switchToMenuPane() {
 		switchToScreen(menuPane);
+	}
+	
+	public void switchToCharacterSelectionPane() {
+		switchToScreen(characterSelectionPane);
 	}
 	
 	
