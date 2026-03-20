@@ -72,7 +72,7 @@ public class MainApplication extends GraphicsProgram{
 		switchToScreen(characterSelectionPane);
 	}
 	
-	public void MapPane() {
+	public void switchToMapPane() {
 		switchToScreen(mapPane);
 	}
 	
