@@ -77,12 +77,12 @@ public class MapPane extends GraphicsPane {
 	
 private void createMap() {
 		
-		createRow(1,380,560);
-		createRow(2,330,460);
-		createRow(3,280,360);
-		createRow(5,180,260);
-		createRow(2,330,160);
-		createRow(1,380,60);
+		createRow(1,((mainScreen.getWidth() - 40) / 2),560);
+		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,460);
+		createRow(3,((mainScreen.getWidth() - 40) / 2)-100,360);
+		createRow(5,((mainScreen.getWidth() - 40) / 2)-200,260);
+		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,160);
+		createRow(1,((mainScreen.getWidth() - 40) / 2),60);
 		
 	}
 	
