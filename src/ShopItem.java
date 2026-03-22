@@ -16,7 +16,7 @@ public class ShopItem {
 	public int getPrice() {
 		return price; 
 	}
-	
+	  
 	public String getDisplayName() {
 		if(item instanceof WeaponItem) {
 			WeaponItem w =(WeaponItem) item;
