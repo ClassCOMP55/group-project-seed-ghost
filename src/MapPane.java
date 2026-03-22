@@ -15,6 +15,7 @@ public class MapPane extends GraphicsPane {
 	@Override
 	public void showContent() {
 		addText();
+		createMap();
 	}
 
 	@Override
@@ -74,7 +75,16 @@ public class MapPane extends GraphicsPane {
 		mainScreen.add(campFireLabel);	
 	}
 	
-	
+private void createMap() {
+		
+		createRow(1,380,560);
+		createRow(2,330,460);
+		createRow(3,280,360);
+		createRow(5,180,260);
+		createRow(2,330,160);
+		createRow(1,380,60);
+		
+	}
 	
 	private void createRow(int limit, double startX, double startY) {
 		for (int i = 0;i<limit;i++) {
