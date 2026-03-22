@@ -2,10 +2,13 @@ import acm.graphics.GObject;
 
 public class Node {
 String type;
-int[] accessibleNodes = {1, 2};
+int[] accessibleNodes;
+int index;
 
 public Node(int i) {
+	index = i;
 	assignType(i);
+	accessibleNodes = setAvailableNodes();
 }
 
 public String getRandomType() {
@@ -41,6 +44,26 @@ public void assignType(int i) {
 	}
 	
 	
+}
+
+public int[] setAvailableNodes() {
+			
+	switch(index){
+	case 0: return new int[]{1,2};
+	case 1: return new int[]{3,4};
+	case 2: return new int[]{4,5};
+	case 3: return new int[]{6,7};
+	case 4: return new int[]{8};
+	case 5: return new int[]{9,10};
+	case 6: return new int[]{11};
+	case 7: return new int[]{11};
+	case 8: return new int[]{11,12};
+	case 9: return new int[]{12};
+	case 10: return new int[]{12};
+	case 11: return new int[]{13};
+	case 12: return new int[]{13};
+	}
+	return null;
 }
 	
 	
