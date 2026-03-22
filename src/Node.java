@@ -27,20 +27,18 @@ public String getRandomType() {
 public void assignType(int i) {
 	
 	switch(i) {
-	case 0: type = "Combat";
-	case 1: type = getRandomType();
-	case 2: type = getRandomType();
-	case 3: type = "Combat";
-	case 4: type = "Combat";
-	case 5: type = "Combat";
-	case 6: type = getRandomType();
-	case 7: type = getRandomType();
-	case 8: type = getRandomType();
-	case 9: type = getRandomType();
-	case 10: type = getRandomType();
-	case 11: type = "Combat";
-	case 12: type = "Combat";
-	case 13: type = "Combat";
+	case 0: type = "Combat";break;
+	case 1: type = getRandomType();break;
+	case 2: type = getRandomType();break;
+	case 3: type = "Combat";break;
+	case 4: type = "Combat";break;
+	case 5: type = "Combat";break;
+	case 6: type = getRandomType();break;
+	case 7: type = getRandomType();break;
+	case 8: type = getRandomType();break;
+	case 9: type = getRandomType();break;
+	case 10: type = getRandomType();break;
+	default: type = "Combat";
 	}
 	
 	
