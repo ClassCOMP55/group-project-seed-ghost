@@ -3,6 +3,7 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GOval;
 
 public class MapPane extends GraphicsPane {
 	
@@ -32,10 +33,10 @@ public class MapPane extends GraphicsPane {
 	
 	private void addText() {
 		
-		GLabel title = new GLabel("Map", 100, 70);
+		GLabel title = new GLabel("Map", 100, 100);
 		title.setColor(Color.RED);
-		title.setFont("DialogInput-PLAIN-80");
-		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
+		title.setFont("DialogInput-PLAIN-45");
+		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 30);
 		
 		contents.add(title);
 		mainScreen.add(title);
@@ -70,9 +71,19 @@ public class MapPane extends GraphicsPane {
 		campFireLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 560);
 		
 		contents.add(campFireLabel);
-		mainScreen.add(campFireLabel);
-		
-		
+		mainScreen.add(campFireLabel);	
+	}
+	
+	
+	
+	private void createRow(int limit, double startX, double startY) {
+		for (int i = 0;i<limit;i++) {
+			GOval node = new GOval(40,40);
+			node.setLocation(startX, startY);
+			contents.add(node);
+			mainScreen.add(node);
+			startX = startX+100;
+		}
 	}
 	
 	@Override
