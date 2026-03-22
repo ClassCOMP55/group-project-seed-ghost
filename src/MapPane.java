@@ -42,35 +42,35 @@ public class MapPane extends GraphicsPane {
 		
 		GLabel shopLabel = new GLabel("Shop Pane", 100, 70);
 		shopLabel.setColor(Color.BLACK);
-		shopLabel.setFont("DialogInput-PLAIN-20");
-		shopLabel.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 270);
+		shopLabel.setFont("DialogInput-PLAIN-15");
+		shopLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 500);
 		
 		contents.add(shopLabel);
 		mainScreen.add(shopLabel);
 		
 		GLabel combatLabel = new GLabel("Combat Pane", 100, 70);
 		combatLabel.setColor(Color.BLACK);
-		combatLabel.setFont("DialogInput-PLAIN-20");
-		combatLabel.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 340);
+		combatLabel.setFont("DialogInput-PLAIN-15");
+		combatLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 520);
 		
 		contents.add(combatLabel);
 		mainScreen.add(combatLabel);
 		
 		GLabel lootLabel = new GLabel("Loot Pane", 100, 70);
 		lootLabel.setColor(Color.BLACK);
-		lootLabel.setFont("DialogInput-PLAIN-20");
-		lootLabel.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 410);
+		lootLabel.setFont("DialogInput-PLAIN-15");
+		lootLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 540);
 		
 		contents.add(lootLabel);
 		mainScreen.add(lootLabel);
 		
 		GLabel campFireLabel = new GLabel("Campfire Pane", 100, 70);
 		campFireLabel.setColor(Color.BLACK);
-		campFireLabel.setFont("DialogInput-PLAIN-20");
-		campFireLabel.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 480);
+		campFireLabel.setFont("DialogInput-PLAIN-15");
+		campFireLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 560);
 		
-		contents.add(lootLabel);
-		mainScreen.add(lootLabel);
+		contents.add(campFireLabel);
+		mainScreen.add(campFireLabel);
 		
 		
 	}
