@@ -5,6 +5,8 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
 public class MapPane extends GraphicsPane {
+	
+	private Node[] mapPath;
 	public MapPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 	}
@@ -20,6 +22,12 @@ public class MapPane extends GraphicsPane {
 			mainScreen.remove(item);
 		}
 		contents.clear();
+	}
+	
+	public void createPath() {
+		for (int i=0;i<mapPath.length;i++) {
+			mapPath[i] = new Node(i);
+		}
 	}
 	
 	private void addText() {
