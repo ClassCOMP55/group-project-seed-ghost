@@ -35,7 +35,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		GLabel mapLabel = new GLabel("Go to Map", 100, 70);
 		mapLabel.setColor(Color.BLUE);
 		mapLabel.setFont("DialogInput-PLAIN-20");
-		mapLabel.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 270);
+		mapLabel.setLocation((mainScreen.getWidth() - mapLabel.getWidth()) / 2, 270);
 		
 		contents.add(mapLabel);
 		mainScreen.add(mapLabel);
