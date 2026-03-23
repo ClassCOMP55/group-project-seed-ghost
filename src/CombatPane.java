@@ -2,6 +2,7 @@ import java.awt.Color;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GRect;
 
 public class CombatPane extends GraphicsPane{
 	
@@ -11,6 +12,7 @@ public class CombatPane extends GraphicsPane{
 	
 	@Override
 	public void showContent() {
+		createBackground();
 		addText();
 	}
 
@@ -38,6 +40,16 @@ public class CombatPane extends GraphicsPane{
 		
 		contents.add(returnLabel);
 		mainScreen.add(returnLabel);
+	}
+	
+	private void createBackground() {
+		GRect backGround = new GRect(800,600);
+		backGround.setColor(Color.DARK_GRAY);
+		backGround.setFillColor(Color.DARK_GRAY);
+		backGround.setFilled(true);
+		backGround.setLocation(0, 0);
+		contents.add(backGround);
+		mainScreen.add(backGround);
 	}
 	
 
