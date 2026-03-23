@@ -153,10 +153,10 @@ private void createMap() {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GOval) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			switch(ovalToNode(oval).getType()){
-			case "Shop": mainScreen.switchToMenuPane();
-			case "Combat": mainScreen.switchToMenuPane();
-			case "CampFire": mainScreen.switchToMenuPane();
-			case "Loot": mainScreen.switchToMenuPane();
+			case "Shop": mainScreen.switchToMenuPane(); break;
+			case "Combat": mainScreen.switchToCombatPane(); break;
+			case "CampFire": mainScreen.switchToMenuPane(); break;
+			case "Loot": mainScreen.switchToMenuPane(); break;
 			}
 		}
 				
