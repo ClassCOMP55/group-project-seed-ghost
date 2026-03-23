@@ -1,11 +1,14 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
 
 public class CharacterSelectionPane extends GraphicsPane {
+	
+	private ArrayList<Character> myChars;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -13,6 +16,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
+		myChars = new ArrayList<>();
 		createBackground();
 		addText();
 	}
@@ -51,6 +55,17 @@ public class CharacterSelectionPane extends GraphicsPane {
 		backGround.setLocation(0, 0);
 		contents.add(backGround);
 		mainScreen.add(backGround);
+	}
+	
+	private void createCharacters() {
+		String[] professions = {
+    			"knight","samurai","thief","viking",
+    			"cleric","sorcerer","paladin","ranger","marksman"
+    			};
+		for (int i = 0;i<3;i++) {
+			Character myChar = new Character(Chance.choose(professions));
+			myChars.add(myChar);
+		}
 	}
 	
 	@Override
