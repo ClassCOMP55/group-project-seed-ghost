@@ -6,6 +6,9 @@ import acm.graphics.GObject;
 
 //The ShopPane
 public class ShopPane extends GraphicsPane {
+	
+	private ShopInventory inventory;
+	
 	public ShopPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 	}
