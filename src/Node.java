@@ -67,6 +67,10 @@ public int[] setAvailableNodes() {
 public String getType() {
 	return type;
 }
+
+public int[] getAccessibleNodes() {
+	return accessibleNodes;
+}
 	
 	
 
