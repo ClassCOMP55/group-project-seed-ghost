@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
+import acm.graphics.GLine;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
@@ -92,7 +93,26 @@ private void createMap() {
 		createRow(5,((mainScreen.getWidth() - 40) / 2)-200,260);
 		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,160);
 		createRow(1,((mainScreen.getWidth() - 40) / 2),60);
+		drawLines();
 		
+	}
+
+	public void drawLines() {
+		for (int e = 0;e<myNodeObjects.size()-1;e++) {
+			GOval oval = myNodeObjects.get(e);
+			Node node = ovalToNode(oval);
+			int[] myArr = node.accessibleNodes;
+		
+			for (int i:myArr) {
+				GOval oval2 = myNodeObjects.get(i);
+				GLine line = new GLine(oval.getX()+20,oval.getY()+20,oval2.getX()+20,oval2.getY()+20);
+				contents.add(line);
+				mainScreen.add(line);
+				oval2.sendToFront();
+			
+			}
+			oval.sendToFront();
+		}
 	}
 	
 	private void createRow(int limit, double startX, double startY) {
@@ -153,7 +173,7 @@ private void createMap() {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GOval) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			switch(ovalToNode(oval).getType()){
-			case "Shop": mainScreen.switchToMenuPane(); break;
+			case "Shop": mainScreen.switchToShopPane(); break;
 			case "Combat": mainScreen.switchToCombatPane(); break;
 			case "CampFire": mainScreen.switchToMenuPane(); break;
 			case "Loot": mainScreen.switchToMenuPane(); break;
