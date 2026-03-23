@@ -19,7 +19,7 @@ public class MainApplication extends GraphicsProgram{
 	private SettingsPane settingPane;
 	private ShopPane shopPane; 
 	private MapPane mapPane;
-	private MapPane combatPane;
+	private CombatPane combatPane;
 
 	public MainApplication() {
 		super();
@@ -47,7 +47,7 @@ public class MainApplication extends GraphicsProgram{
 		settingPane = new SettingsPane(this);
 		shopPane = new ShopPane(this);
 		mapPane =  new MapPane(this);
-		combatPane = new MapPane(this);
+		combatPane = new CombatPane(this);
 
 		//TheDefaultPane
 		switchToScreen(welcomePane);
