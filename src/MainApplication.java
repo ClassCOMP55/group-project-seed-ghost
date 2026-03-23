@@ -19,6 +19,7 @@ public class MainApplication extends GraphicsProgram{
 	private SettingsPane settingPane;
 	private ShopPane shopPane; 
 	private MapPane mapPane;
+	private CampFirePane campFirePane;
 
 	public MainApplication() {
 		super();
@@ -45,6 +46,7 @@ public class MainApplication extends GraphicsProgram{
 		characterSelectionPane = new CharacterSelectionPane(this);
 		settingPane = new SettingsPane(this);
 		shopPane = new ShopPane(this);
+		campFirePane = new CampFirePane(this);
 		mapPane =  new MapPane(this);
 
 		//TheDefaultPane
@@ -82,6 +84,10 @@ public class MainApplication extends GraphicsProgram{
 	
 	public void switchToShopPane() {
 		switchToScreen(shopPane); 
+	}
+	
+	public void switchToCampFirePane() {
+		switchToScreen(campFirePane); 
 	}
 	
 	protected void switchToScreen(GraphicsPane newScreen) {
