@@ -127,12 +127,26 @@ private void createMap() {
 		oval.setFilled(true);
 	}
 	
+	public Node ovalToNode(GObject oval) {
+		return mapPath.get(myNodeObjects.indexOf(oval));
+	}
+	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
 			mainScreen.switchToShopPane();
 		}
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GOval) {
+			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
+			switch(ovalToNode(oval).getType()){
+			case "Shop": mainScreen.switchToMenuPane();
+			case "Combat": mainScreen.switchToMenuPane();
+			case "CampFire": mainScreen.switchToMenuPane();
+			case "Loot": mainScreen.switchToMenuPane();
+			}
+		}
+				
 	}
 		
 
