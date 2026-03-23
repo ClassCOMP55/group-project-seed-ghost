@@ -41,6 +41,20 @@ public class WeaponItem {
 	}
 	
 	/*
+	 * WeaponItem, specifically for enemies
+	 */
+	public WeaponItem (double[] baseAttack, double[] statScaling, double[] baseStatus, String affinity, boolean ranged, boolean magic) {
+		type = "Enemy Attack";
+		
+		setRanged(ranged);
+		setMagic(magic);
+		
+		setBaseAttack(baseAttack);
+		setStatScaling(statScaling);
+		setBaseStatus(baseStatus);
+	}
+	
+	/*
 	 * WeaponItem, creates a fully random weapon
 	 * 
 	 * @param boolean: It actually doesn't matter if its true or false
@@ -293,7 +307,7 @@ public class WeaponItem {
 	 * @param double[] the party member's stats
 	 * @return double[] all damage members after scaling
 	 */
-	public double[] scaledDamage (double[] stats) {
+	public double[] scaledDamage (int[] stats) {
 		double[] scaling = getStatScaling();
 		
 		double addDmg = 0;
@@ -320,7 +334,7 @@ public class WeaponItem {
 	 * @param double[] the party member's stats
 	 * @return double[] all status members after scaling
 	 */
-	public double[] scaledStatus (double[] stats) {
+	public double[] scaledStatus (int[] stats) {
 		double[] scaling = getStatScaling();
 		
 		double[] wamu = getBaseStatus();

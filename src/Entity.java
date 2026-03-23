@@ -3,6 +3,7 @@ import acm.graphics.GImage;
 public class Entity {
 	private double hpMax, hp, manaMax, mana, deathResist;
 	private int[] statSpread;
+	private double[] statusLevels;
 	private EntityStats mainStat;
 	private GImage sprite;
 	
@@ -197,5 +198,19 @@ public class Entity {
 	
 	public void setSprite(String sprite) {
 		this.sprite = new GImage(sprite);
+	}
+
+	public double[] getStatusLevels() {
+		return statusLevels;
+	}
+
+	public void setStatusLevels(double[] statusLevels) {
+		this.statusLevels = statusLevels;
+	}
+	
+	public void applyStatusLevels (double[] statusLevels) {
+		for (int i = 0; i < statusLevels.length; i++) {
+			this.statusLevels[i] += statusLevels[i];
+		}
 	}
 }

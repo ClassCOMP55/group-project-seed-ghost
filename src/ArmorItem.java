@@ -283,12 +283,12 @@ public class ArmorItem {
 		return rtn;
 	}
 	
-	public double[] calculateStatus (double[] incStatuses) {
-		for (int i = 0; i < incStatuses.length; i++) {
-			incStatuses[i] *= incStatusMultipliers[i];
+	public double[] calculateStatus (double[] initStatus) {
+		for (int i = 0; i < initStatus.length; i++) {
+			initStatus[i] *= incStatusMultipliers[i];
 		}
 		
-		return incStatuses;
+		return initStatus;
 	}
 	
 	public double[] getIncDamageMultipliers() {
