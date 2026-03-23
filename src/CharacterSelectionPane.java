@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
@@ -19,6 +20,8 @@ public class CharacterSelectionPane extends GraphicsPane {
 		myChars = new ArrayList<>();
 		createBackground();
 		addText();
+		createCharacters();
+		
 	}
 
 	@Override
@@ -58,14 +61,27 @@ public class CharacterSelectionPane extends GraphicsPane {
 	}
 	
 	private void createCharacters() {
-		String[] professions = {
-    			"knight","samurai","thief","viking",
-    			"cleric","sorcerer","paladin","ranger","marksman"
-    			};
+		String[] professions = {"knight","samurai","thief","viking","sorcerer","paladin","marksman"};
 		for (int i = 0;i<3;i++) {
 			Character myChar = new Character(Chance.choose(professions));
 			myChars.add(myChar);
+			DrawCharacter(i);
 		}
+	}
+	
+	private void DrawCharacter(int i) {
+		GImage charImage;
+		switch(myChars.get(i).getProfession()) {
+		case "knight": charImage = new GImage("spr_Knight.png",50+(200*i),300) ; break;
+		case "samurai": charImage = new GImage("spr_Samurai.png",50+(200*i),300) ; break;
+		case "thief": charImage = new GImage("spr_Thief.png",50+(200*i),300) ; break;
+		case "viking": charImage = new GImage("spr_Viking.png",50+(200*i),300); break;
+		case "sorcerer": charImage = new GImage("spr_Sorcerer.png",50+(200*i),300); break;
+		case "paladin": charImage = new GImage("spr_Paladin.png",50+(200*i),300); break;
+		default: charImage = new GImage("spr_Marksman.png",50+(200*i),300); break;
+		}
+		contents.add(charImage);
+		mainScreen.add(charImage);
 	}
 	
 	@Override
