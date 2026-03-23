@@ -22,7 +22,7 @@ public class Chance {
 	 * @return int
 	 */
 	public static int range (int low, int high) {
-		return rgen.nextInt(high - low) + low;
+		return rgen.nextInt(high+1 - low) + low;
 	}
 	
 	/*
