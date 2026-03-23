@@ -3,6 +3,7 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GRect;
 
 public class CharacterSelectionPane extends GraphicsPane {
 
@@ -12,6 +13,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
+		createBackground();
 		addText();
 	}
 
@@ -41,9 +43,19 @@ public class CharacterSelectionPane extends GraphicsPane {
 		mainScreen.add(mapLabel);
 	}
 	
+	private void createBackground() {
+		GRect backGround = new GRect(800,600);
+		backGround.setColor(Color.DARK_GRAY);
+		backGround.setFillColor(Color.DARK_GRAY);
+		backGround.setFilled(true);
+		backGround.setLocation(0, 0);
+		contents.add(backGround);
+		mainScreen.add(backGround);
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
 			mainScreen.switchToMapPane();
 		}
 	}

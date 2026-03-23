@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
+import acm.graphics.GRect;
+
 import java.util.ArrayList;
 
 public class MapPane extends GraphicsPane {
@@ -19,6 +21,7 @@ public class MapPane extends GraphicsPane {
 	public void showContent() {
 		mapPath = new ArrayList<>();
 		myNodeObjects = new ArrayList<>();
+		createBackground();
 		addText();
 		createPath();
 		createMap();
@@ -102,6 +105,16 @@ private void createMap() {
 			mainScreen.add(node);
 			startX = startX+100;
 		}
+	}
+	
+	private void createBackground() {
+		GRect backGround = new GRect(800,600);
+		backGround.setColor(Color.DARK_GRAY);
+		backGround.setFillColor(Color.DARK_GRAY);
+		backGround.setFilled(true);
+		backGround.setLocation(0, 0);
+		contents.add(backGround);
+		mainScreen.add(backGround);
 	}
 	
 	private void setColor(GOval oval) {
