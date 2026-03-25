@@ -123,7 +123,7 @@ public class Character extends Entity {
 			case "viking":
 				tempHp = Chance.range(200, 300);
 				tempMn = Chance.range(10, 100);
-				tempDr = 0.25;
+				tempDr = 0.5;
 				
 				tempStr = (int)Chance.range(60, 90);
 				tempCon = (int)Chance.range(40, 60);
@@ -133,6 +133,10 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"axe","greatsword","hammer"}), "null");
 			break;
 			case "cleric":
+				tempHp = Chance.range(70, 150);
+				tempMn = Chance.range(100, 300);
+				tempDr = 0.15;
+				
 				tempWil = (int)Chance.range(40, 50);
 				tempFth = (int)Chance.range(60, 100);
 				tempArc = (int)Chance.range(10, 20);
@@ -142,6 +146,10 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), "holy");
 			break;
 			case "sorcerer":
+				tempHp = Chance.range(40, 100);
+				tempMn = Chance.range(100, 300);
+				tempDr = 0.1;
+				
 				tempWil = (int)Chance.range(40, 50);
 				tempFth = (int)Chance.range(10, 20);
 				tempArc = (int)Chance.range(60, 100);
@@ -152,6 +160,10 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"stave","talisman"}), "magic");
 			break;
 			case "paladin":
+				tempHp = Chance.range(200, 400);
+				tempMn = Chance.range(50, 300);
+				tempDr = 0.3;
+				
 				tempStr = (int)Chance.range(40, 60);
 				tempCon = (int)Chance.range(10, 30);
 				tempFth = (int)Chance.range(50, 80);
@@ -164,6 +176,10 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","greatsword","hammer"}), "holy");
 			break;
 			case "ranger":
+				tempHp = Chance.range(75, 150);
+				tempMn = Chance.range(75, 150);
+				tempDr = 0.2;
+				
 				tempPrc = (int)Chance.range(40, 70);
 				tempDex = (int)Chance.range(40, 70);
 				allowedArmors = new String[] {"light", "medium"};
@@ -172,6 +188,10 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), "null");
 			break;
 			case "marksman":
+				tempHp = Chance.range(100, 200);
+				tempMn = Chance.range(5, 10);
+				tempDr = 0.225;
+				
 				tempPrc = (int)Chance.range(60, 160);
 				tempSprite = "spr_Marksman";
 				allowedArmors = new String[] {"light"};

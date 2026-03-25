@@ -9,6 +9,12 @@ public class Skill {
 	
 	public Skill () {
 		setName("DEFAULT_SKILL");
+		manaCost = 0;
+	}
+	
+	public Skill (double mana_cost) {
+		setName("DEFAULT_SKILL");
+		manaCost = mana_cost;
 	}
 
 	public String getName() {
@@ -22,8 +28,8 @@ public class Skill {
 	/*
 	 * Tests to check if the preconditions are met. OVERRIDE
 	 */
-	public boolean preconditionsMet () {
-		return true;
+	public boolean preconditionsMet (Entity self, Entity target) {
+		return self.getMana() >= getManaCost();
 	}
 	
 	/*
