@@ -50,15 +50,27 @@ public class CombatPane extends GraphicsPane{
 		mainScreen.add(backGround);
 	}
 	private void addEntities() {
-		GImage party1 = new GImage("spr_Viking.png",0,350);
-		party1.setLocation(0, 350);
+		GImage party1 = new GImage("spr_Viking.png",0,200);
+		party1.setLocation(0, 200);
 		contents.add(party1);
 		mainScreen.add(party1);
+		addHpAndMana(party1);
 		
 		GImage enemy1 = new GImage("spr_HolyGhost.png",400,300);
-		enemy1.setLocation(800-enemy1.getWidth(), 350);
+		enemy1.setLocation(800-enemy1.getWidth(), 200);
 		contents.add(enemy1);
 		mainScreen.add(enemy1);
+		addHpAndMana(enemy1);
+	}
+	
+	private void addHpAndMana(GImage entity) {
+		GRect partyHealth = new GRect(100,15);
+		partyHealth.setLocation(entity.getX()+50, entity.getY()+entity.getHeight());
+		partyHealth.setColor(Color.BLACK);
+		partyHealth.setFillColor(Color.RED);
+		partyHealth.setFilled(true);
+		contents.add(partyHealth);
+		mainScreen.add(partyHealth);
 	}
 	
 	
