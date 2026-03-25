@@ -2,6 +2,7 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
@@ -17,6 +18,7 @@ public class CombatPane extends GraphicsPane{
 	public void showContent() {
 		createBackground();
 		addText();
+		addEntities();
 	}
 
 	@Override
@@ -36,13 +38,6 @@ public class CombatPane extends GraphicsPane{
 		contents.add(title);
 		mainScreen.add(title);
 
-		GLabel returnLabel = new GLabel("Return button", 100, 70);
-		returnLabel.setColor(Color.BLACK);
-		returnLabel.setFont("DialogInput-PLAIN-20");
-		returnLabel.setLocation((mainScreen.getWidth() - returnLabel.getWidth()) / 2, 270);
-
-		contents.add(returnLabel);
-		mainScreen.add(returnLabel);
 	}
 
 	private void createBackground() {
@@ -54,9 +49,21 @@ public class CombatPane extends GraphicsPane{
 		contents.add(backGround);
 		mainScreen.add(backGround);
 	}
+	private void addEntities() {
+		GImage party1 = new GImage("spr_Viking.png",0,350);
+		party1.setLocation(0, 350);
+		contents.add(party1);
+		mainScreen.add(party1);
+		
+		GImage enemy1 = new GImage("spr_HolyGhost.png",400,300);
+		enemy1.setLocation(800-enemy1.getWidth(), 350);
+		contents.add(enemy1);
+		mainScreen.add(enemy1);
+	}
+	
 	
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
 			mainScreen.switchToMapPane();
 		}
 		
