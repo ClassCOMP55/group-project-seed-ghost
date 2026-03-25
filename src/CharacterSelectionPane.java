@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -41,13 +42,6 @@ public class CharacterSelectionPane extends GraphicsPane {
 		contents.add(title);
 		mainScreen.add(title);
 		
-		GLabel mapLabel = new GLabel("Go to Map", 100, 70);
-		mapLabel.setColor(Color.BLUE);
-		mapLabel.setFont("DialogInput-PLAIN-20");
-		mapLabel.setLocation((mainScreen.getWidth() - mapLabel.getWidth()) / 2, 270);
-		
-		contents.add(mapLabel);
-		mainScreen.add(mapLabel);
 	}
 	
 	private void createBackground() {
@@ -61,9 +55,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 	}
 	
 	private void createCharacters() {
-		String[] professions = {"knight","samurai","thief","viking","sorcerer","paladin","marksman"};
+		ArrayList<String> professions = new ArrayList<>(Arrays.asList("knight","samurai","thief","viking","sorcerer","paladin","marksman"));
 		for (int i = 0;i<3;i++) {
-			Character myChar = new Character(Chance.choose(professions));
+			int choice = Chance.range(0, professions.size()-1);
+			Character myChar = new Character(professions.get(choice));
+			professions.remove(choice);
 			myChars.add(myChar);
 			DrawCharacter(i);
 		}
@@ -86,7 +82,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
 			mainScreen.switchToMapPane();
 		}
 	}
