@@ -3,7 +3,7 @@ public class Character extends Entity {
 	
 	private WeaponItem myWeapon;
 	private ArmorItem myArmor;
-	//private Skill[] mySkills;
+	private Skill[] mySkills;
 	private String profession;
 	private String[] allowedArmors;
 	
@@ -21,7 +21,7 @@ public class Character extends Entity {
 		
 		myWeapon = null;
 		myArmor = null;
-		//mySkills = new Skill[]({null, null, null, null});
+		setMySkills(new Skill[]{new SKILL_BasicAttack()});
 		profession = "none";
 		allowedArmors = new String[] {"light"};
 		
@@ -235,5 +235,22 @@ public class Character extends Entity {
 
 	public static int getMaxSkills() {
 		return MAX_SKILLS;
+	}
+
+	public Skill[] getMySkills() {
+		return mySkills;
+	}
+
+	public void setMySkills(Skill[] mySkills) {
+		this.mySkills = mySkills;
+	}
+	
+	public void attackMe (double[] attackSpread) {
+		double sum = myArmor.calculateDamage(attackSpread);
+		hurt(sum);
+	}
+	
+	public double[] attackOther () {
+		return myWeapon.scaledDamage(getStatSpread());
 	}
 }

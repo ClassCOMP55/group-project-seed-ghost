@@ -65,4 +65,12 @@ public class Enemy extends Entity {
 		this.incStatusMultipliers = incStatusMultipliers2;
 	}
 	
+	public void attackMe(double[] attackSpread) {
+		double sum = calculateDamage(attackSpread);
+		hurt(sum);
+	}
+	
+	public double[] attackOther () {
+		return atk.scaledDamage(getStatSpread());
+	}
 }

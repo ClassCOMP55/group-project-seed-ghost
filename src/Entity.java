@@ -213,4 +213,23 @@ public class Entity {
 			this.statusLevels[i] += statusLevels[i];
 		}
 	}
+	
+	/*
+	 * Override this one.
+	 */
+	public void attackMe (double[] attackSpread) {
+		double sum = 0;
+		for (int i = 0; i < attackSpread.length; i++) {
+			sum += attackSpread[i];
+		}
+		hurt(sum);
+	}
+	
+	/*
+	 * Override this one too
+	 */
+	public double[] attackOther () {
+		double[] temp = new double[] {0,0,0,0,0,0,0,0};
+		return temp;
+	}
 }
