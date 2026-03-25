@@ -11,6 +11,7 @@ import acm.graphics.GRect;
 public class CharacterSelectionPane extends GraphicsPane {
 	
 	private ArrayList<Character> myChars;
+	private PlayerInventory myInvetory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -82,6 +83,23 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
+			myInvetory = new PlayerInventory(myChars.get(0));
+			System.out.println("option 1");
+			System.out.println("You are a "+myChars.get(0).getProfession());
+		}
+		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(3)) {
+			myInvetory = new PlayerInventory(myChars.get(1));
+			System.out.println("option 2");
+			System.out.println("You are a "+myChars.get(1).getProfession());
+		}
+		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(4)) {
+			myInvetory = new PlayerInventory(myChars.get(2));
+			System.out.println("option 3");
+			System.out.println("You are a "+myChars.get(2).getProfession());
+		}
+		
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
 			mainScreen.switchToMapPane();
 		}
