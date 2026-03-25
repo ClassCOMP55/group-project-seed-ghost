@@ -1,8 +1,10 @@
 
 import java.awt.Color;
+import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GOval;
 import acm.graphics.GRect;
 
 public class CombatPane extends GraphicsPane{
@@ -52,6 +54,13 @@ public class CombatPane extends GraphicsPane{
 		contents.add(backGround);
 		mainScreen.add(backGround);
 	}
+	
+	public void mouseClicked(MouseEvent e) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
+			mainScreen.switchToMapPane();
+		}
+		
+		}
 	
 
 }
