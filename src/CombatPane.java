@@ -50,6 +50,14 @@ public class CombatPane extends GraphicsPane{
 
 		contents.add(title);
 		mainScreen.add(title);
+		
+		GLabel returnButton = new GLabel("Return");
+		returnButton.setColor(Color.BLACK);
+		returnButton.setFont("DialogInput-PLAIN-20");
+		returnButton.setLocation(720, 580);
+
+		contents.add(returnButton);
+		mainScreen.add(returnButton);
 
 	}
 
@@ -100,7 +108,7 @@ public class CombatPane extends GraphicsPane{
 	
 	
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GLabel) {
 			mainScreen.switchToMapPane();
 		}
 		
