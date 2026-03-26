@@ -15,6 +15,7 @@ public class CombatPane extends GraphicsPane{
 	Enemy enemy1;
 	private ArrayList<Entity> myEntities;
 	private ArrayList<GImage> myImages;
+	private ArrayList<GLabel> healthDisplays;
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -24,6 +25,7 @@ public class CombatPane extends GraphicsPane{
 	public void showContent() {
 		myEntities = new ArrayList<>();
 		myImages = new ArrayList<>();
+		healthDisplays = new ArrayList<>();
 		createBackground();
 		addText();
 		party1 = new Character("viking");
@@ -101,6 +103,7 @@ public class CombatPane extends GraphicsPane{
 		GLabel healthText = new GLabel("Health: "+myEntity.getHp());
 		healthText.setLocation(partyHealth.getX(), partyHealth.getY());
 		healthText.setFont("Arial-Bold-15");
+		healthDisplays.add(healthText);
 		
 		contents.add(healthText);
 		mainScreen.add(healthText);
@@ -110,6 +113,15 @@ public class CombatPane extends GraphicsPane{
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GLabel) {
 			mainScreen.switchToMapPane();
+		}
+		
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
+			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
+			Entity myEntity = myEntities.get(myImages.indexOf(image));
+			if (myEntity==myEntities.get(1)) {
+				myEntity.attackMe(myEntities.get(0).attackOther());
+				healthDisplays.get(1).setLabel("Health: "+myEntity.getHp());
+			}
 		}
 		
 		}
