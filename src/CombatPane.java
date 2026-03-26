@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -9,6 +10,11 @@ import acm.graphics.GOval;
 import acm.graphics.GRect;
 
 public class CombatPane extends GraphicsPane{
+	
+	Character party1;
+	Enemy enemy1;
+	private ArrayList<Entity> myEntities;
+	private ArrayList<GImage> myImages;
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -16,8 +22,15 @@ public class CombatPane extends GraphicsPane{
 
 	@Override
 	public void showContent() {
+		myEntities = new ArrayList<>();
+		myImages = new ArrayList<>();
 		createBackground();
 		addText();
+		party1 = new Character("viking");
+		myEntities.add(party1);
+		enemy1 = new Enemy();
+		enemy1.setSprite("spr_HolyGhost");
+		myEntities.add(enemy1);
 		addEntities();
 	}
 
@@ -50,27 +63,39 @@ public class CombatPane extends GraphicsPane{
 		mainScreen.add(backGround);
 	}
 	private void addEntities() {
-		GImage party1 = new GImage("spr_Viking.png",0,200);
-		party1.setLocation(0, 200);
-		contents.add(party1);
-		mainScreen.add(party1);
-		addHpAndMana(party1);
-		
-		GImage enemy1 = new GImage("spr_HolyGhost.png",400,300);
-		enemy1.setLocation(800-enemy1.getWidth(), 200);
-		contents.add(enemy1);
-		mainScreen.add(enemy1);
-		addHpAndMana(enemy1);
+		for (Entity entity:myEntities) {
+			GImage image = entity.getSprite();
+			myImages.add(image);
+			if (entity instanceof Character) {
+				image.setLocation(0, 200);
+			}
+			else {
+				image.setLocation(800-image.getWidth(), 200);
+			}
+			addHpAndMana(image);
+			contents.add(image);
+			mainScreen.add(image);
+		}
 	}
 	
-	private void addHpAndMana(GImage entity) {
+	
+	private void addHpAndMana(GImage mySprite) {
+		Entity myEntity = myEntities.get(myImages.indexOf(mySprite));
 		GRect partyHealth = new GRect(100,15);
-		partyHealth.setLocation(entity.getX()+50, entity.getY()+entity.getHeight());
+		partyHealth.setLocation(mySprite.getX()+50, mySprite.getY()+mySprite.getHeight()+15);
 		partyHealth.setColor(Color.BLACK);
 		partyHealth.setFillColor(Color.RED);
 		partyHealth.setFilled(true);
+		
 		contents.add(partyHealth);
 		mainScreen.add(partyHealth);
+		
+		GLabel healthText = new GLabel("Health: "+myEntity.getHp());
+		healthText.setLocation(partyHealth.getX(), partyHealth.getY());
+		healthText.setFont("Arial-Bold-15");
+		
+		contents.add(healthText);
+		mainScreen.add(healthText);
 	}
 	
 	
