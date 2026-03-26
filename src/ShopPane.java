@@ -82,7 +82,7 @@ public class ShopPane extends GraphicsPane {
 	 
 	 //The old man clerk
 	 private void addClerk() {
-		 GLabel clerk = new GLabel("Clerk: \"What you want! Buy what ya needs...\"", 100, 500);
+		 GLabel clerk = new GLabel("Clerk: \"What you want! Buy what ya needs...\"", 100, 100);
 	        clerk.setFont("DialogInput-ITALIC-20");
 	        clerk.setColor(Color.DARK_GRAY);
 
@@ -90,7 +90,7 @@ public class ShopPane extends GraphicsPane {
 	        mainScreen.add(clerk);
 		 
 	 }
-	 
+	 //return button
 	 private void addReturnButton() {
 		 GLabel returnBtn = new GLabel("Leave Shop", 0, 0);
 	        returnBtn.setFont("DialogInput-BOLD-20");
@@ -100,6 +100,7 @@ public class ShopPane extends GraphicsPane {
 	            (mainScreen.getWidth() - returnBtn.getWidth()) / 2,
 	            mainScreen.getHeight() - 50
 	        );
+	        
 
 	        returnBtn.addMouseListener(new MouseAdapter() {
 	            public void mouseClicked(MouseEvent e) {
