@@ -175,7 +175,7 @@ private void createMap() {
 			switch(ovalToNode(oval).getType()){
 			case "Shop": mainScreen.switchToShopPane(); break;
 			case "Combat": mainScreen.switchToCombatPane(); break;
-			case "CampFire": mainScreen.switchToMenuPane(); break;
+			case "CampFire": mainScreen.switchToCampFirePane(); break;
 			case "Loot": mainScreen.switchToMenuPane(); break;
 			}
 		}
