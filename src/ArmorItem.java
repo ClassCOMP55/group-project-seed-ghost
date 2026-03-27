@@ -4,6 +4,18 @@ public class ArmorItem {
 	private String weight, affinity;
 	private boolean metal, cloth, magic;
 	
+	public ArmorItem (boolean guardarmor) {
+		setDefaults();
+		
+		setWeight("light");
+		setAffinity("null");
+		setMetal(false);
+		setMagic(false);
+		setCloth(false);
+		
+		incDamageMultipliers = new double[] {0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05};
+	}
+	
 	public ArmorItem () {
 		setDefaults();
 		
