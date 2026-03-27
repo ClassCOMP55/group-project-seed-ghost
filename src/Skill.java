@@ -4,17 +4,27 @@
 
 
 public class Skill {
-	private String name;
+	private String name, description;
 	private double manaCost;
 	
 	public Skill () {
 		setName("DEFAULT_SKILL");
+		setDescription("A dummy skill that does nothing. If you're seeing this, something went wrong.");
 		manaCost = 0;
 	}
 	
 	public Skill (double mana_cost) {
 		setName("DEFAULT_SKILL");
+		setDescription("A dummy skill that does nothing. If you're seeing this, something went wrong.");
 		manaCost = mana_cost;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getName() {
@@ -36,6 +46,13 @@ public class Skill {
 	 * Runs the skill's activation. OVERRIDE
 	 */
 	public void activationEffect (Entity self, Entity target) {
+		
+	}
+	
+	/*
+	 * Important for Guard and other temporary effects.
+	 */
+	public void nextTurnEffect (Entity self, Entity target) {
 		
 	}
 

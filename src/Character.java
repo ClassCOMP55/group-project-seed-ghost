@@ -6,6 +6,7 @@ public class Character extends Entity {
 	private Skill[] mySkills;
 	private String profession;
 	private String[] allowedArmors;
+	private Skill lastUsedSkill;
 	
 	/*
 	 * Constructors
@@ -298,5 +299,17 @@ public class Character extends Entity {
 	
 	public double[] attackOther () {
 		return myWeapon.scaledDamage(getStatSpread());
+	}
+
+	public Skill getLastUsedSkill() {
+		return lastUsedSkill;
+	}
+
+	public void setLastUsedSkill(Skill lastUsedSkill) {
+		this.lastUsedSkill = lastUsedSkill;
+	}
+	
+	public void startTurn () {
+		lastUsedSkill.nextTurnEffect(this, null);
 	}
 }
