@@ -3,6 +3,7 @@ public class WeaponItem {
 	private String affinity, type;
 	private boolean ranged, magic;
 	private double[] baseAttack, statScaling, baseStatus;
+	private int purchaseCost;
 	
 	/*
 	 * Weapon item, creates weapon's stats based on the type and affinity
@@ -38,6 +39,8 @@ public class WeaponItem {
 		baseAttack = new double[] {0,0,0,0,0,0,0,0};
 		statScaling = new double[] {0,0,0,0,0,0,0,0};
 		baseStatus = new double[] {0,0,0,0,0,0,0,0,0};
+		
+		setPurchaseCost(0);
 	}
 	
 	/*
@@ -79,35 +82,42 @@ public class WeaponItem {
 			case "greatsword": 
 				baseAttack[DamageType.SLASH.ordinal()] = Chance.range(30,50);
 				statScaling[EntityStats.STR.ordinal()] = 1;
+				setPurchaseCost(Chance.range(150, 200));
 			break;
 			case "shortsword":
 				baseAttack[DamageType.SLASH.ordinal()] = Chance.range(10,30);
 				statScaling[EntityStats.STR.ordinal()] = 0.5;
 				statScaling[EntityStats.DEX.ordinal()] = 0.5;
+				setPurchaseCost(Chance.range(50, 100));
 			break;
 			case "katana":
 				baseAttack[DamageType.SLASH.ordinal()] = Chance.range(15,35);
 				statScaling[EntityStats.PRC.ordinal()] = 0.2;
 				statScaling[EntityStats.DEX.ordinal()] = 1.1;
 				baseStatus[StatusEffects.BLEED.ordinal()] = 20;
+				setPurchaseCost(Chance.range(50, 100));
 			break;
 			case "dagger":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(10,20);
 				statScaling[EntityStats.DEX.ordinal()] = 2;
 				baseStatus[StatusEffects.BLEED.ordinal()] = 20;
+				setPurchaseCost(Chance.range(20, 50));
 			break;
 			case "polearm":
 				baseAttack[DamageType.SLASH.ordinal()] = Chance.range(35,45);
 				statScaling[EntityStats.DEX.ordinal()] = 1;
+				setPurchaseCost(Chance.range(50, 150));
 			break;
 			case "axe":
 				baseAttack[DamageType.SLASH.ordinal()] = Chance.range(30,50);
 				statScaling[EntityStats.STR.ordinal()] = 0.7;
 				statScaling[EntityStats.DEX.ordinal()] = 0.7;
+				setPurchaseCost(Chance.range(20, 50));
 			break;
 			case "hammer":
 				baseAttack[DamageType.CRUSH.ordinal()] = Chance.range(20,60);
 				statScaling[EntityStats.STR.ordinal()] = 1.1;
+				setPurchaseCost(Chance.range(20, 50));
 			break;
 			case "longbow":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(25,45);
@@ -115,29 +125,34 @@ public class WeaponItem {
 				statScaling[EntityStats.DEX.ordinal()] = 0.8;
 				statScaling[EntityStats.PRC.ordinal()] = 0.7;
 				setRanged(true);
+				setPurchaseCost(Chance.range(50, 100));
 			break;
 			case "shortbow":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(20,40);
 				statScaling[EntityStats.DEX.ordinal()] = 1;
 				statScaling[EntityStats.PRC.ordinal()] = 1;
 				setRanged(true);
+				setPurchaseCost(Chance.range(20, 50));
 			break;
 			case "crossbow":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(35,65);
 				statScaling[EntityStats.PRC.ordinal()] = 1.5;
 				setRanged(true);
+				setPurchaseCost(Chance.range(100, 150));
 			break;
 			case "pistol":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(50,70);
-				statScaling[EntityStats.DEX.ordinal()] = 0.2;
-				statScaling[EntityStats.PRC.ordinal()] = 0.6;
+				statScaling[EntityStats.DEX.ordinal()] = 0.4;
+				statScaling[EntityStats.PRC.ordinal()] = 0.8;
 				setRanged(true);
+				setPurchaseCost(Chance.range(300, 500));
 			break;
 			case "rifle":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(60,100);
-				statScaling[EntityStats.DEX.ordinal()] = 0.1;
-				statScaling[EntityStats.PRC.ordinal()] = 0.7;
+				statScaling[EntityStats.DEX.ordinal()] = 0.5;
+				statScaling[EntityStats.PRC.ordinal()] = 1.0;
 				setRanged(true);
+				setPurchaseCost(Chance.range(400, 600));
 			break;
 			case "stave":
 				baseAttack[DamageType.MAGIC.ordinal()] = Chance.range(10,70);
@@ -146,6 +161,7 @@ public class WeaponItem {
 				baseStatus[StatusEffects.CONFUSE.ordinal()] = 8;
 				setRanged(true);
 				setMagic(true);
+				setPurchaseCost(Chance.range(100, 200));
 			break;
 			case "talisman":
 				baseAttack[DamageType.HOLY.ordinal()] = Chance.range(10,70);
@@ -154,6 +170,7 @@ public class WeaponItem {
 				baseStatus[StatusEffects.CHARM.ordinal()] = 8;
 				setRanged(true);
 				setMagic(true);
+				setPurchaseCost(Chance.range(100, 200));
 			break;
 			case "bomb":
 				baseAttack[DamageType.BLAST.ordinal()] = Chance.range(40,70);
@@ -165,6 +182,7 @@ public class WeaponItem {
 				statScaling[EntityStats.PRC.ordinal()] = 0.005;
 				baseStatus[StatusEffects.BLIND.ordinal()] = 10;
 				setRanged(true);
+				setPurchaseCost(Chance.range(300, 500));
 			break;
 			default:
 			break;
@@ -177,6 +195,8 @@ public class WeaponItem {
 		
 		if (affinity != "null") {
 			double affinityStrength = Chance.range(0.4,0.6);
+			
+			setPurchaseCost((int) (getPurchaseCost() * 1.2));
 			
 			if (isMagic()) {
 				affinityStrength = 1.0;
@@ -354,5 +374,13 @@ public class WeaponItem {
 	
 	private double scalingShifter (double input) {
 		return (input / 100) + 1;
+	}
+
+	public int getPurchaseCost() {
+		return purchaseCost;
+	}
+
+	public void setPurchaseCost(int purchaseCost) {
+		this.purchaseCost = purchaseCost;
 	}
 }

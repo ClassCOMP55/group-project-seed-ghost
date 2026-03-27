@@ -3,6 +3,7 @@ public class ArmorItem {
 	private double[] incDamageMultipliers, incDamageArmor, incStatusMultipliers;
 	private String weight, affinity;
 	private boolean metal, cloth, magic;
+	private int purchaseCost;
 	
 	public ArmorItem (boolean guardarmor) {
 		setDefaults();
@@ -56,6 +57,8 @@ public class ArmorItem {
 		incDamageMultipliers = new double[] {1,1,1,1,1,1,1,1};
 		incDamageArmor       = new double[] {0,0,0,0,0,0,0,0};
 		incStatusMultipliers = new double[] {1,1,1,1,1,1,1,1,1};
+		
+		setPurchaseCost(0);
 	}
 	
 	public void applyModifiers () {
@@ -63,15 +66,18 @@ public class ArmorItem {
 			case "light":
 				changeDamageMultipliers(0.025);
 				setCloth(true);
+				setPurchaseCost(Chance.range(10, 30));
 			break;
 			case "medium":
 				changeDamageMultipliers(0.05);
 				changeArmor(1);
+				setPurchaseCost(Chance.range(80, 200));
 			break;
 			case "heavy":
 				changeDamageMultipliers(0.1);
 				setMetal(true);
 				changeArmor(3);
+				setPurchaseCost(Chance.range(300, 500));
 			break;
 		}
 		
@@ -80,36 +86,43 @@ public class ArmorItem {
 				changeDamageMultiplier(DamageType.FIRE, 0.5);
 				addArmor(DamageType.FIRE, 2);
 				addArmor(DamageType.HOLY, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(0.8, 1.4)));
 			break;
 			case "Lightning":
 				changeDamageMultiplier(DamageType.ELEC, 0.5);
 				addArmor(DamageType.ELEC, 2);
 				addArmor(DamageType.MAGIC, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(0.8, 1.4)));
 			break;
 			case "Magic":
 				changeDamageMultiplier(DamageType.MAGIC, 0.5);
 				addArmor(DamageType.MAGIC, 2);
 				addArmor(DamageType.ELEC, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(1.2, 1.4)));
 			break;
 			case "Holy":
 				changeDamageMultiplier(DamageType.HOLY, 0.5);
 				addArmor(DamageType.HOLY, 2);
 				addArmor(DamageType.FIRE, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(0.8, 2.0)));
 			break;
 			case "Ballistics":
 				changeDamageMultiplier(DamageType.PIERCE, 0.5);
 				addArmor(DamageType.PIERCE, 2);
 				addArmor(DamageType.CRUSH, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(1.0, 1.4)));
 			break;
 			case "Slashing":
 				changeDamageMultiplier(DamageType.SLASH, 0.5);
 				addArmor(DamageType.SLASH, 2);
 				addArmor(DamageType.PIERCE, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(1.0, 1.4)));
 			break;
 			case "Crushing":
 				changeDamageMultiplier(DamageType.CRUSH, 0.5);
 				addArmor(DamageType.CRUSH, 2);
 				addArmor(DamageType.SLASH, -2);
+				setPurchaseCost((int) (getPurchaseCost() * Chance.range(0.5, 1.2)));
 			break;
 		}
 		
@@ -123,6 +136,8 @@ public class ArmorItem {
 			}
 			addArmor(DamageType.ELEC, -3);
 			addArmor(DamageType.HOLY, 2);
+			
+			setPurchaseCost(getPurchaseCost() + Chance.range(50, 100));
 		}
 		
 		if (isCloth()) {
@@ -134,6 +149,7 @@ public class ArmorItem {
 			}
 			addArmor(DamageType.FIRE, -3);
 			addArmor(DamageType.MAGIC, 2);
+			setPurchaseCost(getPurchaseCost() + Chance.range(-200, 100));
 		}
 	}
 	
@@ -344,6 +360,14 @@ public class ArmorItem {
 	}
 	public void setAffinity(String affinity) {
 		this.affinity = affinity;
+	}
+
+	public int getPurchaseCost() {
+		return purchaseCost;
+	}
+
+	public void setPurchaseCost(int purchaseCost) {
+		this.purchaseCost = purchaseCost;
 	}
 	
 }

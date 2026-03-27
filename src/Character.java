@@ -7,6 +7,7 @@ public class Character extends Entity {
 	private String profession;
 	private String[] allowedArmors;
 	private Skill lastUsedSkill;
+	private int recruitCost;
 	
 	/*
 	 * Constructors
@@ -19,6 +20,8 @@ public class Character extends Entity {
 	 */
 	public Character () {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
+		
+		setRecruitCost(0);
 		
 		myWeapon = null;
 		myArmor = null;
@@ -49,6 +52,8 @@ public class Character extends Entity {
 		
 		int[] stats = new int[] {str, dex, prc, ist, con, wil, fth, arc};
 		setStatSpread(stats);
+		
+		setRecruitCost((int)((getHpMax() + getManaMax() + myWeapon.getPurchaseCost() + myArmor.getPurchaseCost()) * (1 + getDeathResist())));
 	}
 
 	/*
@@ -58,6 +63,8 @@ public class Character extends Entity {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
 		
 		applyProfession(profession);
+		
+		setRecruitCost((int)((getHpMax() + getManaMax() + myWeapon.getPurchaseCost() + myArmor.getPurchaseCost()) * (1 + getDeathResist())));
 	}
 	
 	private void applyProfession (String profession) {
@@ -311,5 +318,13 @@ public class Character extends Entity {
 	
 	public void startTurn () {
 		lastUsedSkill.nextTurnEffect(this, null);
+	}
+
+	public int getRecruitCost() {
+		return recruitCost;
+	}
+
+	public void setRecruitCost(int recruitCost) {
+		this.recruitCost = recruitCost;
 	}
 }
