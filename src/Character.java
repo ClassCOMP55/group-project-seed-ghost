@@ -25,7 +25,7 @@ public class Character extends Entity {
 		
 		myWeapon = null;
 		myArmor = null;
-		setMySkills(new Skill[]{new SKILL_BasicAttack(), null, null, null});
+		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
 		profession = "none";
 		allowedArmors = new String[] {"light"};
 		
@@ -42,7 +42,7 @@ public class Character extends Entity {
 		this.myArmor = armor;
 		this.profession = profession;
 		
-		setMySkills(new Skill[]{new SKILL_BasicAttack(), null, null, null});
+		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
 		applyProfession(profession);
 		
 		setHpMax(hp);
@@ -63,7 +63,7 @@ public class Character extends Entity {
 	public Character (String profession) {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
 		
-		setMySkills(new Skill[]{new SKILL_BasicAttack()});
+		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
 		applyProfession(profession);
 		
 		setRecruitCost((int)((getHpMax() + getManaMax() + myWeapon.getPurchaseCost() + myArmor.getPurchaseCost()) * (1 + getDeathResist())));
