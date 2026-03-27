@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -9,8 +11,9 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
+import javax.swing.*;
 
-public class CombatPane extends GraphicsPane{
+public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	Character party1;
 	Enemy enemy1;
@@ -24,7 +27,10 @@ public class CombatPane extends GraphicsPane{
 	boolean heal;
 	boolean next;
 	GLabel turnLabel;
+	GObject currObj;
 	int turn;
+	int numTimes;
+	Timer t;
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -35,6 +41,8 @@ public class CombatPane extends GraphicsPane{
 		myEntities = new ArrayList<>();
 		myImages = new ArrayList<>();
 		healthDisplays = new ArrayList<>();
+		t = new Timer(50, this);
+		t.setInitialDelay(0);
 		turn = 0;
 		createBackground();
 		addText();
@@ -103,6 +111,7 @@ public class CombatPane extends GraphicsPane{
 		myChar.setHp(myChar.getHp()-75);
 		healthDisplays.get(0).setLabel("Health: "+myChar.getHp());
 	}
+	
 
 	private void createBackground() {
 		GRect backGround = new GRect(800,600);
@@ -197,6 +206,9 @@ public class CombatPane extends GraphicsPane{
 			if (myEntity==myEntities.get(1)) {
 				myEntity.attackMe(myEntities.get(0).attackOther());
 				healthDisplays.get(1).setLabel("Health: "+myEntity.getHp());
+				currObj = image;
+				numTimes = 0;
+				t.start();
 				atk = false;
 				turn++;
 				turnLabel.setLabel("Turn: "+turn);
@@ -215,6 +227,24 @@ public class CombatPane extends GraphicsPane{
 			System.out.println("Pressed F");
 			heal =true;
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		numTimes++;
+		if (numTimes <= 10) {
+			currObj.move(5, 0);
+		}
+		else if(numTimes <= 30) {
+			currObj.move(-5, 0);
+		}
+		else if (numTimes <= 40) {
+			currObj.move(5, 0);
+		}
+		else {
+			t.stop();
+		}
+		
 	}
 	
 
