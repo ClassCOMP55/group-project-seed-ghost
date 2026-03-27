@@ -261,7 +261,7 @@ public class Character extends Entity {
 	        case "marksman": return 2;    // PRC
 	        default: return 0; 
 	    }
-	}
+	}  
 	//Added increase Stat helper function
 	public void increaseStat(int index, int value) {
 	    int[] stats = getStatSpread(); 
