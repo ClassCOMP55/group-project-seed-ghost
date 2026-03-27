@@ -85,6 +85,10 @@ public class CombatPane extends GraphicsPane{
 			System.out.println("enemy turn");
 		}
 	}
+	
+	public void attackplayer(Character myChar) {
+		myChar.setHp(myChar.getHp()-75);
+	}
 
 	private void createBackground() {
 		GRect backGround = new GRect(800,600);
