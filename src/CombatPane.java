@@ -23,6 +23,7 @@ public class CombatPane extends GraphicsPane{
 	boolean atk;
 	boolean heal;
 	boolean next;
+	GLabel turnLabel;
 	int turn;
 
 	public CombatPane(MainApplication mainScreen) {
@@ -72,6 +73,14 @@ public class CombatPane extends GraphicsPane{
 
 		contents.add(returnButton);
 		mainScreen.add(returnButton);
+		
+		turnLabel = new GLabel("Turn: "+turn);
+		turnLabel.setColor(Color.BLACK);
+		turnLabel.setFont("DialogInput-PLAIN-20");
+		turnLabel.setLocation(title.getX()+(title.getWidth()-turnLabel.getWidth())/2, title.getY()+40);
+
+		contents.add(turnLabel);
+		mainScreen.add(turnLabel);
 
 	}
 	
@@ -85,6 +94,7 @@ public class CombatPane extends GraphicsPane{
 			System.out.println("enemy turn");
 			attackPlayer(myEntities.get(turn%myEntities.size()-1));
 			turn++;
+			turnLabel.setLabel("Turn: "+turn);
 			nextCombat();
 		}
 	}
@@ -189,6 +199,7 @@ public class CombatPane extends GraphicsPane{
 				healthDisplays.get(1).setLabel("Health: "+myEntity.getHp());
 				atk = false;
 				turn++;
+				turnLabel.setLabel("Turn: "+turn);
 				nextCombat();
 			}
 		}
