@@ -166,5 +166,4 @@ public class MainApplication extends GraphicsProgram{
 			currentScreen.keyTyped(e);
 		}
 	}
-
 }

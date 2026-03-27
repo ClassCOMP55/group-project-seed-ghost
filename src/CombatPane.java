@@ -45,10 +45,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		t = new Timer(50, this);
 		t.setInitialDelay(0);
 		turn = 0;
+		Character[] myArr = CharacterSelectionPane.myInvetory.getPartyMembers();
 		createBackground();
 		addText();
-		party1 = new Character("viking");
-		myEntities.add(party1);
+		myEntities.add(myArr[0]);
 		enemy1 = new Enemy();
 		enemy1.setSprite("spr_HolyGhost");
 		myEntities.add(enemy1);
@@ -173,6 +173,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		contents.add(healthText);
 		mainScreen.add(healthText);
+	}
+	private void displayPartyHpandMana() {
+		int partySize =1;
+		Character[] myArr = CharacterSelectionPane.myInvetory.getPartyMembers();
+		
+		for (int i = 0;i<partySize;i++) {
+			GImage image = myArr[i].getSprite();
+			if(partySize==1)image.setLocation(0, 450);
+			else image.setLocation(0, 450-(i*image.getHeight()+20));
+			contents.add(image);
+			mainScreen.add(image);
+		}
+		
 	}
 	
 	public void addButtons() {
