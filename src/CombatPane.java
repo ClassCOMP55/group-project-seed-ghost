@@ -98,7 +98,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			System.out.println("your turn");
 		}
 		else {
-			playersTurn =false;
+			playersTurn = false;
 			System.out.println("enemy turn");
 			attackPlayer(myEntities.get(turn%myEntities.size()-1));
 			turn++;
@@ -215,6 +215,21 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				nextCombat();
 			}
 		}
+		
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage && playersTurn ==true&& heal ==true) {
+			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
+			Entity myEntity = myEntities.get(myImages.indexOf(image));
+			if (myEntity==myEntities.get(0)) {
+				myEntity.setHp(myEntity.getHp()+100);
+				healthDisplays.get(0).setLabel("Health: "+myEntity.getHp());
+				heal = false;
+				turn++;
+				turnLabel.setLabel("Turn: "+turn);
+				nextCombat();
+			}
+		}
+		
+		
 		
 		}
 	
