@@ -11,5 +11,7 @@ public class SKILL_LightningBolt extends Skill {
 		int scaling = (int) (me.getStatSpread()[EntityStats.ARC.ordinal()]*0.7 + me.getStatSpread()[EntityStats.WIL.ordinal()]*0.3);
 		dmg[DamageType.ELEC.ordinal()] = 10 * Math.pow(1.034, scaling);
 		target.attackMe(dmg);
+		
+		me.drainMana(getManaCost());
 	}
 }
