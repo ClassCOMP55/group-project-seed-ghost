@@ -76,18 +76,22 @@ public class CombatPane extends GraphicsPane{
 	}
 	
 	public void nextCombat() {
-		if (myEntities.get(0)instanceof Character) {
+		if (myEntities.get(turn%myEntities.size()) instanceof Character) {
 			playersTurn =true;
 			System.out.println("your turn");
 		}
 		else {
 			playersTurn =false;
 			System.out.println("enemy turn");
+			attackPlayer(myEntities.get(turn%myEntities.size()-1));
+			turn++;
+			nextCombat();
 		}
 	}
 	
-	public void attackplayer(Character myChar) {
+	public void attackPlayer(Entity myChar) {
 		myChar.setHp(myChar.getHp()-75);
+		healthDisplays.get(0).setLabel("Health: "+myChar.getHp());
 	}
 
 	private void createBackground() {
