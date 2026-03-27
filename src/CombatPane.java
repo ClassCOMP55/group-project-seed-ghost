@@ -21,13 +21,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private ArrayList<GImage> myImages;
 	private ArrayList<GLabel> healthDisplays;
 	boolean playersTurn;
-	boolean lost;
-	boolean won;
 	boolean atk;
 	boolean heal;
 	boolean next;
 	GLabel turnLabel;
-	GObject currObj;
+	GLabel whosTurn;
+	GLabel directions;
+	GObject targetObj;
+	GObject targeterObj;
 	int turn;
 	int numTimes;
 	Timer t;
@@ -89,17 +90,32 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 		contents.add(turnLabel);
 		mainScreen.add(turnLabel);
+		
+		whosTurn = new GLabel("Your Turn",title.getX()+(title.getWidth()-turnLabel.getWidth())/2,title.getY()+80);
+		whosTurn.setColor(Color.BLACK);
+		whosTurn.setFont("DialogInput-PLAIN-20");
+		
+		contents.add(whosTurn);
+		mainScreen.add(whosTurn);
+		
+		directions = new GLabel("Directions: Choose a Action",5,title.getY()+80);
+		directions.setColor(Color.BLUE);
+		directions.setFont("DialogInput-PLAIN-15");
+		
+		contents.add(directions);
+		mainScreen.add(directions);
 
 	}
 	
 	public void nextCombat() {
 		if (myEntities.get(turn%myEntities.size()) instanceof Character) {
-			playersTurn =true;
-			System.out.println("your turn");
+			playersTurn = true;
+			targeterObj = myImages.get(turn%myEntities.size());
+			directions.setLabel("Driections: Choose a Action");
 		}
 		else {
 			playersTurn = false;
-			System.out.println("enemy turn");
+			directions.setLabel("Driections: Wait for Opponent");
 			attackPlayer(myEntities.get(turn%myEntities.size()-1));
 			turn++;
 			turnLabel.setLabel("Turn: "+turn);
@@ -205,8 +221,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			Entity myEntity = myEntities.get(myImages.indexOf(image));
 			if (myEntity==myEntities.get(1)) {
 				myEntity.attackMe(myEntities.get(0).attackOther());
-				healthDisplays.get(1).setLabel("Health: "+myEntity.getHp());
-				currObj = image;
+				healthDisplays.get(1).setLabel("Health: "+Math.round(myEntity.getHp()));
+				targetObj = image;
 				numTimes = 0;
 				t.start();
 				atk = false;
@@ -221,44 +237,37 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			Entity myEntity = myEntities.get(myImages.indexOf(image));
 			if (myEntity==myEntities.get(0)) {
 				myEntity.setHp(myEntity.getHp()+100);
-				healthDisplays.get(0).setLabel("Health: "+myEntity.getHp());
+				healthDisplays.get(0).setLabel("Health: "+Math.round(myEntity.getHp()));
 				heal = false;
 				turn++;
 				turnLabel.setLabel("Turn: "+turn);
 				nextCombat();
 			}
 		}
-		
-		
-		
-		}
+	}
 	
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() ==KeyEvent.VK_D) {
 			System.out.println("Pressed D");
 			atk = true;
+			directions.setLabel("Driections: Choose a target to attack");
 		}
 		if (e.getKeyCode() ==KeyEvent.VK_F) {
 			System.out.println("Pressed F");
 			heal =true;
+			directions.setLabel("Driections: Choose a target to heal");
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		numTimes++;
-		if (numTimes <= 10) {
-			currObj.move(5, 0);
-		}
-		else if(numTimes <= 30) {
-			currObj.move(-5, 0);
-		}
-		else if (numTimes <= 40) {
-			currObj.move(5, 0);
-		}
-		else {
-			t.stop();
-		}
+		
+		if (numTimes <= 10) targeterObj.move(15, 0);
+		else if (numTimes <= 20) targeterObj.move(-15, 0);
+		else if (numTimes <= 30) targetObj.move(5, 0);
+		else if(numTimes <= 40) targetObj.move(-5, 0);
+		else t.stop();
 		
 	}
 	
