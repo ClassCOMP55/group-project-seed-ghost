@@ -16,6 +16,10 @@ public class CombatPane extends GraphicsPane{
 	private ArrayList<Entity> myEntities;
 	private ArrayList<GImage> myImages;
 	private ArrayList<GLabel> healthDisplays;
+	boolean playersTurn;
+	boolean lost;
+	boolean won;
+	boolean atk;
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -34,6 +38,7 @@ public class CombatPane extends GraphicsPane{
 		enemy1.setSprite("spr_HolyGhost");
 		myEntities.add(enemy1);
 		addEntities();
+		addButtons();
 	}
 
 	@Override
@@ -109,13 +114,49 @@ public class CombatPane extends GraphicsPane{
 		mainScreen.add(healthText);
 	}
 	
+	public void addButtons() {
+		GRect attackButton = new GRect(80,35);
+		attackButton.setLocation(10,565 );
+		attackButton.setColor(Color.BLACK);
+		attackButton.setFillColor(Color.WHITE);
+		attackButton.setFilled(true);
+		
+		contents.add(attackButton);
+		mainScreen.add(attackButton);
+		
+		GLabel attackButtonText = new GLabel("Attack Press: D");
+		attackButtonText.setFont("Arial-Bold-10");
+		attackButtonText .setLocation(attackButton.getX()+(80-attackButtonText.getWidth())/2,attackButton.getY()+22.5);
+		
+		contents.add(attackButtonText);
+		mainScreen.add(attackButtonText);
+		
+		GRect healButton = new GRect(80,35);
+		healButton.setLocation(attackButton.getWidth()+25,565 );
+		healButton.setColor(Color.BLACK);
+		healButton.setFillColor(Color.WHITE);
+		healButton.setFilled(true);
+		
+		contents.add(healButton);
+		mainScreen.add(healButton);
+		
+		GLabel healButtonText = new GLabel("Heal Press: F");
+		healButtonText.setFont("Arial-Bold-10");
+		healButtonText .setLocation(healButton.getX()+(80-healButtonText.getWidth())/2,healButton.getY()+22.5);
+		
+		contents.add(healButtonText);
+		mainScreen.add(healButtonText);
+		
+		
+	}
+	
 	
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GLabel) {
 			mainScreen.switchToMapPane();
 		}
 		
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage&& playersTurn ==true&& atk ==true) {
 			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			Entity myEntity = myEntities.get(myImages.indexOf(image));
 			if (myEntity==myEntities.get(1)) {
