@@ -244,6 +244,32 @@ public class Character extends Entity {
 		}
 		return false;
 	}
+	/* Added helper function for training in the campfire pane
+	 * they're get primaryStatindex, and increase stat
+	 */
+	public int getPrimaryStatIndex() {
+	    switch (profession.toLowerCase()) {
+	        case "knight": return 0;      // STR
+	        case "samurai": return 1;     // DEX
+	        case "thief": return 1;       // DEX
+	        case "viking": return 0;      // STR
+	        case "cleric": return 6;      // FTH
+	        case "sorcerer": return 7;    // ARC
+	        case "paladin": return 0;     // STR
+	        case "ranger": return 1;      // DEX
+	        case "marksman": return 2;    // PRC
+	        default: return 0; 
+	    }
+	}
+	//Added increase Stat helper function
+	public void increaseStat(int index, int value) {
+	    int[] stats = getStatSpread(); 
+	    if (index >= 0 && index < stats.length) {
+	        stats[index] += value;
+	        setStatSpread(stats);    
+	    }
+	}
+
 
 	public String getProfession() {
 		return profession;
