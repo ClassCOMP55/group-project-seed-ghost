@@ -45,7 +45,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		t = new Timer(50, this);
 		t.setInitialDelay(0);
 		turn = 0;
-		Character[] myArr = CharacterSelectionPane.myInvetory.getPartyMembers();
+		Character[] myArr = CharacterSelectionPane.myInventory.getPartyMembers();
 		createBackground();
 		addText();
 		myEntities.add(myArr[0]);
@@ -176,7 +176,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	private void displayPartyHpandMana() {
 		int partySize =1;
-		Character[] myArr = CharacterSelectionPane.myInvetory.getPartyMembers();
+		Character[] myArr = CharacterSelectionPane.myInventory.getPartyMembers();
 		
 		for (int i = 0;i<partySize;i++) {
 			GImage image = myArr[i].getSprite();
