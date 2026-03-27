@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class CombatPane extends GraphicsPane{
 	boolean lost;
 	boolean won;
 	boolean atk;
+	boolean heal;
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -166,6 +168,17 @@ public class CombatPane extends GraphicsPane{
 		}
 		
 		}
+	
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() ==KeyEvent.VK_D) {
+			System.out.println("Pressed D");
+			atk = true;
+		}
+		if (e.getKeyCode() ==KeyEvent.VK_F) {
+			System.out.println("Pressed F");
+			heal =true;
+		}
+	}
 	
 
 }
