@@ -250,12 +250,12 @@ public class Character extends Entity {
 			if (weight == allowedArmors[i]) {
 				this.myArmor = myArmor;
 				return true;
-			}
+			 }
 		}
 		return false;
 	}
 	/* Added helper function for training in the campfire pane
-	 * they're get primaryStatindex, and increase stat
+	 * they're get primaryStatindex, and increase stat for the characters
 	 */
 	public int getPrimaryStatIndex() {
 	    switch (profession.toLowerCase()) {
