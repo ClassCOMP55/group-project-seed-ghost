@@ -22,8 +22,6 @@ public class ShopInventory {
             items.add(new ShopItem("Potion", Chance.range(20, 60)));
         }
 
-        // Relics(place holder) 
-        items.add(new ShopItem("Relic", Chance.range(150, 300)));
 
         // Mercenaries method
         items.add(new ShopItem(generateMercenary(), Chance.range(200, 400)));
