@@ -11,7 +11,8 @@ import acm.graphics.GRect;
 public class CharacterSelectionPane extends GraphicsPane {
 	
 	private ArrayList<Character> myChars;
-	private PlayerInventory myInvetory;
+	private ArrayList<GImage> myImages;
+	public static PlayerInventory myInvetory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -20,9 +21,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 	@Override
 	public void showContent() {
 		myChars = new ArrayList<>();
+		myImages = new ArrayList<>();
 		createBackground();
 		addText();
 		createCharacters();
+		showStats();
 		
 	}
 
@@ -69,16 +72,57 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private void DrawCharacter(int i) {
 		GImage charImage;
 		switch(myChars.get(i).getProfession()) {
-		case "knight": charImage = new GImage("spr_Knight.png",50+(200*i),300) ; break;
-		case "samurai": charImage = new GImage("spr_Samurai.png",50+(200*i),300) ; break;
-		case "thief": charImage = new GImage("spr_Thief.png",50+(200*i),300) ; break;
-		case "viking": charImage = new GImage("spr_Viking.png",50+(200*i),300); break;
-		case "sorcerer": charImage = new GImage("spr_Sorcerer.png",50+(200*i),300); break;
-		case "paladin": charImage = new GImage("spr_Paladin.png",50+(200*i),300); break;
-		default: charImage = new GImage("spr_Marksman.png",50+(200*i),300); break;
+		case "knight": charImage = new GImage("spr_Knight.png",50+(200*i),350) ; break;
+		case "samurai": charImage = new GImage("spr_Samurai.png",50+(200*i),350) ; break;
+		case "thief": charImage = new GImage("spr_Thief.png",50+(200*i),350) ; break;
+		case "viking": charImage = new GImage("spr_Viking.png",50+(200*i),350); break;
+		case "sorcerer": charImage = new GImage("spr_Sorcerer.png",50+(200*i),350); break;
+		case "paladin": charImage = new GImage("spr_Paladin.png",50+(200*i),350); break;
+		default: charImage = new GImage("spr_Marksman.png",50+(200*i),350); break;
 		}
+		
+		charImage.setLocation(5+2*i*charImage.getWidth(), (600-charImage.getHeight())/2);
+		myImages.add(charImage);
 		contents.add(charImage);
 		mainScreen.add(charImage);
+	}
+	
+	private void showStats() {
+		for (Character myChar:myChars) {
+			int index = myChars.indexOf(myChar);
+			GImage image = myImages.get(index);
+			GRect box = new GRect(150,80);
+			box.setLocation(image.getX(), image.getY()+image.getHeight());
+			box.setColor(Color.BLACK);
+			box.setFillColor(Color.BLACK);
+			box.setFilled(true);
+			contents.add(box);
+			mainScreen.add(box);
+			
+			GLabel prof = new GLabel("Profession: "+myChar.getProfession());
+			prof.setLocation(box.getX()+5, box.getY()+15);
+			prof.setColor(Color.RED);
+			prof.setFont("DialogInput-PLAIN-12");
+			contents.add(prof);
+			mainScreen.add(prof);
+			
+			GLabel health = new GLabel("Health: "+myChar.getHp());
+			health.setLocation(box.getX()+5, box.getY()+35);
+			health.setColor(Color.RED);
+			health.setFont("DialogInput-PLAIN-12");
+			contents.add(health);
+			mainScreen.add(health);
+			
+			GLabel mana = new GLabel("Mana: "+myChar.getManaMax());
+			mana.setLocation(box.getX()+5, box.getY()+55);
+			mana.setColor(Color.RED);
+			mana.setFont("DialogInput-PLAIN-12");
+			contents.add(mana);
+			mainScreen.add(mana);
+			
+			
+		}
+		
 	}
 	
 	@Override
