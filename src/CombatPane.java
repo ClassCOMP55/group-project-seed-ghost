@@ -22,6 +22,8 @@ public class CombatPane extends GraphicsPane{
 	boolean won;
 	boolean atk;
 	boolean heal;
+	boolean next;
+	int turn;
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -32,6 +34,7 @@ public class CombatPane extends GraphicsPane{
 		myEntities = new ArrayList<>();
 		myImages = new ArrayList<>();
 		healthDisplays = new ArrayList<>();
+		turn = 0;
 		createBackground();
 		addText();
 		party1 = new Character("viking");
@@ -41,6 +44,8 @@ public class CombatPane extends GraphicsPane{
 		myEntities.add(enemy1);
 		addEntities();
 		addButtons();
+		nextCombat();
+		
 	}
 
 	@Override
@@ -68,6 +73,17 @@ public class CombatPane extends GraphicsPane{
 		contents.add(returnButton);
 		mainScreen.add(returnButton);
 
+	}
+	
+	public void nextCombat() {
+		if (myEntities.get(0)instanceof Character) {
+			playersTurn =true;
+			System.out.println("your turn");
+		}
+		else {
+			playersTurn =false;
+			System.out.println("enemy turn");
+		}
 	}
 
 	private void createBackground() {
@@ -152,18 +168,20 @@ public class CombatPane extends GraphicsPane{
 		
 	}
 	
-	
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GLabel) {
 			mainScreen.switchToMapPane();
 		}
 		
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage&& playersTurn ==true&& atk ==true) {
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage && playersTurn ==true&& atk ==true) {
 			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			Entity myEntity = myEntities.get(myImages.indexOf(image));
 			if (myEntity==myEntities.get(1)) {
 				myEntity.attackMe(myEntities.get(0).attackOther());
 				healthDisplays.get(1).setLabel("Health: "+myEntity.getHp());
+				atk = false;
+				turn++;
+				nextCombat();
 			}
 		}
 		
