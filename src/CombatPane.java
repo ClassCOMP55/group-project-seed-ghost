@@ -22,10 +22,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	private int enemyNumber;
-	private boolean skill,inventory,playersTurn,enemyTurn;
+	private boolean skill,inventory,playersTurn,enemyTurn,forSkills;
 	private int turn,counter;
 	private Entity currentEntity,otherEntity;
-	private GRect skillButton,inventoryButton;
+	private GRect skillButton,inventoryButton,skill1,skill2;
 	
 	Timer t;
 
@@ -35,6 +35,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void showContent() {
+		Character testChar = new Character("samurai");
+		Character testChar2 = new Character("sorcerer");
+		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
+		CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
 		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
 		myArrEnemies = new Enemy[3];
 		allEntities = new ArrayList<>();
@@ -46,7 +50,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		turn = 0;
 		counter = 0;
 		skillButton = createButton(0,540,"Skills");
-		inventoryButton = createButton(100,540,"Inventory");	
+		inventoryButton = createButton(130,540,"Inventory");	
 		generateEnemiesAndAllies();
 		rollForInitiative();
 		nextCombat();
@@ -114,7 +118,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Character c:myArrAllies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
-				image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
+				if (i==0) image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
+				else if (i==1) image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
+				else if (i==2) image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-45);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -125,7 +131,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Enemy c:myArrEnemies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
-				image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
+				if (i==0) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
+				if (i==1) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
+				if (i==2) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-45);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -157,8 +165,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
-	public GRect createButton(int x,int y,String str){
-		GRect button = new GRect(100,60);
+	public GRect createButton(double x,double y,String str){
+		GRect button = new GRect(130,60);
+		if (forSkills==true) button.setSize(320, 60);
 		button.setLocation(x,y);
 		button.setFilled(true);
         button.setFillColor(Color.DARK_GRAY);
@@ -167,6 +176,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		GLabel label = new GLabel(str);
 		label.setFont("DialogInput-PLAIN-15");
+		if (forSkills==true) label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+15);
 		contents.add(label);
 		mainScreen.add(label);
@@ -174,11 +184,31 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return button;
 	}
 	
+	public void displaySkills(Character myChar) {
+		Skill[] mySkills =myChar.getMySkills();
+		GRect displayBox = new GRect(340,320);
+		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
+		displayBox.setFilled(true);
+		displayBox.setFillColor(Color.black);
+        contents.add(displayBox);
+		mainScreen.add(displayBox);
+		
+		forSkills = true;
+		skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
+		for (int i = 0;i<mySkills.length;i++) {
+			skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,mySkills[i].getName());
+		}
+		
+		
+	}
+	
 	
 	
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == skillButton && playersTurn == true) {
-			mainScreen.switchToMapPane();
+			//Show Skill Box
+			displaySkills(myArrAllies[0]);
+			
 		}
 		
 	
