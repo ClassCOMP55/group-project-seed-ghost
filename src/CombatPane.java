@@ -22,10 +22,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	private int enemyNumber;
-	private boolean skill,inventory,playersTurn,enemyTurn,forSkills;
-	private int turn,counter;
+	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady;
+	private int turn,counter,skillIndex;
 	private Entity currentEntity,otherEntity;
-	private GRect skillButton,inventoryButton;
+	private GRect skillButton,inventoryButton,displayBox,extra;
+	private GLabel displayBoxLabel;
 	private ArrayList<GRect> allSkillsButton;
 	private ArrayList<GLabel> allSkillsButtonLabels;
 	Skill[] mySkills;
@@ -153,8 +154,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void nextCombat() {
+		if (counter>0)entityToImage(currentEntity).setColor(null);
 		counter = counter%initiativeArr.size();
 		currentEntity = initiativeArr.get(counter);
+		yourTurn(entityToImage(currentEntity));
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
@@ -162,6 +165,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else if (currentEntity instanceof Enemy)  {
 			enemyTurn = true;
 		}
+		counter++;
 	}
 	
 	public GRect createButton(double x,double y,String str){
@@ -185,7 +189,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void displaySkills(Character myChar) {
 		mySkills =myChar.getMySkills();
-		GRect displayBox = new GRect(340,320);
+		displayBox = new GRect(340,320);
 		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
 		displayBox.setFillColor(Color.black);
@@ -193,7 +197,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(displayBox);
 		
 		forSkills = true;
-		createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
+		extra = createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
 		for (int i = 0;i<mySkills.length;i++) {
 			GRect skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,mySkills[i].getName());
 			allSkillsButton.add(skill1);
@@ -210,9 +214,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (GLabel label:allSkillsButtonLabels) {
 			contents.remove(label);
 			mainScreen.remove(label);
-			allSkillsButtonLabels.remove(label);
 		}
+		contents.remove(displayBox);
+		mainScreen.remove(displayBox);
+		contents.remove(extra);
+		mainScreen.remove(extra);
 		allSkillsButtonLabels.clear();
+	}
+	
+	public void yourTurn(GImage image) {
+		image.setColor(Color.YELLOW);
 	}
 	
 	
@@ -220,20 +231,42 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == skillButton && playersTurn == true) {
 			displaySkills((Character) currentEntity);
-			
+			skill = true;	
 		}
+		if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
+			if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(0)) {
+				skillIndex = 0;
+				skillReady = true;
+				hideSkills();
+			}
+			else if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(1)) {
+				skillIndex = 1;
+				skillReady = true;
+				hideSkills();
+			}
+			else if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(2)) {
+				skillIndex = 2;
+				skillReady = true;
+				hideSkills();
+			}
+			else if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(3)) {
+				skillIndex = 3;
+				skillReady = true;
+				hideSkills();
+			}
+		}
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage && playersTurn == true&&skillReady==true) {
+			otherEntity = imageToEntity((GImage) mainScreen.getElementAtLocation(e.getX(), e.getY()));
+			System.out.println(otherEntity.getHp());
+			mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+			System.out.println(otherEntity.getHp());
+			nextCombat();
+		}
+		
 		
 	
 	}
 	
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() ==KeyEvent.VK_D) {
-			
-		}
-		if (e.getKeyCode() ==KeyEvent.VK_F) {
-			
-		}
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
