@@ -18,10 +18,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private ArrayList<Entity> allEntities;
 	private ArrayList<GImage> allImages;
 	private ArrayList<Entity> initiativeArr;
-	ArrayList<Entity> temp;
-	Character[] myArrAllies;
-	Enemy[] myArrEnemies;
-	int enemyNumber;
+	private ArrayList<Entity> temp;
+	private Character[] myArrAllies;
+	private Enemy[] myArrEnemies;
+	private int enemyNumber;
+	boolean skill,inventory,playersTurn;
 	
 	Timer t;
 
@@ -37,6 +38,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allImages = new ArrayList<>();
 		initiativeArr = new ArrayList<>();
 		temp = new ArrayList<>();
+		skill = false;
+		inventory = false;
 		createBackground();	
 		generateEnemiesAndAllies();
 		rollForInitiative();
