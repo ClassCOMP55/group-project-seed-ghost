@@ -25,7 +25,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills;
 	private int turn,counter;
 	private Entity currentEntity,otherEntity;
-	private GRect skillButton,inventoryButton,skill1,skill2;
+	private GRect skillButton,inventoryButton;
+	private ArrayList<GRect> allSkillsButton;
+	Skill[] mySkills;
 	
 	Timer t;
 
@@ -45,6 +47,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allImages = new ArrayList<>();
 		initiativeArr = new ArrayList<>();
 		temp = new ArrayList<>();
+		allSkillsButton = new ArrayList<>();
 		skill = false;
 		inventory = false;
 		turn = 0;
@@ -54,12 +57,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		generateEnemiesAndAllies();
 		rollForInitiative();
 		nextCombat();
-		Skill[] mySkills =myArrAllies[0].getMySkills();
-		System.out.println("Health: "+myArrEnemies[0].getHp()+"/"+myArrEnemies[0].getHpMax());
-		System.out.println("Mana: "+myArrAllies[0].getMana()+"/"+myArrAllies[0].getManaMax());
-		mySkills[2].activationEffect(myArrAllies[0],myArrEnemies[0]);
-		System.out.println("Health: "+myArrEnemies[0].getHp()+"/"+myArrEnemies[0].getHpMax());
-		System.out.println("Mana: "+myArrAllies[0].getMana()+"/"+myArrAllies[0].getManaMax());
 		
 	}
 
@@ -185,7 +182,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void displaySkills(Character myChar) {
-		Skill[] mySkills =myChar.getMySkills();
+		mySkills =myChar.getMySkills();
 		GRect displayBox = new GRect(340,320);
 		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
@@ -194,12 +191,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(displayBox);
 		
 		forSkills = true;
-		skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
+		createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
 		for (int i = 0;i<mySkills.length;i++) {
-			skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,mySkills[i].getName());
+			GRect skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,mySkills[i].getName());
+			allSkillsButton.add(skill1);
+			
 		}
-		
-		
 	}
 	
 	
