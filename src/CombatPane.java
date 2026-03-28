@@ -23,7 +23,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	private int enemyNumber;
-	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,attackingSkill;
+	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady;
 	private int turn,counter,skillIndex;
 	private Entity currentEntity,otherEntity;
 	private GRect skillButton,inventoryButton,displayBox,extra;
@@ -244,48 +244,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(line2);
 	}
 	
-	
-	
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == skillButton && playersTurn == true) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
+		if (obj == skillButton && playersTurn == true) {
 			displaySkills((Character) currentEntity);
 			skill = true;	
 		}
 		if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
-			if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(0)) {
-				skillIndex = 0;
+			if (allSkillsButton.contains(obj)) {
+				skillIndex = allSkillsButton.indexOf(obj);
 				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
 					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
-				}
-				else {
-					skillReady = true;
-				}
-				hideSkills();
-			}
-			else if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(1)) {
-				skillIndex = 1;
-				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
-					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
-				}
-				else {
-					skillReady = true;
-				}
-				hideSkills();
-			}
-			else if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(2)) {
-				skillIndex = 2;
-				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
-					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
-				}
-				else {
-					skillReady = true;
-				}
-				hideSkills();
-			}
-			else if (mainScreen.getElementAtLocation(e.getX(), e.getY())==allSkillsButton.get(3)) {
-				skillIndex = 3;
-				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
-					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+					nextCombat();
 				}
 				else {
 					skillReady = true;
@@ -293,8 +263,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				hideSkills();
 			}
 		}
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage && playersTurn == true&&skillReady==true) {
-			otherEntity = imageToEntity((GImage) mainScreen.getElementAtLocation(e.getX(), e.getY()));
+		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
+			otherEntity = imageToEntity((GImage) obj);
 			System.out.println(otherEntity.getHp());
 			if (otherEntity instanceof Enemy) {
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
@@ -314,10 +284,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 	
 		}
-		
-		
-	
 	}
+	
 	
 
 	@Override
