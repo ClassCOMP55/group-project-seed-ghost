@@ -45,10 +45,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		inventory = false;
 		turn = 0;
 		counter = 0;
-		createButton(0,540,"Skills",skillButton);
-		createButton(100,540,"Inventory",inventoryButton);	
+		skillButton = createButton(0,540,"Skills");
+		inventoryButton = createButton(100,540,"Inventory");	
 		generateEnemiesAndAllies();
 		rollForInitiative();
+		nextCombat();
 		Skill[] mySkills =myArrAllies[0].getMySkills();
 		System.out.println("Health: "+myArrEnemies[0].getHp()+"/"+myArrEnemies[0].getHpMax());
 		System.out.println("Mana: "+myArrAllies[0].getMana()+"/"+myArrAllies[0].getManaMax());
@@ -156,27 +157,28 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
-	public void createButton(int x,int y,String str,GRect rect){
+	public GRect createButton(int x,int y,String str){
 		GRect button = new GRect(100,60);
 		button.setLocation(x,y);
 		button.setFilled(true);
         button.setFillColor(Color.DARK_GRAY);
-        rect = button;
-        contents.add(rect);
-		mainScreen.add(rect);
+        contents.add(button);
+		mainScreen.add(button);
 		
 		GLabel label = new GLabel(str);
 		label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+15);
 		contents.add(label);
 		mainScreen.add(label);
+		
+		return button;
 	}
 	
 	
 	
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
-			mainScreen.switchToCharacterSelectionPane();
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == skillButton && playersTurn == true) {
+			mainScreen.switchToMapPane();
 		}
 		
 	
