@@ -23,11 +23,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	private int enemyNumber;
-	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady;
+	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on;
 	private int turn,counter,skillIndex;
 	private Entity currentEntity,otherEntity;
-	private GRect skillButton,inventoryButton,displayBox,extra;
-	private GLabel displayBoxLabel,discriptionLabel,TurnLabel;
+	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
+	private GLabel displayBoxLabel,description,TurnLabel;
 	private ArrayList<GRect> allSkillsButton;
 	private ArrayList<GLabel> allSkillsButtonLabels;
 	Skill[] mySkills;
@@ -53,6 +53,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allSkillsButton = new ArrayList<>();
 		allSkillsButtonLabels = new ArrayList<>();
 		otherEntity = new Enemy();
+		highlighted = new GRect(0,0);
 		skill = false;
 		inventory = false;
 		turn = 0;
@@ -60,7 +61,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		skillButton = createButton(0,540,"Skills");
 		inventoryButton = createButton(130,540,"Inventory");	
 		generateEnemiesAndAllies();
-		rollForInitiative();
 		nextCombat();
 		
 	}
@@ -140,7 +140,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				mainScreen.add(image);
 				i++;
 			}
-		}	
+		}
+		addText();
+		rollForInitiative();
 	}
 	public void rollForInitiative() {
 		for (int i = 0;i<allEntities.size();i++) {
@@ -189,6 +191,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.add(label);
 		mainScreen.add(label);
 		return button;
+	}
+	public void addText() {
+		description = new GLabel("Description goes here");
+		description.setLocation((800-description.getWidth())/2,50);
+		contents.add(description);
+		mainScreen.add(description);
+		
 	}
 	
 	public void displaySkills(Character myChar) {
@@ -286,7 +295,33 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
-	
+	public void mouseMoved(MouseEvent e) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
+		if (skill = true && allSkillsButton.contains(obj)) {
+			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =(GRect) obj;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
+			int index = allSkillsButton.indexOf(highlighted);
+			Character c = (Character) currentEntity;
+			description.setLabel(c.getMySkills()[index].getDescription());
+			description.setLocation((800-description.getWidth())/2,20);
+		}
+		else if (skill = false) {
+			highlighted.setFillColor(Color.DARK_GRAY);
+		}
+		if (skill==false && inventory==false && playersTurn == true ) {
+			if (obj==skillButton) {
+				skillButton.setFillColor(Color.LIGHT_GRAY);
+			}
+			else if (obj==inventoryButton) {
+				inventoryButton.setFillColor(Color.LIGHT_GRAY);
+			}
+			else {
+				skillButton.setFillColor(Color.DARK_GRAY);
+				inventoryButton.setFillColor(Color.DARK_GRAY);
+			}
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
