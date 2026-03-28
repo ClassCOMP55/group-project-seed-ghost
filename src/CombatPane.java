@@ -22,7 +22,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	private int enemyNumber;
-	boolean skill,inventory,playersTurn;
+	private boolean skill,inventory,playersTurn,enemyTurn;
+	private int turn,counter;
+	private Entity currentEntity,otherEntity;
 	
 	Timer t;
 
@@ -40,9 +42,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		temp = new ArrayList<>();
 		skill = false;
 		inventory = false;
+		turn = 0;
+		counter = 0;
 		createBackground();	
 		generateEnemiesAndAllies();
 		rollForInitiative();
+		Skill[] mySkills =myArrAllies[0].getMySkills();
+		System.out.println("Health: "+myArrEnemies[0].getHp()+"/"+myArrEnemies[0].getHpMax());
+		System.out.println("Mana: "+myArrAllies[0].getMana()+"/"+myArrAllies[0].getManaMax());
+		mySkills[2].activationEffect(myArrAllies[0],myArrEnemies[0]);
+		System.out.println("Health: "+myArrEnemies[0].getHp()+"/"+myArrEnemies[0].getHpMax());
+		System.out.println("Mana: "+myArrAllies[0].getMana()+"/"+myArrAllies[0].getManaMax());
+		
 	}
 
 	@Override
@@ -137,6 +148,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			initiativeArr.add(temp.get(indexOfHighest));
 			temp.remove(indexOfHighest);
+		}
+	}
+	
+	public void nextCombat() {
+		counter = counter%initiativeArr.size();
+		currentEntity = initiativeArr.get(counter);
+		
+		if (currentEntity instanceof Character) {
+			playersTurn = true;
+		}
+		else if (currentEntity instanceof Enemy)  {
+			enemyTurn = true;
 		}
 	}
 	
