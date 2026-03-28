@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GLine;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
@@ -26,7 +27,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private int turn,counter,skillIndex;
 	private Entity currentEntity,otherEntity;
 	private GRect skillButton,inventoryButton,displayBox,extra;
-	private GLabel displayBoxLabel;
+	private GLabel displayBoxLabel,discriptionLabel,TurnLabel;
 	private ArrayList<GRect> allSkillsButton;
 	private ArrayList<GLabel> allSkillsButtonLabels;
 	Skill[] mySkills;
@@ -161,11 +162,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
+			counter++;
 		}
 		else if (currentEntity instanceof Enemy)  {
 			enemyTurn = true;
+			counter++;
+			nextCombat();
 		}
-		counter++;
 	}
 	
 	public GRect createButton(double x,double y,String str){
@@ -226,6 +229,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		image.setColor(Color.YELLOW);
 	}
 	
+	public void yourDead(Entity entity) {
+		GImage image = entityToImage(entity);
+		GLine line1 = new GLine(image.getX(),image.getY(),image.getX()+image.getWidth(),image.getY()+image.getHeight());
+		line1.setColor(Color.RED);
+		line1.setLineWidth(4);
+		GLine line2 = new GLine(image.getX()+image.getWidth(),image.getY(),image.getX(),image.getY()+image.getHeight());
+		line2.setColor(Color.RED);
+		line2.setLineWidth(4);
+		contents.add(line1);
+		mainScreen.add(line1);
+		contents.add(line2);
+		mainScreen.add(line2);
+	}
+	
 	
 	
 	public void mouseClicked(MouseEvent e) {
@@ -258,9 +275,23 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage && playersTurn == true&&skillReady==true) {
 			otherEntity = imageToEntity((GImage) mainScreen.getElementAtLocation(e.getX(), e.getY()));
 			System.out.println(otherEntity.getHp());
-			mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
-			System.out.println(otherEntity.getHp());
-			nextCombat();
+			if (otherEntity instanceof Enemy) {
+				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+				Enemy enemy = (Enemy) otherEntity;
+				System.out.println(otherEntity.getHp());
+				if (enemy.isDead()) {
+					yourDead(otherEntity);
+					initiativeArr.remove(otherEntity);
+					skill = false;
+					skillReady = false;
+					playersTurn = false;
+				}
+				nextCombat();
+			}
+			else {
+				//say to choose a diffrent target
+			}
+	
 		}
 		
 		
