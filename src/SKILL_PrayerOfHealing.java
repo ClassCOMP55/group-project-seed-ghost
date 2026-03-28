@@ -3,7 +3,7 @@ public class SKILL_PrayerOfHealing extends Skill {
 	public SKILL_PrayerOfHealing () {
 		super(140);
 		setName("Prayer of Healing");
-		setName("Heal a party member. Scales with FAITH.");
+		setDescription("Heal a party member. Scales with FAITH.");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

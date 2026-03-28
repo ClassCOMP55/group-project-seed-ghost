@@ -6,7 +6,7 @@ public class SKILL_Guard extends Skill {
 	public SKILL_Guard () {
 		super();
 		setName("Guard Self");
-		setName("Sets your damage reduction to 95% until the start of your next turn.");
+		setDescription("Sets your damage reduction to 95% until the start of your next turn.");
 		tempArmor = null;
 	}
 	
