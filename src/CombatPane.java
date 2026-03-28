@@ -25,6 +25,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private boolean skill,inventory,playersTurn,enemyTurn;
 	private int turn,counter;
 	private Entity currentEntity,otherEntity;
+	private GRect skillButton,inventoryButton;
 	
 	Timer t;
 
@@ -44,7 +45,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		inventory = false;
 		turn = 0;
 		counter = 0;
-		createBackground();	
+		createButton(0,540,"Skills",skillButton);
+		createButton(100,540,"Inventory",inventoryButton);	
 		generateEnemiesAndAllies();
 		rollForInitiative();
 		Skill[] mySkills =myArrAllies[0].getMySkills();
@@ -65,15 +67,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 
 
-	private void createBackground() {
-		GRect backGround = new GRect(800,600);
-		backGround.setColor(Color.DARK_GRAY);
-		backGround.setFillColor(Color.DARK_GRAY);
-		backGround.setFilled(true);
-		backGround.setLocation(0, 0);
-		contents.add(backGround);
-		mainScreen.add(backGround);
-	}
 	
 	private void generateEnemiesAndAllies(){
 		enemyNumber = 0;
@@ -163,11 +156,27 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
+	public void createButton(int x,int y,String str,GRect rect){
+		GRect button = new GRect(100,60);
+		button.setLocation(x,y);
+		button.setFilled(true);
+        button.setFillColor(Color.DARK_GRAY);
+        rect = button;
+        contents.add(rect);
+		mainScreen.add(rect);
+		
+		GLabel label = new GLabel(str);
+		label.setFont("DialogInput-PLAIN-15");
+		label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+15);
+		contents.add(label);
+		mainScreen.add(label);
+	}
+	
 	
 	
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GLabel) {
-			mainScreen.switchToMapPane();
+		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
+			mainScreen.switchToCharacterSelectionPane();
 		}
 		
 	
