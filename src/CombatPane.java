@@ -27,6 +27,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Entity currentEntity,otherEntity;
 	private GRect skillButton,inventoryButton;
 	private ArrayList<GRect> allSkillsButton;
+	private ArrayList<GLabel> allSkillsButtonLabels;
 	Skill[] mySkills;
 	
 	Timer t;
@@ -48,6 +49,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		initiativeArr = new ArrayList<>();
 		temp = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
+		allSkillsButtonLabels = new ArrayList<>();
 		skill = false;
 		inventory = false;
 		turn = 0;
@@ -175,9 +177,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		label.setFont("DialogInput-PLAIN-15");
 		if (forSkills==true) label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+15);
+		if (forSkills==true) allSkillsButtonLabels.add(label);
 		contents.add(label);
 		mainScreen.add(label);
-		
 		return button;
 	}
 	
@@ -198,13 +200,26 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 		}
 	}
+	public void hideSkills() {
+		for (GRect rect:allSkillsButton) {
+			contents.remove(rect);
+			mainScreen.remove(rect);
+		}
+		allSkillsButton.clear();
+		
+		for (GLabel label:allSkillsButtonLabels) {
+			contents.remove(label);
+			mainScreen.remove(label);
+			allSkillsButtonLabels.remove(label);
+		}
+		allSkillsButtonLabels.clear();
+	}
 	
 	
 	
 	public void mouseClicked(MouseEvent e) {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == skillButton && playersTurn == true) {
-			//Show Skill Box
-			displaySkills(myArrAllies[0]);
+			displaySkills((Character) currentEntity);
 			
 		}
 		
