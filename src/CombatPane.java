@@ -17,6 +17,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private ArrayList<Entity> allEntities;
 	private ArrayList<GImage> allImages;
+	private ArrayList<Entity> initiativeArr;
+	ArrayList<Entity> temp;
 	Character[] myArrAllies;
 	Enemy[] myArrEnemies;
 	int enemyNumber;
@@ -33,11 +35,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		myArrEnemies = new Enemy[3];
 		allEntities = new ArrayList<>();
 		allImages = new ArrayList<>();
-		t = new Timer(50, this);
-		t.setInitialDelay(0);
+		initiativeArr = new ArrayList<>();
+		temp = new ArrayList<>();
 		createBackground();	
 		generateEnemiesAndAllies();
-		int i = 0;
+		rollForInitiative();
 	}
 
 	@Override
@@ -65,6 +67,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			if (myArrAllies[i]!=null) {
 				enemyNumber++;
 				allEntities.add(myArrAllies[i]);
+				temp.add(myArrAllies[i]);
 			}
 		}
 		System.out.println(enemyNumber);
@@ -72,6 +75,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			myArrEnemies[i] = new Enemy();
 			myArrEnemies[i].setSprite("spr_HolyGhost");
 			allEntities.add(myArrEnemies[i]);
+			temp.add(myArrEnemies[i]);
 		}
 		generateImages();
 	}
@@ -119,6 +123,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				i++;
 			}
 		}	
+	}
+	public void rollForInitiative() {
+		for (int i = 0;i<allEntities.size();i++) {
+			int indexOfHighest = 0;
+			for (int n = 0;n<temp.size();n++) {
+				if (temp.get(indexOfHighest).getStatSpread()[3]<temp.get(n).getStatSpread()[3]){
+					indexOfHighest = n;
+				}
+			}
+			initiativeArr.add(temp.get(indexOfHighest));
+			temp.remove(indexOfHighest);
+		}
 	}
 	
 	
