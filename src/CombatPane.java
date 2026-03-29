@@ -28,8 +28,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Entity currentEntity,otherEntity;
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
 	private GLabel displayBoxLabel,description,TurnLabel;
-	private ArrayList<GRect> allSkillsButton;
-	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels;
+	private ArrayList<GRect> allSkillsButton,healthBars,manaBars;
+	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels;
 	Skill[] mySkills;
 	
 	Timer t;
@@ -44,6 +44,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Character testChar2 = new Character("sorcerer");
 		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
 		CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
+		
 		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
 		myArrEnemies = new Enemy[3];
 		allEntities = new ArrayList<>();
@@ -53,6 +54,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allSkillsButton = new ArrayList<>();
 		allSkillsButtonLabels = new ArrayList<>();
 		healthLabels = new ArrayList<>();
+		manaLabels= new ArrayList<>();
+		healthBars = new ArrayList<>();
+		manaBars = new ArrayList<>();
 		otherEntity = new Enemy();
 		highlighted = new GRect(0,0);
 		skill = false;
@@ -145,7 +149,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		addText();
 		rollForInitiative();
-		createHealthLabels();
+		createHealthAndManaLabels();
 	}
 	
 	public void checkResult() {
@@ -158,7 +162,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		for(int i = 0;i<myArrEnemies.length;i++) {
-			if (myArrEnemies[i].isDead()==false) won = false;
+			if (myArrEnemies[i]!=null) {
+				if (myArrEnemies[i].isDead()==false) won = false;
+			}
 		}
 		
 		if (won==true) {
@@ -229,16 +235,87 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
-	public void createHealthLabels() {
+	public void createHealthAndManaLabels() {
 		for (Entity e:allEntities) {
 			GLabel health = new GLabel(e.getHp()+"/"+e.getHp());
+			GLabel mana = new GLabel("Mana goes here");
 			GImage image = entityToImage(e);
 			health.setLocation(image.getX()+50,image.getY());
 			healthLabels.add(health);
 			contents.add(health);
 			mainScreen.add(health);
+			if (e instanceof Character) {
+				Character c = (Character) e;
+				mana = new GLabel(e.getMana()+"/"+e.getManaMax());
+				manaLabels.add(mana);
+				contents.add(mana);
+				mainScreen.add(mana);
+				
+			}
+			else {
+				manaLabels.add(mana);
+			}
 		}
+		createStatsBar();
 	}
+	
+	public void createStatsBar() {
+		GRect health;
+		GRect mana;
+		GLabel manaLabel = new GLabel("Mana goes here");
+		GRect nameDisplay;
+		GLabel name;
+		
+		for (int i = 0;i<enemyNumber;i++) {
+			int width = 540;
+			health = new GRect(width,20);
+			mana = new GRect(width,20);
+			nameDisplay =  new GRect(width,20);
+			name = new GLabel(myArrAllies[i].getProfession());
+			
+			switch(enemyNumber) {
+			case 3:width =180;break;
+			case 2:width =270;break;
+			}
+			
+			health.setSize(width, 20);
+			mana.setSize(width, 20);
+			nameDisplay.setSize(width, 20);
+	
+	
+			health.setLocation(260+(width*i), inventoryButton.getY()+health.getHeight());
+			mana.setLocation(260+(width*i), inventoryButton.getY()+health.getHeight()+20);
+			nameDisplay.setLocation(260+(width*i), inventoryButton.getY());
+			
+			health.setFilled(true);
+			health.setFillColor(Color.RED);
+			mana.setFilled(true);
+			mana.setFillColor(Color.CYAN);
+			nameDisplay.setFilled(true);
+			nameDisplay.setFillColor(Color.DARK_GRAY);
+			
+			healthBars.add(health);
+			manaBars.add(mana);
+			contents.add(health);
+			mainScreen.add(health);
+			contents.add(mana);
+			mainScreen.add(mana);
+			contents.add(nameDisplay);
+			mainScreen.add(nameDisplay);
+			
+			healthLabels.get(i).setLocation(health.getX()+2,health.getY()+15);
+			healthLabels.get(i).sendToFront();
+			manaLabels.get(i).setLocation(mana.getX()+2,mana.getY()+15);
+			manaLabels.get(i).sendToFront();
+			
+			name.setFont("DialogInput-PLAIN-18");
+			name.setLocation(nameDisplay.getX()+(nameDisplay.getWidth()-name.getWidth())/2,nameDisplay.getY()+15);
+			contents.add(name);
+			mainScreen.add(name);
+		}
+		
+	}
+	
 	
 	public void displaySkills(Character myChar) {
 		mySkills =myChar.getMySkills();
