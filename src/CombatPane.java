@@ -77,6 +77,33 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		contents.clear();
 	}
+	
+	public void update() {
+		int index1 = allEntities.indexOf(currentEntity);
+		int index2 = allEntities.indexOf(otherEntity);
+		
+		if (currentEntity instanceof Enemy) {
+			Enemy e = (Enemy) currentEntity;
+			manaLabels.get(index1).setLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
+			healthLabels.get(index1).setLabel("Health: "+e.getHp()+"/"+e.getHpMax());
+		}
+		else if (currentEntity instanceof Character) {
+			Character c = (Character) currentEntity;
+			manaLabels.get(index1).setLabel("Mana: "+c.getMana()+"/"+c.getManaMax());
+			healthLabels.get(index1).setLabel("Health: "+c.getHp()+"/"+c.getHpMax());
+		}
+		if (otherEntity instanceof Enemy) {
+			Enemy e = (Enemy) otherEntity;
+			manaLabels.get(index2).setLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
+			healthLabels.get(index2).setLabel("Health: "+e.getHp()+"/"+e.getHpMax());
+		}
+		else if (otherEntity instanceof Character) {
+			Character c = (Character) otherEntity;
+			manaLabels.get(index2).setLabel("Mana: "+c.getMana()+"/"+c.getManaMax());
+			healthLabels.get(index2).setLabel("Health: "+c.getHp()+"/"+c.getHpMax());
+		}
+		
+	}
 
 
 	
@@ -191,8 +218,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void nextCombat() {
+		
 		checkResult();
 		if (counter>0)entityToImage(currentEntity).setColor(null);
+		if (counter>0) update();
+		
+		if (isDead()) {
+			int index = allEntities.indexOf(otherEntity);
+			healthLabels.get(index).setLabel("Dead");
+			healthLabels.get(index).setLocation(healthLabels.get(index).getX()+10,healthLabels.get(index).getY());
+			yourDead(otherEntity);
+			initiativeArr.remove(otherEntity);
+		}
+		
+		
 		counter = counter%initiativeArr.size();
 		currentEntity = initiativeArr.get(counter);
 		yourTurn(entityToImage(currentEntity));
@@ -237,16 +276,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void createHealthAndManaLabels() {
 		for (Entity e:allEntities) {
-			GLabel health = new GLabel(e.getHp()+"/"+e.getHp());
+			GLabel health = new GLabel("Health: "+e.getHp()+"/"+e.getHp());
 			GLabel mana = new GLabel("Mana goes here");
 			GImage image = entityToImage(e);
-			health.setLocation(image.getX()+50,image.getY());
+			health.setLocation(image.getX()+30,image.getY());
 			healthLabels.add(health);
 			contents.add(health);
 			mainScreen.add(health);
 			if (e instanceof Character) {
 				Character c = (Character) e;
-				mana = new GLabel(e.getMana()+"/"+e.getManaMax());
+				mana = new GLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
 				manaLabels.add(mana);
 				contents.add(mana);
 				mainScreen.add(mana);
@@ -316,6 +355,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	public boolean isDead() {
+		if (otherEntity instanceof Enemy) {
+			Enemy e = (Enemy) otherEntity;
+			return e.isDead();
+		}
+		else if (otherEntity instanceof Character) {
+			Character c = (Character) otherEntity;
+			return c.isDead();
+		}
+		return false;
+	}
+	
 	
 	public void displaySkills(Character myChar) {
 		mySkills =myChar.getMySkills();
@@ -382,8 +433,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
 					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 					int index = allEntities.indexOf(currentEntity);
-					Character c = (Character) currentEntity;
-					healthLabels.get(index).setLabel(c.getHp()+"/"+c.getHp());
+					//update();
 					nextCombat();
 				}
 				else {
@@ -396,20 +446,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			otherEntity = imageToEntity((GImage) obj);
 			System.out.println(otherEntity.getHp());
 			if (otherEntity instanceof Enemy) {
+				
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
-				int index = allEntities.indexOf(otherEntity);
-				Enemy enemy = (Enemy) otherEntity;
-				healthLabels.get(index).setLabel(enemy.getHp()+"/"+enemy.getHp());
-				System.out.println(otherEntity.getHp());
-				if (enemy.isDead()) {
-					healthLabels.get(index).setLabel("Dead");
-					healthLabels.get(index).setLocation(healthLabels.get(index).getX()+10,healthLabels.get(index).getY());
-					yourDead(otherEntity);
-					initiativeArr.remove(otherEntity);
-					skill = false;
-					skillReady = false;
-					playersTurn = false;
-				}
+				
+				skill = false;
+				skillReady = false;
+				playersTurn = false;
+				
 				nextCombat();
 			}
 			else {
