@@ -15,7 +15,6 @@ import acm.graphics.GRect;
 import javax.swing.*;
 
 public class CombatPane extends GraphicsPane implements ActionListener {
-	
 	private ArrayList<Entity> allEntities;
 	private ArrayList<GImage> allImages;
 	private ArrayList<Entity> initiativeArr;
@@ -40,6 +39,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void showContent() {
+		System.out.println();
 		Character testChar = new Character("samurai");
 		Character testChar2 = new Character("sorcerer");
 		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
@@ -84,23 +84,23 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (currentEntity instanceof Enemy) {
 			Enemy e = (Enemy) currentEntity;
-			manaLabels.get(index1).setLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
-			healthLabels.get(index1).setLabel("Health: "+e.getHp()+"/"+e.getHpMax());
+			manaLabels.get(index1).setLabel("Mana: "+Math.round(e.getMana())+"/"+e.getManaMax());
+			healthLabels.get(index1).setLabel("Health: "+Math.round(e.getHp())+"/"+e.getHpMax());
 		}
 		else if (currentEntity instanceof Character) {
 			Character c = (Character) currentEntity;
-			manaLabels.get(index1).setLabel("Mana: "+c.getMana()+"/"+c.getManaMax());
-			healthLabels.get(index1).setLabel("Health: "+c.getHp()+"/"+c.getHpMax());
+			manaLabels.get(index1).setLabel("Mana: "+Math.round(c.getMana())+"/"+c.getManaMax());
+			healthLabels.get(index1).setLabel("Health: "+Math.round(c.getHp())+"/"+c.getHpMax());
 		}
 		if (otherEntity instanceof Enemy) {
 			Enemy e = (Enemy) otherEntity;
-			manaLabels.get(index2).setLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
-			healthLabels.get(index2).setLabel("Health: "+e.getHp()+"/"+e.getHpMax());
+			manaLabels.get(index2).setLabel("Mana: "+Math.round(e.getMana())+"/"+e.getManaMax());
+			healthLabels.get(index2).setLabel("Health: "+Math.round(e.getHp())+"/"+e.getHpMax());
 		}
 		else if (otherEntity instanceof Character) {
 			Character c = (Character) otherEntity;
-			manaLabels.get(index2).setLabel("Mana: "+c.getMana()+"/"+c.getManaMax());
-			healthLabels.get(index2).setLabel("Health: "+c.getHp()+"/"+c.getHpMax());
+			manaLabels.get(index2).setLabel("Mana: "+Math.round(c.getMana())+"/"+c.getManaMax());
+			healthLabels.get(index2).setLabel("Health: "+Math.round(c.getHp())+"/"+c.getHpMax());
 		}
 		
 	}
@@ -116,7 +116,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				temp.add(myArrAllies[i]);
 			}
 		}
-		System.out.println(enemyNumber);
 		for(int i = 0;i<enemyNumber;i++) {
 			myArrEnemies[i] = new Enemy();
 			myArrEnemies[i].setSprite("spr_HolyGhost");
@@ -453,7 +452,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
 			otherEntity = imageToEntity((GImage) obj);
-			System.out.println(otherEntity.getHp());
 			if (otherEntity instanceof Enemy) {
 				
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
