@@ -147,6 +147,29 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		createHealthLabels();
 	}
 	
+	public void checkResult() {
+		boolean won = true;
+		boolean lost = true;
+		for(int i = 0;i<myArrAllies.length;i++) {
+			if (myArrAllies[i]!=null) {
+				if (myArrAllies[i].isDead()==false) lost = false;	
+			}
+		}
+		
+		for(int i = 0;i<myArrEnemies.length;i++) {
+			if (myArrEnemies[i].isDead()==false) won = false;
+		}
+		
+		if (won==true) {
+			mainScreen.switchToMapPane();
+		}
+		if (lost==true) {
+			mainScreen.switchToMenuPane();
+		}
+		
+		
+	}
+	
 	public void rollForInitiative() {
 		for (int i = 0;i<allEntities.size();i++) {
 			int indexOfHighest = 0;
@@ -161,6 +184,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void nextCombat() {
+		checkResult();
 		if (counter>0)entityToImage(currentEntity).setColor(null);
 		counter = counter%initiativeArr.size();
 		currentEntity = initiativeArr.get(counter);
