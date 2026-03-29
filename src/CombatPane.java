@@ -208,7 +208,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Entity e:allEntities) {
 			GLabel health = new GLabel(e.getHp()+"/"+e.getHp());
 			GImage image = entityToImage(e);
-			health.setLocation(image.getX()+50,image.getY()+12);
+			health.setLocation(image.getX()+50,image.getY());
 			healthLabels.add(health);
 			contents.add(health);
 			mainScreen.add(health);
@@ -328,7 +328,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			int index = allSkillsButton.indexOf(highlighted);
 			Character c = (Character) currentEntity;
 			description.setLabel(c.getMySkills()[index].getDescription());
+			description.setFont("DialogInput-PLAIN-12");
 			description.setLocation((800-description.getWidth())/2,20);
+			if (index==2) description.setLocation((800-description.getWidth())/2,10);
 		}
 		else {
 			highlighted.setFillColor(Color.DARK_GRAY);
