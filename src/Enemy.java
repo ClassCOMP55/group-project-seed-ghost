@@ -23,6 +23,20 @@ public class Enemy extends Entity {
 		setAtk(new WeaponItem (baseAttack, statScaling, baseStatus, affinity, ranged, magic));
 	}
 	
+	/*
+	 * Makes a test enemy for combat page
+	 */
+	
+	public Enemy(String sprite) {
+		
+		super(150, 150, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+		setDamageMultipliers(new double[] {1,1,1,1,1,1,1,1});
+		setIncStatusMultipliers(new double[] {1,1,1,1,1,1,1,1,1});
+		
+		setAtk(new WeaponItem (true));
+		super.setSprite(sprite);
+	}
+	
 	public double calculateDamage (double[] incDamage) {
 		double rtn = 0.0;
 		
