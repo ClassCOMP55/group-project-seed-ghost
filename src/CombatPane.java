@@ -219,7 +219,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void nextCombat() {
 		
-		checkResult();
 		if (counter>0)entityToImage(currentEntity).setColor(null);
 		if (counter>0) update();
 		
@@ -230,6 +229,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			yourDead(otherEntity);
 			initiativeArr.remove(otherEntity);
 		}
+		checkResult();
+		
 		
 		
 		counter = counter%initiativeArr.size();
@@ -430,16 +431,24 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
 			if (allSkillsButton.contains(obj)) {
 				skillIndex = allSkillsButton.indexOf(obj);
-				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
-					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
-					int index = allEntities.indexOf(currentEntity);
-					//update();
-					nextCombat();
+				
+				if (mySkills[skillIndex].preconditionsMet(currentEntity, otherEntity)) {
+					if (mySkills[skillIndex].getName()=="Guard Self") {
+						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+						nextCombat();
+						
+					}
+					else {
+						skillReady = true;
+					}
+					hideSkills();
 				}
 				else {
-					skillReady = true;
+					description.setLabel("Not enough mana try again!");
+					description.setFont("DialogInput-PLAIN-15");
+					description.setLocation((800-description.getWidth())/2,20);
 				}
-				hideSkills();
+				
 			}
 		}
 		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
@@ -449,6 +458,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				
+				skill = false;
+				skillReady = false;
+				playersTurn = false;
+				
+				nextCombat();
+			}
+			else if (otherEntity instanceof Character && mySkills[skillIndex].getName()=="Prayer of Healing") {
+				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				skill = false;
 				skillReady = false;
 				playersTurn = false;
