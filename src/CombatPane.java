@@ -29,7 +29,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
 	private GLabel displayBoxLabel,description,TurnLabel;
 	private ArrayList<GRect> allSkillsButton;
-	private ArrayList<GLabel> allSkillsButtonLabels;
+	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels;
 	Skill[] mySkills;
 	
 	Timer t;
@@ -52,6 +52,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		temp = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
 		allSkillsButtonLabels = new ArrayList<>();
+		healthLabels = new ArrayList<>();
 		otherEntity = new Enemy();
 		highlighted = new GRect(0,0);
 		skill = false;
@@ -135,7 +136,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				GImage image = entityToImage(c);
 				if (i==0) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
 				if (i==1) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
-				if (i==2) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-45);
+				if (i==2) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -143,7 +144,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		addText();
 		rollForInitiative();
+		createHealthLabels();
 	}
+	
 	public void rollForInitiative() {
 		for (int i = 0;i<allEntities.size();i++) {
 			int indexOfHighest = 0;
@@ -193,11 +196,23 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return button;
 	}
 	public void addText() {
-		description = new GLabel("Description goes here");
+		description = new GLabel("Click a Action");
+		description.setFont("DialogInput-PLAIN-15");
 		description.setLocation((800-description.getWidth())/2,50);
 		contents.add(description);
 		mainScreen.add(description);
 		
+	}
+	
+	public void createHealthLabels() {
+		for (Entity e:allEntities) {
+			GLabel health = new GLabel(e.getHp()+"/"+e.getHp());
+			GImage image = entityToImage(e);
+			health.setLocation(image.getX()+50,image.getY()+12);
+			healthLabels.add(health);
+			contents.add(health);
+			mainScreen.add(health);
+		}
 	}
 	
 	public void displaySkills(Character myChar) {
@@ -264,6 +279,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				skillIndex = allSkillsButton.indexOf(obj);
 				if (mySkills[skillIndex].getName()=="Prayer of Healing"||mySkills[skillIndex].getName()=="Guard Self") {
 					mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+					int index = allEntities.indexOf(currentEntity);
+					Character c = (Character) currentEntity;
+					healthLabels.get(index).setLabel(c.getHp()+"/"+c.getHp());
 					nextCombat();
 				}
 				else {
@@ -277,9 +295,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			System.out.println(otherEntity.getHp());
 			if (otherEntity instanceof Enemy) {
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+				int index = allEntities.indexOf(otherEntity);
 				Enemy enemy = (Enemy) otherEntity;
+				healthLabels.get(index).setLabel(enemy.getHp()+"/"+enemy.getHp());
 				System.out.println(otherEntity.getHp());
 				if (enemy.isDead()) {
+					healthLabels.get(index).setLabel("Dead");
+					healthLabels.get(index).setLocation(healthLabels.get(index).getX()+10,healthLabels.get(index).getY());
 					yourDead(otherEntity);
 					initiativeArr.remove(otherEntity);
 					skill = false;
@@ -289,7 +311,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				nextCombat();
 			}
 			else {
-				//say to choose a diffrent target
+				description.setLabel("That not a target!");
+				description.setFont("DialogInput-PLAIN-15");
+				description.setLocation((800-description.getWidth())/2,20);
 			}
 	
 		}
@@ -306,7 +330,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			description.setLabel(c.getMySkills()[index].getDescription());
 			description.setLocation((800-description.getWidth())/2,20);
 		}
-		else if (skill = false) {
+		else {
 			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		if (skill==false && inventory==false && playersTurn == true ) {
