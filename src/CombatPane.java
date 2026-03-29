@@ -99,6 +99,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		for (Entity e:allEntities) {
 			GImage image = e.getSprite();
+			image.setSize(140, 140);
 			allImages.add(image);
 		}
 		setLocationandAddToScreen();
@@ -134,9 +135,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Enemy c:myArrEnemies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
-				if (i==0) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
+				if (i==0) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)+20);
 				if (i==1) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
-				if (i==2) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
+				if (i==2) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-50);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -335,7 +336,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				nextCombat();
 			}
 			else {
-				description.setLabel("That not a target!");
+				description.setLabel("Thats not a target!");
 				description.setFont("DialogInput-PLAIN-15");
 				description.setLocation((800-description.getWidth())/2,20);
 			}
