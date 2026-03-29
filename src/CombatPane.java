@@ -30,8 +30,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private ArrayList<GRect> allSkillsButton,healthBars,manaBars;
 	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels;
 	Skill[] mySkills;
-	
 	Timer t;
+	
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -39,7 +39,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void showContent() {
-		System.out.println();
+		t = new Timer(1000, this);
 		Character testChar = new Character("samurai");
 		Character testChar2 = new Character("sorcerer");
 		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
@@ -78,6 +78,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.clear();
 	}
 	
+	/*
+	 * Updates the Mana and Health Labels of Entities
+	 * 
+	 */
 	public void update() {
 		int index1 = allEntities.indexOf(currentEntity);
 		int index2 = allEntities.indexOf(otherEntity);
@@ -86,26 +90,33 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			Enemy e = (Enemy) currentEntity;
 			manaLabels.get(index1).setLabel("Mana: "+Math.round(e.getMana())+"/"+e.getManaMax());
 			healthLabels.get(index1).setLabel("Health: "+Math.round(e.getHp())+"/"+e.getHpMax());
+			if (e.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+e.getHpMax());
 		}
 		else if (currentEntity instanceof Character) {
 			Character c = (Character) currentEntity;
 			manaLabels.get(index1).setLabel("Mana: "+Math.round(c.getMana())+"/"+c.getManaMax());
 			healthLabels.get(index1).setLabel("Health: "+Math.round(c.getHp())+"/"+c.getHpMax());
+			if (c.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+c.getHpMax());
 		}
 		if (otherEntity instanceof Enemy) {
 			Enemy e = (Enemy) otherEntity;
 			manaLabels.get(index2).setLabel("Mana: "+Math.round(e.getMana())+"/"+e.getManaMax());
 			healthLabels.get(index2).setLabel("Health: "+Math.round(e.getHp())+"/"+e.getHpMax());
+			if (e.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+e.getHpMax());
 		}
 		else if (otherEntity instanceof Character) {
 			Character c = (Character) otherEntity;
 			manaLabels.get(index2).setLabel("Mana: "+Math.round(c.getMana())+"/"+c.getManaMax());
 			healthLabels.get(index2).setLabel("Health: "+Math.round(c.getHp())+"/"+c.getHpMax());
+			if (c.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+c.getHpMax());
 		}
 		
 	}
 
-
+	/*
+	 * Creates Enemies based off party size
+	 * Stores the Enemies in a basic array
+	 */
 	
 	private void generateEnemiesAndAllies(){
 		enemyNumber = 0;
@@ -117,14 +128,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		for(int i = 0;i<enemyNumber;i++) {
-			myArrEnemies[i] = new Enemy();
-			myArrEnemies[i].setSprite("spr_HolyGhost");
+			String sprite =  Chance.choose(new String[] {"spr_HolyGhost"});
+			myArrEnemies[i] = new Enemy(sprite);
 			allEntities.add(myArrEnemies[i]);
 			temp.add(myArrEnemies[i]);
 		}
 		generateImages();
 	}
 	
+	/*
+	 * Stores the sprites of all Entites into an ArrayList
+	 * Resizes the sprites as needed
+	 */
 	private void generateImages(){
 		
 		for (Entity e:allEntities) {
@@ -135,11 +150,22 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		setLocationandAddToScreen();
 	}
 	
+	/*
+	 * Converts a GImage to its corresponding Entity
+	 * @param image: the GImage that needs to be converted
+	 * @return the Entity
+	 */
 	private Entity imageToEntity(GImage image){
 		int index = allImages.lastIndexOf(image);
 		Entity e = allEntities.get(index);
 		return e;
 	}
+	
+	/*
+	 * Converts a Entity to its corresponding GImage
+	 * @param e: the Entity that needs to be converted
+	 * @return the GImage
+	 */
 	
 	private GImage entityToImage(Entity e){
 		int index = allEntities.indexOf(e);
@@ -147,6 +173,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return image;
 	}
 	
+	/*
+	 * Sets the Location for all GImages
+	 */
 	private void setLocationandAddToScreen(){
 		int i = 0;
 		for (Character c:myArrAllies) {
@@ -177,6 +206,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		rollForInitiative();
 		createHealthAndManaLabels();
 	}
+	
+	/*
+	 * Converts a Entity to its corresponding GImage
+	 * @param e: the Entity that needs to be converted
+	 * 
+	 */
 	
 	public void checkResult() {
 		boolean won = true;
@@ -216,8 +251,27 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
-	public void nextCombat() {
+	public void EnemyAttack() {
+		Enemy e = (Enemy) currentEntity;
+		boolean attack = false;
 		
+		while (!attack) {
+			for (Character c:myArrAllies) {
+				if (c != null) {
+					attack = Chance.coinflip(0.5);
+					if (attack) {
+						c.attackMe(e.attackOther());
+						otherEntity =c;
+						update();
+						return;
+					}
+					
+				}
+			}
+		}
+	}
+	
+	public void nextCombat() {
 		if (counter>0)entityToImage(currentEntity).setColor(null);
 		if (counter>0) update();
 		
@@ -240,10 +294,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			playersTurn = true;
 			counter++;
 		}
-		else if (currentEntity instanceof Enemy)  {
-			enemyTurn = true;
-			counter++;
-			nextCombat();
+		else if (currentEntity instanceof Enemy) {
+		    Timer timer = new Timer(3000, new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            EnemyAttack();
+		            counter++;
+		            nextCombat();
+		            
+		        }
+		    });
+		    
+		    timer.setRepeats(false);
+		    timer.start();
 		}
 	}
 	
@@ -517,7 +580,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		//else if (numTimes <= 20) targeterObj.move(-15, 0);
 		//else if (numTimes <= 30) targetObj.move(5, 0);
 		//else if(numTimes <= 40) targetObj.move(-5, 0);
-		//else t.stop();
+		//t.stop();
 		
 	}
 	
