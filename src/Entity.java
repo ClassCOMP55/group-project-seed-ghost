@@ -197,7 +197,7 @@ public class Entity {
 	}
 	
 	public void setSprite(String sprite) {
-		this.sprite = new GImage(sprite+".png");
+		this.sprite = new GImage(sprite);
 	}
 
 	public double[] getStatusLevels() {
