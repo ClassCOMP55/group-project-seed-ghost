@@ -46,7 +46,7 @@ public class WeaponItem {
 	/*
 	 * WeaponItem, specifically for enemies
 	 */
-	public WeaponItem (double[] baseAttack, double[] statScaling, double[] baseStatus, String affinity, boolean ranged, boolean magic) {
+	public WeaponItem (double[] baseAttack, double[] statScaling, boolean ranged, boolean magic) {
 		type = "Enemy Attack";
 		
 		setRanged(ranged);
@@ -54,7 +54,7 @@ public class WeaponItem {
 		
 		setBaseAttack(baseAttack);
 		setStatScaling(statScaling);
-		setBaseStatus(baseStatus);
+		setBaseStatus(new double[] {0,0,0,0,0,0,0,0,0});
 	}
 	
 	/*

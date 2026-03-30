@@ -27,7 +27,7 @@ public class Enemy extends Entity {
 		setDamageMultipliers(new double[] {1,1,1,1,1,1,1,1});
 		setIncStatusMultipliers(incStatusMultipliers);
 		
-		setAtk(new WeaponItem (baseAttack, statScaling, baseStatus, affinity, ranged, magic));
+		setAtk(new WeaponItem (baseAttack, statScaling, ranged, magic));
 		turn = 0;
 	}
 	
@@ -43,6 +43,120 @@ public class Enemy extends Entity {
 		
 		setAtk(new WeaponItem (true));
 		super.setSprite(sprite);
+	}
+	
+	/*
+	 * Specific Enemy constructor
+	 */
+	public Enemy (String name, int scaling) {
+		int str = scaling, dex = scaling, prc = scaling, ist = scaling, 
+			con = scaling, wil = scaling, fth = scaling, arc = scaling;
+		double HP = 100.0, Mana = 100.0, DR = 0.0;
+		
+		double[] weaponDamage = new double[] {0,0,0,0,0,0,0,0};
+		double[] weaponScales = new double[] {0,0,0,0,0,0,0,0};
+		double[] damageResist = new double[] {0,0,0,0,0,0,0,0};
+		boolean ranged = false, magic = false;
+		String spr = "spr_HolyGhost.png";
+		
+		switch (name.toLowerCase()) {
+			case "holyghost":
+				damageResist[DamageType.HOLY.ordinal()] = 0.2;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
+				damageResist[DamageType.SLASH.ordinal()] = 0.2;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
+				damageResist[DamageType.BLAST.ordinal()] = 0.2;
+				
+				weaponDamage[DamageType.HOLY.ordinal()] = 60;
+				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
+				fth = 10 + (scaling * 2);
+				spr = "spr_HolyGhost.png";
+				
+				HP = 200.0;
+			break;
+			case "bladedevil":
+				damageResist[DamageType.HOLY.ordinal()] = 1.5;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.8;
+				damageResist[DamageType.SLASH.ordinal()] = 0.65;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.75;
+				damageResist[DamageType.BLAST.ordinal()] = 0.4;
+				damageResist[DamageType.FIRE.ordinal()] = 0.5;
+				
+				weaponDamage[DamageType.SLASH.ordinal()] = 80;
+				weaponDamage[DamageType.FIRE.ordinal()] = 20;
+				weaponScales[EntityStats.STR.ordinal()] = 1.0;
+				str = 10 + (scaling * 3);
+				spr = "spr_BladeDevil.gif";
+				
+				HP = 650;
+			break;
+			case "magicsword":
+				damageResist[DamageType.MAGIC.ordinal()] = 0.8;
+				damageResist[DamageType.FIRE.ordinal()] = 0.0;
+				damageResist[DamageType.ELEC.ordinal()] = 0.0;
+				damageResist[DamageType.HOLY.ordinal()] = 0.0;
+				
+				weaponDamage[DamageType.SLASH.ordinal()] = 40;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 40;
+				weaponScales[EntityStats.ARC.ordinal()] = 1.2;
+				arc = 10 + (scaling * 2);
+				spr = "spr_CombatNode_MAGIC.png";
+				
+				HP = 220;
+			break;
+			case "casper":
+				damageResist[DamageType.HOLY.ordinal()] = 2.5;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
+				damageResist[DamageType.SLASH.ordinal()] = 0.2;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
+				damageResist[DamageType.BLAST.ordinal()] = 0.2;
+				
+				weaponDamage[DamageType.MAGIC.ordinal()] = 40;
+				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
+				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
+				arc = 10 + (scaling * 2);
+				spr = "spr_Spectre.png";
+				
+				HP = 200.0;
+			break;
+			case "slime":
+				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
+				damageResist[DamageType.SLASH.ordinal()] = 2.0;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
+				damageResist[DamageType.BLAST.ordinal()] = 0.8;
+				
+				weaponDamage[DamageType.CRUSH.ordinal()] = 90;
+				weaponScales[EntityStats.STR.ordinal()] = 0.95;
+				str = 10 + (scaling * 2);
+				spr = "spr_Slime.png";
+				
+				HP = 250.0;
+			break;
+			case "irongremlin":
+				damageResist[DamageType.PIERCE.ordinal()] = 0.4;
+				damageResist[DamageType.SLASH.ordinal()] = 0.4;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.4;
+				damageResist[DamageType.BLAST.ordinal()] = 1.2;
+				damageResist[DamageType.FIRE.ordinal()] = 0.2;
+				damageResist[DamageType.ELEC.ordinal()] = 1.5;
+				
+				weaponDamage[DamageType.CRUSH.ordinal()] = 70;
+				weaponScales[EntityStats.STR.ordinal()] = 1.0;
+				str = 10 + (scaling * 3);
+				spr = "spr_IronGremlin.gif";
+				
+				HP = 700;
+			break;
+		}
+		
+		HP *= 1 + (scaling / 10);
+		
+		WeaponItem KILL = new WeaponItem (weaponDamage, weaponScales, ranged, magic);
+		super(HP, Mana, DR, str, dex, prc, ist, con, wil, fth, arc);
+		setDamageMultipliers(damageResist);
+		setAtk(KILL);
+		setSprite(spr);
+		turn = 0;
 	}
 	
 	public double calculateDamage (double[] incDamage) {
