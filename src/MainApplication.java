@@ -21,6 +21,7 @@ public class MainApplication extends GraphicsProgram{
 	private MapPane mapPane;
 	private CampFirePane campFirePane;
 	private CombatPane combatPane; 
+	private LootPane lootPane;
 
 
 
@@ -52,6 +53,7 @@ public class MainApplication extends GraphicsProgram{
 		campFirePane = new CampFirePane(this);
 		mapPane =  new MapPane(this);
 		combatPane = new CombatPane(this);
+		lootPane = new LootPane(this);
 
 		//TheDefaultPane
 		switchToScreen(menuPane);
@@ -96,6 +98,10 @@ public class MainApplication extends GraphicsProgram{
 	
 	public void switchToCombatPane() {
 		switchToScreen(combatPane);
+	}
+	
+	public void switchToLootPane() {
+		switchToScreen (lootPane);
 	}
 
 	
@@ -166,4 +172,5 @@ public class MainApplication extends GraphicsProgram{
 			currentScreen.keyTyped(e);
 		}
 	}
+	
 }
