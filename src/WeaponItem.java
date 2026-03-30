@@ -383,4 +383,12 @@ public class WeaponItem {
 	public void setPurchaseCost(int purchaseCost) {
 		this.purchaseCost = purchaseCost;
 	}
+	
+	public String toString () {
+		String rtn = type.substring(0, 1).toUpperCase() + type.substring(1);
+		if (affinity != "null") {
+			rtn += " of " + affinity.substring(0, 1).toUpperCase() + affinity.substring(1);
+		}
+		return rtn;
+	}
 }
