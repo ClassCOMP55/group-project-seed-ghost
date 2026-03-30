@@ -23,7 +23,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Enemy[] myArrEnemies;
 	private int enemyNumber;
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on;
-	private int turn,counter,skillIndex;
+	private int turn,counter,skillIndex,switched;
 	private Entity currentEntity,otherEntity;
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
 	private GLabel displayBoxLabel,description,TurnLabel;
@@ -67,6 +67,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		skillButton = createButton(0,540,"Skills");
 		inventoryButton = createButton(130,540,"Inventory");	
 		generateEnemiesAndAllies();
+		switched =0;
 		nextCombat();
 		
 	}
@@ -229,11 +230,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		
-		if (won==true) {
+		if (won==true&&switched==0) {
 			mainScreen.switchToMapPane();
+			switched++;
 		}
-		if (lost==true) {
+		if (lost==true&&switched==0) {
 			mainScreen.switchToMenuPane();
+			switched++;
 		}
 		
 		
@@ -278,7 +281,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (counter>0)entityToImage(currentEntity).setColor(null);
 		if (counter>0) update();
 		
-		if (isDead()) {
+		if (isDead()&&switched==0) {
 			int index = allEntities.indexOf(otherEntity);
 			if (healthLabels.get(index).getLabel()!="Dead")healthLabels.get(index).setLocation(healthLabels.get(index).getX(),healthLabels.get(index).getY());
 			healthLabels.get(index).setLabel("Dead");
@@ -295,6 +298,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
+			Character c = (Character) currentEntity;
+			c.startTurn();
 			counter++;
 		}
 		else if (currentEntity instanceof Enemy) {
