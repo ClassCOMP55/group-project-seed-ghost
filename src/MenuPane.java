@@ -6,7 +6,7 @@ import acm.graphics.*;
 //This is the main menu page of our game
 public class MenuPane extends GraphicsPane {
 	
-	GRect newGameButton,continueGameButton,settingsButton;
+	GRect newGameButton,continueGameButton,settingsButton,highlighted;
 	GLabel newGame,continueGame,options;
 	
 	public MenuPane(MainApplication mainScreen) {
@@ -111,6 +111,27 @@ public class MenuPane extends GraphicsPane {
 		}
 		else if (obj == continueGameButton||obj==continueGame) {
 			mainScreen.switchToCharacterSelectionPane();
+		}
+	}
+	
+	public void mouseMoved(MouseEvent e) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
+		
+		if (obj== newGameButton||obj==newGame) {
+			highlighted = newGameButton;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
+		}
+		
+		else if (obj == settingsButton||obj==options) {
+			highlighted = settingsButton;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
+		}
+		else if (obj == continueGameButton||obj==continueGame) {
+			highlighted = continueGameButton;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
+		}
+		else if (highlighted!=null) {
+			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 	}
 	
