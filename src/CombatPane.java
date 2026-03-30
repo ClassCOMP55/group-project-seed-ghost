@@ -129,8 +129,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		for(int i = 0;i<enemyNumber;i++) {
-			String sprite =  Chance.choose(new String[] {"spr_HolyGhost"});
-			myArrEnemies[i] = new Enemy(sprite);
+			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil"});
+			myArrEnemies[i] = new Enemy(sprite,0);
 			allEntities.add(myArrEnemies[i]);
 			temp.add(myArrEnemies[i]);
 		}
@@ -261,6 +261,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				if (c != null) {
 					attack = Chance.coinflip(0.5);
 					if (attack&&c.isDead()==false) {
+						description.setLabel("Enemy attacks "+c.getProfession());
+						description.setLocation((800-description.getWidth())/2,20);
 						c.attackMe(e.attackOther());
 						otherEntity =c;
 						update();
