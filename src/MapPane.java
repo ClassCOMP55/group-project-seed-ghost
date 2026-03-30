@@ -176,7 +176,7 @@ private void createMap() {
 			case "Shop": mainScreen.switchToShopPane(); break;
 			case "Combat": mainScreen.switchToCombatPane(); break;
 			case "CampFire": mainScreen.switchToCampFirePane(); break;
-			case "Loot": mainScreen.switchToMenuPane(); break;
+			case "Loot": mainScreen.switchToLootPane(); break;
 			}
 		}
 				
