@@ -5,8 +5,15 @@ import java.util.ArrayList;
 import acm.graphics.*;
 //This is the main menu page of our game
 public class MenuPane extends GraphicsPane {
+	
+	GRect newGameButton,continueGameButton,settingsButton;
+	GLabel newGame,continueGame,options;
+	
 	public MenuPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
+		newGameButton = new GRect(300,50);
+		continueGameButton = new GRect(300,50);
+		settingsButton = new GRect(300,50);
 	}
 	
 	@Override
@@ -25,33 +32,56 @@ public class MenuPane extends GraphicsPane {
 	
 	private void addText() {
 		GLabel title = new GLabel("FateBound", 100, 70);
-		title.setColor(Color.RED);
-		title.setFont("DialogInput-PLAIN-80");
-		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
+		title.setColor(Color.BLACK);
+		title.setFont("SERIF-PLAIN-110");
+		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 130);
 		
 		contents.add(title);
 		mainScreen.add(title);
 		
-		GLabel newGame = new GLabel("The start new game button goes here", 100, 70);
+		newGameButton.setLocation((mainScreen.getWidth() - newGameButton.getWidth()) / 2, 240);
+		newGameButton.setFillColor(Color.DARK_GRAY);
+		newGameButton.setFilled(true);
+		
+		contents.add(newGameButton);
+		mainScreen.add(newGameButton);
+		
+		newGame = new GLabel("New Game", 100, 70);
 		newGame.setColor(Color.BLACK);
-		newGame.setFont("DialogInput-PLAIN-20");
-		newGame.setLocation((mainScreen.getWidth() - newGame.getWidth()) / 2, 270);
+		newGame.setFont("ARIEL-PLAIN-20");
+		newGame.setLocation(newGameButton.getX()+(newGameButton.getWidth()-newGame.getWidth())/2, newGameButton.getY()+(newGameButton.getHeight()+newGame.getAscent())/2);
 		
 		contents.add(newGame);
 		mainScreen.add(newGame);
 		
-		GLabel continueGame = new GLabel("The continue game button goes here", 100, 70);
+		continueGameButton.setLocation((mainScreen.getWidth() - newGameButton.getWidth()) / 2, newGameButton.getY()+70);
+		continueGameButton.setFillColor(Color.DARK_GRAY);
+		continueGameButton.setFilled(true);
+		
+		contents.add(continueGameButton);
+		mainScreen.add(continueGameButton);
+		
+		
+		continueGame = new GLabel("Continue Game", 100, 70);
 		continueGame.setColor(Color.BLACK);
-		continueGame.setFont("DialogInput-PLAIN-20");
-		continueGame.setLocation((mainScreen.getWidth() - continueGame.getWidth()) / 2, 340);
+		continueGame.setFont("ARIEL-PLAIN-20");
+		continueGame.setLocation(continueGameButton.getX()+(continueGameButton.getWidth()-continueGame.getWidth())/2, continueGameButton.getY()+(continueGameButton.getHeight()+continueGame.getAscent())/2);
+		
 		
 		contents.add(continueGame);
 		mainScreen.add(continueGame);
 		
-		GLabel options = new GLabel("The options buttom goes here", 100, 70);
+		settingsButton.setLocation((mainScreen.getWidth() - continueGameButton.getWidth()) / 2, continueGameButton.getY()+70);
+		settingsButton.setFillColor(Color.DARK_GRAY);
+		settingsButton.setFilled(true);
+		
+		contents.add(settingsButton);
+		mainScreen.add(settingsButton);
+		
+		options = new GLabel("Settings", 100, 70);
 		options.setColor(Color.BLACK);
-		options.setFont("DialogInput-PLAIN-20");
-		options.setLocation((mainScreen.getWidth() - options.getWidth()) / 2, 410);
+		options.setFont("ARIEL-PLAIN-20");
+		options.setLocation(settingsButton.getX()+(settingsButton.getWidth()-options.getWidth())/2, settingsButton.getY()+(settingsButton.getHeight()+options.getAscent())/2);
 		
 		contents.add(options);
 		mainScreen.add(options);
@@ -61,8 +91,8 @@ public class MenuPane extends GraphicsPane {
 	
 	private void createBackground() {
 		GRect backGround = new GRect(800,600);
-		backGround.setColor(Color.DARK_GRAY);
-		backGround.setFillColor(Color.DARK_GRAY);
+		backGround.setColor(Color.RED);
+		backGround.setFillColor(Color.RED);
 		backGround.setFilled(true);
 		backGround.setLocation(0, 0);
 		contents.add(backGround);
@@ -71,12 +101,16 @@ public class MenuPane extends GraphicsPane {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
+		if (obj== newGameButton||obj==newGame) {
 			mainScreen.switchToCharacterSelectionPane();
 		}
 		
-		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(4)) {
+		else if (obj == settingsButton||obj==options) {
 			mainScreen.switchToSettingsPane();
+		}
+		else if (obj == continueGameButton||obj==continueGame) {
+			mainScreen.switchToCharacterSelectionPane();
 		}
 	}
 	
