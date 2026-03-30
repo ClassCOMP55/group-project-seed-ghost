@@ -583,6 +583,286 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		//t.stop();
 		
 	}
+
+	public ArrayList<Entity> getAllEntities() {
+		return allEntities;
+	}
+
+	public void setAllEntities(ArrayList<Entity> allEntities) {
+		this.allEntities = allEntities;
+	}
+
+	public ArrayList<GImage> getAllImages() {
+		return allImages;
+	}
+
+	public void setAllImages(ArrayList<GImage> allImages) {
+		this.allImages = allImages;
+	}
+
+	public ArrayList<Entity> getInitiativeArr() {
+		return initiativeArr;
+	}
+
+	public void setInitiativeArr(ArrayList<Entity> initiativeArr) {
+		this.initiativeArr = initiativeArr;
+	}
+
+	public ArrayList<Entity> getTemp() {
+		return temp;
+	}
+
+	public void setTemp(ArrayList<Entity> temp) {
+		this.temp = temp;
+	}
+
+	public Character[] getMyArrAllies() {
+		return myArrAllies;
+	}
+
+	public void setMyArrAllies(Character[] myArrAllies) {
+		this.myArrAllies = myArrAllies;
+	}
+
+	public Enemy[] getMyArrEnemies() {
+		return myArrEnemies;
+	}
+
+	public void setMyArrEnemies(Enemy[] myArrEnemies) {
+		this.myArrEnemies = myArrEnemies;
+	}
+
+	public int getEnemyNumber() {
+		return enemyNumber;
+	}
+
+	public void setEnemyNumber(int enemyNumber) {
+		this.enemyNumber = enemyNumber;
+	}
+
+	public boolean isSkill() {
+		return skill;
+	}
+
+	public void setSkill(boolean skill) {
+		this.skill = skill;
+	}
+
+	public boolean isInventory() {
+		return inventory;
+	}
+
+	public void setInventory(boolean inventory) {
+		this.inventory = inventory;
+	}
+
+	public boolean isPlayersTurn() {
+		return playersTurn;
+	}
+
+	public void setPlayersTurn(boolean playersTurn) {
+		this.playersTurn = playersTurn;
+	}
+
+	public boolean isEnemyTurn() {
+		return enemyTurn;
+	}
+
+	public void setEnemyTurn(boolean enemyTurn) {
+		this.enemyTurn = enemyTurn;
+	}
+
+	public boolean isForSkills() {
+		return forSkills;
+	}
+
+	public void setForSkills(boolean forSkills) {
+		this.forSkills = forSkills;
+	}
+
+	public boolean isSkillReady() {
+		return skillReady;
+	}
+
+	public void setSkillReady(boolean skillReady) {
+		this.skillReady = skillReady;
+	}
+
+	public boolean isOn() {
+		return on;
+	}
+
+	public void setOn(boolean on) {
+		this.on = on;
+	}
+
+	public int getTurn() {
+		return turn;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
+	public int getSkillIndex() {
+		return skillIndex;
+	}
+
+	public void setSkillIndex(int skillIndex) {
+		this.skillIndex = skillIndex;
+	}
+
+	public Entity getCurrentEntity() {
+		return currentEntity;
+	}
+
+	public void setCurrentEntity(Entity currentEntity) {
+		this.currentEntity = currentEntity;
+	}
+
+	public Entity getOtherEntity() {
+		return otherEntity;
+	}
+
+	public void setOtherEntity(Entity otherEntity) {
+		this.otherEntity = otherEntity;
+	}
+
+	public GRect getSkillButton() {
+		return skillButton;
+	}
+
+	public void setSkillButton(GRect skillButton) {
+		this.skillButton = skillButton;
+	}
+
+	public GRect getInventoryButton() {
+		return inventoryButton;
+	}
+
+	public void setInventoryButton(GRect inventoryButton) {
+		this.inventoryButton = inventoryButton;
+	}
+
+	public GRect getDisplayBox() {
+		return displayBox;
+	}
+
+	public void setDisplayBox(GRect displayBox) {
+		this.displayBox = displayBox;
+	}
+
+	public GRect getExtra() {
+		return extra;
+	}
+
+	public void setExtra(GRect extra) {
+		this.extra = extra;
+	}
+
+	public GRect getHighlighted() {
+		return highlighted;
+	}
+
+	public void setHighlighted(GRect highlighted) {
+		this.highlighted = highlighted;
+	}
+
+	public GLabel getDisplayBoxLabel() {
+		return displayBoxLabel;
+	}
+
+	public void setDisplayBoxLabel(GLabel displayBoxLabel) {
+		this.displayBoxLabel = displayBoxLabel;
+	}
+
+	public GLabel getDescription() {
+		return description;
+	}
+
+	public void setDescription(GLabel description) {
+		this.description = description;
+	}
+
+	public GLabel getTurnLabel() {
+		return TurnLabel;
+	}
+
+	public void setTurnLabel(GLabel turnLabel) {
+		TurnLabel = turnLabel;
+	}
+
+	public ArrayList<GRect> getAllSkillsButton() {
+		return allSkillsButton;
+	}
+
+	public void setAllSkillsButton(ArrayList<GRect> allSkillsButton) {
+		this.allSkillsButton = allSkillsButton;
+	}
+
+	public ArrayList<GRect> getHealthBars() {
+		return healthBars;
+	}
+
+	public void setHealthBars(ArrayList<GRect> healthBars) {
+		this.healthBars = healthBars;
+	}
+
+	public ArrayList<GRect> getManaBars() {
+		return manaBars;
+	}
+
+	public void setManaBars(ArrayList<GRect> manaBars) {
+		this.manaBars = manaBars;
+	}
+
+	public ArrayList<GLabel> getAllSkillsButtonLabels() {
+		return allSkillsButtonLabels;
+	}
+
+	public void setAllSkillsButtonLabels(ArrayList<GLabel> allSkillsButtonLabels) {
+		this.allSkillsButtonLabels = allSkillsButtonLabels;
+	}
+
+	public ArrayList<GLabel> getHealthLabels() {
+		return healthLabels;
+	}
+
+	public void setHealthLabels(ArrayList<GLabel> healthLabels) {
+		this.healthLabels = healthLabels;
+	}
+
+	public ArrayList<GLabel> getManaLabels() {
+		return manaLabels;
+	}
+
+	public void setManaLabels(ArrayList<GLabel> manaLabels) {
+		this.manaLabels = manaLabels;
+	}
+
+	public Skill[] getMySkills() {
+		return mySkills;
+	}
+
+	public void setMySkills(Skill[] mySkills) {
+		this.mySkills = mySkills;
+	}
+
+	public Timer getT() {
+		return t;
+	}
+
+	public void setT(Timer t) {
+		this.t = t;
+	}
 	
 
 }

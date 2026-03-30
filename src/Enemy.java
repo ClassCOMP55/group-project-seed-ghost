@@ -1,6 +1,12 @@
+import java.util.ArrayList;
+
 public class Enemy extends Entity {
 	private double[] damageMultipliers, incStatusMultipliers;
 	private WeaponItem atk;
+	private int[] skillPattern;
+	private ArrayList<Skill> skills;
+	private int turn;
+	private Character nextTarget;
 	
 	/*
 	 * Creates a dummy enemy
@@ -10,6 +16,7 @@ public class Enemy extends Entity {
 		setDamageMultipliers(new double[] {1,1,1,1,1,1,1,1});
 		setIncStatusMultipliers(new double[] {1,1,1,1,1,1,1,1,1});
 		setAtk(null);
+		turn = 0;
 	}
 	
 	public Enemy(double hpMax, double manaMax, double deathResist, int str, int dex, int prc, int ist, int con, int wil,
@@ -21,6 +28,7 @@ public class Enemy extends Entity {
 		setIncStatusMultipliers(incStatusMultipliers);
 		
 		setAtk(new WeaponItem (baseAttack, statScaling, baseStatus, affinity, ranged, magic));
+		turn = 0;
 	}
 	
 	/*
@@ -86,5 +94,43 @@ public class Enemy extends Entity {
 	
 	public double[] attackOther () {
 		return atk.scaledDamage(getStatSpread());
+	}
+
+	public int[] getSkillPattern() {
+		return skillPattern;
+	}
+
+	public void setSkillPattern(int[] skillPattern) {
+		this.skillPattern = skillPattern;
+	}
+
+	public ArrayList<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(ArrayList<Skill> skills) {
+		this.skills = skills;
+	}
+	
+	public void addSkill (Skill e) {
+		skills.add(e);
+	}
+	
+	/*
+	 * The method an enemy should call when they take their turn.
+	 * 
+	 * @param The combat being put through
+	 */
+	public void playTurn (CombatPane combat) {
+		Character[] targets = combat.getMyArrAllies();
+		
+		Skill now = skills.get(skillPattern[turn]);
+		now.activationEffect(this, nextTarget);
+		
+		turn += 1;
+		if (turn > skillPattern.length - 1) {
+			turn = 0;
+		}
+		nextTarget = targets[Chance.range(0, targets.length - 1)];
 	}
 }
