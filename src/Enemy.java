@@ -86,6 +86,7 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.FIRE.ordinal()] = 20;
 				weaponScales[EntityStats.STR.ordinal()] = 1.0;
 				str = 10 + (scaling * 3);
+				ist = 0;
 				spr = "spr_BladeDevil.gif";
 				
 				HP = 650;
@@ -143,9 +144,22 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.CRUSH.ordinal()] = 70;
 				weaponScales[EntityStats.STR.ordinal()] = 1.0;
 				str = 10 + (scaling * 3);
+				ist = 0;
 				spr = "spr_IronGremlin.gif";
 				
 				HP = 700;
+			break;
+			case "orb":
+				damageResist[DamageType.MAGIC.ordinal()] = -2.0;
+				
+				weaponDamage[DamageType.BLAST.ordinal()] = 60;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 60;
+				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
+				arc = (int)(scaling * 2.5);
+				ist = 20 * scaling;
+				spr = "spr_EvilPulsatingOrb.gif";
+				
+				HP = 320;
 			break;
 		}
 		
