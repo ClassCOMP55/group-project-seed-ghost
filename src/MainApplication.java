@@ -54,7 +54,7 @@ public class MainApplication extends GraphicsProgram{
 		combatPane = new CombatPane(this);
 
 		//TheDefaultPane
-		switchToScreen(welcomePane);
+		switchToScreen(menuPane);
 	}
 	
 	public static void main(String[] args) {
