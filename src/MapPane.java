@@ -16,15 +16,15 @@ public class MapPane extends GraphicsPane {
 	
 	public MapPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
+		mapPath = new ArrayList<>();
+		createPath();
 	}
 	
 	@Override
 	public void showContent() {
-		mapPath = new ArrayList<>();
 		myNodeObjects = new ArrayList<>();
 		createBackground();
 		addText();
-		createPath();
 		createMap();
 	}
 
