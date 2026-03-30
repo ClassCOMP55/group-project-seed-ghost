@@ -29,7 +29,7 @@ public class Character extends Entity {
 		profession = "none";
 		allowedArmors = new String[] {"light"};
 		
-		setSprite("spr_Knight");
+		setSprite("spr_Knight.png");
 	}
 	
 	/*
@@ -71,7 +71,7 @@ public class Character extends Entity {
 	
 	private void applyProfession (String profession) {
 		this.profession = profession.toLowerCase();
-		String tempSprite = "spr_Knight";
+		String tempSprite = "spr_Knight.png";
 		
 		double tempHp = 1.0;
 		double tempMn = 1.0;
@@ -95,7 +95,7 @@ public class Character extends Entity {
 				tempStr = (int)Chance.range(40, 90);
 				tempDex = (int)Chance.range(20, 50);
 				tempCon = (int)Chance.range(20, 40);
-				tempSprite = "spr_Knight";
+				tempSprite = "spr_Knight.png";
 				allowedArmors = new String[] {"light", "medium","heavy"};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
@@ -110,7 +110,7 @@ public class Character extends Entity {
 				tempPrc = (int)Chance.range(30, 60);
 				tempIst = (int)Chance.range(10, 50);
 				tempWil = (int)Chance.range(20, 40);
-				tempSprite = "spr_Samurai";
+				tempSprite = "spr_Samurai.png";
 				allowedArmors = new String[] {"light", "medium"};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
@@ -124,7 +124,7 @@ public class Character extends Entity {
 				tempDex = (int)Chance.range(30, 90);
 				tempPrc = (int)Chance.range(30, 90);
 				tempFth = 0;
-				tempSprite = "spr_Thief";
+				tempSprite = "spr_Thief.png";
 				allowedArmors = new String[] {"light"};
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"dagger","pistol","crossbow"}), "null");
 				
@@ -141,6 +141,7 @@ public class Character extends Entity {
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"axe","greatsword","hammer"}), "null");
+				tempSprite = "spr_Viking.png";
 			break;
 			case "cleric":
 				tempHp = Chance.range(70, 150);
@@ -163,7 +164,7 @@ public class Character extends Entity {
 				tempWil = (int)Chance.range(40, 50);
 				tempFth = (int)Chance.range(10, 20);
 				tempArc = (int)Chance.range(60, 100);
-				tempSprite = "spr_Sorcerer";
+				tempSprite = "spr_Sorcerer.png";
 				allowedArmors = new String[] {"light"};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
@@ -178,7 +179,7 @@ public class Character extends Entity {
 				tempCon = (int)Chance.range(10, 30);
 				tempFth = (int)Chance.range(50, 80);
 				
-				tempSprite = "spr_Paladin";
+				tempSprite = "spr_Paladin.png";
 				
 				allowedArmors = new String[] {"light", "medium","heavy"};
 				
@@ -203,7 +204,7 @@ public class Character extends Entity {
 				tempDr = 0.225;
 				
 				tempPrc = (int)Chance.range(60, 160);
-				tempSprite = "spr_Marksman";
+				tempSprite = "spr_Marksman.png";
 				allowedArmors = new String[] {"light"};
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), "null");
