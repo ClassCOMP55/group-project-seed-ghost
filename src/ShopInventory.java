@@ -17,10 +17,26 @@ public class ShopInventory {
 		for (int i = 0; i < 3; i++) {
 			items.add(new ShopItem(new ArmorItem(),Chance.range(60, 180)));
 	    }
+		
 		 // Potions (placeholder)
-        for (int i = 0; i < 3; i++) {
-            items.add(new ShopItem("Potion", Chance.range(20, 60)));
-        }
+		 for (ConsumableType type : ConsumableType.values()) {
+		        int price;
+		        switch (type) {
+		            case HEALTH:
+		                price = 50; // Health potion price
+		                break;
+		            case MANA:
+		                price = 75; // Mana potion price
+		                break;
+		            case ELIXIR:
+		                price =250; // Elixir price
+		                break;
+		            default:
+		                price = 0;
+		        }
+
+		        items.add(new ShopItem(new ConsumableItem(type), price));
+		    }
 
 
         // Mercenaries method

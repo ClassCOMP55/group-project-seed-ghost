@@ -29,6 +29,15 @@ public class ShopItem {
 		if (item instanceof ArmorItem) {
 			return item.toString();
 	    }
+		
+		 if (item instanceof ConsumableItem) {
+		        ConsumableItem c = (ConsumableItem) item;
+		        switch(c.getType()) {
+		            case HEALTH: return "Potion";       
+		            case MANA:   return "Mana Potion"; 
+		            case ELIXIR: return "Elixir";      
+		        }
+		    }
 
 	    if (item instanceof Character) {
 	    	Character c = (Character) item;

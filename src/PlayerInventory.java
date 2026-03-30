@@ -5,7 +5,7 @@ public class PlayerInventory {
 	private Character[] partyMembers;
 	private ArrayList<ArmorItem> extraArmors;
 	private ArrayList<WeaponItem> extraWeapons;
-	//private Consumable[] consumables;
+	private ArrayList<ConsumableItem> consumables;
 	//private ArrayList<Relic> relics;
 	private int gold;
 	
@@ -13,6 +13,8 @@ public class PlayerInventory {
 		partyMembers = new Character[3];
 		extraArmors = new ArrayList<ArmorItem>();
 		extraWeapons = new ArrayList<WeaponItem>();
+		consumables = new ArrayList<ConsumableItem>();
+		
 		gold = STARTING_GOLD;
 	}
 	
@@ -23,6 +25,7 @@ public class PlayerInventory {
 		partyMembers = new Character[3];
 		extraArmors = new ArrayList<ArmorItem>();
 		extraWeapons = new ArrayList<WeaponItem>();
+		consumables = new ArrayList<ConsumableItem>();
 		gold = STARTING_GOLD;
 		
 		partyMembers[0] = startingCharacter;
@@ -48,6 +51,9 @@ public class PlayerInventory {
 	}
 	public void setExtraWeapons(ArrayList<WeaponItem> extraWeapons) {
 		this.extraWeapons = extraWeapons;
+	}
+	public ArrayList<ConsumableItem> getConsumables() {
+	    return consumables;
 	}
 	public int getGold() {
 		return gold;
