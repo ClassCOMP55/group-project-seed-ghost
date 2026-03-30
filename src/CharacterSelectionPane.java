@@ -40,7 +40,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private void addText() {
 		GLabel title = new GLabel("Choose your character!", 100, 70);
 		title.setColor(Color.RED);
-		title.setFont("DialogInput-PLAIN-50");
+		title.setFont("Ariel-PLAIN-50");
 		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
 		
 		contents.add(title);
@@ -80,7 +80,6 @@ public class CharacterSelectionPane extends GraphicsPane {
 		case "paladin": charImage = new GImage("spr_Paladin.png",50+(200*i),350); break;
 		default: charImage = new GImage("spr_Marksman.png",50+(200*i),350); break;
 		}
-		
 		charImage.setLocation(5+2*i*charImage.getWidth(), (600-charImage.getHeight())/2);
 		myImages.add(charImage);
 		contents.add(charImage);
@@ -91,7 +90,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		for (Character myChar:myChars) {
 			int index = myChars.indexOf(myChar);
 			GImage image = myImages.get(index);
-			GRect box = new GRect(150,80);
+			GRect box = new GRect(150,70);
 			box.setLocation(image.getX(), image.getY()+image.getHeight());
 			box.setColor(Color.BLACK);
 			box.setFillColor(Color.BLACK);
@@ -102,21 +101,21 @@ public class CharacterSelectionPane extends GraphicsPane {
 			GLabel prof = new GLabel("Profession: "+myChar.getProfession());
 			prof.setLocation(box.getX()+5, box.getY()+15);
 			prof.setColor(Color.RED);
-			prof.setFont("DialogInput-PLAIN-12");
+			prof.setFont("ARIEL-PLAIN-14");
 			contents.add(prof);
 			mainScreen.add(prof);
 			
 			GLabel health = new GLabel("Health: "+myChar.getHp());
 			health.setLocation(box.getX()+5, box.getY()+35);
 			health.setColor(Color.RED);
-			health.setFont("DialogInput-PLAIN-12");
+			health.setFont("ARIEL-PLAIN-14");
 			contents.add(health);
 			mainScreen.add(health);
 			
 			GLabel mana = new GLabel("Mana: "+myChar.getManaMax());
 			mana.setLocation(box.getX()+5, box.getY()+55);
 			mana.setColor(Color.RED);
-			mana.setFont("DialogInput-PLAIN-12");
+			mana.setFont("ARIEL-PLAIN-14");
 			contents.add(mana);
 			mainScreen.add(mana);
 			

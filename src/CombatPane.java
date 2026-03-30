@@ -41,6 +41,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void showContent() {
 		t = new Timer(1000, this);
 		Character testChar = new Character("samurai");
+		System.out.println(testChar.getSprite().getWidth());
 		Character testChar2 = new Character("sorcerer");
 		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
 		CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
@@ -259,7 +260,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			for (Character c:myArrAllies) {
 				if (c != null) {
 					attack = Chance.coinflip(0.5);
-					if (attack) {
+					if (attack&&c.isDead()==false) {
 						c.attackMe(e.attackOther());
 						otherEntity =c;
 						update();
@@ -277,8 +278,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (isDead()) {
 			int index = allEntities.indexOf(otherEntity);
+			if (healthLabels.get(index).getLabel()!="Dead")healthLabels.get(index).setLocation(healthLabels.get(index).getX(),healthLabels.get(index).getY());
 			healthLabels.get(index).setLabel("Dead");
-			healthLabels.get(index).setLocation(healthLabels.get(index).getX()+10,healthLabels.get(index).getY());
 			yourDead(otherEntity);
 			initiativeArr.remove(otherEntity);
 		}
