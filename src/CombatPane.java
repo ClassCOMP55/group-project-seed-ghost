@@ -299,7 +299,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
 			Character c = (Character) currentEntity;
-			c.startTurn();
+			if (c.getLastUsedSkill()!=null) c.startTurn();
 			counter++;
 		}
 		else if (currentEntity instanceof Enemy) {
@@ -490,6 +490,25 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(line1);
 		contents.add(line2);
 		mainScreen.add(line2);
+	}
+	
+	public Character[] aliveAllies() {
+		int length =0;
+		int num = 0;
+		for (Character c:myArrAllies) {
+			if(c!=null&&c.isDead()==false) {
+				length++;
+			}
+		}
+		Character[] myArr = new Character[length];
+		
+		for (Character c:myArrAllies) {
+			if(c!=null&&c.isDead()==false) {
+				myArr[num]=c;
+				num++;
+			}
+		}
+		return myArr;
 	}
 	
 	public void mouseClicked(MouseEvent e) {

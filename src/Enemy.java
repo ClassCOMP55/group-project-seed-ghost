@@ -6,7 +6,7 @@ public class Enemy extends Entity {
 	private int[] skillPattern;
 	private ArrayList<Skill> skills;
 	private int turn;
-	private Character nextTarget;
+	private Character nextTarget,previousTarget;
 	
 	/*
 	 * Creates a dummy enemy
@@ -248,9 +248,10 @@ public class Enemy extends Entity {
 	 * The method an enemy should call when they take their turn.
 	 * 
 	 * @param The combat being put through
+	 * @return The target that was attacked
 	 */
-	public void playTurn (CombatPane combat) {
-		Character[] targets = combat.getMyArrAllies();
+	public Character playTurn (CombatPane combat) {
+		Character[] targets = combat.aliveAllies();
 		
 		Skill now = skills.get(skillPattern[turn]);
 		now.activationEffect(this, nextTarget);
@@ -259,6 +260,9 @@ public class Enemy extends Entity {
 		if (turn > skillPattern.length - 1) {
 			turn = 0;
 		}
+		previousTarget = nextTarget;
 		nextTarget = targets[Chance.range(0, targets.length - 1)];
+		
+		return previousTarget;
 	}
 }
