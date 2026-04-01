@@ -8,6 +8,17 @@ public class Enemy extends Entity {
 	private int turn;
 	private Character nextTarget,previousTarget;
 	
+	private void setDefaultAttackPattern () {
+		skillPattern = new int[] {0};
+		skills = new ArrayList<Skill>();
+		skills.add(new SKILL_BasicAttack());
+	}
+	
+	private void setAttackPattern (ArrayList<Skill> skillArr, int[] pattern) {
+		skillPattern = pattern;
+		skills = skillArr;
+	}
+	
 	/*
 	 * Creates a dummy enemy
 	 */
@@ -17,6 +28,7 @@ public class Enemy extends Entity {
 		setIncStatusMultipliers(new double[] {1,1,1,1,1,1,1,1,1});
 		setAtk(null);
 		turn = 0;
+		setDefaultAttackPattern();
 	}
 	
 	public Enemy(double hpMax, double manaMax, double deathResist, int str, int dex, int prc, int ist, int con, int wil,
@@ -29,6 +41,7 @@ public class Enemy extends Entity {
 		
 		setAtk(new WeaponItem (baseAttack, statScaling, ranged, magic));
 		turn = 0;
+		setDefaultAttackPattern();
 	}
 	
 	/*
@@ -43,6 +56,7 @@ public class Enemy extends Entity {
 		
 		setAtk(new WeaponItem (true));
 		super.setSprite(sprite);
+		setDefaultAttackPattern();
 	}
 	
 	/*
@@ -58,6 +72,9 @@ public class Enemy extends Entity {
 		double[] damageResist = new double[] {0,0,0,0,0,0,0,0};
 		boolean ranged = false, magic = false;
 		String spr = "spr_HolyGhost.png";
+		
+		int[] defSkillP = new int[] {0};
+		ArrayList<Skill> defSkill = new ArrayList<Skill> ();
 		
 		switch (name.toLowerCase()) {
 			case "holyghost":
@@ -163,6 +180,10 @@ public class Enemy extends Entity {
 			break;
 		}
 		
+		if (defSkill.isEmpty()) {
+			defSkill.add(new SKILL_BasicAttack());
+		}
+		
 		HP *= 1 + (scaling / 10);
 		
 		WeaponItem KILL = new WeaponItem (weaponDamage, weaponScales, ranged, magic);
@@ -171,6 +192,8 @@ public class Enemy extends Entity {
 		setAtk(KILL);
 		setSprite(spr);
 		turn = 0;
+		
+		setAttackPattern(defSkill, defSkillP);
 	}
 	
 	public double calculateDamage (double[] incDamage) {
