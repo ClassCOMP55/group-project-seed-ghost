@@ -155,6 +155,7 @@ public class Character extends Entity {
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), "holy");
+				tempSprite = "spr_Cleric.png";
 			break;
 			case "sorcerer":
 				tempHp = Chance.range(40, 100);
