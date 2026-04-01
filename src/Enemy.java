@@ -70,7 +70,7 @@ public class Enemy extends Entity {
 	public Enemy (String name, int scaling) {
 		int str = scaling, dex = scaling, prc = scaling, ist = scaling, 
 			con = scaling, wil = scaling, fth = scaling, arc = scaling;
-		double HP = 100.0, Mana = 100.0, DR = 0.0;
+		double HP = 100.0, Mana = 100000.0, DR = 0.0;
 		
 		this.name = name;
 		
@@ -91,12 +91,18 @@ public class Enemy extends Entity {
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
 				
-				weaponDamage[DamageType.HOLY.ordinal()] = 60;
-				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
+				weaponDamage[DamageType.HOLY.ordinal()] = 10;
+				weaponScales[EntityStats.FTH.ordinal()] = 4.0;
 				fth = 10 + (scaling * 2);
+				con = 30 + (int)(scaling * 1.5);
 				spr = "spr_HolyGhost.png";
 				
 				name = "Holy Ghost";
+				
+				defSkillP = new int[] {0,1,2,1};
+				defSkill.add(new SKILL_Guard());
+				defSkill.add(new SKILL_SelfSacrifice());
+				defSkill.add(new SKILL_BasicAttack());
 				
 				HP = 200.0;
 			break;
@@ -133,7 +139,7 @@ public class Enemy extends Entity {
 				
 				name = "Magic Sword";
 				
-				HP = 220;
+				HP = 120;
 			break;
 			case "casper":
 				damageResist[DamageType.HOLY.ordinal()] = 2.5;
@@ -148,7 +154,7 @@ public class Enemy extends Entity {
 				arc = 10 + (scaling * 2);
 				spr = "spr_Spectre.png";
 				
-				HP = 200.0;
+				HP = 60.0;
 			break;
 			case "slime":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
@@ -161,7 +167,7 @@ public class Enemy extends Entity {
 				str = 10 + (scaling * 2);
 				spr = "spr_Slime.png";
 				
-				HP = 250.0;
+				HP = 70.0;
 			break;
 			case "irongremlin":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.4;
@@ -194,6 +200,27 @@ public class Enemy extends Entity {
 				name = "EVIL PULSATING ORB OF DOOM AND SUFFERING";
 				
 				HP = 320;
+			break;
+			case "chefbot":
+				damageResist[DamageType.SLASH.ordinal()] = 0.5;
+				damageResist[DamageType.ELEC.ordinal()] = 2.5;
+				damageResist[DamageType.FIRE.ordinal()] = 0.25;
+				
+				weaponDamage[DamageType.SLASH.ordinal()] = 70;
+				weaponScales[EntityStats.DEX.ordinal()] = 1.0;
+				dex = (int)(scaling * 2.5);
+				wil = (int)(scaling * 2.5);
+				arc = (int)(scaling * 4.0);
+				ist = 1;
+				spr = "spr_ChefBot.png";
+				
+				name = "ChefBot 9000";
+				
+				defSkillP = new int[] {0,0,1};
+				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_LightningBolt());
+				
+				HP = 200;
 			break;
 		}
 		
