@@ -79,6 +79,49 @@ public int[] setAvailableNodes() {
 	return null;
 }
 
+public boolean hasAccess(int i) {
+	for (int n:accessibleNodes) {
+		if (n==i)return true;
+	}
+	return false;
+}
+
+public String getCombatAffinity() {
+	return combatAffinity;
+}
+
+public void setCombatAffinity(String combatAffinity) {
+	this.combatAffinity = combatAffinity;
+}
+
+public int[] getAccessibleNodes() {
+	return accessibleNodes;
+}
+
+public void setAccessibleNodes(int[] accessibleNodes) {
+	this.accessibleNodes = accessibleNodes;
+}
+
+public int getIndex() {
+	return index;
+}
+
+public void setIndex(int index) {
+	this.index = index;
+}
+
+public int getDifficulty() {
+	return difficulty;
+}
+
+public void setDifficulty(int difficulty) {
+	this.difficulty = difficulty;
+}
+
+public void setType(String type) {
+	this.type = type;
+}
+
 public String getType() {
 	return type;
 }
