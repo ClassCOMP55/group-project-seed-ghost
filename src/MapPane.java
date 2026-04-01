@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GLine;
 import acm.graphics.GObject;
@@ -13,11 +14,13 @@ public class MapPane extends GraphicsPane {
 	
 	private ArrayList<Node> mapPath;
 	private ArrayList<GOval> myNodeObjects;
+	public static Node currPosition;
 	
 	public MapPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 		mapPath = new ArrayList<>();
 		createPath();
+		currPosition = mapPath.get(0);
 	}
 	
 	@Override
@@ -26,6 +29,12 @@ public class MapPane extends GraphicsPane {
 		createBackground();
 		addText();
 		createMap();
+		GImage test = new GImage("CampFireNode.png");
+		test.setLocation(100, 100);
+		//test.setSize(70, 70);
+		
+		contents.add(test);
+		mainScreen.add(test);
 	}
 
 	@Override
@@ -164,20 +173,40 @@ private void createMap() {
 		return mapPath.get(myNodeObjects.indexOf(oval));
 	}
 	
+	public GObject nodeToOval(Node node) {
+		return myNodeObjects.get(mapPath.indexOf(node));
+	}
+	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
 			mainScreen.switchToShopPane();
 		}
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GOval) {
+		if (myNodeObjects.contains(obj)) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
-			switch(ovalToNode(oval).getType()){
-			case "Shop": mainScreen.switchToShopPane(); break;
-			case "Combat": mainScreen.switchToCombatPane(); break;
-			case "CampFire": mainScreen.switchToCampFirePane(); break;
-			case "Loot": mainScreen.switchToLootPane(); break;
+			
+			if (currPosition.hasAccess(myNodeObjects.indexOf(oval))==true&& currPosition.isCleared()) {
+				currPosition = ovalToNode(oval);
+				switch(ovalToNode(oval).getType()){
+				case "Shop": mainScreen.switchToShopPane(); break;
+				case "Combat": mainScreen.switchToCombatPane(); break;
+				case "CampFire": mainScreen.switchToCampFirePane(); break;
+				case "Loot": mainScreen.switchToLootPane(); break;
+				}
 			}
+			else if (obj == nodeToOval(currPosition) && currPosition.isCleared()==false) {
+				
+				switch(ovalToNode(oval).getType()){
+				case "Shop": mainScreen.switchToShopPane(); break;
+				case "Combat": mainScreen.switchToCombatPane(); break;
+				case "CampFire": mainScreen.switchToCampFirePane(); break;
+				case "Loot": mainScreen.switchToLootPane(); break;
+				}
+				
+			}
+			
 		}
 				
 	}

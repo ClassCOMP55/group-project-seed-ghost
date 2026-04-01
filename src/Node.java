@@ -4,12 +4,22 @@ public class Node {
 String type,combatAffinity;
 int[] accessibleNodes;
 int index,difficulty;
+boolean cleared;
 
 
 public Node(int i) {
 	index = i;
 	assignType(i);
 	accessibleNodes = setAvailableNodes();
+	cleared = false;
+}
+
+public boolean isCleared() {
+	return cleared;
+}
+
+public void setCleared(boolean cleared) {
+	this.cleared = cleared;
 }
 
 public String getRandomType() {
@@ -124,6 +134,10 @@ public void setType(String type) {
 
 public String getType() {
 	return type;
+}
+
+public void cleared() {
+	cleared =true;
 }
 	
 	

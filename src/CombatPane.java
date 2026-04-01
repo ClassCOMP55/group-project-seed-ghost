@@ -242,6 +242,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (won==true&&switched==0) {
 			mainScreen.switchToMapPane();
+			MapPane.currPosition.cleared();
 			switched++;
 		}
 		if (lost==true&&switched==0) {
