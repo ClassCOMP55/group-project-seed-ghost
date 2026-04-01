@@ -172,12 +172,13 @@ public class Enemy extends Entity {
 			case "irongremlin":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.4;
 				damageResist[DamageType.SLASH.ordinal()] = 0.4;
-				damageResist[DamageType.CRUSH.ordinal()] = 0.4;
+				damageResist[DamageType.CRUSH.ordinal()] = 1.2;
 				damageResist[DamageType.BLAST.ordinal()] = 1.2;
 				damageResist[DamageType.FIRE.ordinal()] = 0.2;
 				damageResist[DamageType.ELEC.ordinal()] = 1.5;
 				
-				weaponDamage[DamageType.CRUSH.ordinal()] = 70;
+				weaponDamage[DamageType.SLASH.ordinal()] = 40;
+				weaponDamage[DamageType.CRUSH.ordinal()] = 30;
 				weaponScales[EntityStats.STR.ordinal()] = 1.0;
 				str = 10 + (scaling * 3);
 				ist = 0;

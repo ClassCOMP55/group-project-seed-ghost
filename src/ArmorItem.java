@@ -14,7 +14,11 @@ public class ArmorItem {
 		setMagic(false);
 		setCloth(false);
 		
-		incDamageMultipliers = new double[] {0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05};
+		if (guardarmor) {
+			incDamageMultipliers = new double[] {0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15};
+		} else {
+			incDamageMultipliers = new double[] {0.8,0.8,0.8,0.8,0.0,0.0,0.0,0.0};
+		}
 	}
 	
 	public ArmorItem () {
