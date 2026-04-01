@@ -271,9 +271,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void EnemyAttack() {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
-		update();
+		otherEntity =c;
 		description.setLabel("Enemy attacks "+c.getProfession());
 		description.setLocation((800-description.getWidth())/2,20);
+		update();
 	}
 	
 	public void nextCombat() {
