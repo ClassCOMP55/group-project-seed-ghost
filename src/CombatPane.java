@@ -298,11 +298,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
 			Character c = (Character) currentEntity;
-			Skill[] mySkillTemp = c.getMySkills();
+			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
 			}
-			c.setLastUsedSkill(mySkillTemp[skillIndex]);
 			counter++;
 		}
 		else if (currentEntity instanceof Enemy) {
@@ -540,6 +539,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				if (mySkills[skillIndex].preconditionsMet(currentEntity, otherEntity)) {
 					if (mySkills[skillIndex].getName()=="Guard Self") {
 						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+						Character c = (Character) currentEntity;
+						c.setLastUsedSkill(mySkills[skillIndex]);
 						nextCombat();
 						
 					}
@@ -561,6 +562,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			if (otherEntity instanceof Enemy) {
 				
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+				Character c = (Character) currentEntity;
+				c.setLastUsedSkill(mySkills[skillIndex]);
 				
 				skill = false;
 				skillReady = false;
