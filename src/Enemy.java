@@ -76,7 +76,7 @@ public class Enemy extends Entity {
 		
 		double[] weaponDamage = new double[] {0,0,0,0,0,0,0,0};
 		double[] weaponScales = new double[] {0,0,0,0,0,0,0,0};
-		double[] damageResist = new double[] {0,0,0,0,0,0,0,0};
+		double[] damageResist = new double[] {1,1,1,1,1,1,1,1};
 		boolean ranged = false, magic = false;
 		String spr = "spr_HolyGhost.png";
 		
@@ -85,7 +85,7 @@ public class Enemy extends Entity {
 		
 		switch (name.toLowerCase()) {
 			case "holyghost":
-				damageResist[DamageType.HOLY.ordinal()] = 0.2;
+				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
@@ -220,6 +220,7 @@ public class Enemy extends Entity {
 			rtn += (incDamage[i] * damageMultipliers[i]);
 		}
 		
+		System.out.println(rtn);
 		return rtn;
 	}
 	
