@@ -5,7 +5,7 @@ public class SKILL_SelfSacrifice extends Skill {
 	public SKILL_SelfSacrifice () {
 		super(30);
 		setName("Self Sacrifice");
-		setName("Take " + SELF_DAMAGE + " damage to deal huge HOLY damage to a foe. Scales with FAITH and CONSTITUTION.");
+		setDescription("Take " + SELF_DAMAGE + " damage to deal huge HOLY damage to a foe. Scales with FAITH and CONSTITUTION.");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
