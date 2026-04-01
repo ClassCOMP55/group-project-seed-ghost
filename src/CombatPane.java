@@ -124,21 +124,24 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
 		enemyNumber = 0;
+		int maxEnemyNumber = 1;
 		allEntities = new ArrayList<>();
 		temp = new ArrayList<>();
 		
 		for(int i = 0;i<myArrAllies.length;i++) {
 			if (myArrAllies[i]!=null) {
-				enemyNumber++;
+				maxEnemyNumber += 1;
 				allEntities.add(myArrAllies[i]);
 				temp.add(myArrAllies[i]);
 			}
 		}
 		
+		
+		enemyNumber = Chance.range(0, maxEnemyNumber);
 		myArrEnemies = new Enemy[enemyNumber];
 		
 		for(int i = 0;i<enemyNumber;i++) {
-			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil"});
+			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil","magicsword","slime","orb","chefbot"});
 			myArrEnemies[i] = new Enemy(sprite,0);
 			allEntities.add(myArrEnemies[i]);
 			temp.add(myArrEnemies[i]);
