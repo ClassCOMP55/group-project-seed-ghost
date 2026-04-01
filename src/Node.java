@@ -1,9 +1,10 @@
 import acm.graphics.GObject;
 
 public class Node {
-String type;
+String type,combatAffinity;
 int[] accessibleNodes;
-int index;
+int index,difficulty;
+
 
 public Node(int i) {
 	index = i;
@@ -27,23 +28,37 @@ public String getRandomType() {
 public void assignType(int i) {
 	
 	switch(i) {
-	case 0: type = "Combat";break;
+	case 0: type = "Combat";assignCombatAffinity(i);assignDifficulty(i);break;
 	case 1: type = getRandomType();break;
 	case 2: type = getRandomType();break;
-	case 3: type = "Combat";break;
-	case 4: type = "Combat";break;
-	case 5: type = "Combat";break;
-	case 6: type = getRandomType();break;
-	case 7: type = getRandomType();break;
-	case 8: type = getRandomType();break;
-	case 9: type = getRandomType();break;
-	case 10: type = getRandomType();break;
-	default: type = "Combat";
-	}
-	
-	
+	case 3: type = "Combat"; assignCombatAffinity(i);assignDifficulty(i);break;
+	case 4: type = "Combat"; assignCombatAffinity(i);assignDifficulty(i);break;
+	case 5: type = "Combat"; assignCombatAffinity(i);assignDifficulty(i);break;
+	case 6: type = getRandomType(); break;
+	case 7: type = getRandomType(); break;
+	case 8: type = getRandomType(); break;
+	case 9: type = getRandomType(); break;
+	case 10: type = getRandomType() ;break;
+	default: type = "Combat";assignCombatAffinity(i);assignDifficulty(i);
+	}		
 }
 
+public void assignCombatAffinity(int i) {
+	combatAffinity = Chance.choose(new String[] {"combatFire","combatHoly","combatLightning","combatMagic",});
+}
+
+public void assignDifficulty(int i) {
+	switch(i) {
+	case 0: difficulty =1;break;
+	case 3: difficulty =5;break;
+	case 4: difficulty =5;break;
+	case 5: difficulty =5;break;
+	case 11: difficulty =15;break;
+	case 12: difficulty =15;break;
+	case 13: difficulty =30;break;
+	
+	}
+}
 public int[] setAvailableNodes() {
 			
 	switch(index){
