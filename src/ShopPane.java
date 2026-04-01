@@ -110,6 +110,7 @@ public class ShopPane extends GraphicsPane {
 
 	        contents.add(returnBtn);
 	        mainScreen.add(returnBtn);
+	        MapPane.currPosition.cleared();
 	    }
 
 
