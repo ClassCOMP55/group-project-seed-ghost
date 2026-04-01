@@ -335,7 +335,7 @@ public class WeaponItem {
 			addDmg += scaling[i] * stats[i];
 		}
 		
-		double[] dmg = getBaseAttack();
+		double[] dmg = getBaseAttack().clone();
 		double tldmg = getBaseDamage();
 		
 		for (int i = 0; i < dmg.length; i++) {

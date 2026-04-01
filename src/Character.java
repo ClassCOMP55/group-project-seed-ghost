@@ -321,4 +321,8 @@ public class Character extends Entity {
 	public void setRecruitCost(int recruitCost) {
 		this.recruitCost = recruitCost;
 	}
+	
+	public String toString () {
+		return profession.substring(0, 1).toUpperCase() + profession.substring(1);
+	}
 }
