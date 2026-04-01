@@ -15,21 +15,24 @@ import acm.graphics.GRect;
 import javax.swing.*;
 
 public class CombatPane extends GraphicsPane implements ActionListener {
-	private ArrayList<Entity> allEntities;
+	
+	private ArrayList<Entity> allEntities, temp,initiativeArr;
 	private ArrayList<GImage> allImages;
-	private ArrayList<Entity> initiativeArr;
-	private ArrayList<Entity> temp;
-	private Character[] myArrAllies;
-	private Enemy[] myArrEnemies;
-	private int enemyNumber;
-	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on;
-	private int turn,counter,skillIndex,switched;
-	private Entity currentEntity,otherEntity;
-	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
-	private GLabel displayBoxLabel,description,TurnLabel;
 	private ArrayList<GRect> allSkillsButton,healthBars,manaBars;
 	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels;
+	
+	private Character[] myArrAllies;
+	private Enemy[] myArrEnemies;
 	Skill[] mySkills;
+	
+	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
+	private GLabel displayBoxLabel,description,TurnLabel;
+	
+	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on;
+	private int turn,counter,skillIndex,switched,enemyNumber;
+	
+	private Entity currentEntity,otherEntity;
+	
 	Timer t;
 	
 
@@ -40,34 +43,28 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	@Override
 	public void showContent() {
 		t = new Timer(1000, this);
-		Character testChar = new Character("samurai");
-		System.out.println(testChar.getSprite().getWidth());
-		Character testChar2 = new Character("sorcerer");
-		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
-		CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
 		
-		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
-		myArrEnemies = new Enemy[3];
-		allEntities = new ArrayList<>();
-		allImages = new ArrayList<>();
-		initiativeArr = new ArrayList<>();
-		temp = new ArrayList<>();
+		//Character testChar = new Character("samurai");
+		//Character testChar2 = new Character("sorcerer");
+		
+		//CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
+		//CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
+		
 		allSkillsButton = new ArrayList<>();
-		allSkillsButtonLabels = new ArrayList<>();
-		healthLabels = new ArrayList<>();
-		manaLabels= new ArrayList<>();
-		healthBars = new ArrayList<>();
-		manaBars = new ArrayList<>();
+	
 		otherEntity = new Enemy();
 		highlighted = new GRect(0,0);
 		skill = false;
 		inventory = false;
+		
 		turn = 0;
 		counter = 0;
+		switched =0;
+		
 		skillButton = createButton(0,540,"Skills");
 		inventoryButton = createButton(130,540,"Inventory");	
+		
 		generateEnemiesAndAllies();
-		switched =0;
 		nextCombat();
 		
 	}
@@ -121,7 +118,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 */
 	
 	private void generateEnemiesAndAllies(){
+		
+		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
 		enemyNumber = 0;
+		allEntities = new ArrayList<>();
+		temp = new ArrayList<>();
+		
 		for(int i = 0;i<myArrAllies.length;i++) {
 			if (myArrAllies[i]!=null) {
 				enemyNumber++;
@@ -129,6 +131,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				temp.add(myArrAllies[i]);
 			}
 		}
+		
+		myArrEnemies = new Enemy[enemyNumber];
+		
 		for(int i = 0;i<enemyNumber;i++) {
 			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil"});
 			myArrEnemies[i] = new Enemy(sprite,0);
@@ -143,6 +148,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 * Resizes the sprites as needed
 	 */
 	private void generateImages(){
+		
+		allImages = new ArrayList<>();
 		
 		for (Entity e:allEntities) {
 			GImage image = e.getSprite();
@@ -243,6 +250,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void rollForInitiative() {
+		
+		initiativeArr = new ArrayList<>();
+		
 		for (int i = 0;i<allEntities.size();i++) {
 			int indexOfHighest = 0;
 			for (int n = 0;n<temp.size();n++) {
@@ -289,7 +299,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			initiativeArr.remove(otherEntity);
 		}
 		checkResult();
-		
 		
 		
 		counter = counter%initiativeArr.size();
@@ -346,16 +355,25 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void createHealthAndManaLabels() {
+		
+		healthLabels = new ArrayList<>();
+		manaLabels= new ArrayList<>();
+
 		for (Entity e:allEntities) {
+			
 			GLabel health = new GLabel("Health: "+e.getHp()+"/"+e.getHp());
 			GLabel mana = new GLabel("Mana goes here");
 			GImage image = entityToImage(e);
+			
 			health.setLocation(image.getX()+30,image.getY());
 			healthLabels.add(health);
 			contents.add(health);
 			mainScreen.add(health);
+			
 			if (e instanceof Character) {
+				
 				Character c = (Character) e;
+				
 				mana = new GLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
 				manaLabels.add(mana);
 				contents.add(mana);
@@ -370,11 +388,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void createStatsBar() {
-		GRect health;
-		GRect mana;
-		GLabel manaLabel = new GLabel("Mana goes here");
-		GRect nameDisplay;
-		GLabel name;
+		
+		GRect health,mana,nameDisplay;
+		GLabel manaLabel,name = new GLabel("Mana goes here");
+		healthBars = new ArrayList<>();
+		manaBars = new ArrayList<>();
 		
 		for (int i = 0;i<enemyNumber;i++) {
 			int width = 540;
@@ -440,7 +458,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	
 	public void displaySkills(Character myChar) {
+		
 		mySkills =myChar.getMySkills();
+		allSkillsButton = new ArrayList<>();
+		allSkillsButtonLabels = new ArrayList<>();
+
 		displayBox = new GRect(340,320);
 		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
