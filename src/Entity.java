@@ -217,12 +217,14 @@ public class Entity {
 	/*
 	 * Override this one.
 	 */
-	public void attackMe (double[] attackSpread) {
+	public double attackMe (double[] attackSpread) {
 		double sum = 0;
 		for (int i = 0; i < attackSpread.length; i++) {
 			sum += attackSpread[i];
 		}
+		
 		hurt(sum);
+		return sum;
 	}
 	
 	/*

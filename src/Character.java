@@ -294,9 +294,10 @@ public class Character extends Entity {
 		this.mySkills = mySkills;
 	}
 	
-	public void attackMe (double[] attackSpread) {
+	public double attackMe (double[] attackSpread) {
 		double sum = myArmor.calculateDamage(attackSpread);
 		hurt(sum);
+		return sum;
 	}
 	
 	public double[] attackOther () {
