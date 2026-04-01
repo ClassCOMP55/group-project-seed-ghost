@@ -49,7 +49,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		//CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
 		//CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
-		
 		allSkillsButton = new ArrayList<>();
 	
 		otherEntity = new Enemy();
@@ -64,7 +63,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		skillButton = createButton(0,540,"Skills");
 		inventoryButton = createButton(130,540,"Inventory");	
 		
+
+		
 		generateEnemiesAndAllies();
+		
+		otherEntity = myArrEnemies[0]; //Temporary Fix for glitch
 		nextCombat();
 		
 	}
