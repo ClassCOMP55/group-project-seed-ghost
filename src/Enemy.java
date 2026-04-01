@@ -100,7 +100,7 @@ public class Enemy extends Entity {
 				name = "Holy Ghost";
 				
 				defSkillP = new int[] {0,1,2,1};
-				defSkill.add(new SKILL_Guard());
+				defSkill.add(new SKILL_LightningBolt());
 				defSkill.add(new SKILL_SelfSacrifice());
 				defSkill.add(new SKILL_BasicAttack());
 				
