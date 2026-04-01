@@ -59,7 +59,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	}
 	
 	private void createCharacters() {
-		ArrayList<String> professions = new ArrayList<>(Arrays.asList("knight","samurai","thief","viking","sorcerer","paladin","marksman"));
+		ArrayList<String> professions = new ArrayList<>(Arrays.asList("knight","samurai","thief","viking","sorcerer","paladin","marksman","cleric"));
 		for (int i = 0;i<3;i++) {
 			int choice = Chance.range(0, professions.size()-1);
 			Character myChar = new Character(professions.get(choice));
@@ -78,6 +78,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		case "viking": charImage = new GImage("spr_Viking.png",50+(200*i),350); break;
 		case "sorcerer": charImage = new GImage("spr_Sorcerer.png",50+(200*i),350); break;
 		case "paladin": charImage = new GImage("spr_Paladin.png",50+(200*i),350); break;
+		case "cleric": charImage = new GImage("spr_Cleric.png",50+(200*i),350); break;
 		default: charImage = new GImage("spr_Marksman.png",50+(200*i),350); break;
 		}
 		charImage.setLocation(5+2*i*charImage.getWidth(), (600-charImage.getHeight())/2);

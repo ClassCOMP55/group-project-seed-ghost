@@ -270,24 +270,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void EnemyAttack() {
 		Enemy e = (Enemy) currentEntity;
-		boolean attack = false;
-		
-		while (!attack) {
-			for (Character c:myArrAllies) {
-				if (c != null) {
-					attack = Chance.coinflip(0.5);
-					if (attack&&c.isDead()==false) {
-						description.setLabel("Enemy attacks "+c.getProfession());
-						description.setLocation((800-description.getWidth())/2,20);
-						c.attackMe(e.attackOther());
-						otherEntity =c;
-						update();
-						return;
-					}
-					
-				}
-			}
-		}
+		Character c = e.playTurn(this);
+		update();
+		description.setLabel("Enemy attacks "+c.getProfession());
+		description.setLocation((800-description.getWidth())/2,20);
 	}
 	
 	public void nextCombat() {
@@ -311,7 +297,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
 			Character c = (Character) currentEntity;
-			if (c.getLastUsedSkill()!=null) c.startTurn();
+			Skill[] mySkillTemp = c.getMySkills();
+			if (c.getLastUsedSkill()!=null) {
+				c.startTurn();
+			}
+			c.setLastUsedSkill(mySkillTemp[skillIndex]);
 			counter++;
 		}
 		else if (currentEntity instanceof Enemy) {
