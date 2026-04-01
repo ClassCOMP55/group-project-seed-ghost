@@ -98,6 +98,8 @@ public class Character extends Entity {
 				tempSprite = "spr_Knight.png";
 				allowedArmors = new String[] {"light", "medium","heavy"};
 				
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Drain()};
+				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), "null");
 			break;
@@ -153,6 +155,8 @@ public class Character extends Entity {
 				tempArc = (int)Chance.range(10, 20);
 				allowedArmors = new String[] {"light", "medium"};
 				
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_SelfSacrifice(), new SKILL_PrayerOfHealing()};
+				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), "holy");
 				tempSprite = "spr_Cleric.png";
@@ -163,10 +167,12 @@ public class Character extends Entity {
 				tempDr = 0.1;
 				
 				tempWil = (int)Chance.range(40, 50);
-				tempFth = (int)Chance.range(10, 20);
+				tempFth = (int)Chance.range(40, 90);
 				tempArc = (int)Chance.range(60, 100);
 				tempSprite = "spr_Sorcerer.png";
 				allowedArmors = new String[] {"light"};
+				
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"stave","talisman"}), "magic");
@@ -183,6 +189,8 @@ public class Character extends Entity {
 				tempSprite = "spr_Paladin.png";
 				
 				allowedArmors = new String[] {"light", "medium","heavy"};
+				
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_SelfSacrifice(), new SKILL_IronWave()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","greatsword","hammer"}), "holy");
