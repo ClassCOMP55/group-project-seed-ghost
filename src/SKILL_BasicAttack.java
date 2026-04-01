@@ -9,5 +9,10 @@ public class SKILL_BasicAttack extends Skill {
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = me.attackOther();
 		target.attackMe(dmg);
+		
+		if (me instanceof Character) {
+			Character m = (Character)me;
+			System.out.println(me + " attacked " + target + " with " + m.getWeapon());
+		}
 	}
 }

@@ -7,6 +7,7 @@ public class Enemy extends Entity {
 	private ArrayList<Skill> skills;
 	private int turn;
 	private Character nextTarget,previousTarget;
+	private String name;
 	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
@@ -29,11 +30,12 @@ public class Enemy extends Entity {
 		setAtk(null);
 		turn = 0;
 		setDefaultAttackPattern();
+		name = "dummy";
 	}
 	
 	public Enemy(double hpMax, double manaMax, double deathResist, int str, int dex, int prc, int ist, int con, int wil,
 			int fth, int arc, double[] baseAttack, double[] statScaling, double[] baseStatus, String affinity, boolean ranged, 
-			boolean magic, double[] incStatusMultipliers) {
+			boolean magic, double[] incStatusMultipliers, String name) {
 		super(hpMax, manaMax, deathResist, str, dex, prc, ist, con, wil, fth, arc);
 		
 		setDamageMultipliers(new double[] {1,1,1,1,1,1,1,1});
@@ -42,6 +44,7 @@ public class Enemy extends Entity {
 		setAtk(new WeaponItem (baseAttack, statScaling, ranged, magic));
 		turn = 0;
 		setDefaultAttackPattern();
+		this.name = name;
 	}
 	
 	/*
@@ -57,6 +60,8 @@ public class Enemy extends Entity {
 		setAtk(new WeaponItem (true));
 		super.setSprite(sprite);
 		setDefaultAttackPattern();
+		
+		name = "test";
 	}
 	
 	/*
@@ -67,9 +72,11 @@ public class Enemy extends Entity {
 			con = scaling, wil = scaling, fth = scaling, arc = scaling;
 		double HP = 100.0, Mana = 100.0, DR = 0.0;
 		
+		this.name = name;
+		
 		double[] weaponDamage = new double[] {0,0,0,0,0,0,0,0};
 		double[] weaponScales = new double[] {0,0,0,0,0,0,0,0};
-		double[] damageResist = new double[] {0,0,0,0,0,0,0,0};
+		double[] damageResist = new double[] {1,1,1,1,1,1,1,1};
 		boolean ranged = false, magic = false;
 		String spr = "spr_HolyGhost.png";
 		
@@ -78,7 +85,7 @@ public class Enemy extends Entity {
 		
 		switch (name.toLowerCase()) {
 			case "holyghost":
-				damageResist[DamageType.HOLY.ordinal()] = 0.2;
+				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
@@ -88,6 +95,8 @@ public class Enemy extends Entity {
 				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
 				fth = 10 + (scaling * 2);
 				spr = "spr_HolyGhost.png";
+				
+				name = "Holy Ghost";
 				
 				HP = 200.0;
 			break;
@@ -106,6 +115,8 @@ public class Enemy extends Entity {
 				ist = 0;
 				spr = "spr_BladeDevil.gif";
 				
+				name = "Blade Devil";
+				
 				HP = 650;
 			break;
 			case "magicsword":
@@ -119,6 +130,8 @@ public class Enemy extends Entity {
 				weaponScales[EntityStats.ARC.ordinal()] = 1.2;
 				arc = 10 + (scaling * 2);
 				spr = "spr_CombatNode_MAGIC.png";
+				
+				name = "Magic Sword";
 				
 				HP = 220;
 			break;
@@ -164,6 +177,8 @@ public class Enemy extends Entity {
 				ist = 0;
 				spr = "spr_IronGremlin.gif";
 				
+				name = "Iron Gremlin";
+				
 				HP = 700;
 			break;
 			case "orb":
@@ -175,6 +190,8 @@ public class Enemy extends Entity {
 				arc = (int)(scaling * 2.5);
 				ist = 20 * scaling;
 				spr = "spr_EvilPulsatingOrb.gif";
+				
+				name = "EVIL PULSATING ORB OF DOOM AND SUFFERING";
 				
 				HP = 320;
 			break;
@@ -203,6 +220,7 @@ public class Enemy extends Entity {
 			rtn += (incDamage[i] * damageMultipliers[i]);
 		}
 		
+		System.out.println(rtn);
 		return rtn;
 	}
 	
@@ -288,5 +306,9 @@ public class Enemy extends Entity {
 		previousTarget = nextTarget;
 		
 		return previousTarget;
+	}
+	
+	public String toString () {
+		return name.substring(0,1).toUpperCase() + name.substring(1);
 	}
 }
