@@ -25,10 +25,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Enemy[] myArrEnemies;
 	Skill[] mySkills;
 	
-	private GRect skillButton,inventoryButton,displayBox,extra,highlighted;
-	private GLabel displayBoxLabel,description,TurnLabel;
+	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton;
+	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel;
 	
-	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on;
+	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost;
 	private int turn,counter,skillIndex,switched,enemyNumber;
 	
 	private Entity currentEntity,otherEntity;
@@ -43,6 +43,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	@Override
 	public void showContent() {
 		t = new Timer(1000, this);
+		hideContent();
 		
 		//Character testChar = new Character("samurai");
 		//Character testChar2 = new Character("sorcerer");
@@ -55,6 +56,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		highlighted = new GRect(0,0);
 		skill = false;
 		inventory = false;
+		forSkills = false;
 		
 		turn = 0;
 		counter = 0;
@@ -90,27 +92,39 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (currentEntity instanceof Enemy) {
 			Enemy e = (Enemy) currentEntity;
-			manaLabels.get(index1).setLabel("Mana: "+Math.round(e.getMana())+"/"+e.getManaMax());
-			healthLabels.get(index1).setLabel("Health: "+Math.round(e.getHp())+"/"+e.getHpMax());
-			if (e.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+e.getHpMax());
+			manaLabels.get(index1).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
+			healthLabels.get(index1).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
+			if (e.isDead()) {
+				healthLabels.get(index2).setLabel("Dead");
+				 yourDead(e);
+			}
 		}
 		else if (currentEntity instanceof Character) {
 			Character c = (Character) currentEntity;
-			manaLabels.get(index1).setLabel("Mana: "+Math.round(c.getMana())+"/"+c.getManaMax());
-			healthLabels.get(index1).setLabel("Health: "+Math.round(c.getHp())+"/"+c.getHpMax());
-			if (c.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+c.getHpMax());
+			manaLabels.get(index1).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
+			healthLabels.get(index1).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
+			if (c.isDead()) {
+				healthLabels.get(index2).setLabel("Dead");
+				 yourDead(c);
+			}
 		}
 		if (otherEntity instanceof Enemy) {
 			Enemy e = (Enemy) otherEntity;
-			manaLabels.get(index2).setLabel("Mana: "+Math.round(e.getMana())+"/"+e.getManaMax());
-			healthLabels.get(index2).setLabel("Health: "+Math.round(e.getHp())+"/"+e.getHpMax());
-			if (e.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+e.getHpMax());
+			manaLabels.get(index2).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
+			healthLabels.get(index2).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
+			if (e.isDead()) {
+				healthLabels.get(index2).setLabel("Dead");
+				 yourDead(e);
+			}
 		}
 		else if (otherEntity instanceof Character) {
 			Character c = (Character) otherEntity;
-			manaLabels.get(index2).setLabel("Mana: "+Math.round(c.getMana())+"/"+c.getManaMax());
-			healthLabels.get(index2).setLabel("Health: "+Math.round(c.getHp())+"/"+c.getHpMax());
-			if (c.isDead()) healthLabels.get(index2).setLabel("Health:+"+"0/"+c.getHpMax());
+			manaLabels.get(index2).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
+			healthLabels.get(index2).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
+			if (c.isDead()) {
+				healthLabels.get(index2).setLabel("Dead");
+				 yourDead(c);
+			}
 		}
 		
 	}
@@ -220,14 +234,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	/*
-	 * Converts a Entity to its corresponding GImage
-	 * @param e: the Entity that needs to be converted
+	 * 
 	 * 
 	 */
 	
-	public void checkResult() {
-		boolean won = true;
-		boolean lost = true;
+	public boolean checkResult() {
+		won = true;
+		lost = true;
 		for(int i = 0;i<myArrAllies.length;i++) {
 			if (myArrAllies[i]!=null) {
 				if (myArrAllies[i].isDead()==false) lost = false;	
@@ -240,15 +253,17 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		
-		if (won==true&&switched==0) {
-			mainScreen.switchToMapPane();
-			MapPane.currPosition.cleared();
-			switched++;
+		if (won==true||lost==true) {
+			if (won==true) {
+				MapPane.currPosition.cleared();
+				displayRewards();
+			}
+			else {
+				mainScreen.switchToMapPane();
+			}
+			return true;
 		}
-		if (lost==true&&switched==0) {
-			mainScreen.switchToMenuPane();
-			switched++;
-		}
+		return false;
 		
 		
 	}
@@ -282,14 +297,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (counter>0)entityToImage(currentEntity).setColor(null);
 		if (counter>0) update();
 		
-		if (isDead()&&switched==0) {
-			int index = allEntities.indexOf(otherEntity);
-			if (healthLabels.get(index).getLabel()!="Dead")healthLabels.get(index).setLocation(healthLabels.get(index).getX(),healthLabels.get(index).getY());
-			healthLabels.get(index).setLabel("Dead");
-			yourDead(otherEntity);
-			initiativeArr.remove(otherEntity);
-		}
-		checkResult();
+		if (checkResult()==true) return;
 		
 		
 		counter = counter%initiativeArr.size();
@@ -331,14 +339,17 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(button);
 		
 		GLabel label = new GLabel(str);
+	
 		label.setFont("DialogInput-PLAIN-15");
 		if (forSkills==true) label.setFont("DialogInput-PLAIN-15");
-		label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+15);
+		label.setLocation(x+(button.getWidth()-label.getWidth())/2, y+(button.getHeight()-label.getHeight())/2+15);
+		
 		if (forSkills==true) allSkillsButtonLabels.add(label);
 		contents.add(label);
 		mainScreen.add(label);
 		return button;
 	}
+	
 	public void addText() {
 		description = new GLabel("Click a Action");
 		description.setFont("DialogInput-PLAIN-15");
@@ -355,7 +366,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 		for (Entity e:allEntities) {
 			
-			GLabel health = new GLabel("Health: "+e.getHp()+"/"+e.getHp());
+			GLabel health = new GLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
 			GLabel mana = new GLabel("Mana goes here");
 			GImage image = entityToImage(e);
 			
@@ -368,7 +379,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				
 				Character c = (Character) e;
 				
-				mana = new GLabel("Mana: "+e.getMana()+"/"+e.getManaMax());
+				mana = new GLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
 				manaLabels.add(mana);
 				contents.add(mana);
 				mainScreen.add(mana);
@@ -450,6 +461,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return false;
 	}
 	
+	public void clearArrays() {
+		allEntities.clear(); temp.clear(); initiativeArr.clear();
+		allImages.clear(); allSkillsButton.clear(); healthBars.clear(); manaBars.clear();
+		allSkillsButtonLabels.clear(); healthLabels.clear(); manaLabels.clear();
+	}
+	
 	
 	public void displaySkills(Character myChar) {
 		
@@ -488,6 +505,45 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.remove(extra);
 		mainScreen.remove(extra);
 		allSkillsButtonLabels.clear();
+	}
+	
+	public void displayRewards() {
+		update();
+		
+		displayBox = new GRect(340,200);
+		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
+		displayBox.setFilled(true);
+		displayBox.setFillColor(Color.black);
+        contents.add(displayBox);
+		mainScreen.add(displayBox);
+		
+		mapButton = new GRect(160,50);
+		mapButton.setLocation(displayBox.getX()+80, displayBox.getY()+130);
+		mapButton.setFilled(true);
+		mapButton.setFillColor(Color.DARK_GRAY);
+		contents.add(mapButton);
+		mainScreen.add(mapButton);
+		
+		mapButtonLabel = new GLabel("Continue to Map");
+		mapButtonLabel.setFont("DialogInput-PLAIN-15");
+		mapButtonLabel.setLocation(mapButton.getX() + (mapButton.getWidth() - mapButtonLabel.getWidth()) / 2, mapButton.getY() + (mapButton.getHeight() + mapButtonLabel.getAscent()) / 2);
+		contents.add(mapButtonLabel);
+		mainScreen.add(mapButtonLabel);
+		
+		GRect reward = new GRect(320,100);
+		reward.setLocation(displayBox.getX()+10, displayBox.getY()+20);
+		reward.setFilled(true);
+		reward.setFillColor(Color.YELLOW);
+		contents.add(reward);
+		mainScreen.add(reward);
+		
+		GLabel rewardLabel = new GLabel("Reward goes here!");
+		rewardLabel.setFont("DialogInput-PLAIN-20");
+		rewardLabel.setLocation(reward.getX() + (reward.getWidth() - rewardLabel.getWidth()) / 2, reward.getY() + (reward.getHeight() + rewardLabel.getAscent()) / 2);
+		contents.add(rewardLabel);
+		mainScreen.add(rewardLabel);
+		
+		
 	}
 	
 	public void yourTurn(GImage image) {
@@ -586,6 +642,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				description.setLocation((800-description.getWidth())/2,20);
 			}
 	
+		}
+		if ((obj==mapButton||obj==mapButtonLabel)&&won==true) {
+			clearArrays();
+			mainScreen.switchToMapPane();
 		}
 	}
 	
