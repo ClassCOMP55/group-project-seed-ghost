@@ -95,7 +95,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			manaLabels.get(index1).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
 			healthLabels.get(index1).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
 			if (e.isDead()) {
-				healthLabels.get(index2).setLabel("Dead");
+				if(healthLabels.get(index1).getLabel()!="Dead")initiativeArr.remove(e);
+				healthLabels.get(index1).setLabel("Dead");
 				 yourDead(e);
 			}
 		}
@@ -104,7 +105,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			manaLabels.get(index1).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
 			healthLabels.get(index1).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
 			if (c.isDead()) {
-				healthLabels.get(index2).setLabel("Dead");
+				if(healthLabels.get(index1).getLabel()!="Dead")initiativeArr.remove(c);
+				healthLabels.get(index1).setLabel("Dead");
 				 yourDead(c);
 			}
 		}
@@ -113,6 +115,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			manaLabels.get(index2).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
 			healthLabels.get(index2).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
 			if (e.isDead()) {
+				if(healthLabels.get(index2).getLabel()!="Dead")initiativeArr.remove(e);
 				healthLabels.get(index2).setLabel("Dead");
 				 yourDead(e);
 			}
@@ -122,6 +125,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			manaLabels.get(index2).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
 			healthLabels.get(index2).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
 			if (c.isDead()) {
+				if(healthLabels.get(index2).getLabel()!="Dead")initiativeArr.remove(c);
 				healthLabels.get(index2).setLabel("Dead");
 				 yourDead(c);
 			}
