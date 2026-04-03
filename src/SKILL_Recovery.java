@@ -4,6 +4,7 @@ public class SKILL_Recovery extends Skill {
 		super(0);
 		setName("Recovery");
 		setDescription("Fully recover an ally's MANA.");
+		setvTarget("CHARA");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

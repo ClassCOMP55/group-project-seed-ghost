@@ -4,6 +4,7 @@ public class SKILL_Determination extends Skill {
 		super(35);
 		setName("Determination");
 		setDescription("Permanently increase your MANA MAX, DEXTERITY and INSTINCT by 5.");
+		setvTarget("NA");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

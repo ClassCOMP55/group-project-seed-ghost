@@ -4,6 +4,7 @@ public class SKILL_Fireball extends Skill {
 		super(50);
 		setName("Fireball");
 		setDescription("Unleash a burst of flames, dealing FIRE damage to all enemies. Scales with Arcane and Constitution.");
+		setvTarget("NA");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

@@ -4,19 +4,21 @@
 
 
 public class Skill {
-	private String name, description;
+	private String name, description, vTarget;
 	private double manaCost;
 	
 	public Skill () {
 		setName("DEFAULT_SKILL");
 		setDescription("A dummy skill that does nothing. If you're seeing this, something went wrong.");
 		manaCost = 0;
+		vTarget = "NA";
 	}
 	
 	public Skill (double mana_cost) {
 		setName("DEFAULT_SKILL");
 		setDescription("A dummy skill that does nothing. If you're seeing this, something went wrong.");
 		manaCost = mana_cost;
+		vTarget = "NA";
 	}
 
 	public String getDescription() {
@@ -62,5 +64,13 @@ public class Skill {
 
 	public void setManaCost(int manaCost) {
 		this.manaCost = manaCost;
+	}
+
+	public String getvTarget() {
+		return vTarget;
+	}
+
+	public void setvTarget(String vTarget) {
+		this.vTarget = vTarget;
 	}
 }

@@ -71,12 +71,12 @@ public class Enemy extends Entity {
 	/*
 	 * Specific Enemy constructor
 	 */
-	public Enemy (String name, int scaling) {
+	public Enemy (String id, int scaling) {
 		int str = scaling, dex = scaling, prc = scaling, ist = scaling, 
 			con = scaling, wil = scaling, fth = scaling, arc = scaling;
 		double HP = 100.0, Mana = 100000.0, DR = 0.0;
 		
-		this.name = name;
+		this.name = id;
 		
 		double[] weaponDamage = new double[] {0,0,0,0,0,0,0,0};
 		double[] weaponScales = new double[] {0,0,0,0,0,0,0,0};
@@ -89,7 +89,7 @@ public class Enemy extends Entity {
 		
 		sprScale = 1;
 		
-		switch (name.toLowerCase()) {
+		switch (id.toLowerCase()) {
 			case "holyghost":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;

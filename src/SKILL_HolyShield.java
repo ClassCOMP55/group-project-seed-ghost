@@ -8,6 +8,7 @@ public class SKILL_HolyShield extends Skill {
 		setName("Shield of Faith");
 		setDescription("Become immune to affinity damage until the start of your next turn.");
 		tempArmor = null;
+		setvTarget("NA");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
