@@ -88,7 +88,7 @@ public class Character extends Entity {
 		
 		switch (profession) {
 			case "knight": 
-				tempHp = Chance.range(200, 300);
+				tempHp = Chance.range(200, 400);
 				tempMn = Chance.range(10, 100);
 				tempDr = 0.25;
 				
@@ -104,7 +104,7 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), "null");
 			break;
 			case "samurai":
-				tempHp = Chance.range(150, 300);
+				tempHp = Chance.range(150, 400);
 				tempMn = Chance.range(40, 100);
 				tempDr = 0.3;
 				
@@ -135,7 +135,7 @@ public class Character extends Entity {
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 			break;
 			case "viking":
-				tempHp = Chance.range(200, 300);
+				tempHp = Chance.range(300, 400);
 				tempMn = Chance.range(10, 100);
 				tempDr = 0.5;
 				
@@ -165,7 +165,7 @@ public class Character extends Entity {
 			break;
 			case "sorcerer":
 				tempHp = Chance.range(40, 100);
-				tempMn = Chance.range(100, 300);
+				tempMn = Chance.range(150, 300);
 				tempDr = 0.1;
 				
 				tempWil = (int)Chance.range(40, 50);
@@ -206,17 +206,19 @@ public class Character extends Entity {
 				tempDex = (int)Chance.range(40, 70);
 				allowedArmors = new String[] {"light", "medium"};
 				
-				tempSprite = "spr_RangedUpdated.png";
+				tempSprite = "spr_RangerUpdated.png";
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), "null");
 			break;
 			case "marksman":
-				tempHp = Chance.range(100, 200);
+				tempHp = Chance.range(150, 250);
 				tempMn = Chance.range(5, 10);
 				tempDr = 0.225;
 				
 				tempPrc = (int)Chance.range(60, 160);
+				tempDex = (int)Chance.range(30, 60);
+				tempIst = (int)Chance.range(100, 120);
 				tempSprite = "spr_Marksman.png";
 				allowedArmors = new String[] {"light"};
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
