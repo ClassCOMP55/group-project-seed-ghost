@@ -8,6 +8,7 @@ public class SKILL_Guard extends Skill {
 		setName("Guard Self");
 		setDescription("Sets your damage reduction to 95% until the start of your next turn.");
 		tempArmor = null;
+		setvTarget("NA");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

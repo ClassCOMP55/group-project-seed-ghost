@@ -4,6 +4,7 @@ public class SKILL_BasicAttack extends Skill {
 		super();
 		setName("Strike");
 		setDescription("Attack with your main weapon.");
+		setvTarget("ENEMY");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
