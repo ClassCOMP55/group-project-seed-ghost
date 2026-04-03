@@ -123,7 +123,7 @@ public class Enemy extends Entity {
 				
 				name = "Blade Devil";
 				
-				HP = 650;
+				HP = 350;
 			break;
 			case "magicsword":
 				damageResist[DamageType.MAGIC.ordinal()] = 0.8;
@@ -167,7 +167,7 @@ public class Enemy extends Entity {
 				str = 10 + (scaling * 2);
 				spr = "spr_Slime.png";
 				
-				HP = 70.0;
+				HP = 80.0;
 			break;
 			case "irongremlin":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.4;
@@ -186,7 +186,7 @@ public class Enemy extends Entity {
 				
 				name = "Iron Gremlin";
 				
-				HP = 700;
+				HP = 500;
 			break;
 			case "orb":
 				damageResist[DamageType.MAGIC.ordinal()] = -2.0;
@@ -258,6 +258,28 @@ public class Enemy extends Entity {
 				spr = "spr_BOSS_GreatMage.png";
 				
 				name = "Supreme Mage";
+				
+				defSkillP = new int[] {0,0,1};
+				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_LightningBolt());
+				
+				HP = 1200;
+			break;
+			case "boss_drip":
+				damageResist[DamageType.MAGIC.ordinal()] = 2.0;
+				damageResist[DamageType.BLAST.ordinal()] = 0.0;
+				damageResist[DamageType.HOLY.ordinal()] = 0.0;
+				damageResist[DamageType.FIRE.ordinal()] = 2.0;
+				damageResist[DamageType.ELEC.ordinal()] = 0.0;
+				damageResist[DamageType.SLASH.ordinal()] = 0.2;
+				
+				weaponDamage[DamageType.SLASH.ordinal()] = 100;
+				weaponScales[EntityStats.DEX.ordinal()] = 1.0;
+				dex = (int)(scaling * 2.0);
+				ist = 60;
+				spr = "spr_BOSS_Hornet.png";
+				
+				name = "Completely Original Boss";
 				
 				defSkillP = new int[] {0,0,1};
 				defSkill.add(new SKILL_BasicAttack());

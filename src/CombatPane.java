@@ -156,7 +156,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		myArrEnemies = new Enemy[enemyNumber];
 		
 		for(int i = 0;i<enemyNumber;i++) {
-			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil","magicsword","slime","orb","chefbot"});
+			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil","casper",
+													     "magicsword","slime","orb","chefbot",
+													     "boss_seraphim","boss_drip","boss_mage"});
 			myArrEnemies[i] = new Enemy(sprite,0);
 			allEntities.add(myArrEnemies[i]);
 			temp.add(myArrEnemies[i]);
