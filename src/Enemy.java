@@ -8,6 +8,7 @@ public class Enemy extends Entity {
 	private int turn;
 	private Character nextTarget,previousTarget;
 	private String name;
+	private double sprScale;
 	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
@@ -31,6 +32,7 @@ public class Enemy extends Entity {
 		turn = 0;
 		setDefaultAttackPattern();
 		name = "dummy";
+		sprScale = 1;
 	}
 	
 	public Enemy(double hpMax, double manaMax, double deathResist, int str, int dex, int prc, int ist, int con, int wil,
@@ -45,6 +47,7 @@ public class Enemy extends Entity {
 		turn = 0;
 		setDefaultAttackPattern();
 		this.name = name;
+		sprScale = 1;
 	}
 	
 	/*
@@ -62,6 +65,7 @@ public class Enemy extends Entity {
 		setDefaultAttackPattern();
 		
 		name = "test";
+		sprScale = 1;
 	}
 	
 	/*
@@ -82,6 +86,8 @@ public class Enemy extends Entity {
 		
 		int[] defSkillP = new int[] {0};
 		ArrayList<Skill> defSkill = new ArrayList<Skill> ();
+		
+		sprScale = 1;
 		
 		switch (name.toLowerCase()) {
 			case "holyghost":
@@ -104,7 +110,7 @@ public class Enemy extends Entity {
 				defSkill.add(new SKILL_SelfSacrifice());
 				defSkill.add(new SKILL_BasicAttack());
 				
-				HP = 200.0;
+				HP = 143.0;
 			break;
 			case "bladedevil":
 				damageResist[DamageType.HOLY.ordinal()] = 1.5;
@@ -122,6 +128,8 @@ public class Enemy extends Entity {
 				spr = "spr_BladeDevil.gif";
 				
 				name = "Blade Devil";
+				
+				sprScale = 2;
 				
 				HP = 350;
 			break;
@@ -223,6 +231,23 @@ public class Enemy extends Entity {
 				
 				HP = 200;
 			break;
+			case "imagefriend":
+				damageResist[DamageType.SLASH.ordinal()] = 0.0;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.0;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.0;
+				damageResist[DamageType.BLAST.ordinal()] = 0.0;
+				damageResist[DamageType.HOLY.ordinal()] = 2.5;
+				
+				weaponDamage[DamageType.MAGIC.ordinal()] = 50;
+				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
+				arc = (int)(scaling * 2.0);
+				ist = 1;
+				spr = "spr_imagefriend.gif";
+				
+				name = "???";
+				
+				HP = 125;
+			break;
 			case "boss_seraphim":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				damageResist[DamageType.FIRE.ordinal()] = 1.8;
@@ -237,6 +262,8 @@ public class Enemy extends Entity {
 				spr = "spr_BOSS_Seraphim.png";
 				
 				name = "The Seraphim Vassel";
+				
+				sprScale = 2;
 				
 				defSkillP = new int[] {0,1,1};
 				defSkill.add(new SKILL_BasicAttack());
@@ -258,6 +285,8 @@ public class Enemy extends Entity {
 				spr = "spr_BOSS_GreatMage.png";
 				
 				name = "Supreme Mage";
+				
+				sprScale = 2;
 				
 				defSkillP = new int[] {0,0,1};
 				defSkill.add(new SKILL_BasicAttack());
@@ -284,6 +313,8 @@ public class Enemy extends Entity {
 				defSkillP = new int[] {0,0,1};
 				defSkill.add(new SKILL_BasicAttack());
 				defSkill.add(new SKILL_LightningBolt());
+				
+				sprScale = 2.5;
 				
 				HP = 1200;
 			break;
@@ -403,5 +434,13 @@ public class Enemy extends Entity {
 	
 	public String toString () {
 		return name.substring(0,1).toUpperCase() + name.substring(1);
+	}
+
+	public double getSprScale() {
+		return sprScale;
+	}
+
+	public void setSprScale(double sprScale) {
+		this.sprScale = sprScale;
 	}
 }
