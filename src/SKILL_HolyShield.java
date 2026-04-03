@@ -16,7 +16,7 @@ public class SKILL_HolyShield extends Skill {
 		tempArmor = ((Character)target).getArmor();
 		((Character)target).setArmor(GUARD_ARMOR);
 		
-		tar = target;
+		tar = (Character) target;
 		
 		System.out.println(tempArmor);
 	}
