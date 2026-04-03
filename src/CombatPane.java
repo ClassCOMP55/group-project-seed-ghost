@@ -634,7 +634,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				
 				nextCombat();
 			}
-			else if (otherEntity instanceof Character && mySkills[skillIndex].getName()=="Prayer of Healing") {
+			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="NA") {
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				skill = false;
 				skillReady = false;
