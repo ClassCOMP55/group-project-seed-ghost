@@ -20,7 +20,7 @@ public class MainApplication extends GraphicsProgram{
 	private ShopPane shopPane; 
 	private MapPane mapPane;
 	private CampFirePane campFirePane;
-	private CombatPane combatPane; 
+	public static CombatPane combatPane; 
 	private LootPane lootPane;
 
 
