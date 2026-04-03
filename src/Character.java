@@ -206,6 +206,8 @@ public class Character extends Entity {
 				tempDex = (int)Chance.range(40, 70);
 				allowedArmors = new String[] {"light", "medium"};
 				
+				tempSprite = "spr_RangedUpdated.png";
+				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), "null");
 			break;
