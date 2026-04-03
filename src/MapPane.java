@@ -29,12 +29,6 @@ public class MapPane extends GraphicsPane {
 		createBackground();
 		addText();
 		createMap();
-		GImage test = new GImage("CampFireNode.png");
-		test.setLocation(100, 100);
-		//test.setSize(70, 70);
-		
-		contents.add(test);
-		mainScreen.add(test);
 	}
 
 	@Override
@@ -187,7 +181,7 @@ private void createMap() {
 		if (myNodeObjects.contains(obj)) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			
-			if (currPosition.hasAccess(myNodeObjects.indexOf(oval))==true&& currPosition.isCleared()) {
+			if (currPosition.hasAccess(myNodeObjects.indexOf(oval))==true) {
 				currPosition = ovalToNode(oval);
 				switch(ovalToNode(oval).getType()){
 				case "Shop": mainScreen.switchToShopPane(); break;
@@ -206,6 +200,7 @@ private void createMap() {
 				}
 				
 			}
+			//&& currPosition.isCleared()
 			
 		}
 				
