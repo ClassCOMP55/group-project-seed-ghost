@@ -17,7 +17,7 @@ public class ArmorItem {
 		if (guardarmor) {
 			incDamageMultipliers = new double[] {0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15};
 		} else {
-			incDamageMultipliers = new double[] {0.8,0.8,0.8,0.8,0.0,0.0,0.0,0.0};
+			incDamageMultipliers = new double[] {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 		}
 	}
 	

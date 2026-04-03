@@ -267,7 +267,7 @@ public class Enemy extends Entity {
 				
 				defSkillP = new int[] {0,1,1};
 				defSkill.add(new SKILL_BasicAttack());
-				defSkill.add(new SKILL_LightningBolt());
+				defSkill.add(new SKILL_BossBuffSelf());
 				
 				HP = 1200;
 			break;
@@ -290,7 +290,7 @@ public class Enemy extends Entity {
 				
 				defSkillP = new int[] {0,0,1};
 				defSkill.add(new SKILL_BasicAttack());
-				defSkill.add(new SKILL_LightningBolt());
+				defSkill.add(new SKILL_BossBuffSelf());
 				
 				HP = 1200;
 			break;
@@ -302,16 +302,19 @@ public class Enemy extends Entity {
 				damageResist[DamageType.ELEC.ordinal()] = 0.0;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 100;
+				weaponDamage[DamageType.SLASH.ordinal()] = 0;
 				weaponScales[EntityStats.DEX.ordinal()] = 1.0;
 				dex = (int)(scaling * 2.0);
+				wil = 30;
+				arc = 50;
 				ist = 60;
 				spr = "spr_BOSS_Hornet.png";
 				
 				name = "Completely Original Boss";
 				
-				defSkillP = new int[] {0,0,1};
+				defSkillP = new int[] {1,0,1,0,1,2};
 				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_BossBuffSelf());
 				defSkill.add(new SKILL_LightningBolt());
 				
 				sprScale = 2.5;

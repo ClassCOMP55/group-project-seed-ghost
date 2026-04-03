@@ -208,6 +208,8 @@ public class Character extends Entity {
 				
 				tempSprite = "spr_RangerUpdated.png";
 				
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_Recovery(), new SKILL_WeakenFoe()};
+				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), "null");
 			break;
