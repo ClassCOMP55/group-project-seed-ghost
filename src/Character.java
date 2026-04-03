@@ -172,7 +172,7 @@ public class Character extends Entity {
 				tempSprite = "spr_Sorcerer.png";
 				allowedArmors = new String[] {"light"};
 				
-				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()};
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_LightningBolt(), new SKILL_Fireball()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"stave","talisman"}), "magic");

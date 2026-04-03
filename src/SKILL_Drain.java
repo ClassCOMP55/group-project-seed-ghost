@@ -1,7 +1,7 @@
 
 public class SKILL_Drain extends Skill {
 	public SKILL_Drain () {
-		super(40);
+		super(20);
 		setName("Drain");
 		setDescription("Attack with your weapon and heal equal to half the damage dealt. Reduce your target's constitution by 10.");
 	}

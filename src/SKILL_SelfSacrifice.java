@@ -3,7 +3,7 @@ public class SKILL_SelfSacrifice extends Skill {
 	private static final int SELF_DAMAGE = 50;
 	
 	public SKILL_SelfSacrifice () {
-		super(30);
+		super(10);
 		setName("Self Sacrifice");
 		setDescription("Take " + SELF_DAMAGE + " damage to deal huge HOLY damage to a foe. Scales with FAITH and CONSTITUTION.");
 	}

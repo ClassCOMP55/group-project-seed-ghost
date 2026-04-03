@@ -1,9 +1,9 @@
 
 public class SKILL_PrayerOfHealing extends Skill {
 	public SKILL_PrayerOfHealing () {
-		super(140);
+		super(70);
 		setName("Prayer of Healing");
-		setDescription("Heal a party member. Scales with FAITH.");
+		setDescription("Heal a party member, scales with FAITH. Costs 70 mana.");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

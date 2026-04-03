@@ -3,11 +3,11 @@ public class SKILL_IronWave extends Skill {
 	public SKILL_IronWave () {
 		super(30);
 		setName("Iron Wave");
-		setDescription("Permanently increase your Strength stat by 2 and attack.");
+		setDescription("Permanently increase your Strength stat by 4 and attack. Costs 30 mana.");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
-		me.getStatSpread()[EntityStats.STR.ordinal()] += 2;
+		me.getStatSpread()[EntityStats.STR.ordinal()] += 4;
 		
 		double[] dmg = me.attackOther();
 		target.attackMe(dmg);
