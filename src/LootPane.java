@@ -7,10 +7,13 @@ import acm.graphics.GObject;
 import acm.graphics.GRect;
 
 public class LootPane extends GraphicsPane {
-	private ArrayList<Object> lootItems;
-	private ArrayList<GRect> lootBoxes;
-	private ArrayList<GLabel> lootLabels;
-	private GLabel descriptionLabel;
+
+	private ArrayList<WeaponItem> lootItems = new ArrayList<WeaponItem>();
+	private ArrayList<GRect> lootBoxes = new ArrayList<GRect>();
+	private ArrayList<GLabel> lootLabels = new ArrayList<GLabel>();
+	private ArrayList<GRect> takeBtns = new ArrayList<GRect>();
+	private ArrayList<GLabel> takeLbls = new ArrayList<GLabel>();
+	private ArrayList<Boolean> claimed = new ArrayList<Boolean>();
 
 	public LootPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -18,122 +21,108 @@ public class LootPane extends GraphicsPane {
 
 	@Override
 	public void showContent() {
-		lootItems = new ArrayList<>();
-		lootBoxes = new ArrayList<>();
-		lootLabels = new ArrayList<>();
 		generateLoot();
-		addText();
 		displayLoot();
 	}
 
 	@Override
 	public void hideContent() {
-		for(GObject item : contents) {
+		for (GObject item : contents) {
 			mainScreen.remove(item);
 		}
 		contents.clear();
 		lootBoxes.clear();
 		lootLabels.clear();
+		takeBtns.clear();
+		takeLbls.clear();
+		claimed.clear();
 	}
 
-	 //randomly picks 1 to3, items, can be weapon armor or consumable
-	 
 	private void generateLoot() {
-		int numItems = Chance.range(1, 3);
-		for (int i = 0; i < numItems; i++) {
-			int roll = Chance.range(0, 2);
-			if (roll == 0) {
-				lootItems.add(new WeaponItem());
-			} else if (roll == 1) {
-				lootItems.add(new ArmorItem());
-			} else {
-				ConsumableType[] types = ConsumableType.values();
-				lootItems.add(new ConsumableItem(types[Chance.range(0, types.length - 1)]));
+		lootItems.clear();
+		int numItems = (int)(Math.random() * 3) + 1;
+		ArrayList<String> usedTypes = new ArrayList<String>();
+		while (lootItems.size() < numItems) {
+			WeaponItem w = new WeaponItem(true);
+			if (!usedTypes.contains(w.getType())) {
+				usedTypes.add(w.getType());
+				lootItems.add(w);
 			}
 		}
 	}
 
-	private void addText() {
-		GLabel title = new GLabel("Claim your loot", 100, 70);
-		title.setColor(Color.RED);
-		title.setFont("DialogInput-PLAIN-80");
-		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
-
-		contents.add(title);
-		mainScreen.add(title);
-
-		descriptionLabel = new GLabel("");
-		descriptionLabel.setColor(Color.BLACK);
-		descriptionLabel.setFont("DialogInput-PLAIN-16");
-		descriptionLabel.setLocation((mainScreen.getWidth() - descriptionLabel.getWidth()) / 2, 110);
-		contents.add(descriptionLabel);
-		mainScreen.add(descriptionLabel);
-	}
-
-	
-	 //displays loot items on screen
-	 //positions are hardcoded based on how many items the each of them have
-	 
 	private void displayLoot() {
-		int numItems = lootItems.size();
-		int boxWidth = 160;
-		int boxHeight = 180;
-		int startY = 150;
-		int[] xPositions;
 
-		if (numItems == 1) {
-			xPositions = new int[] {320};
-		} else if (numItems == 2) {
-			xPositions = new int[] {220, 420};
-		} else {
-			xPositions = new int[] {120, 320, 520};
-		}
+		// background
+		GRect bg = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+		bg.setFilled(true);
+		bg.setFillColor(Color.DARK_GRAY);
+		bg.setColor(Color.DARK_GRAY);
+		bg.setLocation(0, 0);
+		contents.add(bg);
+		mainScreen.add(bg);
+
+		int numItems = lootItems.size();
+		int boxWidth = 200;
+		int boxHeight = 260;
+		int startY = 150;
+		int gap = 30;
+		int totalWidth = (numItems * boxWidth) + ((numItems - 1) * gap);
+		int screenWidth = MainApplication.WINDOW_WIDTH;
+		int startX = (screenWidth - totalWidth) / 2;
 
 		for (int i = 0; i < numItems; i++) {
-			int x = xPositions[i];
+			int x = startX + i * (boxWidth + gap);
+			claimed.add(false);
 
 			GRect box = new GRect(x, startY, boxWidth, boxHeight);
 			box.setFilled(true);
-			box.setFillColor(Color.DARK_GRAY);
-			box.setColor(Color.WHITE);
+			box.setFillColor(new Color(30, 30, 30));
+			box.setColor(new Color(180, 140, 60));
 			contents.add(box);
 			mainScreen.add(box);
 			lootBoxes.add(box);
 
-			GLabel nameLabel = new GLabel(getItemName(lootItems.get(i)));
-			nameLabel.setFont("DialogInput-PLAIN-13");
-			nameLabel.setColor(Color.WHITE);
-			nameLabel.setLocation(x + (boxWidth - nameLabel.getWidth()) / 2, startY + 30);
+			GLabel nameLabel = new GLabel(lootItems.get(i).toString());
+			nameLabel.setFont("DialogInput-BOLD-14");
+			nameLabel.setColor(new Color(220, 190, 100));
+			nameLabel.setLocation(x + (boxWidth - nameLabel.getWidth()) / 2, startY + 50);
 			contents.add(nameLabel);
 			mainScreen.add(nameLabel);
 			lootLabels.add(nameLabel);
 
-			GLabel typeLabel = new GLabel(getItemType(lootItems.get(i)));
-			typeLabel.setFont("DialogInput-PLAIN-11");
-			typeLabel.setColor(Color.LIGHT_GRAY);
-			typeLabel.setLocation(x + (boxWidth - typeLabel.getWidth()) / 2, startY + 50);
-			contents.add(typeLabel);
-			mainScreen.add(typeLabel);
-
 			final int index = i;
-			GRect takeBtn = new GRect(x + 30, startY + boxHeight - 50, 100, 35);
-			takeBtn.setFilled(true);
-			takeBtn.setFillColor(Color.DARK_GRAY);
-			takeBtn.setColor(Color.WHITE);
 
-			GLabel takeLbl = new GLabel("Take");
-			takeLbl.setFont("DialogInput-BOLD-14");
-			takeLbl.setColor(Color.WHITE);
+			GRect takeBtn = new GRect(x + 25, startY + boxHeight - 55, boxWidth - 50, 35);
+			takeBtn.setFilled(true);
+			takeBtn.setFillColor(new Color(60, 40, 10));
+			takeBtn.setColor(new Color(180, 140, 60));
+			takeBtns.add(takeBtn);
+
+			GLabel takeLbl = new GLabel("Claim");
+			takeLbl.setFont("DialogInput-BOLD-13");
+			takeLbl.setColor(new Color(220, 190, 100));
 			takeLbl.setLocation(takeBtn.getX() + (takeBtn.getWidth() - takeLbl.getWidth()) / 2,
-					takeBtn.getY() + (takeBtn.getHeight() - takeLbl.getHeight()) / 2 + 12);
+					takeBtn.getY() + (takeBtn.getHeight() + takeLbl.getAscent()) / 2);
+			takeLbls.add(takeLbl);
 
 			takeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseEntered(MouseEvent e) { takeBtn.setFillColor(Color.GRAY); }
-				public void mouseExited(MouseEvent e)  { takeBtn.setFillColor(Color.DARK_GRAY); }
-				public void mouseClicked(MouseEvent e) { takeItem(index, takeBtn); }
+				public void mouseEntered(MouseEvent e) {
+					if (!claimed.get(index))
+						takeBtn.setFillColor(new Color(100, 70, 20));
+				}
+				public void mouseExited(MouseEvent e) {
+					if (!claimed.get(index))
+						takeBtn.setFillColor(new Color(60, 40, 10));
+				}
+				public void mouseClicked(MouseEvent e) {
+					takeItem(index);
+				}
 			});
 			takeLbl.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(MouseEvent e) { takeItem(index, takeBtn); }
+				public void mouseClicked(MouseEvent e) {
+					takeItem(index);
+				}
 			});
 
 			contents.add(takeBtn);
@@ -142,25 +131,35 @@ public class LootPane extends GraphicsPane {
 			mainScreen.add(takeLbl);
 		}
 
-
-		GRect leaveBtn = new GRect(300, 460, 200, 50);
+		// leave button
+		int leaveBtnWidth = 180;
+		int leaveX = (screenWidth - leaveBtnWidth) / 2;
+		GRect leaveBtn = new GRect(leaveX, 460, leaveBtnWidth, 45);
 		leaveBtn.setFilled(true);
-		leaveBtn.setFillColor(Color.DARK_GRAY);
-		leaveBtn.setColor(Color.WHITE);
+		leaveBtn.setFillColor(new Color(60, 20, 20));
+		leaveBtn.setColor(new Color(180, 60, 60));
 
 		GLabel leaveLbl = new GLabel("Leave");
-		leaveLbl.setFont("DialogInput-BOLD-18");
-		leaveLbl.setColor(Color.WHITE);
+		leaveLbl.setFont("DialogInput-BOLD-16");
+		leaveLbl.setColor(new Color(220, 100, 100));
 		leaveLbl.setLocation(leaveBtn.getX() + (leaveBtn.getWidth() - leaveLbl.getWidth()) / 2,
-				leaveBtn.getY() + (leaveBtn.getHeight() - leaveLbl.getHeight()) / 2 + 15);
+				leaveBtn.getY() + (leaveBtn.getHeight() + leaveLbl.getAscent()) / 2);
 
 		leaveBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(MouseEvent e) { leaveBtn.setFillColor(Color.GRAY); }
-			public void mouseExited(MouseEvent e)  { leaveBtn.setFillColor(Color.DARK_GRAY); }
-			public void mouseClicked(MouseEvent e) { mainScreen.switchToMapPane(); }
+			public void mouseEntered(MouseEvent e) {
+				leaveBtn.setFillColor(new Color(100, 30, 30));
+			}
+			public void mouseExited(MouseEvent e) {
+				leaveBtn.setFillColor(new Color(60, 20, 20));
+			}
+			public void mouseClicked(MouseEvent e) {
+				mainScreen.switchToMapPane();
+			}
 		});
 		leaveLbl.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(MouseEvent e) { mainScreen.switchToMapPane(); }
+			public void mouseClicked(MouseEvent e) {
+				mainScreen.switchToMapPane();
+			}
 		});
 
 		contents.add(leaveBtn);
@@ -169,57 +168,12 @@ public class LootPane extends GraphicsPane {
 		mainScreen.add(leaveLbl);
 	}
 
-
-	private void takeItem(int index, GRect btn) {
-		if (index >= lootItems.size()) return;
-		Object item = lootItems.get(index);
-
-		if (item instanceof ConsumableItem) {
-			ConsumableItem c = (ConsumableItem) item;
-			Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
-			for (Character member : party) {
-				if (member != null && !member.isDead()) {
-					c.use(member);
-					setDescription("Used " + getItemName(item) + " on " + member.getProfession() + "!");
-					break;
-				}
-			}
-		} else {
-			// TODO add to inventory once thats done
-			setDescription("Picked up " + getItemName(item) + "!");
-			System.out.println("Picked up: " + getItemName(item));
-		}
-
-		// gray it out so they cant take it twice
-		btn.setFillColor(Color.LIGHT_GRAY);
-		btn.setColor(Color.LIGHT_GRAY);
-	}
-
-	private void setDescription(String text) {
-		descriptionLabel.setLabel(text);
-		descriptionLabel.setLocation((mainScreen.getWidth() - descriptionLabel.getWidth()) / 2, 110);
-	}
-
-	private String getItemName(Object item) {
-		if (item instanceof WeaponItem)     return ((WeaponItem) item).toString();
-		if (item instanceof ArmorItem)      return ((ArmorItem) item).toString();
-		if (item instanceof ConsumableItem) {
-			switch (((ConsumableItem) item).getType()) {
-				case HEALTH: return "Health Potion";
-				case MANA:   return "Mana Potion";
-				case ELIXIR: return "Elixir";
-				default:     return "Potion";
-			}
-		}
-		return "Unknown Item";
-	}
-
-	private String getItemType(Object item) {
-		if (item instanceof WeaponItem)     return "Weapon";
-		if (item instanceof ArmorItem)      return "Armor";
-		if (item instanceof ConsumableItem) return "Consumable";
-		return "";
+	private void takeItem(int index) {
+		if (claimed.get(index)) return;
+		claimed.set(index, true);
+		takeBtns.get(index).setFillColor(new Color(40, 40, 40));
+		takeBtns.get(index).setColor(new Color(80, 80, 80));
+		takeLbls.get(index).setLabel("Claimed");
+		takeLbls.get(index).setColor(new Color(100, 100, 100));
 	}
 }
-// main application: crate a __varialbel__; called __lootpane__ and __initializie__ it below and then create a switch to method, methods hat say random generator
-// bunch of __dofferent__ __relecs__ that just picks one of them this is what i currently have in that
