@@ -92,7 +92,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
 				
 				weaponDamage[DamageType.HOLY.ordinal()] = 10;
-				weaponScales[EntityStats.FTH.ordinal()] = 4.0;
+				weaponScales[EntityStats.FTH.ordinal()] = 3.0;
 				fth = 10 + (scaling * 2);
 				con = 30 + (int)(scaling * 1.5);
 				spr = "spr_HolyGhost.png";
@@ -114,7 +114,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.BLAST.ordinal()] = 0.4;
 				damageResist[DamageType.FIRE.ordinal()] = 0.5;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 80;
+				weaponDamage[DamageType.SLASH.ordinal()] = 60;
 				weaponDamage[DamageType.FIRE.ordinal()] = 20;
 				weaponScales[EntityStats.STR.ordinal()] = 1.0;
 				str = 10 + (scaling * 3);
@@ -131,8 +131,8 @@ public class Enemy extends Entity {
 				damageResist[DamageType.ELEC.ordinal()] = 0.0;
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 40;
-				weaponDamage[DamageType.MAGIC.ordinal()] = 40;
+				weaponDamage[DamageType.SLASH.ordinal()] = 20;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.2;
 				arc = 10 + (scaling * 2);
 				spr = "spr_CombatNode_MAGIC.png";
@@ -148,7 +148,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
 				
-				weaponDamage[DamageType.MAGIC.ordinal()] = 40;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
 				arc = 10 + (scaling * 2);
@@ -162,7 +162,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
 				damageResist[DamageType.BLAST.ordinal()] = 0.8;
 				
-				weaponDamage[DamageType.CRUSH.ordinal()] = 90;
+				weaponDamage[DamageType.CRUSH.ordinal()] = 30;
 				weaponScales[EntityStats.STR.ordinal()] = 0.95;
 				str = 10 + (scaling * 2);
 				spr = "spr_Slime.png";
@@ -191,8 +191,8 @@ public class Enemy extends Entity {
 			case "orb":
 				damageResist[DamageType.MAGIC.ordinal()] = -2.0;
 				
-				weaponDamage[DamageType.BLAST.ordinal()] = 60;
-				weaponDamage[DamageType.MAGIC.ordinal()] = 60;
+				weaponDamage[DamageType.BLAST.ordinal()] = 40;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 40;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
 				arc = (int)(scaling * 2.5);
 				ist = 20 * scaling;
@@ -207,7 +207,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.ELEC.ordinal()] = 2.5;
 				damageResist[DamageType.FIRE.ordinal()] = 0.25;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 70;
+				weaponDamage[DamageType.SLASH.ordinal()] = 50;
 				weaponScales[EntityStats.DEX.ordinal()] = 1.0;
 				dex = (int)(scaling * 2.5);
 				wil = (int)(scaling * 2.5);
@@ -222,6 +222,48 @@ public class Enemy extends Entity {
 				defSkill.add(new SKILL_LightningBolt());
 				
 				HP = 200;
+			break;
+			case "boss_seraphim":
+				damageResist[DamageType.HOLY.ordinal()] = 0.0;
+				damageResist[DamageType.FIRE.ordinal()] = 1.8;
+				
+				weaponDamage[DamageType.HOLY.ordinal()] = 90;
+				weaponScales[EntityStats.STR.ordinal()] = 1.0;
+				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
+				str = (int)(scaling * 2);
+				fth = (int)(scaling * 2);
+				arc = (int)(scaling * 8);
+				ist = 100;
+				spr = "spr_BOSS_Seraphim.png";
+				
+				name = "The Seraphim Vassel";
+				
+				defSkillP = new int[] {0,1,1};
+				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_LightningBolt());
+				
+				HP = 1200;
+			break;
+			case "boss_mage":
+				damageResist[DamageType.MAGIC.ordinal()] = 0.0;
+				damageResist[DamageType.BLAST.ordinal()] = 2.5;
+				damageResist[DamageType.HOLY.ordinal()] = 0.5;
+				damageResist[DamageType.FIRE.ordinal()] = 0.5;
+				damageResist[DamageType.ELEC.ordinal()] = 0.5;
+				
+				weaponDamage[DamageType.MAGIC.ordinal()] = 100;
+				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
+				arc = (int)(scaling * 2.0);
+				ist = 30;
+				spr = "spr_BOSS_GreatMage.png";
+				
+				name = "Supreme Mage";
+				
+				defSkillP = new int[] {0,0,1};
+				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_LightningBolt());
+				
+				HP = 1200;
 			break;
 		}
 		
