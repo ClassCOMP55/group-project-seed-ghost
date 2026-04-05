@@ -1,3 +1,4 @@
+import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 public class Node {
@@ -5,6 +6,7 @@ String type,combatAffinity;
 int[] accessibleNodes;
 int index,difficulty;
 boolean cleared;
+GImage sprite;
 
 
 public Node(int i) {
@@ -12,6 +14,7 @@ public Node(int i) {
 	assignType(i);
 	accessibleNodes = setAvailableNodes();
 	cleared = false;
+	loadSprite();
 }
 
 public boolean isCleared() {
@@ -96,6 +99,24 @@ public boolean hasAccess(int i) {
 	return false;
 }
 
+public void loadSprite() {
+	switch(type) {
+	case "Shop": sprite = new GImage("ShopNode.png"); break;
+	case "Loot": sprite = new GImage("LootNode.png"); break;
+	case "CampFire": sprite = new GImage("CampFireNodeUpdated.png"); break;
+	}
+	
+	if (type =="Combat") {
+		switch (combatAffinity) {
+		case "combatMagic": sprite = new GImage("spr_CombatNode_MAGIC.png"); break;
+		case "combatFire": sprite = new GImage("spr_CombatNode_FIRE.png"); break;
+		case "combatHoly": sprite = new GImage("spr_CombatNode_HOLY.png"); break;
+		case "combatLightning": sprite = new GImage("spr_CombatNode_LIGHTNING.png"); break;
+		}
+	}
+}
+
+
 public String getCombatAffinity() {
 	return combatAffinity;
 }
@@ -139,7 +160,10 @@ public String getType() {
 public void cleared() {
 	cleared =true;
 }
-	
+
+public GImage getSprite() {
+	return sprite;
+}
 	
 
 
