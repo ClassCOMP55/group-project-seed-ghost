@@ -316,6 +316,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
+				update();
 			}
 			counter++;
 		}
@@ -649,6 +650,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 	
 		}
+		update();
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true) {
 			clearArrays();
 			mainScreen.switchToMapPane();
