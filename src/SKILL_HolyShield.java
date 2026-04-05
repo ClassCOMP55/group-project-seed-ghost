@@ -27,6 +27,6 @@ public class SKILL_HolyShield extends Skill {
 	}
 	
 	public boolean preconditionsMet (Entity self, Entity target) {
-		return self.getMana() >= getManaCost() && !((Character)target).guarding();
+		return self.getMana() >= getManaCost() && !((Character)self).guarding();
 	}
 }
