@@ -2,7 +2,7 @@
 public class ArmorItem {
 	private double[] incDamageMultipliers, incDamageArmor, incStatusMultipliers;
 	private String weight, affinity;
-	private boolean metal, cloth, magic;
+	private boolean metal, cloth, magic, guarding = false;
 	private int purchaseCost;
 	
 	public ArmorItem (boolean guardarmor) {
@@ -13,12 +13,17 @@ public class ArmorItem {
 		setMetal(false);
 		setMagic(false);
 		setCloth(false);
+		guarding = true;
 		
 		if (guardarmor) {
 			incDamageMultipliers = new double[] {0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15};
 		} else {
 			incDamageMultipliers = new double[] {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 		}
+	}
+	
+	public boolean guarding () {
+		return guarding;
 	}
 	
 	public ArmorItem () {

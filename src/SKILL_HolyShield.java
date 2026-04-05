@@ -25,4 +25,8 @@ public class SKILL_HolyShield extends Skill {
 		tar.setArmor(tempArmor);
 		System.out.println("Replaced " + tempArmor);
 	}
+	
+	public boolean preconditionsMet (Entity self, Entity target) {
+		return self.getMana() >= getManaCost() && !((Character)target).guarding();
+	}
 }

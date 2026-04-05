@@ -22,4 +22,8 @@ public class SKILL_Guard extends Skill {
 		((Character)me).setArmor(tempArmor);
 		System.out.println("Replaced " + tempArmor);
 	}
+	
+	public boolean preconditionsMet (Entity self, Entity target) {
+		return !((Character)self).guarding();
+	}
 }

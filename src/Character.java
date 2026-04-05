@@ -343,4 +343,8 @@ public class Character extends Entity {
 	public String toString () {
 		return profession.substring(0, 1).toUpperCase() + profession.substring(1);
 	}
+	
+	public boolean guarding () {
+		return myArmor.guarding();
+	}
 }
