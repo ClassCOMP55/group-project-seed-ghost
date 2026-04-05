@@ -143,6 +143,8 @@ public class Character extends Entity {
 				tempCon = (int)Chance.range(40, 60);
 				allowedArmors = new String[] {"light", "medium","heavy"};
 				
+				mySkills = new Skill[] {new SKILL_HeavyAttack(), new SKILL_IronWave(), new SKILL_Drain(), new SKILL_Recovery()};
+				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"axe","greatsword","hammer"}), "null");
 				tempSprite = "spr_Viking.png";
