@@ -114,6 +114,7 @@ public void loadSprite() {
 		case "combatLightning": sprite = new GImage("spr_CombatNode_LIGHTNING.png"); break;
 		}
 	}
+	sprite.setSize(50, 50);
 }
 
 
