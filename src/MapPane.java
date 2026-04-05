@@ -13,8 +13,9 @@ import java.util.ArrayList;
 public class MapPane extends GraphicsPane {
 	
 	private ArrayList<Node> mapPath;
-	private ArrayList<GOval> myNodeObjects;
+	private ArrayList<GObject> myNodeObjects;
 	public static Node currPosition;
+	int count;
 	
 	public MapPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -54,86 +55,57 @@ public class MapPane extends GraphicsPane {
 		
 		contents.add(title);
 		mainScreen.add(title);
-		
-		GLabel shopLabel = new GLabel("Shop", 100, 70);
-		shopLabel.setColor(Color.BLUE);
-		shopLabel.setFont("DialogInput-PLAIN-15");
-		shopLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 500);
-		
-		contents.add(shopLabel);
-		mainScreen.add(shopLabel);
-		
-		GLabel combatLabel = new GLabel("Combat", 100, 70);
-		combatLabel.setColor(Color.RED);
-		combatLabel.setFont("DialogInput-PLAIN-15");
-		combatLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 520);
-		
-		contents.add(combatLabel);
-		mainScreen.add(combatLabel);
-		
-		GLabel lootLabel = new GLabel("Loot", 100, 70);
-		lootLabel.setColor(Color.BLACK);
-		lootLabel.setFont("DialogInput-PLAIN-15");
-		lootLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 540);
-		
-		contents.add(lootLabel);
-		mainScreen.add(lootLabel);
-		
-		GLabel campFireLabel = new GLabel("Campfire", 100, 70);
-		campFireLabel.setColor(Color.ORANGE);
-		campFireLabel.setFont("DialogInput-PLAIN-15");
-		campFireLabel.setLocation(((mainScreen.getWidth() - title.getWidth()) / 2)+345, 560);
-		
-		contents.add(campFireLabel);
-		mainScreen.add(campFireLabel);	
 	}
 	
 private void createMap() {
+	count =0;
 		
-		createRow(1,((mainScreen.getWidth() - 40) / 2),560);
-		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,460);
-		createRow(3,((mainScreen.getWidth() - 40) / 2)-100,360);
-		createRow(5,((mainScreen.getWidth() - 40) / 2)-200,260);
-		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,160);
-		createRow(1,((mainScreen.getWidth() - 40) / 2),60);
+		createRow(1,((mainScreen.getWidth() - 40) / 2),550);
+		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,450);
+		createRow(3,((mainScreen.getWidth() - 40) / 2)-100,350);
+		createRow(5,((mainScreen.getWidth() - 40) / 2)-200,250);
+		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,150);
+		createRow(1,((mainScreen.getWidth() - 40) / 2),50);
 		drawLines();
 		
 	}
 
 	public void drawLines() {
 		for (int e = 0;e<myNodeObjects.size()-1;e++) {
-			GOval oval = myNodeObjects.get(e);
-			Node node = ovalToNode(oval);
+			GImage image = mapPath.get(e).getSprite();
+			Node node = mapPath.get(e);
 			int[] myArr = node.accessibleNodes;
 		
 			for (int i:myArr) {
-				GOval oval2 = myNodeObjects.get(i);
-				GLine line = new GLine(oval.getX()+20,oval.getY()+20,oval2.getX()+20,oval2.getY()+20);
+				GImage image2 = (GImage) myNodeObjects.get(i);
+				GLine line = new GLine(image.getX()+25,image.getY()+33,image2.getX()+25,image2.getY()+33);
+				line.setLineWidth(3);
+				line.setColor(Color.RED);
 				contents.add(line);
 				mainScreen.add(line);
-				oval2.sendToFront();
+				image2.sendToFront();
 			
 			}
-			oval.sendToFront();
+			image.sendToFront();
 		}
 	}
 	
 	private void createRow(int limit, double startX, double startY) {
 		for (int i = 0;i<limit;i++) {
-			GOval node = new GOval(40,40);
+			GImage node = mapPath.get(count).getSprite();
 			myNodeObjects.add(node);
-			setColor(node);
 			node.setLocation(startX, startY);
 			contents.add(node);
 			mainScreen.add(node);
 			startX = startX+100;
+			count++;
 		}
 	}
 	
 	private void createBackground() {
 		GRect backGround = new GRect(800,600);
-		backGround.setColor(Color.DARK_GRAY);
-		backGround.setFillColor(Color.DARK_GRAY);
+		backGround.setColor(Color.BLACK);
+		backGround.setFillColor(Color.BLACK);
 		backGround.setFilled(true);
 		backGround.setLocation(0, 0);
 		contents.add(backGround);
@@ -163,8 +135,8 @@ private void createMap() {
 		oval.setFilled(true);
 	}
 	
-	public Node ovalToNode(GObject oval) {
-		return mapPath.get(myNodeObjects.indexOf(oval));
+	public Node ovalToNode(GObject obj) {
+		return mapPath.get(myNodeObjects.indexOf(obj));
 	}
 	
 	public GObject nodeToOval(Node node) {
