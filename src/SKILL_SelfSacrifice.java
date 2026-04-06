@@ -1,6 +1,6 @@
 
 public class SKILL_SelfSacrifice extends Skill {
-	private static final int SELF_DAMAGE = 50;
+	private static final int SELF_DAMAGE = 30;
 	
 	public SKILL_SelfSacrifice () {
 		super(10);
@@ -14,7 +14,7 @@ public class SKILL_SelfSacrifice extends Skill {
 		
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
 		int scaling = (int) (me.getStatSpread()[EntityStats.FTH.ordinal()]*0.5 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.5);
-		dmg[DamageType.HOLY.ordinal()] = 10 * Math.pow(1.05, scaling);
+		dmg[DamageType.HOLY.ordinal()] = 12 * Math.pow(1.07, scaling);
 		target.attackMe(dmg);
 		
 		me.drainMana(getManaCost());

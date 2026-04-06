@@ -10,7 +10,7 @@ public class SKILL_Fireball extends Skill {
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.4);
-		dmg[DamageType.FIRE.ordinal()] = 10 * Math.pow(1.038, scaling);
+		dmg[DamageType.FIRE.ordinal()] = 10 * Math.pow(1.055, scaling);
 		System.out.println(dmg[DamageType.FIRE.ordinal()]);
 		
 		CombatPane currentBattle = MainApplication.combatPane;
