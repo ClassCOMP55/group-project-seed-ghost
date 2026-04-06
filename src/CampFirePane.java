@@ -81,7 +81,7 @@ public class CampFirePane extends GraphicsPane{
 	            	if (actionType.equals("leave") || actionButtons.containsKey(actionType)) {
 	                    box.setFillColor(baseColor);
 	                } else {
-	                    box.setFillColor(usedColor); 
+	                    box.setFillColor(usedColor);
 	                }
 	            }
 	            public void mouseClicked(MouseEvent e) { handleAction(actionType); }
@@ -139,6 +139,7 @@ public class CampFirePane extends GraphicsPane{
 	    private void handleAction(String actionType) {
 	    	if (actionType.equals("leave")) {
 	            mainScreen.switchToMapPane();
+	            MapPane.currPosition.isCleared(); 
 	            return;
 	        }
 	    	
@@ -176,8 +177,10 @@ public class CampFirePane extends GraphicsPane{
                 break;
             case "leave":
                 mainScreen.switchToMapPane();
+                MapPane.currPosition.isCleared(); 
                 break;
-	        }   
+	        }
+	        
 	    }
 	    
 	    private boolean isPartyFull() {
@@ -280,7 +283,7 @@ public class CampFirePane extends GraphicsPane{
 
 	        actionMessage = new GLabel(message, 200, 500);
 	        actionMessage.setFont("DialogInput-BOLD-16");
-	        actionMessage.setColor(Color.CYAN);
+	        actionMessage.setColor(Color.BLACK);
 
 	        contents.add(actionMessage);
 	        mainScreen.add(actionMessage);
