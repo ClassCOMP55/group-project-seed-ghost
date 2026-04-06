@@ -46,11 +46,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		t = new Timer(1000, this);
 		hideContent();
 		
-		Character testChar = new Character("samurai");
-		Character testChar2 = new Character("sorcerer");
-		
-		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
-		CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
 		allSkillsButton = new ArrayList<>();
 	
 		otherEntity = new Enemy();
