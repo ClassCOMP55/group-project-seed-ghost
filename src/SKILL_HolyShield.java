@@ -13,10 +13,10 @@ public class SKILL_HolyShield extends Skill {
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
-		tempArmor = ((Character)target).getArmor();
-		((Character)target).setArmor(GUARD_ARMOR);
-		
 		tar = (Character) target;
+		
+		tempArmor = tar.getArmor();
+		tar.setArmor(GUARD_ARMOR);
 		
 		System.out.println(tempArmor);
 	}
@@ -27,6 +27,6 @@ public class SKILL_HolyShield extends Skill {
 	}
 	
 	public boolean preconditionsMet (Entity self, Entity target) {
-		return self.getMana() >= getManaCost() && !((Character)self).guarding();
+		return self.getMana() >= getManaCost() && !((Character)target).guarding();
 	}
 }
