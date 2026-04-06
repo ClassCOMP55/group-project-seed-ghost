@@ -238,7 +238,10 @@ public class Enemy extends Entity {
 				
 				name = "EVIL PULSATING ORB OF DOOM AND SUFFERING";
 				
-				HP = 320;
+				defSkillP = new int[] {0};
+				defSkill.add(new SKILL_WeakenFoe());
+				
+				HP = 120;
 			break;
 			case "chefbot":
 				damageResist[DamageType.SLASH.ordinal()] = 0.5;
