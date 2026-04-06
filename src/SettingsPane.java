@@ -1,33 +1,44 @@
 import java.awt.Color;
-
+import java.awt.event.MouseEvent;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GRect;
 
 public class SettingsPane extends GraphicsPane {
-	
+
 	public SettingsPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 	}
-	
+
 	@Override
 	public void showContent() {
-		addText();
+		createBackground();
+		addTitle();
 	}
 
 	@Override
 	public void hideContent() {
-		for(GObject item : contents) {
+		for (GObject item : contents) {
 			mainScreen.remove(item);
 		}
 		contents.clear();
 	}
-	
-	private void addText() {
-		GLabel title = new GLabel("Settings Page", 100, 70);
-		title.setColor(Color.BLUE);
-		title.setFont("DialogInput-PLAIN-80");
-		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
-		
+
+	private void createBackground() {
+		GRect bg = new GRect(800, 600);
+		bg.setFilled(true);
+		bg.setFillColor(Color.RED);
+		bg.setColor(Color.RED);
+		bg.setLocation(0, 0);
+		contents.add(bg);
+		mainScreen.add(bg);
+	}
+
+	private void addTitle() {
+		GLabel title = new GLabel("Settings");
+		title.setFont("SERIF-PLAIN-90");
+		title.setColor(Color.BLACK);
+		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 95);
 		contents.add(title);
 		mainScreen.add(title);
 	}
