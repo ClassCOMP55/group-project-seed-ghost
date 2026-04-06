@@ -30,6 +30,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost;
 	private int turn,counter,skillIndex,switched,enemyNumber;
+	private double barSizeChar,barSizeEnemy;
 	
 	private Entity currentEntity,otherEntity;
 	
@@ -45,11 +46,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		t = new Timer(1000, this);
 		hideContent();
 		
-		//Character testChar = new Character("samurai");
-		//Character testChar2 = new Character("sorcerer");
+		Character testChar = new Character("samurai");
+		Character testChar2 = new Character("sorcerer");
 		
-		//CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
-		//CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
+		CharacterSelectionPane.myInventory.getPartyMembers()[1]=testChar;
+		CharacterSelectionPane.myInventory.getPartyMembers()[2]=testChar2;
 		allSkillsButton = new ArrayList<>();
 	
 		otherEntity = new Enemy();
@@ -70,6 +71,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		generateEnemiesAndAllies();
 		
 		otherEntity = myArrEnemies[0]; //Temporary Fix for glitch
+		update();
 		nextCombat();
 		
 	}
@@ -87,49 +89,34 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 * 
 	 */
 	public void update() {
-		int index1 = allEntities.indexOf(currentEntity);
-		int index2 = allEntities.indexOf(otherEntity);
+		for (Entity entity:allEntities) {
+			
+			int index = allEntities.indexOf(entity);
+			
+			if (entity instanceof Enemy) {
+				Enemy e = (Enemy) entity;
+				manaLabels.get(index).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
+				healthLabels.get(index).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
+				if (e.isDead()) {
+					if(healthLabels.get(index).getLabel()!="Dead")initiativeArr.remove(e);
+					healthLabels.get(index).setLabel("Dead");
+					 yourDead(e);
+				}
+			}
+			else if (entity instanceof Character) {
+				Character c = (Character) entity;
+				manaLabels.get(index).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
+				healthLabels.get(index).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
+				updateHealthAndManaBarSize(c);
+				if (!(c.getHp()>0)) {
+					if(healthLabels.get(index).getLabel()!="Dead") System.out.println(c+" is dead Health: "+c.getHp());
+					if(healthLabels.get(index).getLabel()!="Dead")initiativeArr.remove(c);
+					healthLabels.get(index).setLabel("Dead");
+					 yourDead(c);
+				}
+			}
+		}
 		
-		if (currentEntity instanceof Enemy) {
-			Enemy e = (Enemy) currentEntity;
-			manaLabels.get(index1).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
-			healthLabels.get(index1).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
-			if (e.isDead()) {
-				if(healthLabels.get(index1).getLabel()!="Dead")initiativeArr.remove(e);
-				healthLabels.get(index1).setLabel("Dead");
-				 yourDead(e);
-			}
-		}
-		else if (currentEntity instanceof Character) {
-			Character c = (Character) currentEntity;
-			manaLabels.get(index1).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
-			healthLabels.get(index1).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
-			if (c.isDead()) {
-				if(healthLabels.get(index1).getLabel()!="Dead")initiativeArr.remove(c);
-				healthLabels.get(index1).setLabel("Dead");
-				 yourDead(c);
-			}
-		}
-		if (otherEntity instanceof Enemy) {
-			Enemy e = (Enemy) otherEntity;
-			manaLabels.get(index2).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
-			healthLabels.get(index2).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
-			if (e.isDead()) {
-				if(healthLabels.get(index2).getLabel()!="Dead")initiativeArr.remove(e);
-				healthLabels.get(index2).setLabel("Dead");
-				 yourDead(e);
-			}
-		}
-		else if (otherEntity instanceof Character) {
-			Character c = (Character) otherEntity;
-			manaLabels.get(index2).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
-			healthLabels.get(index2).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
-			if (c.isDead()) {
-				if(healthLabels.get(index2).getLabel()!="Dead")initiativeArr.remove(c);
-				healthLabels.get(index2).setLabel("Dead");
-				 yourDead(c);
-			}
-		}
 		
 	}
 
@@ -294,15 +281,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
 		otherEntity =c;
-		description.setLabel("Enemy attacks "+c.getProfession());
+		description.setLabel(e+" attacks "+c.getProfession());
 		description.setLocation((800-description.getWidth())/2,20);
-		update();
 	}
 	
 	public void nextCombat() {
 		if (counter>0)entityToImage(currentEntity).setColor(null);
-		if (counter>0) update();
-		
+		update();
 		if (checkResult()==true) return;
 		
 		
@@ -416,6 +401,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			case 3:width =180;break;
 			case 2:width =270;break;
 			}
+			barSizeChar = width;
 			
 			health.setSize(width, 20);
 			mana.setSize(width, 20);
@@ -453,6 +439,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			mainScreen.add(name);
 		}
 		
+		for (int i = 0;i<enemyNumber;i++) {
+			
+		}
+		
+	}
+	public void updateHealthAndManaBarSize(Character c) {
+		int index = allEntities.indexOf(c);
+		GRect health = healthBars.get(index);
+		GRect mana = manaBars.get(index);
+		double ratio = c.getHp()/c.getHpMax();
+		health.setSize(barSizeChar*ratio, health.getHeight());
+		ratio = c.getMana()/c.getManaMax();
+		mana.setSize(barSizeChar*ratio, mana.getHeight());
 	}
 	
 	public boolean isDead() {
@@ -514,7 +513,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void displayRewards() {
-		update();
 		
 		displayBox = new GRect(340,200);
 		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
