@@ -109,7 +109,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				healthLabels.get(index).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
 				updateHealthAndManaBarSize(c);
 				if (!(c.getHp()>0)) {
-					if(healthLabels.get(index).getLabel()!="Dead") System.out.println(c+" is dead Health: "+c.getHp());
 					if(healthLabels.get(index).getLabel()!="Dead")initiativeArr.remove(c);
 					healthLabels.get(index).setLabel("Dead");
 					 yourDead(c);
