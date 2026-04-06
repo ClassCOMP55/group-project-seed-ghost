@@ -14,8 +14,14 @@ public class SKILL_Fireball extends Skill {
 		System.out.println(dmg[DamageType.FIRE.ordinal()]);
 		
 		CombatPane currentBattle = MainApplication.combatPane;
-		for (Enemy a : currentBattle.getMyArrEnemies()) {
-			a.attackMe(dmg);
+		if (me instanceof Character) {
+			for (Enemy a : currentBattle.getMyArrEnemies()) {
+				a.attackMe(dmg);
+			}
+		} else if (me instanceof Enemy) {
+			for (Character a : currentBattle.getMyArrAllies()) {
+				a.attackMe(dmg);
+			}
 		}
 		
 		me.drainMana(getManaCost());
