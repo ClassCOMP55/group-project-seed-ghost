@@ -26,7 +26,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton;
-	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel;
+	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel;
 	
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost;
 	private int turn,counter,skillIndex,switched,enemyNumber;
@@ -247,8 +247,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				displayRewards();
 			}
 			else {
-				MapPane.currPosition.cleared();
-				displayRewards();
+				displayGameOver();
 			}
 			return true;
 		}
@@ -278,6 +277,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Character c = e.playTurn(this);
 		otherEntity =c;
 		description.setLabel(e+" attacks "+c.getProfession());
+		System.out.println(e+" attacked");
 		description.setLocation((800-description.getWidth())/2,20);
 	}
 	
@@ -566,6 +566,32 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	public void displayGameOver() {
+		GRect backround = new GRect(800,600);
+		backround.setFilled(true);
+		backround.setFillColor(Color.RED);
+		
+		contents.add(backround);
+		mainScreen.add(backround);
+		
+		GLabel label = new GLabel("Game Over!");
+		label.setFont("DialogInput-PLAIN-50");
+		label.setLocation((800-label.getWidth())/2, (800-label.getHeight())/2-200);
+		contents.add(label);
+		mainScreen.add(label);
+		
+		menuButton = new GRect(160,50);
+		menuButton.setLocation((800-label.getWidth())/2, 350);
+		menuButton.setFilled(true);
+		menuButton.setFillColor(Color.DARK_GRAY);
+		contents.add(menuButton);
+		mainScreen.add(menuButton);
+		
+		
+		
+		
+	}
+	
 	public void yourTurn(GImage image) {
 		image.setColor(Color.YELLOW);
 	}
@@ -668,9 +694,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			clearArrays();
 			mainScreen.switchToMapPane();
 		}
-		else if ((obj==mapButton||obj==mapButtonLabel)&&lost==true) {
+		else if ((obj==menuButton||obj==menuButtonLabel)&&lost==true) {
 			clearArrays();
-			mainScreen.switchToMapPane();
+			mainScreen.switchToMenuPane();
 		}
 	}
 	
