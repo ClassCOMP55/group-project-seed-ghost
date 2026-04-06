@@ -10,7 +10,7 @@ public class Enemy extends Entity {
 	private String name;
 	private double sprScale;
 	
-	private static final String[] HOLY_ENEMIES = new String[] {"holyghost","fairie"};
+	private static final String[] HOLY_ENEMIES = new String[] {"holyghost","fairie","prunsel"};
 	private static final String[] MAGE_ENEMIES = new String[] {"imagefriend","orb","chefbot","casper","magicsword","fairie"};
 	private static final String[] FIRE_ENEMIES = new String[] {"imagefriend","chefbot","irongremlin","bladedevil","soosk","gunturtle"};
 	private static final String[] ELEC_ENEMIES = new String[] {"imagefriend","slime","chefbot","soosk","gunturtle","zapball"};
@@ -96,7 +96,29 @@ public class Enemy extends Entity {
 		sprScale = 1;
 		
 		switch (id.toLowerCase()) {
-			case "holyghost":
+		case "prunsel":
+			damageResist[DamageType.HOLY.ordinal()] = 0.0;
+			damageResist[DamageType.PIERCE.ordinal()] = 0.2;
+			damageResist[DamageType.SLASH.ordinal()] = 0.2;
+			damageResist[DamageType.CRUSH.ordinal()] = 0.2;
+			damageResist[DamageType.BLAST.ordinal()] = 0.2;
+			
+			weaponDamage[DamageType.HOLY.ordinal()] = 10;
+			weaponScales[EntityStats.FTH.ordinal()] = 3.0;
+			fth = 10 + (scaling * 2);
+			con = 30 + (int)(scaling * 1.5);
+			spr = "spr_Prunsel.png";
+			
+			name = "PRUNSEL";
+			
+			defSkillP = new int[] {0,1,2,1};
+			defSkill.add(new SKILL_EnemyBuffAllies());
+			defSkill.add(new SKILL_BasicAttack());
+			defSkill.add(new SKILL_HeavyAttack());
+			
+			HP = 143.0;
+		break;	
+		case "holyghost":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
