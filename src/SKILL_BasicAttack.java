@@ -16,4 +16,8 @@ public class SKILL_BasicAttack extends Skill {
 			System.out.println(me + " attacked " + target + " with " + m.getWeapon());
 		}
 	}
+	
+	public String getEnemyIntentMsg(Entity me, Entity target) {
+		return me + " intends to attack " + target + " for " + (((Character)target).getArmor().calculateDamage(((Enemy)me).getAtk().scaledDamage(me.getStatSpread()))) + " damage!";
+	}
 }

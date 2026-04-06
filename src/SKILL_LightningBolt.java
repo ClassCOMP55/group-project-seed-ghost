@@ -16,4 +16,9 @@ public class SKILL_LightningBolt extends Skill {
 		
 		me.drainMana(getManaCost());
 	}
+	
+	public String getEnemyIntentMsg(Entity me, Entity target) {
+		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.WIL.ordinal()]*0.4);
+		return me + " intends to attack " + target + " for " + 10 * Math.pow(1.06, scaling) + " damage!";
+	}
 }

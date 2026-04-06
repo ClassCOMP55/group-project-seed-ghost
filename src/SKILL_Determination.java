@@ -15,4 +15,8 @@ public class SKILL_Determination extends Skill {
 		
 		me.drainMana(getManaCost());
 	}
+	
+	public String getEnemyIntentMsg(Entity me, Entity target) {
+		return me + " intends to buff itself!";
+	}
 }
