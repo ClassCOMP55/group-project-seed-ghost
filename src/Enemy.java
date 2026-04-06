@@ -221,6 +221,9 @@ public class Enemy extends Entity {
 				
 				name = "Iron Gremlin";
 				
+				defSkillP = new int[] {0};
+				defSkill.add(new SKILL_IronWave());
+				
 				HP = 500;
 			break;
 			case "orb":
@@ -252,8 +255,9 @@ public class Enemy extends Entity {
 				
 				name = "ChefBot 9000";
 				
-				defSkillP = new int[] {0,0,1};
+				defSkillP = new int[] {0,2,1};
 				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_EnemyBuffAllies());
 				defSkill.add(new SKILL_LightningBolt());
 				
 				HP = 200;
