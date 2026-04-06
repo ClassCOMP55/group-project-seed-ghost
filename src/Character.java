@@ -150,16 +150,17 @@ public class Character extends Entity {
 				tempSprite = "spr_Viking.png";
 			break;
 			case "cleric":
-				tempHp = Chance.range(70, 150);
-				tempMn = Chance.range(100, 300);
+				tempHp = Chance.range(170, 250);
+				tempMn = Chance.range(150, 300);
 				tempDr = 0.15;
 				
 				tempWil = (int)Chance.range(40, 50);
-				tempFth = (int)Chance.range(60, 100);
-				tempArc = (int)Chance.range(10, 20);
+				tempFth = (int)Chance.range(60, 120);
+				tempArc = (int)Chance.range(10, 50);
+				tempStr = (int)Chance.range(30, 50);
 				allowedArmors = new String[] {"light", "medium"};
 				
-				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_SelfSacrifice(), new SKILL_PrayerOfHealing()};
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_Recovery(), new SKILL_PrayerOfHealing()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), "holy");
