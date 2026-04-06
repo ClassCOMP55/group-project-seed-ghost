@@ -668,6 +668,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			clearArrays();
 			mainScreen.switchToMapPane();
 		}
+		else if ((obj==mapButton||obj==mapButtonLabel)&&lost==true) {
+			clearArrays();
+			mainScreen.switchToMapPane();
+		}
 	}
 	
 	public void mouseMoved(MouseEvent e) {
