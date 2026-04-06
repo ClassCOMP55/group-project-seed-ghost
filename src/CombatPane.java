@@ -231,13 +231,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		lost = true;
 		for(int i = 0;i<myArrAllies.length;i++) {
 			if (myArrAllies[i]!=null) {
-				if (myArrAllies[i].isDead()==false) lost = false;	
+				if (myArrAllies[i].getHp()>0) {
+					lost = false;	
+				}
+				else {
+					myArrAllies[i].setHp(0);
+				}
 			}
 		}
 		
 		for(int i = 0;i<myArrEnemies.length;i++) {
 			if (myArrEnemies[i]!=null) {
-				if (myArrEnemies[i].isDead()==false) won = false;
+				if (myArrEnemies[i].getHp()>0) won = false;
 			}
 		}
 		
@@ -694,7 +699,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				nextCombat();
 			}
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
-				mySkills[skillIndex].activationEffect(currentEntity,currentEntity);
+				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				skill = false;
 				skillReady = false;
 				playersTurn = false;
