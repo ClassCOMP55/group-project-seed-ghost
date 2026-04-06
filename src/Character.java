@@ -1,5 +1,6 @@
 public class Character extends Entity {
 	public static final int MAX_SKILLS = 4;
+	public static final double MAX_HEALTH_UNIVERSAL_BOOSTER = 1.5;
 	
 	private WeaponItem myWeapon;
 	private ArmorItem myArmor;
@@ -167,7 +168,7 @@ public class Character extends Entity {
 				tempSprite = "spr_Cleric.png";
 			break;
 			case "sorcerer":
-				tempHp = Chance.range(40, 100);
+				tempHp = Chance.range(70, 120);
 				tempMn = Chance.range(150, 300);
 				tempDr = 0.1;
 				
@@ -230,6 +231,8 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), "null");
 			break;
 		}
+		
+		tempHp *= MAX_HEALTH_UNIVERSAL_BOOSTER;
 		
 		setHpMax(tempHp);
 		setHp(tempHp);
