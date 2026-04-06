@@ -301,6 +301,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
+				update();
 			}
 			counter++;
 		}
@@ -598,7 +599,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				skillIndex = allSkillsButton.indexOf(obj);
 				
 				if (mySkills[skillIndex].preconditionsMet(currentEntity, otherEntity)) {
-					if (mySkills[skillIndex].getName()=="Guard Self") {
+					if (mySkills[skillIndex].getvTarget()=="NA") {
 						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 						Character c = (Character) currentEntity;
 						c.setLastUsedSkill(mySkills[skillIndex]);
@@ -632,8 +633,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				
 				nextCombat();
 			}
-			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="NA") {
-				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
+				mySkills[skillIndex].activationEffect(currentEntity,currentEntity);
 				skill = false;
 				skillReady = false;
 				playersTurn = false;
@@ -647,6 +648,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 	
 		}
+		update();
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true) {
 			clearArrays();
 			mainScreen.switchToMapPane();
