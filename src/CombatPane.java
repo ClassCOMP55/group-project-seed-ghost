@@ -97,6 +97,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				Enemy e = (Enemy) entity;
 				manaLabels.get(index).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
 				healthLabels.get(index).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
+				updateHealthAndManaBarSize(e);
 				if (e.isDead()) {
 					if(healthLabels.get(index).getLabel()!="Dead")initiativeArr.remove(e);
 					healthLabels.get(index).setLabel("Dead");
@@ -440,8 +441,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			mainScreen.add(name);
 		}
 		
+		barSizeEnemy = 137;
 		for (int i = 0;i<enemyNumber;i++) {
-			
+			health = new GRect(barSizeEnemy,15);
+			int index = allEntities.indexOf(myArrEnemies[i]);
+			GLabel healthLabel = healthLabels.get(index);
+			GImage image = allImages.get(index);
+			health.setLocation(allImages.get(index).getX(), allImages.get(index).getY());
+			healthLabel.setLocation(health.getX(), health.getY()+15);
+			health.setColor(Color.RED);
+			health.setFilled(true);
+			healthBars.add(health);
+			contents.add(health);
+			mainScreen.add(health);
+			healthLabel.sendToFront();
 		}
 		
 	}
@@ -459,7 +472,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		int index = allEntities.indexOf(e);
 		GRect health = healthBars.get(index);
 		double ratio = e.getHp()/e.getHpMax();
-		health.setSize(barSizeChar*ratio, health.getHeight());
+		health.setSize(barSizeEnemy*ratio, health.getHeight());
 	}
 	
 	public boolean isDead() {
