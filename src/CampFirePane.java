@@ -45,7 +45,7 @@ public class CampFirePane extends GraphicsPane{
 	// HEAL, REVIVE, TRAIN, MERCENARY, EXIT buttons
 	 private void addButtons() {
 	        int x = 40;
-	        int yStart = 150;
+	        int yStart = 150;  
 	        int yStep = 50;
 
 	        createButton("Heal Party (50%)", x, yStart, "heal");
