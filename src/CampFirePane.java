@@ -6,6 +6,7 @@ import acm.graphics.*;
 public class CampFirePane extends GraphicsPane{
 	 private int actionPoints;
 	 private GLabel apLabel;
+	 private GLabel actionMessage;
 	 private HashMap<String, GRect> actionButtons;
 
 	 
@@ -43,9 +44,9 @@ public class CampFirePane extends GraphicsPane{
 	
 	// HEAL, REVIVE, TRAIN, MERCENARY, EXIT buttons
 	 private void addButtons() {
-	        int x = 200;
-	        int yStart = 200;
-	        int yStep = 60;
+	        int x = 40;
+	        int yStart = 150;
+	        int yStep = 50;
 
 	        createButton("Heal Party (50%)", x, yStart, "heal");
 	        createButton("Revive Allies (30%)", x, yStart + yStep, "revive");
@@ -77,10 +78,10 @@ public class CampFirePane extends GraphicsPane{
 	                }
 	            }
 	            public void mouseExited(MouseEvent e) {
-	                if (actionButtons.containsKey(actionType)) {
+	            	if (actionType.equals("leave") || actionButtons.containsKey(actionType)) {
 	                    box.setFillColor(baseColor);
 	                } else {
-	                    box.setFillColor(usedColor); // keep grey if already used
+	                    box.setFillColor(usedColor); 
 	                }
 	            }
 	            public void mouseClicked(MouseEvent e) { handleAction(actionType); }
@@ -97,6 +98,7 @@ public class CampFirePane extends GraphicsPane{
 	        
 	        if (!actionType.equals("leave")) {
 	            actionButtons.put(actionType, box);
+	         
 	        }
 	    }
 
@@ -115,37 +117,56 @@ public class CampFirePane extends GraphicsPane{
 	    //action points used
 	    private boolean useActionPoint(String actionType) {
 	        if (actionPoints <= 0 || !actionButtons.containsKey(actionType)) {
-	            System.out.println("No actions remaining. Leaving camp...");
-	            mainScreen.switchToMapPane();
+	        	showMessage("No actions remaining.");
 	            return false;
 	        }
 	        
-	        GRect button = actionButtons.get(actionType);
-	        button.setFillColor(Color.LIGHT_GRAY);
-	        button.setFilled(true);
-	        actionButtons.remove(actionType);
+	        if (!actionType.equals("heal") && !actionType.equals("train")) {
+	            GRect button = actionButtons.get(actionType);
+	            if (button != null) {
+	                button.setFillColor(Color.LIGHT_GRAY);
+	                button.setFilled(true);
+	                actionButtons.remove(actionType);
+	            }
+	        }
 	        
 	        actionPoints--;
 	        displayActionPoints();
-	        
-	        if (actionPoints == 0 || actionButtons.isEmpty()) {
-	            System.out.println("All actions used. Returning to map...");
-	            mainScreen.switchToMapPane();
-	        }
+
 	        return true;
 	    }
 	 // Handle button clicks
 	    private void handleAction(String actionType) {
-	    	 if (actionPoints <= 0 || !actionButtons.containsKey(actionType)) {
-	             System.out.println("No actions remaining or action already used!");
+	    	if (actionType.equals("leave")) {
+	            mainScreen.switchToMapPane();
+	            return;
+	        }
+	    	
+	    	if (actionType.equals("mercenary")) {
+	            if (isPartyFull()) {
+	                showMessage("Party full! Cannot recruit a new mercenary.");
+	                return;
+	            }
+	            if (useActionPoint("mercenary")) {
+	                recruitMercenary();
+	            }
+	            return;
+	        }
+	    	
+	    	if (actionPoints <= 0 || !actionButtons.containsKey(actionType)) {
+	    		 showMessage("No actions remaining! Leave the Camp");
 	             return;
 	         }
 	        switch (actionType) {
 	        case "heal":
-                if (useActionPoint("heal")) healParty();
+                if (healParty()) {
+                	useActionPoint("heal");
+                }
                 break;
             case "revive":
-                if (useActionPoint("revive")) reviveAllies();
+                if (reviveAllies()) {
+                	useActionPoint("revive");
+                }
                 break;
             case "train":
                 if (useActionPoint("train")) trainParty();
@@ -156,28 +177,52 @@ public class CampFirePane extends GraphicsPane{
             case "leave":
                 mainScreen.switchToMapPane();
                 break;
+	        }   
+	    }
+	    
+	    private boolean isPartyFull() {
+	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
+	        for (Character c : party) {
+	            if (c == null) return false;
 	        }
+	        return true;
 	    }
 	    
 	    // Heal party to 50%
-	    private void healParty() {
+	    private boolean healParty() {
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
-	        boolean anyHealed = false;
+	        boolean anyHealedHalf = false;
+	        boolean healedToFull = false; 
 	        for (Character c : party) {
-	        	if (c != null && c.getHp() > 0 && c.getHp() < c.getHpMax() * 0.50) {
-	                c.setHp(c.getHpMax() * 0.50);
-	                anyHealed = true;
+	            if (c != null && c.getHp() > 0) {
+
+	                int halfHp = (int)(c.getHpMax() * 0.50);
+
+	                if (c.getHp() < halfHp) {
+	                    c.setHp(halfHp);
+	                    anyHealedHalf = true;
+	                } else if (c.getHp() < c.getHpMax()) {
+	                    c.setHp(c.getHpMax());
+	                    healedToFull = true;
+	                }
+	                c.gainMana(c.getManaMax() - c.getMana());
 	            }
 	        }
-	        if (anyHealed) {
-	            System.out.println("Party healed to 50%");
+
+	        if (anyHealedHalf) {
+	        	 showMessage("Party recovered 50% hp and Full MP");
+	            return true;
+	        } else if (healedToFull) {
+	        	 showMessage("Party fully recovered HP and MP");
+	            return true;
 	        } else {
-	            System.out.println("All party members already at 50% HP or higher!");
+	            showMessage("All party members already at full HP and MP!");
+	            return false; 
 	        }
 	    }
 
 	    // Revive allies to 30%
-	    private void reviveAllies() {
+	    private boolean reviveAllies() {
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
 	        boolean anyRevived = false; 
 	        for (Character c : party) {
@@ -188,9 +233,11 @@ public class CampFirePane extends GraphicsPane{
 	        }
 
 	        if (anyRevived) {
-	            System.out.println("Defeated allies revived to 30%");
+	        	 showMessage("Defeated allies revived to 30% hp");
+	            return true;
 	        } else {
-	            System.out.println("All party members are still alive!");
+	        	 showMessage("All party members are still alive!");
+	            return false; 
 	        }
 	    }
 
@@ -203,7 +250,7 @@ public class CampFirePane extends GraphicsPane{
 	                c.increaseStat(primaryStatIndex, 10); 
 	            }
 	        }
-	        System.out.println("Party primary stats increase +10");
+	        showMessage("Party primary stats increase +10");
 	    }
 
 	    // Recruit a free random mercenary
@@ -216,11 +263,41 @@ public class CampFirePane extends GraphicsPane{
 	        for (int i = 0; i < inv.getPartyMembers().length; i++) {
 	            if (inv.getPartyMembers()[i] == null) {
 	                inv.getPartyMembers()[i] = newMerc;
-	                System.out.println("Recruited a new mercenary: " + newMerc.getProfession());
+	                showMessage("Recruited a new mercenary: " + newMerc.getProfession());
 	                return;
 	            }
 	        }
 
-	        System.out.println("Party full! Mercenary cannot join");
+	        showMessage("Party full! Mercenary cannot join");
 	    }
+	    //Displays the messages on the pane
+	    
+	    private void showMessage(String message) {
+	        if (actionMessage != null) {
+	            mainScreen.remove(actionMessage);
+	            contents.remove(actionMessage);
+	        }
+
+	        actionMessage = new GLabel(message, 200, 500);
+	        actionMessage.setFont("DialogInput-BOLD-16");
+	        actionMessage.setColor(Color.CYAN);
+
+	        contents.add(actionMessage);
+	        mainScreen.add(actionMessage);
+
+	        new Thread(() -> {
+	            try {
+	                Thread.sleep(2000);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	            if (actionMessage != null) {
+	                mainScreen.remove(actionMessage);
+	                contents.remove(actionMessage);
+	                actionMessage = null;
+	            }
+	        }).start();
+	    }
+	    
+	      
 	}
