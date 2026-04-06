@@ -10,6 +10,12 @@ public class Enemy extends Entity {
 	private String name;
 	private double sprScale;
 	
+	private static final String[] HOLY_ENEMIES = new String[] {"holyghost","fairie","prunsel"};
+	private static final String[] MAGE_ENEMIES = new String[] {"imagefriend","orb","chefbot","casper","magicsword","fairie"};
+	private static final String[] FIRE_ENEMIES = new String[] {"imagefriend","chefbot","irongremlin","bladedevil","soosk","gunturtle"};
+	private static final String[] ELEC_ENEMIES = new String[] {"imagefriend","slime","chefbot","soosk","gunturtle","zapball"};
+	private static final String[] BOSS_ENEMIES = new String[] {"boss_seraphim","boss_drip","boss_mage"};
+	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
 		skills = new ArrayList<Skill>();
@@ -90,7 +96,28 @@ public class Enemy extends Entity {
 		sprScale = 1;
 		
 		switch (id.toLowerCase()) {
-			case "holyghost":
+		case "prunsel":
+			damageResist[DamageType.HOLY.ordinal()] = 0.0;
+			damageResist[DamageType.PIERCE.ordinal()] = 2.0;
+			damageResist[DamageType.SLASH.ordinal()] = 2.0;
+			damageResist[DamageType.MAGIC.ordinal()] = 0.2;
+			
+			weaponDamage[DamageType.HOLY.ordinal()] = 10;
+			weaponScales[EntityStats.FTH.ordinal()] = 3.0;
+			fth = 10 + (scaling * 2);
+			con = 30 + (int)(scaling * 1.5);
+			spr = "spr_Prunsel.png";
+			
+			name = "PRUNSEL";
+			
+			defSkillP = new int[] {0,1,2,1};
+			defSkill.add(new SKILL_EnemyBuffAllies());
+			defSkill.add(new SKILL_BasicAttack());
+			defSkill.add(new SKILL_HeavyAttack());
+			
+			HP = 143.0;
+		break;	
+		case "holyghost":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
@@ -106,7 +133,7 @@ public class Enemy extends Entity {
 				name = "Holy Ghost";
 				
 				defSkillP = new int[] {0,1,2,1};
-				defSkill.add(new SKILL_LightningBolt());
+				defSkill.add(new SKILL_EnemyBuffAllies());
 				defSkill.add(new SKILL_SelfSacrifice());
 				defSkill.add(new SKILL_BasicAttack());
 				
@@ -194,6 +221,9 @@ public class Enemy extends Entity {
 				
 				name = "Iron Gremlin";
 				
+				defSkillP = new int[] {0};
+				defSkill.add(new SKILL_IronWave());
+				
 				HP = 500;
 			break;
 			case "orb":
@@ -225,8 +255,9 @@ public class Enemy extends Entity {
 				
 				name = "ChefBot 9000";
 				
-				defSkillP = new int[] {0,0,1};
+				defSkillP = new int[] {0,2,1};
 				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_EnemyBuffAllies());
 				defSkill.add(new SKILL_LightningBolt());
 				
 				HP = 200;
@@ -247,6 +278,70 @@ public class Enemy extends Entity {
 				name = "???";
 				
 				HP = 125;
+			break;
+			case "soosk":
+				damageResist[DamageType.PIERCE.ordinal()] = 2.5;
+				damageResist[DamageType.SLASH.ordinal()] = 0.8;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.8;
+				damageResist[DamageType.BLAST.ordinal()] = 10.0;
+				damageResist[DamageType.FIRE.ordinal()] = 10.0;
+				damageResist[DamageType.MAGIC.ordinal()] = 0.2;
+				
+				weaponDamage[DamageType.SLASH.ordinal()] = 40;
+				weaponScales[EntityStats.STR.ordinal()] = 1.0;
+				str = scaling * 4;
+				spr = "spr_Soosk.png";
+				
+				HP = 1800.0;
+			break;
+			case "fairie":
+				damageResist[DamageType.HOLY.ordinal()] = 1.2;
+				
+				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
+				weaponDamage[DamageType.FIRE.ordinal()] = 20;
+				weaponScales[EntityStats.CON.ordinal()] = 0.2;
+				weaponScales[EntityStats.ARC.ordinal()] = 0.2;
+				con = 10 + (scaling * 2);
+				arc = 10 + (scaling * 2);
+				spr = "spr_EvilintheFairiesGremlinCreature.gif";
+				
+				defSkillP = new int[] {0,1,2,1};
+				defSkill.add(new SKILL_Fireball());
+				defSkill.add(new SKILL_EnemyBuffAllies());
+				defSkill.add(new SKILL_BasicAttack());
+				
+				HP = 60.0;
+			break;
+			case "gunturtle":
+				damageResist[DamageType.PIERCE.ordinal()] = 0.0;
+				damageResist[DamageType.BLAST.ordinal()] = 0.2;
+				
+				weaponDamage[DamageType.PIERCE.ordinal()] = 200;
+				spr = "spr_GangstaTurtle.png";
+				
+				defSkillP = new int[] {1,1,0};
+				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_BossBuffSelf());
+				
+				HP = 20.0;
+			break;
+			case "zapball":
+				damageResist[DamageType.ELEC.ordinal()] = -2.0;
+				damageResist[DamageType.FIRE.ordinal()] = 2.0;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.5;
+				damageResist[DamageType.SLASH.ordinal()] = 0.5;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.5;
+				
+				weaponDamage[DamageType.ELEC.ordinal()] = 30;
+				weaponScales[EntityStats.WIL.ordinal()] = 1.0;
+				wil = 10 + (scaling * 2);
+				spr = "spr_ball.gif";
+				
+				defSkillP = new int[] {1,1,1,0};
+				defSkill.add(new SKILL_BasicAttack());
+				defSkill.add(new SKILL_BossBuffSelf());
+				
+				HP = 70.0;
 			break;
 			case "boss_seraphim":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
@@ -278,9 +373,11 @@ public class Enemy extends Entity {
 				damageResist[DamageType.FIRE.ordinal()] = 0.5;
 				damageResist[DamageType.ELEC.ordinal()] = 0.5;
 				
-				weaponDamage[DamageType.MAGIC.ordinal()] = 100;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 80;
+				weaponDamage[DamageType.PIERCE.ordinal()] = 40;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
 				arc = (int)(scaling * 2.0);
+				wil = scaling * 3;
 				ist = 30;
 				spr = "spr_BOSS_GreatMage.png";
 				
@@ -288,9 +385,11 @@ public class Enemy extends Entity {
 				
 				sprScale = 2;
 				
-				defSkillP = new int[] {0,0,1};
+				defSkillP = new int[] {2,0,1,3};
 				defSkill.add(new SKILL_BasicAttack());
 				defSkill.add(new SKILL_BossBuffSelf());
+				defSkill.add(new SKILL_LightningBolt());
+				defSkill.add(new SKILL_Fireball());
 				
 				HP = 1200;
 			break;
@@ -445,5 +544,57 @@ public class Enemy extends Entity {
 
 	public void setSprScale(double sprScale) {
 		this.sprScale = sprScale;
+	}
+
+	public int getTurn() {
+		return turn;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+
+	public Character getNextTarget() {
+		return nextTarget;
+	}
+
+	public void setNextTarget(Character nextTarget) {
+		this.nextTarget = nextTarget;
+	}
+
+	public Character getPreviousTarget() {
+		return previousTarget;
+	}
+
+	public void setPreviousTarget(Character previousTarget) {
+		this.previousTarget = previousTarget;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public static String[] getHolyEnemies() {
+		return HOLY_ENEMIES;
+	}
+
+	public static String[] getMageEnemies() {
+		return MAGE_ENEMIES;
+	}
+
+	public static String[] getFireEnemies() {
+		return FIRE_ENEMIES;
+	}
+
+	public static String[] getElecEnemies() {
+		return ELEC_ENEMIES;
+	}
+
+	public static String[] getBossEnemies() {
+		return BOSS_ENEMIES;
 	}
 }

@@ -9,7 +9,7 @@ public class SKILL_BossBuffSelf extends Skill {
 	
 	public void activationEffect (Entity me, Entity target) {
 		for (int i = 0; i < me.getStatSpread().length; i++) {
-			me.getStatSpread()[i] += 10;
+			me.getStatSpread()[i] += 15;
 		}
 	}
 }
