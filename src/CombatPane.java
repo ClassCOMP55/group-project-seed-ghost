@@ -251,7 +251,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				displayRewards();
 			}
 			else {
-				mainScreen.switchToMapPane();
+				MapPane.currPosition.cleared();
+				displayRewards();
 			}
 			return true;
 		}
@@ -452,6 +453,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		health.setSize(barSizeChar*ratio, health.getHeight());
 		ratio = c.getMana()/c.getManaMax();
 		mana.setSize(barSizeChar*ratio, mana.getHeight());
+	}
+	
+	public void updateHealthAndManaBarSize(Enemy e) {
+		int index = allEntities.indexOf(e);
+		GRect health = healthBars.get(index);
+		double ratio = e.getHp()/e.getHpMax();
+		health.setSize(barSizeChar*ratio, health.getHeight());
 	}
 	
 	public boolean isDead() {
