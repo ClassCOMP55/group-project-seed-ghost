@@ -629,6 +629,25 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return myArr;
 	}
 	
+	public Enemy[] aliveEnemies() {
+		int length =0;
+		int num = 0;
+		for (Enemy e :myArrEnemies) {
+			if(e!=null&&e.isDead()==false) {
+				length++;
+			}
+		}
+		Enemy[] myArr = new Enemy[length];
+		
+		for (Enemy e :myArrEnemies) {
+			if(e!=null&&e.isDead()==false) {
+				myArr[num]=e;
+				num++;
+			}
+		}
+		return myArr;
+	}
+	
 	public void mouseClicked(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		if (obj == skillButton && playersTurn == true) {
