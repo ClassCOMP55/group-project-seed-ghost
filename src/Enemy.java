@@ -98,10 +98,9 @@ public class Enemy extends Entity {
 		switch (id.toLowerCase()) {
 		case "prunsel":
 			damageResist[DamageType.HOLY.ordinal()] = 0.0;
-			damageResist[DamageType.PIERCE.ordinal()] = 0.2;
-			damageResist[DamageType.SLASH.ordinal()] = 0.2;
-			damageResist[DamageType.CRUSH.ordinal()] = 0.2;
-			damageResist[DamageType.BLAST.ordinal()] = 0.2;
+			damageResist[DamageType.PIERCE.ordinal()] = 2.0;
+			damageResist[DamageType.SLASH.ordinal()] = 2.0;
+			damageResist[DamageType.MAGIC.ordinal()] = 0.2;
 			
 			weaponDamage[DamageType.HOLY.ordinal()] = 10;
 			weaponScales[EntityStats.FTH.ordinal()] = 3.0;
