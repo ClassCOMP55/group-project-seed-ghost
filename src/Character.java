@@ -99,7 +99,7 @@ public class Character extends Entity {
 				tempSprite = "spr_Knight.png";
 				allowedArmors = new String[] {"light", "medium","heavy"};
 				
-				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Drain()};
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Taunt()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), "null");
