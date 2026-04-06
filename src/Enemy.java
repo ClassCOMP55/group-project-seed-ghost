@@ -212,10 +212,10 @@ public class Enemy extends Entity {
 				damageResist[DamageType.FIRE.ordinal()] = 0.2;
 				damageResist[DamageType.ELEC.ordinal()] = 1.5;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 40;
-				weaponDamage[DamageType.CRUSH.ordinal()] = 30;
-				weaponScales[EntityStats.STR.ordinal()] = 1.0;
-				str = 10 + (scaling * 3);
+				weaponDamage[DamageType.SLASH.ordinal()] = 20;
+				weaponDamage[DamageType.CRUSH.ordinal()] = 20;
+				weaponScales[EntityStats.STR.ordinal()] = 5.0;
+				str = 0;
 				ist = 0;
 				spr = "spr_IronGremlin.gif";
 				
@@ -436,6 +436,10 @@ public class Enemy extends Entity {
 		turn = 0;
 		
 		setAttackPattern(defSkill, defSkillP);
+	}
+	
+	public String getIntent () {
+		return skills.get(skillPattern[turn]).getEnemyIntentMsg(this, nextTarget);
 	}
 	
 	public double calculateDamage (double[] incDamage) {

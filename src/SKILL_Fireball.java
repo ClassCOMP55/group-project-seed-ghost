@@ -15,15 +15,20 @@ public class SKILL_Fireball extends Skill {
 		
 		CombatPane currentBattle = MainApplication.combatPane;
 		if (me instanceof Character) {
-			for (Enemy a : currentBattle.getMyArrEnemies()) {
+			for (Enemy a : currentBattle.aliveEnemies()) {
 				a.attackMe(dmg);
 			}
 		} else if (me instanceof Enemy) {
-			for (Character a : currentBattle.getMyArrAllies()) {
+			for (Character a : currentBattle.aliveAllies()) {
 				a.attackMe(dmg);
 			}
 		}
 		
 		me.drainMana(getManaCost());
+	}
+	
+	public String getEnemyIntentMsg(Entity me, Entity target) {
+		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.4);
+		return me + " intends to fireball all allies for " + 10 * Math.pow(1.055, scaling) + " damage!";
 	}
 }

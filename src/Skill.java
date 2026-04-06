@@ -4,7 +4,7 @@
 
 
 public class Skill {
-	private String name, description, vTarget;
+	private String name, description, vTarget, enemyIntentMsg;
 	private double manaCost;
 	
 	public Skill () {
@@ -12,6 +12,7 @@ public class Skill {
 		setDescription("A dummy skill that does nothing. If you're seeing this, something went wrong.");
 		manaCost = 0;
 		vTarget = "NA";
+		setEnemyIntentMsg("null");
 	}
 	
 	public Skill (double mana_cost) {
@@ -19,6 +20,7 @@ public class Skill {
 		setDescription("A dummy skill that does nothing. If you're seeing this, something went wrong.");
 		manaCost = mana_cost;
 		vTarget = "NA";
+		setEnemyIntentMsg("null");
 	}
 
 	public String getDescription() {
@@ -72,5 +74,13 @@ public class Skill {
 
 	public void setvTarget(String vTarget) {
 		this.vTarget = vTarget;
+	}
+
+	public String getEnemyIntentMsg(Entity me, Entity target) {
+		return enemyIntentMsg;
+	}
+
+	public void setEnemyIntentMsg(String enemyIntentMsg) {
+		this.enemyIntentMsg = enemyIntentMsg;
 	}
 }
