@@ -112,7 +112,7 @@ public class Enemy extends Entity {
 				name = "Holy Ghost";
 				
 				defSkillP = new int[] {0,1,2,1};
-				defSkill.add(new SKILL_LightningBolt());
+				defSkill.add(new SKILL_EnemyBuffAllies());
 				defSkill.add(new SKILL_SelfSacrifice());
 				defSkill.add(new SKILL_BasicAttack());
 				
@@ -279,6 +279,11 @@ public class Enemy extends Entity {
 				con = 10 + (scaling * 2);
 				arc = 10 + (scaling * 2);
 				spr = "spr_EvilintheFairiesGremlinCreature.gif";
+				
+				defSkillP = new int[] {0,1,2,1};
+				defSkill.add(new SKILL_Fireball());
+				defSkill.add(new SKILL_EnemyBuffAllies());
+				defSkill.add(new SKILL_BasicAttack());
 				
 				HP = 60.0;
 			break;
