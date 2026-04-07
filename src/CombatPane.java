@@ -20,7 +20,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private ArrayList<GImage> allImages;
 	private ArrayList<GRect> allSkillsButton,healthBars,manaBars;
 	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels;
-	
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	Skill[] mySkills;
@@ -289,7 +288,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void nextCombat() {
 		if (counter>0)entityToImage(currentEntity).setColor(null);
 		update();
-		if (checkResult()==true) return;
 		
 		
 		counter = counter%initiativeArr.size();
@@ -320,6 +318,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		    timer.setRepeats(false);
 		    timer.start();
 		}
+		if (checkResult()==true) return;
 	}
 	
 	public GRect createButton(double x,double y,String str){
@@ -663,18 +662,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			if (allSkillsButton.contains(obj)) {
 				skillIndex = allSkillsButton.indexOf(obj);
 				
-				if (mySkills[skillIndex].preconditionsMet(currentEntity, otherEntity)) {
+				if (mySkills[skillIndex].preconditionsMet(currentEntity, currentEntity)) {
 					if (mySkills[skillIndex].getvTarget()=="NA") {
 						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+						skill = false;
 						Character c = (Character) currentEntity;
 						c.setLastUsedSkill(mySkills[skillIndex]);
+						hideSkills();
 						nextCombat();
 						
 					}
 					else {
+						hideSkills();
 						skillReady = true;
 					}
-					hideSkills();
 				}
 				else {
 					description.setLabel("Not enough mana try again!");
@@ -684,15 +685,15 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				
 			}
 		}
+		
 		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
 			otherEntity = imageToEntity((GImage) obj);
-			if (otherEntity instanceof Enemy) {
+			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
 				
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				Character c = (Character) currentEntity;
 				c.setLastUsedSkill(mySkills[skillIndex]);
 				
-				skill = false;
 				skillReady = false;
 				playersTurn = false;
 				
@@ -703,6 +704,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				skill = false;
 				skillReady = false;
 				playersTurn = false;
+				Character c = (Character) currentEntity;
+				c.setLastUsedSkill(mySkills[skillIndex]);
 				
 				nextCombat();
 			}
