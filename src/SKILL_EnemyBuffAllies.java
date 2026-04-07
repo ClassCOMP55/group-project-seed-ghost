@@ -19,6 +19,6 @@ public class SKILL_EnemyBuffAllies extends Skill {
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return me + " intends to buff all of its allies!";
+		return "Intends to buff all of its allies!";
 	}
 }

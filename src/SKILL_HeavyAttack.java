@@ -26,6 +26,6 @@ public class SKILL_HeavyAttack extends Skill {
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return me + " intends to attack " + target + " for " + (((Character)target).getArmor().calculateDamage(((Enemy)me).getAtk().scaledDamage(me.getStatSpread())) * 3) + " damage at the start of their next turn!";
+		return "Intends to attack " + target + " for " + (((Character)target).getArmor().calculateDamage(((Enemy)me).getAtk().scaledDamage(me.getStatSpread())) * 3) + " damage at the start of their next turn!";
 	}
 }

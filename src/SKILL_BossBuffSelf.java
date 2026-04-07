@@ -14,6 +14,6 @@ public class SKILL_BossBuffSelf extends Skill {
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return me + " intends to buff itself!";
+		return "Intends to buff itself!";
 	}
 }

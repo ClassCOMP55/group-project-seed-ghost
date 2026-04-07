@@ -17,6 +17,6 @@ public class SKILL_Determination extends Skill {
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return me + " intends to buff itself!";
+		return "Intends to buff itself!";
 	}
 }

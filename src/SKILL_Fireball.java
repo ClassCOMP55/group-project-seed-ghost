@@ -29,6 +29,6 @@ public class SKILL_Fireball extends Skill {
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.4);
-		return me + " intends to fireball all allies for " + 10 * Math.pow(1.055, scaling) + " damage!";
+		return "Intends to fireball all allies for " + 10 * Math.pow(1.055, scaling) + " damage!";
 	}
 }

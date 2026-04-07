@@ -14,6 +14,6 @@ public class SKILL_WeakenFoe extends Skill {
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return me + " intends to debuff " + target + " permanently!";
+		return "Intends to debuff " + target + " permanently!";
 	}
 }
