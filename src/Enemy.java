@@ -527,7 +527,6 @@ public class Enemy extends Entity {
 	public Character playTurn (CombatPane combat) {
 		Character[] targets = combat.aliveAllies();
 		
-		nextTarget = targets[Chance.range(0, targets.length - 1)];
 		
 		Skill now = skills.get(skillPattern[turn]);
 		now.activationEffect(this, nextTarget);
@@ -537,6 +536,8 @@ public class Enemy extends Entity {
 			turn = 0;
 		}
 		previousTarget = nextTarget;
+		
+		nextTarget = targets[Chance.range(0, targets.length - 1)];
 		
 		return previousTarget;
 	}
