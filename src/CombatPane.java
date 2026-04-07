@@ -25,7 +25,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton;
-	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel;
+	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel,intent;
 	
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost;
 	private int turn,counter,skillIndex,switched,enemyNumber;
@@ -89,6 +89,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 			if (entity instanceof Enemy) {
 				Enemy e = (Enemy) entity;
+				
 				manaLabels.get(index).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
 				healthLabels.get(index).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
 				updateHealthAndManaBarSize(e);
@@ -135,12 +136,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		myArrEnemies = new Enemy[enemyNumber];
-		
+
 		for(int i = 0;i<enemyNumber;i++) {
+			
 			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil","casper",
 													     "magicsword","slime","orb","chefbot",
 													     "boss_seraphim","boss_drip","boss_mage"});
 			myArrEnemies[i] = new Enemy(sprite,0);
+			Character[] targets = aliveAllies();
+			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
+			System.out.println(myArrEnemies[i].getIntent());
 			allEntities.add(myArrEnemies[i]);
 			temp.add(myArrEnemies[i]);
 		}
@@ -344,10 +349,15 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void addText() {
 		description = new GLabel("Click a Action");
+		intent = new GLabel("");
 		description.setFont("DialogInput-PLAIN-15");
+		intent.setFont("DialogInput-PLAIN-15");
 		description.setLocation((800-description.getWidth())/2,50);
+		intent.setLocation((800-intent.getWidth())/2, 100);
 		contents.add(description);
 		mainScreen.add(description);
+		contents.add(intent);
+		mainScreen.add(intent);
 		
 	}
 	
@@ -466,6 +476,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		ratio = c.getMana()/c.getManaMax();
 		mana.setSize(barSizeChar*ratio, mana.getHeight());
 	}
+	
 	
 	public void updateHealthAndManaBarSize(Enemy e) {
 		int index = allEntities.indexOf(e);
@@ -754,6 +765,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				skillButton.setFillColor(Color.DARK_GRAY);
 				inventoryButton.setFillColor(Color.DARK_GRAY);
 			}
+		}
+		
+		if (obj instanceof GImage ) {
+			Entity potentialEnemy = imageToEntity((GImage) obj);
+			if (potentialEnemy instanceof Enemy) {
+				Enemy enemy = (Enemy) potentialEnemy;
+				intent.setLabel(enemy.getIntent());
+				intent.setLocation((800-intent.getWidth())/2, 100);
+			}
+			
+		}
+		else {
+			intent.setLabel("");
+			intent.setLocation((800-intent.getWidth())/2, 100);
 		}
 	}
 
