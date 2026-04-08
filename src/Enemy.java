@@ -537,7 +537,7 @@ public class Enemy extends Entity {
 		}
 		previousTarget = nextTarget;
 		
-		nextTarget = targets[Chance.range(0, targets.length - 1)];
+		if(combat.aliveAllies().length>0) nextTarget = targets[Chance.range(0, targets.length - 1)];
 		
 		return previousTarget;
 	}
