@@ -404,11 +404,11 @@ public class Enemy extends Entity {
 				damageResist[DamageType.ELEC.ordinal()] = 0.0;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 0;
+				weaponDamage[DamageType.SLASH.ordinal()] = 3;
 				weaponScales[EntityStats.DEX.ordinal()] = 0.8;
 				dex = (int)(scaling * 2.0);
-				wil = 0;
-				arc = 0;
+				wil = 1;
+				arc = 1;
 				ist = 60;
 				spr = "spr_BOSS_Hornet.png";
 				
