@@ -13,13 +13,15 @@ public class SKILL_ShatteringShot extends Skill {
 		
 		if (me instanceof Character) {
 			for (int i = 0; i < 8; i++) {
-				((Enemy)target).getDamageMultipliers()[i] += 0.2;
+				((Enemy)target).getDamageMultipliers()[i] += 0.15;
 			}
 		} else if (me instanceof Enemy) {
 			for (int i = 0; i < 8; i++) {
-				((Character)target).getArmor().getIncDamageMultipliers()[i] += 0.2;
+				((Character)target).getArmor().getIncDamageMultipliers()[i] += 0.15;
 			}
 		}
+		
+		me.drainMana(getManaCost());
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
