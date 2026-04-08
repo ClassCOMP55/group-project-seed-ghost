@@ -219,7 +219,7 @@ public class Character extends Entity {
 			break;
 			case "marksman":
 				tempHp = Chance.range(150, 250);
-				tempMn = Chance.range(5, 10);
+				tempMn = Chance.range(400, 1000);
 				tempDr = 0.225;
 				
 				tempPrc = (int)Chance.range(60, 160);
@@ -229,6 +229,8 @@ public class Character extends Entity {
 				allowedArmors = new String[] {"light"};
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), "null");
+				
+				mySkills = new Skill[] {new SKILL_ProneShot(), new SKILL_ShatteringShot(), new SKILL_CriticalShot(), new SKILL_Determination()};
 			break;
 		}
 		
