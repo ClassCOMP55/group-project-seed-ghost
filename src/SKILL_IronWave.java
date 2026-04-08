@@ -17,6 +17,6 @@ public class SKILL_IronWave extends Skill {
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return "Intends to buff itself and attack " + target + " for " + (((Character)target).getArmor().calculateDamage(((Enemy)me).getAtk().scaledDamage(me.getStatSpread()))) + " damage!";
+		return "Intends to buff itself and attack " + target + " for " + ((Character)target).calculateDamage((Enemy)me) + " damage!";
 	}
 }

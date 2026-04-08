@@ -353,4 +353,15 @@ public class Character extends Entity {
 	public boolean guarding () {
 		return myArmor.guarding();
 	}
+	
+	public int calculateDamage (Enemy op) {
+		return (int)getArmor().calculateDamage(op.getAtk().scaledDamage(op.getStatSpread()));
+	}
+	
+	public int calculateDamage (double damage, DamageType dType) {
+		double [] arr = new double[] {0,0,0,0,0,0,0,0};
+		arr[dType.ordinal()] = damage;
+		
+		return (int)getArmor().calculateDamage(arr);
+	}
 }

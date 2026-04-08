@@ -26,6 +26,6 @@ public class SKILL_SelfSacrifice extends Skill {
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
 		int scaling = (int) (me.getStatSpread()[EntityStats.FTH.ordinal()]*0.5 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.5);
-		return "Intends to sacrifice " + SELF_DAMAGE + " HP and attack " + target + " for " + 12 * Math.pow(1.07, scaling) + " damage!";
+		return "Intends to sacrifice " + SELF_DAMAGE + " HP and attack " + target + " for " + ((Character)target).calculateDamage(12 * Math.pow(1.07, scaling), DamageType.HOLY) + " damage!";
 	}
 }

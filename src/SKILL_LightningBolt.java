@@ -19,6 +19,6 @@ public class SKILL_LightningBolt extends Skill {
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.WIL.ordinal()]*0.4);
-		return "Intends to attack " + target + " for " + 10 * Math.pow(1.06, scaling) + " damage!";
+		return "Intends to Lightning Bolt the " + target + " for " + ((Character)target).calculateDamage(10 * Math.pow(1.06, scaling), DamageType.ELEC) + " damage!";
 	}
 }
