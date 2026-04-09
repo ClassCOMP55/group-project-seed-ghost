@@ -222,7 +222,7 @@ public class Character extends Entity {
 				tempMn = Chance.range(400, 1000);
 				tempDr = 0.225;
 				
-				tempPrc = (int)Chance.range(60, 160);
+				tempPrc = (int)Chance.range(50, 120);
 				tempDex = (int)Chance.range(30, 60);
 				tempIst = (int)Chance.range(100, 120);
 				tempSprite = "spr_Marksman.png";

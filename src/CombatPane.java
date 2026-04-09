@@ -520,7 +520,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		forSkills = true;
 		extra = createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
 		for (int i = 0;i<mySkills.length;i++) {
-			GRect skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,mySkills[i].getName());
+			String label = mySkills[i].getName();
+			double manaCost = mySkills[i].getManaCost();
+			if (manaCost > 0) {
+				label += " (Costs " + (int)manaCost + " mana)";
+			}
+			
+			GRect skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,label);
 			allSkillsButton.add(skill1);
 			
 		}
@@ -746,7 +752,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			highlighted.setFillColor(Color.LIGHT_GRAY);
 			int index = allSkillsButton.indexOf(highlighted);
 			Character c = (Character) currentEntity;
-			description.setLabel(c.getMySkills()[index].getDescription());
+			Skill temp = c.getMySkills()[index];
+			description.setLabel(temp.getDescription());
 			description.setFont("DialogInput-PLAIN-12");
 			description.setLocation((800-description.getWidth())/2,20);
 			if (index==2) description.setLocation((800-description.getWidth())/2,10);

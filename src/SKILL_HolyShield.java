@@ -19,6 +19,8 @@ public class SKILL_HolyShield extends Skill {
 		tar.setArmor(GUARD_ARMOR);
 		
 		System.out.println(tempArmor);
+		
+		me.drainMana(getManaCost());
 	}
 	
 	public void nextTurnEffect (Entity me, Entity target) {

@@ -11,6 +11,7 @@ public class SKILL_HeavyAttack extends Skill {
 	
 	public void activationEffect (Entity me, Entity target) {
 		targ = target;
+		me.drainMana(getManaCost());
 	}
 	
 	public void nextTurnEffect (Entity me, Entity target) {
