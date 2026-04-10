@@ -2,7 +2,7 @@ import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 public class Node {
-String type,combatAffinity;
+private String type,combatAffinity;
 int[] accessibleNodes;
 int index,difficulty;
 boolean cleared;

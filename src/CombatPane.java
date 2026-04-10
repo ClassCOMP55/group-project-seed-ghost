@@ -28,7 +28,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel,intent;
 	
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost;
-	private int turn,counter,skillIndex,switched,enemyNumber;
+	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber;
 	private double barSizeChar,barSizeEnemy;
 	
 	private Entity currentEntity,otherEntity;
@@ -123,26 +123,25 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private void generateEnemiesAndAllies(){
 		
 		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
-		enemyNumber = 0;
 		allEntities = new ArrayList<>();
 		temp = new ArrayList<>();
 		
 		for(int i = 0;i<myArrAllies.length;i++) {
 			if (myArrAllies[i]!=null) {
-				enemyNumber += 1;
 				allEntities.add(myArrAllies[i]);
 				temp.add(myArrAllies[i]);
 			}
 		}
 		
-		myArrEnemies = new Enemy[enemyNumber];
+		String[] pool = getPool();
+		myArrEnemies = new Enemy[pool.length];
+		enemyNumber = pool.length;
+		allyNumber = aliveAllies().length;
 
-		for(int i = 0;i<enemyNumber;i++) {
+		for(int i = 0;i<pool.length;i++) {
 			
-			String sprite =  Chance.choose(new String[] {"holyghost","irongremlin","bladedevil","casper",
-													     "magicsword","slime","orb","chefbot",
-													     "boss_seraphim","boss_drip","boss_mage"});
-			myArrEnemies[i] = new Enemy(sprite,0);
+			
+			myArrEnemies[i] = new Enemy(pool[i],0);
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
 			System.out.println(myArrEnemies[i].getIntent());
@@ -150,6 +149,34 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			temp.add(myArrEnemies[i]);
 		}
 		generateImages();
+	}
+	
+	private String[] getPool() {
+		String affinity = MapPane.currPosition.getCombatAffinity();
+		int index = MapPane.currPosition.getIndex();
+		String[][] pool = null;
+		
+		if (index>10) {
+			switch(affinity) {
+			case "combatHoly": pool = Enemy.getHolyEnemiesHard();
+			case "combatFire": pool = Enemy.getFireEnemiesHard();
+			case "combatMagic": pool = Enemy.getMageEnemiesHard();
+			case "combatLightning": pool = Enemy.getElecEnemiesHard();
+			
+			
+			}
+		}
+		else {
+			switch(affinity) {
+			case "combatHoly": pool = Enemy.getHolyEnemiesEasy();
+			case "combatFire": pool = Enemy.getFireEnemiesEasy();
+			case "combatMagic": pool = Enemy.getMageEnemiesEasy();
+			case "combatLightning": pool = Enemy.getElecEnemiesEasy();
+			}
+		}
+		
+		int tier = Chance.range(0, pool.length-1);
+		return pool[tier];
 	}
 	
 	/*
@@ -199,9 +226,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Character c:myArrAllies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
-				if (i==0) image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2));
-				else if (i==1) image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
-				else if (i==2) image.setLocation(0, (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-45);
+				if (i==0) image.setLocation(0, (i*(600/allyNumber))+((600/allyNumber-image.getHeight())/2));
+				else if (i==1) image.setLocation(0, (i*(600/allyNumber))+((600/allyNumber-image.getHeight())/2)-10);
+				else if (i==2) image.setLocation(0, (i*(600/allyNumber))+((600/allyNumber-image.getHeight())/2)-45);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -401,14 +428,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		healthBars = new ArrayList<>();
 		manaBars = new ArrayList<>();
 		
-		for (int i = 0;i<enemyNumber;i++) {
+		for (int i = 0;i<allyNumber;i++) {
 			int width = 540;
 			health = new GRect(width,20);
 			mana = new GRect(width,20);
 			nameDisplay =  new GRect(width,20);
 			name = new GLabel(myArrAllies[i].getProfession());
 			
-			switch(enemyNumber) {
+			switch(allyNumber) {
 			case 3:width =180;break;
 			case 2:width =270;break;
 			}
