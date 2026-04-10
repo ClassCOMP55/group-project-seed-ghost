@@ -44,7 +44,7 @@ public class Character extends Entity {
 		this.profession = profession;
 		
 		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
-		applyProfession(profession);
+		applyProfession(profession, new String [] {"null"});
 		
 		setHpMax(hp);
 		setHp(hp);
@@ -65,12 +65,24 @@ public class Character extends Entity {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
 		
 		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
-		applyProfession(profession);
+		applyProfession(profession, new String [] {"null"});
 		
 		setRecruitCost((int)((getHpMax() + getManaMax() + myWeapon.getPurchaseCost() + myArmor.getPurchaseCost()) * (1 + getDeathResist())));
 	}
 	
-	private void applyProfession (String profession) {
+	/*
+	 * Profession; Creates a random character based on profession and allowing affinities in weaponry
+	 */
+	public Character (String profession, Boolean affinitiesAllowed) {
+		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
+		
+		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
+		applyProfession(profession, new String[] {"null","null","holy","fire","elec","magic"});
+		
+		setRecruitCost((int)((getHpMax() + getManaMax() + myWeapon.getPurchaseCost() + myArmor.getPurchaseCost()) * (1 + getDeathResist())));
+	}
+	
+	private void applyProfession (String profession, String[] allowedAffinities) {
 		this.profession = profession.toLowerCase();
 		String tempSprite = "spr_Knight.png";
 		
@@ -102,7 +114,7 @@ public class Character extends Entity {
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Taunt()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), Chance.choose(allowedAffinities));
 			break;
 			case "samurai":
 				tempHp = Chance.range(150, 400);
@@ -119,7 +131,7 @@ public class Character extends Entity {
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_Determination(), new SKILL_Recovery()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"katana","dagger","rifle"}), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"katana","dagger","rifle"}), Chance.choose(allowedAffinities));
 			break;
 			case "thief":
 				tempHp = Chance.range(100, 250);
@@ -131,7 +143,7 @@ public class Character extends Entity {
 				tempFth = 0;
 				tempSprite = "spr_Thief.png";
 				allowedArmors = new String[] {"light"};
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"dagger","pistol","crossbow"}), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"dagger","pistol","crossbow"}), Chance.choose(allowedAffinities));
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 			break;
@@ -147,7 +159,7 @@ public class Character extends Entity {
 				mySkills = new Skill[] {new SKILL_HeavyAttack(), new SKILL_IronWave(), new SKILL_Drain(), new SKILL_Recovery()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"axe","greatsword","hammer"}), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"axe","greatsword","hammer"}), Chance.choose(allowedAffinities));
 				tempSprite = "spr_Viking.png";
 			break;
 			case "cleric":
@@ -164,7 +176,7 @@ public class Character extends Entity {
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_Recovery(), new SKILL_PrayerOfHealing()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), "holy");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), Chance.choose(allowedAffinities));
 				tempSprite = "spr_Cleric.png";
 			break;
 			case "sorcerer":
@@ -215,7 +227,7 @@ public class Character extends Entity {
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_Recovery(), new SKILL_WeakenFoe()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"longbow","shortbow","crossbow","bomb"}), Chance.choose(allowedAffinities));
 			break;
 			case "marksman":
 				tempHp = Chance.range(150, 250);
@@ -228,7 +240,7 @@ public class Character extends Entity {
 				tempSprite = "spr_Marksman.png";
 				allowedArmors = new String[] {"light"};
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
-				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), "null");
+				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), Chance.choose(allowedAffinities));
 				
 				mySkills = new Skill[] {new SKILL_ProneShot(), new SKILL_ShatteringShot(), new SKILL_CriticalShot(), new SKILL_Determination()};
 			break;

@@ -34,7 +34,7 @@ public class CampFirePane extends GraphicsPane{
         previewMercenary = new Character(Chance.choose(new String[] {
             "knight","samurai","thief","viking","cleric",
             "sorcerer","paladin","ranger","marksman"
-        }));
+        }),true);
         addText();
         addButtons();
         displayActionPoints();
