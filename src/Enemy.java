@@ -104,8 +104,8 @@ public class Enemy extends Entity {
 		switch (id.toLowerCase()) {
 		case "prunsel":
 			damageResist[DamageType.HOLY.ordinal()] = 0.0;
-			damageResist[DamageType.PIERCE.ordinal()] = 2.0;
-			damageResist[DamageType.SLASH.ordinal()] = 2.0;
+			damageResist[DamageType.PIERCE.ordinal()] = 3.0;
+			damageResist[DamageType.SLASH.ordinal()] = 3.0;
 			damageResist[DamageType.MAGIC.ordinal()] = 0.2;
 			
 			weaponDamage[DamageType.HOLY.ordinal()] = 10;
@@ -116,12 +116,11 @@ public class Enemy extends Entity {
 			
 			name = "PRUNSEL";
 			
-			defSkillP = new int[] {0,1,2,1};
+			defSkillP = new int[] {0,1,1};
 			defSkill.add(new SKILL_EnemyBuffAllies());
 			defSkill.add(new SKILL_BasicAttack());
-			defSkill.add(new SKILL_HeavyAttack());
 			
-			HP = 143.0;
+			HP = 1225.0;
 		break;	
 		case "holyghost":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
