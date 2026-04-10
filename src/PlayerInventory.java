@@ -2,18 +2,20 @@ import java.util.ArrayList;
 
 public class PlayerInventory {
 	private static final int STARTING_GOLD = 99;
+	private static final int MAX_PARTY_MEMBERS = 3;
+	private static final int MAX_CONSUMABLES = 3;
 	private Character[] partyMembers;
+	private ConsumableItem[] consumables;
 	private ArrayList<ArmorItem> extraArmors;
 	private ArrayList<WeaponItem> extraWeapons;
-	private ArrayList<ConsumableItem> consumables;
 	//private ArrayList<Relic> relics;
 	private int gold;
 	
 	public PlayerInventory () {
-		partyMembers = new Character[3];
+		partyMembers = new Character[MAX_PARTY_MEMBERS];
 		extraArmors = new ArrayList<ArmorItem>();
 		extraWeapons = new ArrayList<WeaponItem>();
-		consumables = new ArrayList<ConsumableItem>();
+		consumables = new ConsumableItem[MAX_CONSUMABLES];
 		
 		gold = STARTING_GOLD;
 	}
@@ -25,7 +27,7 @@ public class PlayerInventory {
 		partyMembers = new Character[3];
 		extraArmors = new ArrayList<ArmorItem>();
 		extraWeapons = new ArrayList<WeaponItem>();
-		consumables = new ArrayList<ConsumableItem>();
+		consumables = new ConsumableItem[MAX_CONSUMABLES];
 		gold = STARTING_GOLD;
 		
 		partyMembers[0] = startingCharacter;
@@ -52,7 +54,7 @@ public class PlayerInventory {
 	public void setExtraWeapons(ArrayList<WeaponItem> extraWeapons) {
 		this.extraWeapons = extraWeapons;
 	}
-	public ArrayList<ConsumableItem> getConsumables() {
+	public ConsumableItem[] getConsumables() {
 	    return consumables;
 	}
 	public int getGold() {
