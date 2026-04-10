@@ -186,15 +186,41 @@ public class CampFirePane extends GraphicsPane{
 	        case "heal":
                 if (healParty()) {
                 	useActionPoint("heal");
+                	 new Thread(() -> {
+                         try {
+                             Thread.sleep(2100); 
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                         refreshPane();
+                     }).start();
                 }
                 break;
             case "revive":
                 if (reviveAllies()) {
                 	useActionPoint("revive");
+                	new Thread(() -> {
+                        try {
+                            Thread.sleep(2100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        refreshPane();
+                    }).start();
                 }
                 break;
             case "train":
-                if (useActionPoint("train")) trainParty();
+                if (useActionPoint("train")) { 
+                	trainParty();
+                	new Thread(() -> {
+                        try {
+                            Thread.sleep(2100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        refreshPane();
+                    }).start();
+                }
                 break;
             case "mercenary":
             	if (isPartyFull()) {
