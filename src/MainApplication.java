@@ -93,6 +93,7 @@ public class MainApplication extends GraphicsProgram{
 	}
 	
 	public void switchToCampFirePane() {
+		campFirePane.startCampSession();
 		switchToScreen(campFirePane); 
 		}
 	
