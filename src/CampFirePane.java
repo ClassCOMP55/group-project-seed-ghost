@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.HashSet;
 import acm.graphics.*;
 
 public class CampFirePane extends GraphicsPane{
@@ -8,19 +9,33 @@ public class CampFirePane extends GraphicsPane{
 	 private GLabel apLabel;
 	 private GLabel actionMessage;
 	 private HashMap<String, GRect> actionButtons;
+	 private HashSet<String> usedActions;
+	 private Character previewMercenary;
 
 	 
 	public CampFirePane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 		 actionButtons = new HashMap<>();
+		 usedActions = new HashSet<>();
+	}
+	
+	public void startCampSession() {
+		actionPoints = 2;
+		usedActions.clear();
 	}
 	
 	@Override
 	public void showContent() {
-		actionPoints = 2;
+		addBackground();
+		previewMercenary = new Character(Chance.choose(new String[] {
+				"knight","samurai","thief","viking","cleric",
+	            "sorcerer","paladin","ranger","marksman"
+		}));
 		addText();
 		addButtons();
 		displayActionPoints();
+		displayPartyStats();
+		displayMercenaryPreview(); 
 	}
 
 	@Override
@@ -41,6 +56,19 @@ public class CampFirePane extends GraphicsPane{
 		contents.add(title);
 		mainScreen.add(title);
 		}
+	
+	
+	//Background for Camp fire Pane 
+	private void addBackground() {
+	    GRect bg = new GRect(800, 600);
+	    bg.setLocation(0, 0);
+	    bg.setFilled(true);
+	    bg.setFillColor(new Color(30, 30, 40));
+	    bg.setColor(new Color(30, 30, 40));
+
+	    contents.add(bg);
+	    mainScreen.add(bg);
+	}
 	
 	// HEAL, REVIVE, TRAIN, MERCENARY, EXIT buttons
 	 private void addButtons() {
@@ -111,30 +139,30 @@ public class CampFirePane extends GraphicsPane{
 	        }
 	        apLabel = new GLabel("Camp Actions Left: " + actionPoints, 50, 100);
 	        apLabel.setFont("DialogInput-BOLD-16");
+	        apLabel.setColor(Color.WHITE);
+	        
 	        contents.add(apLabel);
 	        mainScreen.add(apLabel);
 	    }
 	    //action points used
 	    private boolean useActionPoint(String actionType) {
-	        if (actionPoints <= 0 || !actionButtons.containsKey(actionType)) {
+	        if (actionPoints <= 0) {
 	        	showMessage("No actions remaining.");
 	            return false;
 	        }
 	        
-	        if (!actionType.equals("heal") && !actionType.equals("train")) {
-	            GRect button = actionButtons.get(actionType);
-	            if (button != null) {
-	                button.setFillColor(Color.LIGHT_GRAY);
-	                button.setFilled(true);
-	                actionButtons.remove(actionType);
-	            }
+	        if (usedActions.contains(actionType)) {
+	            showMessage("Action already used.");
+	            return false;
 	        }
 	        
 	        actionPoints--;
+	        usedActions.add(actionType);
 	        displayActionPoints();
 
 	        return true;
 	    }
+	    
 	 // Handle button clicks
 	    private void handleAction(String actionType) {
 	    	if (actionType.equals("leave")) {
@@ -143,21 +171,11 @@ public class CampFirePane extends GraphicsPane{
 	            return;
 	        }
 	    	
-	    	if (actionType.equals("mercenary")) {
-	            if (isPartyFull()) {
-	                showMessage("Party full! Cannot recruit a new mercenary.");
-	                return;
-	            }
-	            if (useActionPoint("mercenary")) {
-	                recruitMercenary();
-	            }
+	    	if (actionPoints <= 0) {
+	    		showMessage("No actions remaining! Leave the Camp");
 	            return;
-	        }
+	          }
 	    	
-	    	if (actionPoints <= 0 || !actionButtons.containsKey(actionType)) {
-	    		 showMessage("No actions remaining! Leave the Camp");
-	             return;
-	         }
 	        switch (actionType) {
 	        case "heal":
                 if (healParty()) {
@@ -173,16 +191,25 @@ public class CampFirePane extends GraphicsPane{
                 if (useActionPoint("train")) trainParty();
                 break;
             case "mercenary":
+            	if (isPartyFull()) {
+                    showMessage("Party full!");
+                    return;
+                }
                 if (useActionPoint("mercenary")) recruitMercenary();
-                break;
-            case "leave":
-                mainScreen.switchToMapPane();
-                MapPane.currPosition.isCleared(); 
                 break;
 	        }
 	        
+	        refreshPane();
+	        
 	    }
 	    
+	    //refreshes the pane
+	    private void refreshPane() {
+	        hideContent();
+	        showContent();
+	    }
+	    
+	    //checks to see if party is full
 	    private boolean isPartyFull() {
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
 	        for (Character c : party) {
@@ -258,32 +285,35 @@ public class CampFirePane extends GraphicsPane{
 
 	    // Recruit a free random mercenary
 	    private void recruitMercenary() {
-	        Character newMerc = new Character(Chance.choose(new String[]{
-	                "knight","samurai","thief","viking","cleric","sorcerer","paladin","ranger","marksman"
-	        }));
 	        PlayerInventory inv = CharacterSelectionPane.myInventory;
 
 	        for (int i = 0; i < inv.getPartyMembers().length; i++) {
 	            if (inv.getPartyMembers()[i] == null) {
-	                inv.getPartyMembers()[i] = newMerc;
-	                showMessage("Recruited a new mercenary: " + newMerc.getProfession());
+	                inv.getPartyMembers()[i] = previewMercenary;
+	                showMessage("Recruited a new mercenary: " + previewMercenary.getProfession());
+	                previewMercenary = new Character(Chance.choose(new String[]{
+	                        "knight","samurai","thief","viking","cleric",
+	                        "sorcerer","paladin","ranger","marksman"
+	                    }));
+	                
 	                return;
 	            }
 	        }
 
 	        showMessage("Party full! Mercenary cannot join");
 	    }
-	    //Displays the messages on the pane
 	    
+	    //Displays the messages on the pane
+	   
 	    private void showMessage(String message) {
 	        if (actionMessage != null) {
 	            mainScreen.remove(actionMessage);
 	            contents.remove(actionMessage);
 	        }
 
-	        actionMessage = new GLabel(message, 200, 500);
+	        actionMessage = new GLabel(message, 400,100);
 	        actionMessage.setFont("DialogInput-BOLD-16");
-	        actionMessage.setColor(Color.BLACK);
+	        actionMessage.setColor(Color.WHITE);
 
 	        contents.add(actionMessage);
 	        mainScreen.add(actionMessage);
@@ -302,5 +332,153 @@ public class CampFirePane extends GraphicsPane{
 	        }).start();
 	    }
 	    
+	    //Preview screen for Recruit Mercenary
+	    private void displayMercenaryPreview() {
+	    	if(previewMercenary == null) return;
+	    	
+	    	int x = 630;
+	    	int y = 375; 
+	    	
+	    	GRect box = new GRect(150, 185);
+	    	box.setLocation(x,y);
+	    	box.setColor(Color.BLACK);
+	    	box.setFillColor(Color.BLACK);
+	    	box.setFilled(true);
+	    	
+	    	contents.add(box);
+	        mainScreen.add(box);
+
+	        GLabel title = new GLabel("Mercenary To Recruit", x + 5, y + 15);
+	        title.setColor(Color.YELLOW);
+	        title.setFont("DialogInput-PLAIN-12");
+	        contents.add(title);
+	        mainScreen.add(title);
+
+	        // Profession
+	        GLabel prof = new GLabel("Profession: " + previewMercenary.getProfession());
+	        prof.setLocation(x + 5, y + 30);
+	        prof.setColor(Color.RED);
+	        prof.setFont("DialogInput-PLAIN-12");
+	        contents.add(prof);
+	        mainScreen.add(prof);
+
+	        // HP
+	        GLabel hp = new GLabel("HP: " + previewMercenary.getHpMax());
+	        hp.setLocation(x + 5, y + 45);
+	        hp.setColor(Color.RED);
+	        hp.setFont("DialogInput-PLAIN-12");
+	        contents.add(hp);
+	        mainScreen.add(hp);
+
+	        // MP
+	        GLabel mp = new GLabel("MP: " + previewMercenary.getManaMax());
+	        mp.setLocation(x + 5, y + 60);
+	        mp.setColor(Color.RED);
+	        mp.setFont("DialogInput-PLAIN-12");
+	        contents.add(mp);
+	        mainScreen.add(mp);
+
+	        // Weapon
+	        GLabel weapon = new GLabel("Weapon: " + previewMercenary.getWeapon().getType());
+	        weapon.setLocation(x + 5, y + 75);
+	        weapon.setColor(Color.RED);
+	        weapon.setFont("DialogInput-PLAIN-12");
+	        contents.add(weapon);
+	        mainScreen.add(weapon);
+
+	        // Stats
+	        int[] stats = previewMercenary.getStatSpread();
+	        String[] names = {
+	            "STR", "DEX", "PRC", "INS",
+	            "CON", "WIL", "FTH", "ARC"
+	        };
+
+	        for (int i = 0; i < stats.length; i++) {
+	            GLabel stat = new GLabel(names[i] + ": " + stats[i]);
+	            stat.setLocation(x + 5, y + 90 + (i * 13));
+	            stat.setColor(Color.RED);
+	            stat.setFont("DialogInput-PLAIN-11");
+
+	            contents.add(stat);
+	            mainScreen.add(stat);
+	        }
+	    }
+	    
+	    
+	    //Displays the Party Stats
+	    private void displayPartyStats() {
+	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
+
+	        int startX = 30;   
+	        int startY = 375;
+	        int spacingX = 180; 
+
+	        for (int i = 0; i < party.length; i++) {
+	            Character c = party[i];
+
+	            if (c == null) continue;
+
+	            int x = startX + (i * spacingX);
+	            int y = startY;
+
+	            GRect box = new GRect(150, 185);
+	            box.setLocation(x, y);
+	            box.setColor(Color.BLACK);
+	            box.setFillColor(Color.BLACK);
+	            box.setFilled(true);
+
+	            contents.add(box);
+	            mainScreen.add(box);
+
+	            // Profession
+	            GLabel prof = new GLabel("Profession: " + c.getProfession());
+	            prof.setLocation(x + 5, y + 15);
+	            prof.setColor(Color.RED);
+	            prof.setFont("DialogInput-PLAIN-12");
+	            contents.add(prof);
+	            mainScreen.add(prof);
+
+	            // HP
+	            GLabel health = new GLabel("HP: " + c.getHp() + "/" + c.getHpMax());
+	            health.setLocation(x + 5, y + 30);
+	            health.setColor(Color.RED);
+	            health.setFont("DialogInput-PLAIN-12");
+	            contents.add(health);
+	            mainScreen.add(health);
+
+	            // Mana
+	            GLabel mana = new GLabel("MP: " + c.getMana() + "/" + c.getManaMax());
+	            mana.setLocation(x + 5, y + 45);
+	            mana.setColor(Color.RED);
+	            mana.setFont("DialogInput-PLAIN-12");
+	            contents.add(mana);
+	            mainScreen.add(mana);
+
+	            // Weapon
+	            GLabel weapon = new GLabel("Weapon: " + c.getWeapon().getType());
+	            weapon.setLocation(x + 5, y + 60);
+	            weapon.setColor(Color.RED);
+	            weapon.setFont("DialogInput-PLAIN-12");
+	            contents.add(weapon);
+	            mainScreen.add(weapon);
+
+	            int[] stats = c.getStatSpread();
+
+	            String[] statNames = {
+	                "STR", "DEX", "PRC", "INS",
+	                "CON", "WIL", "FTH", "ARC"
+	            };
+
+	            for (int j = 0; j < stats.length; j++) {
+	                GLabel stat = new GLabel(statNames[j] + ": " + stats[j]);
+	                stat.setLocation(x + 5, y + 75 + (j * 13));
+	                stat.setColor(Color.RED);
+	                stat.setFont("DialogInput-PLAIN-11");
+
+	                contents.add(stat);
+	                mainScreen.add(stat);
+	            }
+	        }
+	    }
 	      
 	}
