@@ -60,7 +60,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		skillButton = createButton(0,540,"Skills");
 		inventoryButton = createButton(130,540,"Inventory");	
 		
-
 		
 		generateEnemiesAndAllies();
 		
@@ -68,6 +67,29 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		update();
 		nextCombat();
 		
+		
+		GImage background = null;
+		switch (getNodeAffinity()) {
+			case "combatHoly": 
+				background = new GImage("spr_BACKGROUND_Holy.png");
+				break;
+			case "combatFire": 
+				background = new GImage("spr_BACKGROUND_Fire.png");
+				break;
+			case "combatMagic": 
+				background = new GImage("spr_BACKGROUND_Magic.png");
+				break;
+			case "combatLightning": 
+				background = new GImage("spr_BACKGROUND_Lightning.jpg");
+				break;
+		}
+		background.setLocation(0, 0);
+		background.setSize(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+		
+		contents.add(background);
+		mainScreen.add(background);
+		
+		background.sendToBack();
 	}
 
 	@Override
@@ -1108,5 +1130,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		this.t = t;
 	}
 	
-
+	public String getNodeAffinity () {
+		return MapPane.currPosition.getCombatAffinity();
+	}
 }
