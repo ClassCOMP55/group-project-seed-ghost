@@ -83,8 +83,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				background = new GImage("spr_BACKGROUND_Lightning.jpg");
 				break;
 		}
+		int height = MainApplication.WINDOW_HEIGHT;
+		double ratio = MainApplication.WINDOW_HEIGHT / background.getHeight();
+		
 		background.setLocation(0, 0);
-		background.setSize(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+		background.setSize(MainApplication.WINDOW_WIDTH * ratio, height);
 		
 		contents.add(background);
 		mainScreen.add(background);
