@@ -1,6 +1,6 @@
 
 public class ConsumableItem {
-
+	private static final int VITALITY_GAINS = 10;
     private ConsumableType type;
     public ConsumableItem(ConsumableType type) {
         this.type = type;
@@ -29,10 +29,17 @@ public class ConsumableItem {
                 break;
 
             case ELIXIR:
-                // Full HP + full mana restore for target
-                target.heal(target.getHpMax());
+                // 40% HP + full mana restore for target
+                target.heal(target.getHpMax() * 0.4);
                 target.gainMana(target.getManaMax());
                 break;
+            
+            case VITALITY:
+            	// Permanently increase Max Mana and Max HP
+            	target.setHpMax(target.getHpMax() + VITALITY_GAINS);
+            	target.setManaMax(target.getManaMax() + VITALITY_GAINS);
+            	target.heal(VITALITY_GAINS);
+            	target.gainMana(VITALITY_GAINS);
         }
     }
 }
