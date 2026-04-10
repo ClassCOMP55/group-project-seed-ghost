@@ -11,16 +11,16 @@ public class Enemy extends Entity {
 	private double sprScale;
 	
 	private static final String[][] HOLY_ENEMIES_EASY = new String[][] {{"holyghost","holyghost"},{"fairie","magicsword"},{"prunsel"}};
-	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"orb","orb"},{"chefbot"},{"casper","magicsword"},{"magicsword","orb"},{"fairie"}};
+	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"orb","casper"},{"chefbot"},{"casper","magicsword"},{"magicsword","orb"},{"fairie"}};
 	private static final String[][] FIRE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"chefbot"},{"irongremlin"},{"bladedevil"},{"soosk"},{"gunturtle","gunturtle","gunturtle"}};
 	private static final String[][] ELEC_ENEMIES_EASY = new String[][] {{"imagefriend"},{"slime","slime","slime"},{"chefbot"},{"soosk"},{"gunturtle","gunturtle","gunturtle"},{"zapball","slime","zapball"}};
 	
 	private static final String[][] HOLY_ENEMIES_HARD = new String[][] {{"holyghost","magicsword","holyghost"},{"fairie","boss_seraphim"},{"prunsel","prunsel","prunsel"},{"holyghost","casper","holyghost"}};
 	private static final String[][] MAGE_ENEMIES_HARD = new String[][] {{"magicsword","imagefriend","magicsword"},{"orb","orb","orb"},{"casper","magicsword"},{"magicsword","orb"},{"orb","fairie","casper"}};
-	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"imagefriend","bladedevil"},{"chefbot","irongremlin"},{"irongremlin","irongremlin","irongremlin"},{"bladedevil","bladedevil"},{"soosk","soosk","soosk"}};
+	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"boss_deathknight"},{"chefbot","irongremlin"},{"irongremlin","irongremlin","irongremlin"},{"bladedevil","bladedevil"},{"soosk","soosk","soosk"}};
 	private static final String[][] ELEC_ENEMIES_HARD = new String[][] {{"chefbot","imagefriend"},{"zapball","zapball","zapball"},{"chefbot","gunturtle","irongremlin"},{"irongremlin","zapball","zapball"}};
 	
-	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip"},{"orb","boss_mage","orb"}};
+	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip"},{"orb","boss_mage","orb"},{"boss_deathknight","bladedevil"},{"boss_spiritofstorms"}};
 	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
@@ -244,8 +244,14 @@ public class Enemy extends Entity {
 				
 				name = "EVIL PULSATING ORB OF DOOM AND SUFFERING";
 				
-				defSkillP = new int[] {0};
-				defSkill.add(new SKILL_WeakenFoe());
+				if (Chance.coinflip(0.5)) {
+					defSkillP = new int[] {0};
+					defSkill.add(new SKILL_WeakenFoe());
+				} else {
+					defSkillP = new int[] {0,1};
+					defSkill.add(new SKILL_WeakenFoe());
+					defSkill.add(new SKILL_EnemyBuffAllies());
+				}
 				
 				HP = 120;
 			break;
@@ -365,7 +371,7 @@ public class Enemy extends Entity {
 				ist = 100;
 				spr = "spr_BOSS_Seraphim.png";
 				
-				name = "The Seraphim Vassel";
+				name = "Seraphim Vassal";
 				
 				sprScale = 2;
 				
@@ -403,15 +409,13 @@ public class Enemy extends Entity {
 				HP = 1200;
 			break;
 			case "boss_drip":
-				damageResist[DamageType.MAGIC.ordinal()] = 2.0;
-				damageResist[DamageType.BLAST.ordinal()] = 0.0;
+				damageResist[DamageType.MAGIC.ordinal()] = 0.0;
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
-				damageResist[DamageType.FIRE.ordinal()] = 2.0;
+				damageResist[DamageType.FIRE.ordinal()] = 0.0;
 				damageResist[DamageType.ELEC.ordinal()] = 0.0;
-				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				
 				weaponDamage[DamageType.SLASH.ordinal()] = 3;
-				weaponScales[EntityStats.DEX.ordinal()] = 0.8;
+				weaponScales[EntityStats.DEX.ordinal()] = 1.0;
 				dex = (int)(scaling * 2.0);
 				wil = 1;
 				arc = 1;
@@ -428,6 +432,62 @@ public class Enemy extends Entity {
 				sprScale = 2.5;
 				
 				HP = 1200;
+			break;
+			case "boss_deathknight":
+				damageResist[DamageType.HOLY.ordinal()] = 2.0;
+				damageResist[DamageType.FIRE.ordinal()] = 0.0;
+				damageResist[DamageType.ELEC.ordinal()] = 2.0;
+				damageResist[DamageType.SLASH.ordinal()] = 0.5;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.8;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.5;
+				
+				weaponDamage[DamageType.SLASH.ordinal()] = 75;
+				weaponDamage[DamageType.FIRE.ordinal()] = 75;
+				weaponScales[EntityStats.STR.ordinal()] = 2.0;
+				weaponScales[EntityStats.CON.ordinal()] = 1.0;
+				str = 10 + (int)(scaling * 2.0);
+				con = 20 + (int)(scaling * 2.0);
+				wil = 1;
+				arc = 50;
+				ist = 40;
+				spr = "spr_BOSS_DeathKnight.png";
+				
+				name = "Death Knight";
+				
+				defSkillP = new int[] {1,0,1,2,3};
+				defSkill.add(new SKILL_IronWave());
+				defSkill.add(new SKILL_Fireball());
+				defSkill.add(new SKILL_BossBuffSelf());
+				defSkill.add(new SKILL_Drain());
+				
+				sprScale = 2.5;
+				
+				HP = 1600;
+			break;
+			case "boss_spiritofstorms":
+				damageResist[DamageType.HOLY.ordinal()] = 0.5;
+				damageResist[DamageType.FIRE.ordinal()] = 2.0;
+				damageResist[DamageType.ELEC.ordinal()] = 0.0;
+				damageResist[DamageType.MAGIC.ordinal()] = 2.0;
+				damageResist[DamageType.SLASH.ordinal()] = 0.5;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
+				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
+				damageResist[DamageType.BLAST.ordinal()] = 2.0;
+				
+				weaponDamage[DamageType.ELEC.ordinal()] = 30;
+				weaponDamage[DamageType.BLAST.ordinal()] = 30;
+				weaponScales[EntityStats.WIL.ordinal()] = 1.0;
+				wil = (int)(scaling * 1.5);
+				spr = "spr_BOSS_SpiritofStorms.png";
+				
+				name = "John Zapathan";
+				
+				defSkillP = new int[] {0};
+				defSkill.add(new SKILL_SpiritsLightningBolt());
+				
+				sprScale = 2.5;
+				
+				HP = 1400;
 			break;
 		}
 		
