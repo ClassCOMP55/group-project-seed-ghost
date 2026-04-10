@@ -147,19 +147,23 @@ public class CampFirePane extends GraphicsPane{
 	    //action points used
 	    private boolean useActionPoint(String actionType) {
 	        if (actionPoints <= 0) {
-	        	showMessage("No actions remaining.");
+	            showMessage("No actions remaining.");
 	            return false;
 	        }
-	        
-	        if (usedActions.contains(actionType)) {
+
+	        if (!actionType.equals("train") && !actionType.equals("heal")
+	                && usedActions.contains(actionType)) {
 	            showMessage("Action already used.");
 	            return false;
 	        }
-	        
-	        actionPoints--;
-	        usedActions.add(actionType);
-	        displayActionPoints();
 
+	        actionPoints--;
+
+	        if (!actionType.equals("train") && !actionType.equals("heal")) {
+	            usedActions.add(actionType);
+	        }
+
+	        displayActionPoints();
 	        return true;
 	    }
 	    
@@ -176,6 +180,7 @@ public class CampFirePane extends GraphicsPane{
 	            return;
 	          }
 	    	
+	    	boolean actionUsed = false;
 	        switch (actionType) {
 	        case "heal":
                 if (healParty()) {
@@ -195,12 +200,16 @@ public class CampFirePane extends GraphicsPane{
                     showMessage("Party full!");
                     return;
                 }
-                if (useActionPoint("mercenary")) recruitMercenary();
+                if (useActionPoint("mercenary")) {
+                	recruitMercenary();
+                	actionUsed = true;
+                }
                 break;
 	        }
 	        
-	        refreshPane();
-	        
+	        if (actionUsed) { 
+	            refreshPane();
+	        }
 	    }
 	    
 	    //refreshes the pane
@@ -246,7 +255,7 @@ public class CampFirePane extends GraphicsPane{
 	        	 showMessage("Party fully recovered HP and MP");
 	            return true;
 	        } else {
-	            showMessage("All party members already at full HP and MP!");
+	            showMessage("Party already has full HP and MP!");
 	            return false; 
 	        }
 	    }
