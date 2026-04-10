@@ -283,7 +283,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.BLAST.ordinal()] = 0.0;
 				damageResist[DamageType.HOLY.ordinal()] = 2.5;
 				
-				weaponDamage[DamageType.MAGIC.ordinal()] = 50;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 30;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
 				arc = (int)(scaling * 2.0);
 				ist = 1;
@@ -291,7 +291,7 @@ public class Enemy extends Entity {
 				
 				name = "???";
 				
-				HP = 125;
+				HP = 1225;
 			break;
 			case "soosk":
 				damageResist[DamageType.PIERCE.ordinal()] = 2.5;
