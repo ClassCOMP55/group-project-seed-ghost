@@ -1,6 +1,6 @@
 public class Character extends Entity {
 	public static final int MAX_SKILLS = 4;
-	public static final double MAX_HEALTH_UNIVERSAL_BOOSTER = 1.5;
+	public static final double MAX_HEALTH_UNIVERSAL_BOOSTER = 1.0;
 	
 	private WeaponItem myWeapon;
 	private ArmorItem myArmor;

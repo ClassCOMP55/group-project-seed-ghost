@@ -52,6 +52,10 @@ public class Entity {
 	public void hurt (double damage) {
 		hp -= damage;
 		
+		if (hp >= hpMax) {
+			hp = hpMax;
+		}
+		
 		if (isDead()) {
 			
 			if (Chance.coinflip(deathResist)) {
