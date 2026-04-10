@@ -10,11 +10,17 @@ public class Enemy extends Entity {
 	private String name;
 	private double sprScale;
 	
-	private static final String[] HOLY_ENEMIES = new String[] {"holyghost","fairie","prunsel"};
-	private static final String[] MAGE_ENEMIES = new String[] {"imagefriend","orb","chefbot","casper","magicsword","fairie"};
-	private static final String[] FIRE_ENEMIES = new String[] {"imagefriend","chefbot","irongremlin","bladedevil","soosk","gunturtle"};
-	private static final String[] ELEC_ENEMIES = new String[] {"imagefriend","slime","chefbot","soosk","gunturtle","zapball"};
-	private static final String[] BOSS_ENEMIES = new String[] {"boss_seraphim","boss_drip","boss_mage"};
+	private static final String[][] HOLY_ENEMIES_EASY = new String[][] {{"holyghost","holyghost"},{"fairie","magicsword"},{"prunsel"}};
+	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"orb","orb"},{"chefbot"},{"casper","magicsword"},{"magicsword","orb"},{"fairie"}};
+	private static final String[][] FIRE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"chefbot"},{"irongremlin"},{"bladedevil"},{"soosk"},{"gunturtle","gunturtle","gunturtle"}};
+	private static final String[][] ELEC_ENEMIES_EASY = new String[][] {{"imagefriend"},{"slime","slime","slime"},{"chefbot"},{"soosk"},{"gunturtle","gunturtle","gunturtle"},{"zapball","slime","zapball"}};
+	
+	private static final String[][] HOLY_ENEMIES_HARD = new String[][] {{"holyghost","magicsword","holyghost"},{"fairie","boss_seraphim"},{"prunsel","prunsel","prunsel"},{"holyghost","casper","holyghost"}};
+	private static final String[][] MAGE_ENEMIES_HARD = new String[][] {{"magicsword","imagefriend","magicsword"},{"orb","orb","orb"},{"casper","magicsword"},{"magicsword","orb"},{"orb","fairie","casper"}};
+	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"imagefriend","bladedevil"},{"chefbot","irongremlin"},{"irongremlin","irongremlin","irongremlin"},{"bladedevil","bladedevil"},{"soosk","soosk","soosk"}};
+	private static final String[][] ELEC_ENEMIES_HARD = new String[][] {{"chefbot","imagefriend"},{"zapball","zapball","zapball"},{"chefbot","gunturtle","irongremlin"},{"irongremlin","zapball","zapball"}};
+	
+	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip"},{"orb","boss_mage","orb"}};
 	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
@@ -293,7 +299,7 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.SLASH.ordinal()] = 40;
 				weaponScales[EntityStats.STR.ordinal()] = 1.0;
 				str = scaling * 4;
-				spr = "spr_Soosk.png";
+				spr = "spr_Soosk.gif";
 				
 				HP = 1800.0;
 			break;
@@ -586,23 +592,41 @@ public class Enemy extends Entity {
 		this.name = name;
 	}
 
-	public static String[] getHolyEnemies() {
-		return HOLY_ENEMIES;
+	public static String[][] getHolyEnemiesEasy() {
+		return HOLY_ENEMIES_EASY;
 	}
 
-	public static String[] getMageEnemies() {
-		return MAGE_ENEMIES;
+	public static String[][] getMageEnemiesEasy() {
+		return MAGE_ENEMIES_EASY;
 	}
 
-	public static String[] getFireEnemies() {
-		return FIRE_ENEMIES;
+	public static String[][] getFireEnemiesEasy() {
+		return FIRE_ENEMIES_EASY;
 	}
 
-	public static String[] getElecEnemies() {
-		return ELEC_ENEMIES;
+	public static String[][] getElecEnemiesEasy() {
+		return ELEC_ENEMIES_EASY;
 	}
 
-	public static String[] getBossEnemies() {
+	public static String[][] getHolyEnemiesHard() {
+		return HOLY_ENEMIES_HARD;
+	}
+
+	public static String[][] getMageEnemiesHard() {
+		return MAGE_ENEMIES_HARD;
+	}
+
+	public static String[][] getFireEnemiesHard() {
+		return FIRE_ENEMIES_HARD;
+	}
+
+	public static String[][] getElecEnemiesHard() {
+		return ELEC_ENEMIES_HARD;
+	}
+
+	public static String[][] getBossEnemies() {
 		return BOSS_ENEMIES;
 	}
+
+	
 }
