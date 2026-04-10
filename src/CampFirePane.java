@@ -181,6 +181,7 @@ public class CampFirePane extends GraphicsPane{
 	          }
 	    	
 	    	boolean actionUsed = false;
+	    	
 	        switch (actionType) {
 	        case "heal":
                 if (healParty()) {
@@ -232,17 +233,21 @@ public class CampFirePane extends GraphicsPane{
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
 	        boolean anyHealedHalf = false;
 	        boolean healedToFull = false; 
+	        boolean healthChange = false;
 	        for (Character c : party) {
 	            if (c != null && c.getHp() > 0) {
 
 	                int halfHp = (int)(c.getHpMax() * 0.50);
+	                
 
 	                if (c.getHp() < halfHp) {
 	                    c.setHp(halfHp);
 	                    anyHealedHalf = true;
+	                    healthChange = true;
 	                } else if (c.getHp() < c.getHpMax()) {
 	                    c.setHp(c.getHpMax());
 	                    healedToFull = true;
+	                    healthChange = true;
 	                }
 	                c.gainMana(c.getManaMax() - c.getMana());
 	            }
@@ -256,8 +261,9 @@ public class CampFirePane extends GraphicsPane{
 	            return true;
 	        } else {
 	            showMessage("Party already has full HP and MP!");
-	            return false; 
+	            
 	        }
+	        return healthChange; 
 	    }
 
 	    // Revive allies to 30%
