@@ -26,10 +26,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton;
 	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel,intent;
+	private GImage background;
 	
 	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost;
 	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber;
-	private double barSizeChar,barSizeEnemy;
+	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	
 	private Entity currentEntity,otherEntity;
 	
@@ -57,8 +58,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		counter = 0;
 		switched =0;
 		
-		skillButton = createButton(0,540,"Skills");
-		inventoryButton = createButton(130,540,"Inventory");	
+		System.out.println(mainScreen.getWidth());	
+		addButtons();
 		
 		
 		generateEnemiesAndAllies();
@@ -68,7 +69,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		nextCombat();
 		
 		
-		GImage background = null;
+		background = null;
 		switch (getNodeAffinity()) {
 			case "combatHoly": 
 				background = new GImage("spr_BACKGROUND_Holy.png");
@@ -83,11 +84,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				background = new GImage("spr_BACKGROUND_Lightning.jpg");
 				break;
 		}
-		int height = MainApplication.WINDOW_HEIGHT;
-		double ratio = MainApplication.WINDOW_HEIGHT / background.getHeight();
+//		int height = MainApplication.WINDOW_HEIGHT;
+//		double ratio = MainApplication.WINDOW_HEIGHT / background.getHeight();
 		
 		background.setLocation(0, 0);
-		background.setSize(MainApplication.WINDOW_WIDTH * ratio, height);
+		background.setSize(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		
 		contents.add(background);
 		mainScreen.add(background);
@@ -101,6 +102,17 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			mainScreen.remove(item);
 		}
 		contents.clear();
+	}
+	
+	public void addButtons() {
+		screenHeight = MainApplication.WINDOW_HEIGHT;
+		screenWidth = MainApplication.WINDOW_WIDTH;
+		buttonHeight = (screenHeight/10.0);
+		buttonWidth = screenWidth*(130.0/800.0);
+		System.out.println("Height: "+buttonHeight+" Width: "+buttonWidth);
+		
+		skillButton = createButton(0,screenHeight-buttonHeight,"Skills");
+		inventoryButton = createButton(skillButton.getWidth(),screenHeight-buttonHeight,"Inventory");
 	}
 	
 	/*
@@ -251,9 +263,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Character c:myArrAllies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
-				if (i==0) image.setLocation(0, (i*(600/allyNumber))+((600/allyNumber-image.getHeight())/2));
-				else if (i==1) image.setLocation(0, (i*(600/allyNumber))+((600/allyNumber-image.getHeight())/2)-10);
-				else if (i==2) image.setLocation(0, (i*(600/allyNumber))+((600/allyNumber-image.getHeight())/2)-45);
+				if (i==0) image.setLocation(0, (i*(screenHeight/allyNumber))+((screenHeight/allyNumber-image.getHeight())/2));
+				else if (i==1) image.setLocation(0, (i*(screenHeight/allyNumber))+((screenHeight/allyNumber-image.getHeight())/2)-10);
+				else if (i==2) image.setLocation(0, (i*(screenHeight/allyNumber))+((screenHeight/allyNumber-image.getHeight())/2)-45);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -264,9 +276,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for (Enemy c:myArrEnemies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
-				if (i==0) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)+20);
-				if (i==1) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-10);
-				if (i==2) image.setLocation(800-image.getWidth(), (i*(600/enemyNumber))+((600/enemyNumber-image.getHeight())/2)-50);
+				if (i==0) image.setLocation(screenWidth-image.getWidth(), (i*(screenHeight/enemyNumber))+((screenHeight/enemyNumber-image.getHeight())/2)+20);
+				if (i==1) image.setLocation(screenWidth-image.getWidth(), (i*(screenHeight/enemyNumber))+((screenHeight/enemyNumber-image.getHeight())/2)-10);
+				if (i==2) image.setLocation(-image.getWidth(), (i*(screenHeight/enemyNumber))+((screenHeight/enemyNumber-image.getHeight())/2)-50);
 				contents.add(image);
 				mainScreen.add(image);
 				i++;
@@ -339,7 +351,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		otherEntity =c;
 		description.setLabel(e+" attacks "+c.getProfession());
 		System.out.println(e+" attacked");
-		description.setLocation((800-description.getWidth())/2,20);
+		description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
 	}
 	
 	public void nextCombat() {
@@ -379,8 +391,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public GRect createButton(double x,double y,String str){
-		GRect button = new GRect(130,60);
-		if (forSkills==true) button.setSize(320, 60);
+		GRect button = new GRect(buttonWidth,buttonHeight);
+		if (forSkills==true) button.setSize(screenWidth*(320.0/800.0), buttonHeight);
 		button.setLocation(x,y);
 		button.setFilled(true);
         button.setFillColor(Color.DARK_GRAY);
@@ -390,7 +402,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		GLabel label = new GLabel(str);
 	
 		label.setFont("DialogInput-PLAIN-15");
-		if (forSkills==true) label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(x+(button.getWidth()-label.getWidth())/2, y+(button.getHeight()-label.getHeight())/2+15);
 		
 		if (forSkills==true) allSkillsButtonLabels.add(label);
@@ -401,11 +412,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void addText() {
 		description = new GLabel("Click a Action");
+		description.setColor(Color.GREEN);
 		intent = new GLabel("");
 		description.setFont("DialogInput-PLAIN-15");
 		intent.setFont("DialogInput-PLAIN-15");
-		description.setLocation((800-description.getWidth())/2,50);
-		intent.setLocation((800-intent.getWidth())/2, 100);
+		intent.setColor(Color.GREEN);
+		description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(50.0/600.0));
+		intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight *(70.0/600.0));
 		contents.add(description);
 		mainScreen.add(description);
 		contents.add(intent);
@@ -452,28 +465,31 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		GLabel manaLabel,name = new GLabel("Mana goes here");
 		healthBars = new ArrayList<>();
 		manaBars = new ArrayList<>();
+		double barHeight = inventoryButton.getHeight()/3.0;
+		System.out.println("Inventory button height: "+inventoryButton.getHeight());
+		System.out.println("bar height: "+barHeight);
+		
 		
 		for (int i = 0;i<allyNumber;i++) {
-			int width = 540;
-			health = new GRect(width,20);
-			mana = new GRect(width,20);
-			nameDisplay =  new GRect(width,20);
+			double width = screenWidth*(540.0/800);
+			health = new GRect(width,barHeight);
+			mana = new GRect(width,barHeight);
+			nameDisplay =  new GRect(width,barHeight);
 			name = new GLabel(myArrAllies[i].getProfession());
 			
 			switch(allyNumber) {
-			case 3:width =180;break;
-			case 2:width =270;break;
+			case 3:width = screenWidth*(180.0/800);break;
+			case 2:width = screenWidth*(270.0/800);break;
 			}
 			barSizeChar = width;
 			
-			health.setSize(width, 20);
-			mana.setSize(width, 20);
-			nameDisplay.setSize(width, 20);
+			health.setSize(width, barHeight);
+			mana.setSize(width, barHeight);
+			nameDisplay.setSize(width, barHeight);
 	
-	
-			health.setLocation(260+(width*i), inventoryButton.getY()+health.getHeight());
-			mana.setLocation(260+(width*i), inventoryButton.getY()+health.getHeight()+20);
-			nameDisplay.setLocation(260+(width*i), inventoryButton.getY());
+			nameDisplay.setLocation(buttonWidth*2.0+(width*i), inventoryButton.getY());
+			health.setLocation(buttonWidth*2.0+(width*i), nameDisplay.getY()+nameDisplay.getHeight());
+			mana.setLocation(buttonWidth*2.0+(width*i), health.getY()+health.getHeight());
 			
 			health.setFilled(true);
 			health.setFillColor(Color.RED);
@@ -502,7 +518,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			mainScreen.add(name);
 		}
 		
-		barSizeEnemy = 137;
+		barSizeEnemy = screenWidth *(137.0/800.0);
 		for (int i = 0;i<enemyNumber;i++) {
 			health = new GRect(barSizeEnemy,15);
 			int index = allEntities.indexOf(myArrEnemies[i]);
@@ -562,23 +578,24 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allSkillsButton = new ArrayList<>();
 		allSkillsButtonLabels = new ArrayList<>();
 
-		displayBox = new GRect(340,320);
-		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
+		displayBox = new GRect(screenWidth*(340.0/800.0),screenHeight*(320/600.0));
+		displayBox.setLocation((screenWidth-displayBox.getWidth())/2,(screenHeight-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
 		displayBox.setFillColor(Color.black);
         contents.add(displayBox);
 		mainScreen.add(displayBox);
 		
 		forSkills = true;
-		extra = createButton((displayBox.getX())+10,displayBox.getY()+10,"Skill List");
+		double skillWidth = screenWidth*(320.0/800.0);
+		extra = createButton((displayBox.getX())+((displayBox.getWidth()-skillWidth)/2),displayBox.getY()+10,"Skill List");
+		
 		for (int i = 0;i<mySkills.length;i++) {
 			String label = mySkills[i].getName();
 			double manaCost = mySkills[i].getManaCost();
 			if (manaCost > 0) {
 				label += " (Costs " + (int)manaCost + " mana)";
 			}
-			
-			GRect skill1 = createButton((displayBox.getX())+10,displayBox.getY()+10+(i*60)+60,label);
+			GRect skill1 = createButton((displayBox.getX())+((displayBox.getWidth()-skillWidth)/2),displayBox.getY()+10+(i*buttonHeight)+buttonHeight,label);
 			allSkillsButton.add(skill1);
 			
 		}
@@ -603,15 +620,15 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void displayRewards() {
 		
-		displayBox = new GRect(340,200);
-		displayBox.setLocation((800-displayBox.getWidth())/2,(600-displayBox.getHeight())/2);
+		displayBox = new GRect(screenWidth*(340.0/800.0),screenHeight*(200.0/600.0));
+		displayBox.setLocation((screenWidth-displayBox.getWidth())/2,(screenHeight-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
 		displayBox.setFillColor(Color.black);
         contents.add(displayBox);
 		mainScreen.add(displayBox);
 		
-		mapButton = new GRect(160,50);
-		mapButton.setLocation(displayBox.getX()+80, displayBox.getY()+130);
+		mapButton = new GRect(screenWidth*(160.0/800.0),screenHeight *(50.0/600.0));
+		mapButton.setLocation(displayBox.getX()+(displayBox.getWidth()-mapButton.getWidth())/2, displayBox.getY()+displayBox.getHeight()-mapButton.getHeight());
 		mapButton.setFilled(true);
 		mapButton.setFillColor(Color.DARK_GRAY);
 		contents.add(mapButton);
@@ -623,7 +640,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.add(mapButtonLabel);
 		mainScreen.add(mapButtonLabel);
 		
-		GRect reward = new GRect(320,100);
+		GRect reward = new GRect(screenWidth *(320.0/800.0),screenHeight*(100.0/600.0));
 		reward.setLocation(displayBox.getX()+10, displayBox.getY()+20);
 		reward.setFilled(true);
 		reward.setFillColor(Color.YELLOW);
@@ -749,7 +766,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				else {
 					description.setLabel("Not enough mana try again!");
 					description.setFont("DialogInput-PLAIN-15");
-					description.setLocation((800-description.getWidth())/2,20);
+					description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
 				}
 				
 			}
@@ -781,7 +798,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			else {
 				description.setLabel("Thats not a target!");
 				description.setFont("DialogInput-PLAIN-15");
-				description.setLocation((800-description.getWidth())/2,20);
+				description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
 			}
 	
 		}
@@ -807,8 +824,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			Skill temp = c.getMySkills()[index];
 			description.setLabel(temp.getDescription());
 			description.setFont("DialogInput-PLAIN-12");
-			description.setLocation((800-description.getWidth())/2,20);
-			if (index==2) description.setLocation((800-description.getWidth())/2,10);
+			description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
+			if (index==2) description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(10.0/600.0));
 		}
 		else {
 			highlighted.setFillColor(Color.DARK_GRAY);
@@ -826,18 +843,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		
-		if (obj instanceof GImage ) {
+		if (obj instanceof GImage && obj != background) {
+		
 			Entity potentialEnemy = imageToEntity((GImage) obj);
 			if (potentialEnemy instanceof Enemy) {
 				Enemy enemy = (Enemy) potentialEnemy;
 				intent.setLabel(enemy.getIntent());
-				intent.setLocation((800-intent.getWidth())/2, 100);
+				intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 			}
 			
 		}
 		else {
 			intent.setLabel("");
-			intent.setLocation((800-intent.getWidth())/2, 100);
+			intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 		}
 	}
 
