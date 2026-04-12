@@ -6,7 +6,7 @@ public class ShopItem {
 	public ShopItem(Object item, int price) {
 		this.item = item;
 		this.price = price; 
-		
+	
 	}
 	
 	public Object getItem() {
@@ -20,7 +20,7 @@ public class ShopItem {
 	public String getDisplayName() {
 		if(item instanceof WeaponItem) {
 			WeaponItem w =(WeaponItem) item;
-			if (w.getAffinity().equals("null")) {
+			if (w.getAffinity() == null || w.getAffinity().equals("null")) {
                 return capitalize(w.getType());
             } else {
                 return capitalize(w.getType()) + " of " + capitalize(w.getAffinity());
@@ -46,6 +46,23 @@ public class ShopItem {
 	    }
 	    return item.toString();
 	    }
+	
+	public void giveTo(PlayerInventory inv) {
+        Object item = this.item;
+
+        if (item instanceof ArmorItem) {
+            inv.addArmor((ArmorItem) item);
+        }
+        else if (item instanceof WeaponItem) {
+            inv.addWeapon((WeaponItem) item);
+        }
+        else if (item instanceof ConsumableItem) {
+            inv.addConsumable((ConsumableItem) item);
+        }
+        else if (item instanceof Character) {
+            System.out.println("Mercenary acquired!");
+        }
+    }
 	 private String capitalize(String str) {
 		 return str.substring(0,1).toUpperCase() + str.substring(1);
 	 }

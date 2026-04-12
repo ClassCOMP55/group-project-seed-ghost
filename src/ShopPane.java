@@ -8,6 +8,8 @@ import acm.graphics.GObject;
 public class ShopPane extends GraphicsPane {
 	
 	private ShopInventory inventory;
+	private PlayerInventory playerInventory;
+	private GLabel goldLabel; 
 	
 	public ShopPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -17,9 +19,11 @@ public class ShopPane extends GraphicsPane {
 	public void showContent() {
 		addText();
 		inventory = new ShopInventory();
+		playerInventory = CharacterSelectionPane.myInventory;
 		displayItems();
 		addClerk();
 		addReturnButton();
+		displayGold();
 	}
 
 	@Override
@@ -71,14 +75,40 @@ public class ShopPane extends GraphicsPane {
 	 
 	 //BUYING ITEMS SYSTEM
 	 private void buyItem(int index) {
-		 ShopItem item = inventory.getItems().get(index);
+		 ShopItem shopItem = inventory.getItems().get(index);
 		 
-		 System.out.println("Bought: " + item.getDisplayName() + 
-				 " for " + item.getPrice() + " gold");
+		 int price = shopItem.getPrice();
+
+		    if (playerInventory.getGold() < price) {
+		        System.out.println("NOT enough GOLD!");
+		        return;
+		    }
+
+		    playerInventory.setGold(playerInventory.getGold() - price);
+
+		    shopItem.giveTo(playerInventory);
+
+		    System.out.println("Bought: " + shopItem.getDisplayName());
+
+		    updateGoldDisplay();
+		}
 		 
-		 //mainScreen.addToInventory(item.getItem())
-		 //mainScreen.spendGold(item.getPrice());
-		 }
+	 //Shows gold amount after buying
+	 private void updateGoldDisplay() {
+			int currentGold = playerInventory.getGold();
+			goldLabel.setLabel("Gold: " + currentGold + "g");
+		}
+	 
+	 //Display Total Amount of GOLD 
+	 private void displayGold() {
+			int currentGold = playerInventory.getGold();
+			goldLabel = new GLabel("Gold: " + currentGold + "g", 650, 100);
+			goldLabel.setFont("DialogInput-PLAIN-18");
+			goldLabel.setColor(Color.BLACK);
+			
+			contents.add(goldLabel);
+			mainScreen.add(goldLabel);
+		}
 	 
 	 //The old man clerk
 	 private void addClerk() {

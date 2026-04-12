@@ -33,6 +33,25 @@ public class PlayerInventory {
 		partyMembers[0] = startingCharacter;
 	}
 	
+	//Armor item store inventory
+	public void addArmor(ArmorItem armor) {
+        extraArmors.add(armor);  
+    }
+	//Weapon item store Inventory
+	public void addWeapon(WeaponItem weapon) {
+	        extraWeapons.add(weapon); 
+	}
+	//Consumables store in inventory
+	public void addConsumable(ConsumableItem consumable) {
+        for (int i = 0; i < consumables.length; i++) {
+            if (consumables[i] == null) { 
+                consumables[i] = consumable;
+                System.out.println("Added consumable: " + consumable.getType());
+                return;
+            }
+        }
+        System.out.println("No space for more consumables.");
+    }
 	
 	
 	
@@ -57,6 +76,8 @@ public class PlayerInventory {
 	public ConsumableItem[] getConsumables() {
 	    return consumables;
 	}
+
+	
 	public int getGold() {
 		return gold;
 	}
