@@ -16,10 +16,10 @@ public class MapPane extends GraphicsPane {
 	private ArrayList<GObject> myNodeObjects;
 	private ArrayList<GRect> extraArmorButtons,extraWeaponButtons,consumablesButtons,extra;
 	private ArrayList<GLabel> extraArmorLabels,extraWeaponLabel,consumablesLabel,extraLabels;
-	private boolean forWeapon,forArmor,forConsumable;
+	private boolean forWeapon,forArmor,forConsumable,inventoryOpen;
 	public static Node currPosition;
 	int count;
-	GRect inventoryButton;
+	GRect inventoryButton,closeButton;
 	GLabel inventoryButtonLabel;
 	
 	public MapPane(MainApplication mainScreen) {
@@ -33,6 +33,10 @@ public class MapPane extends GraphicsPane {
 	public void showContent() {
 		extraWeaponButtons = new ArrayList<>();
 		extraWeaponLabel = new ArrayList<>();
+		extraArmorButtons = new ArrayList<>();
+		extraArmorLabels = new ArrayList<>();
+		consumablesButtons = new ArrayList<>();
+		consumablesLabel = new ArrayList<>();
 		extra = new ArrayList<>();
 		extraLabels = new ArrayList<>();
 		myNodeObjects = new ArrayList<>();
@@ -99,7 +103,7 @@ public class MapPane extends GraphicsPane {
 		ArmorItem testArmor = new ArmorItem(true);
 		armors.add(testArmor);
 		
-		GRect box1 = new GRect(buttonWidth+20,(buttonHeight*(weapons.size()+2))+20);
+		GRect box1 = new GRect(buttonWidth+20,(buttonHeight*(weapons.size()+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*0), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
 		box1.setColor(Color.BLUE);
@@ -139,7 +143,7 @@ public class MapPane extends GraphicsPane {
 		
 		
 		
-		box1 = new GRect(buttonWidth+20,(buttonHeight*(armors.size()+2))+20);
+		box1 = new GRect(buttonWidth+20,(buttonHeight*(armors.size()+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*1), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
 		box1.setColor(Color.RED);
@@ -168,16 +172,16 @@ public class MapPane extends GraphicsPane {
 			button.setFillColor(Color.DARK_GRAY);
 			contents.add(button);
 			mainScreen.add(button);
-			extraWeaponButtons.add(button);
+			extraArmorButtons.add(button);
 			
 			GLabel label = new GLabel(armors.get(i).toString()+" (Affinity:"+armors.get(i).getAffinity()+")");
 			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
 			contents.add(label);
 			mainScreen.add(label);
-			extraWeaponLabel.add(label);
+			extraArmorLabels.add(label);
 		}
 		
-		box1 = new GRect(buttonWidth+20,(buttonHeight*(consumables.length+2))+20);
+		box1 = new GRect(buttonWidth+20,(buttonHeight*(consumables.length+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*2), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
 		box1.setColor(Color.GREEN);
@@ -200,20 +204,88 @@ public class MapPane extends GraphicsPane {
 		extraLabels.add(extraLabel);
 		
 		for (int i = 0;i<consumables.length;i++) {
+			GLabel label;
 			GRect button = new GRect(buttonWidth,buttonHeight);
 			button.setLocation(extraRect.getX(), (extraRect.getY()+extraRect.getHeight())+(i*buttonHeight));
 			button.setFilled(true);
 			button.setFillColor(Color.DARK_GRAY);
 			contents.add(button);
 			mainScreen.add(button);
-			extraWeaponButtons.add(button);
-			
-			GLabel label = new GLabel(consumables.toString());
+			consumablesButtons.add(button);
+			if (consumables[i]!=null) {
+				label = new GLabel(consumables[i].getType().toString());
+			}
+			else {
+				label = new GLabel("Empty");
+			}
 			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
 			contents.add(label);
 			mainScreen.add(label);
-			extraWeaponLabel.add(label);
+			consumablesLabel.add(label);
 		}
+		
+		inventoryButtonLabel.setLabel("Exit Inventory");
+		inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
+		
+	}
+	
+	private void  hideInventory() {
+		
+		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
+		double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
+		
+		for (int i = 0;i<extraWeaponButtons.size();i++) {
+			
+			contents.remove(extraWeaponButtons.get(i));
+			mainScreen.remove(extraWeaponButtons.get(i));
+			
+			contents.remove(extraWeaponLabel.get(i));
+			mainScreen.remove(extraWeaponLabel.get(i));
+		}
+		extraWeaponButtons.clear();
+		extraWeaponButtons.clear();
+		
+		
+		for (int i = 0;i<extraArmorButtons.size();i++) {
+			
+			contents.remove(extraArmorButtons.get(i));
+			mainScreen.remove(extraArmorButtons.get(i));
+			
+			contents.remove(extraArmorLabels.get(i));
+			mainScreen.remove(extraArmorLabels.get(i));
+		}
+		extraArmorButtons.clear();
+		extraArmorLabels.clear();
+		
+		for (int i = 0;i<consumablesButtons.size();i++) {
+			
+			contents.remove(consumablesButtons.get(i));
+			mainScreen.remove(consumablesButtons.get(i));
+			
+			contents.remove(consumablesLabel.get(i));
+			mainScreen.remove(consumablesLabel.get(i));
+		}
+		consumablesButtons.clear();
+		consumablesLabel.clear();
+		
+		for (int i = 0;i<extra.size();i++) {
+			
+			contents.remove(extra.get(i));
+			mainScreen.remove(extra.get(i));
+		}
+		
+		extra.clear();
+		
+		for (int i = 0;i<extraLabels.size();i++) {
+			contents.remove(extraLabels.get(i));
+			mainScreen.remove(extraLabels.get(i));
+		}
+		
+		extraLabels.clear();
+		
+		inventoryButtonLabel.setLabel("Inventory");
+		inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
+		
 	}
 	
 	
@@ -311,9 +383,15 @@ private void createMap() {
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
 			mainScreen.switchToShopPane();
 		}
-		else if (obj == inventoryButton) {
+		else if (obj == inventoryButton && inventoryOpen == false) {
 			displayInventory();
+			inventoryOpen = true;
 		}
+		else if (obj == inventoryButton && inventoryOpen == true) {
+			hideInventory();
+			inventoryOpen = false;
+		}
+	
 		if (myNodeObjects.contains(obj)) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			
