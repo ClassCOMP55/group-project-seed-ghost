@@ -4,10 +4,10 @@ public enum ConsumableType {
 	
 	public String toString() {
 		switch(this){
-			case HEALTH : return "health";
-			case MANA : return "mana";
-			case ELIXIR : return "elixir";
-			case VITALITY: return "vitality";
+			case HEALTH : return "Heal 30% of target's max HP";
+			case MANA : return "Full mana restore for target";
+			case ELIXIR : return "40% HP + full mana restore for target";
+			case VITALITY: return "Permanently increase Max Mana and Max HP";
 		}
 		return "n/a";
 	}
