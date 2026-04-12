@@ -14,9 +14,12 @@ public class MapPane extends GraphicsPane {
 	
 	private ArrayList<Node> mapPath;
 	private ArrayList<GObject> myNodeObjects;
-	private ArrayList<GRect> extraArmorButtons,extraWeaponButtons,consumablesButtons,extra;
-	private ArrayList<GLabel> extraArmorLabels,extraWeaponLabel,consumablesLabel,extraLabels;
-	private boolean forWeapon,forArmor,forConsumable,inventoryOpen;
+	private ArrayList<GRect> extraArmorButtons,extraWeaponButtons,consumablesButtons,extra,charButtons;
+	private ArrayList<GLabel> extraArmorLabels,extraWeaponLabel,consumablesLabel,extraLabels,charLabels;
+	private boolean forWeapon,forArmor,forConsumable,inventoryOpen,partyOpen;
+	private WeaponItem weaponItem;
+	private ArmorItem armorItem;
+	private ConsumableItem consumableItem;
 	public static Node currPosition;
 	int count;
 	GRect inventoryButton,closeButton;
@@ -40,6 +43,9 @@ public class MapPane extends GraphicsPane {
 		extra = new ArrayList<>();
 		extraLabels = new ArrayList<>();
 		myNodeObjects = new ArrayList<>();
+		charButtons = new ArrayList<>();
+		charLabels = new ArrayList<>();
+		 partyOpen =false;
 		createBackground();
 		addText();
 		addButtons();
@@ -98,10 +104,6 @@ public class MapPane extends GraphicsPane {
 		ArrayList<WeaponItem> weapons = inventory.getExtraWeapons();
 		ArrayList<ArmorItem> armors = inventory.getExtraArmors();
 		ConsumableItem[] consumables = inventory.getConsumables();
-		WeaponItem testWeapon = new WeaponItem(true);
-		weapons.add(testWeapon);
-		ArmorItem testArmor = new ArmorItem(true);
-		armors.add(testArmor);
 		
 		GRect box1 = new GRect(buttonWidth+20,(buttonHeight*(weapons.size()+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*0), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
@@ -287,6 +289,88 @@ public class MapPane extends GraphicsPane {
 		
 	}
 	
+	public void displayParty() {
+		
+		partyOpen = true;
+		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
+		double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
+		PlayerInventory inventory = CharacterSelectionPane.myInventory;
+		int partySize = 0;
+		Character[] myParty = inventory.getPartyMembers();
+		
+		for (int i = 0;i<myParty.length;i++){
+			if (myParty[i]!=null) partySize++;
+		}
+		
+		GRect box1 = new GRect(buttonWidth+20,(buttonHeight*(partySize+1))+20);
+		box1.setLocation((MainApplication.WINDOW_WIDTH-box1.getWidth())/2+(box1.getWidth()*0), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
+		box1.setFilled(true);
+		box1.setColor(Color.MAGENTA);
+		contents.add(box1);
+		mainScreen.add(box1);
+		extra.add(box1);
+		
+		GRect extraRect = new GRect(buttonWidth,buttonHeight);
+		extraRect.setLocation(box1.getX()+10, box1.getY()+10);
+		extraRect.setFilled(true);
+		extraRect.setFillColor(Color.DARK_GRAY);
+		contents.add(extraRect);
+		mainScreen.add(extraRect);
+		extra.add(extraRect);
+		
+		GLabel extraLabel = new GLabel("Select a Party Member to use the item");
+		extraLabel.setLocation(extraRect.getX()+(extraRect.getWidth()-extraLabel.getWidth())/2, extraRect.getY()+(extraRect.getHeight()-extraLabel.getHeight())/2+extraLabel.getHeight());
+		contents.add(extraLabel);
+		mainScreen.add(extraLabel);
+		extraLabels.add(extraLabel);
+		
+		for (int i = 0;i<partySize;i++) {
+			GRect button = new GRect(buttonWidth,buttonHeight);
+			button.setLocation(extraRect.getX(), (extraRect.getY()+extraRect.getHeight())+(i*buttonHeight));
+			button.setFilled(true);
+			button.setFillColor(Color.DARK_GRAY);
+			contents.add(button);
+			mainScreen.add(button);
+			charButtons.add(button);
+			
+			GLabel label = new GLabel(myParty[i].toString());
+			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
+			contents.add(label);
+			mainScreen.add(label);
+			charLabels.add(label);
+		}
+	}
+	public void hideParty() {
+		partyOpen = false;
+		
+		for (GRect rect:charButtons) {
+			mainScreen.remove(rect);
+			contents.remove(rect);
+		}
+		charButtons.clear();
+		
+		for (GLabel label:charLabels) {
+			mainScreen.remove(label);
+			contents.remove(label);
+		}
+		charLabels.clear();
+		
+		for (GRect rect: extra) {
+			
+			contents.remove(rect);
+			mainScreen.remove(rect);
+		}
+		
+		extra.clear();
+		
+		for (GLabel label:extraLabels) {
+			mainScreen.remove(label);
+			contents.remove(label);
+		}
+		
+		extraLabels.clear();
+	}
+	
 	
 	
 private void createMap() {
@@ -379,17 +463,122 @@ private void createMap() {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(1)) {
-			mainScreen.switchToShopPane();
-		}
-		else if (obj == inventoryButton && inventoryOpen == false) {
+		
+		if (obj == inventoryButton && inventoryOpen == false && partyOpen ==false) {
 			displayInventory();
 			inventoryOpen = true;
 		}
 		else if (obj == inventoryButton && inventoryOpen == true) {
+			
+			double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
+			double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
+			
 			hideInventory();
+				
+			inventoryOpen = false;
+			inventoryButtonLabel.setLabel("Inventory");
+			inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
+		}
+		else if (obj == inventoryButton && partyOpen == true) {
+			
+			double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
+			double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
+			
+			hideParty();
+			
+			inventoryButtonLabel.setLabel("Inventory");
+			inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
+		}
+		else if (inventoryOpen==true && extraWeaponButtons.contains(obj)) {
+			int index = extraWeaponButtons.indexOf(obj);
+			hideInventory();
+			forWeapon = true;
+			displayParty();
+			PlayerInventory inventory = CharacterSelectionPane.myInventory;
+			 weaponItem = inventory.getExtraWeapons().get(index);
 			inventoryOpen = false;
 		}
+		else if (inventoryOpen==true && extraArmorButtons.contains(obj)) {
+			int index = extraArmorButtons.indexOf(obj);
+			hideInventory();
+			forArmor = true;
+			displayParty();
+			PlayerInventory inventory = CharacterSelectionPane.myInventory;
+			 armorItem = inventory.getExtraArmors().get(index);
+			inventoryOpen = false;
+		}
+		else if (inventoryOpen==true && consumablesButtons.contains(obj)) {
+			int index = consumablesButtons.indexOf(obj);
+			PlayerInventory inventory = CharacterSelectionPane.myInventory;
+			 consumableItem = inventory.getConsumables()[index];
+			 
+			 if (consumableItem!=null) {
+				 hideInventory();
+					forConsumable = true;
+					displayParty();
+					inventoryOpen = false;
+			 }
+		}
+
+		if (charButtons.contains(obj)&& forWeapon ==true) {
+			int index = charButtons.indexOf(obj);
+			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
+			
+			System.out.println("Old weapon "+c.getWeapon().toString());
+			WeaponItem temp = c.getWeapon();
+			c.setWeapon(weaponItem);
+			System.out.println("New weapon "+c.getWeapon().toString());
+			
+			CharacterSelectionPane.myInventory.getExtraWeapons().add(temp);
+			CharacterSelectionPane.myInventory.getExtraWeapons().remove(weaponItem);
+			
+			hideParty();
+			forWeapon =false;
+		}
+		else if (charButtons.contains(obj)&& forArmor ==true) {
+			
+			int index = charButtons.indexOf(obj);
+			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
+			
+			System.out.println("Old Armor "+c.getArmor().toString());
+			ArmorItem temp = c.getArmor();
+			c.setArmor(armorItem);
+			System.out.println("New Armor "+c.getArmor().toString());
+			
+			CharacterSelectionPane.myInventory.getExtraArmors().add(temp);
+			CharacterSelectionPane.myInventory.getExtraArmors().remove(armorItem);
+			
+			hideParty();
+			forArmor =false;
+		}
+		else if (charButtons.contains(obj)&& forConsumable ==true) {
+			int index = charButtons.indexOf(obj);
+			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
+
+			System.out.println(consumableItem.getType().toString()+" Used on: "+c);
+			consumableItem.use(c);
+			consumableItem =null;
+			
+			hideParty();
+			forConsumable =false;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 		if (myNodeObjects.contains(obj)) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
