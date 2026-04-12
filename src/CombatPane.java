@@ -24,11 +24,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton;
-	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel,intent;
+	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel,intent,list;
 	private GImage background;
 	
-	private boolean skill,inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
-	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber;
+	private boolean skill;
+	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable,skill2;
+	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber,test;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	
 	private Entity currentEntity,otherEntity;
@@ -45,21 +46,24 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		t = new Timer(1000, this);
 		hideContent();
 		
+		allSkillsButtonLabels = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
 		allConsumableButton = new ArrayList<>();
+		allConsumableButtonLabels = new ArrayList<>();
 	
 		otherEntity = new Enemy();
 		highlighted = new GRect(0,0);
-		skill = false;
 		inventory = false;
 		forSkills = false;
 		forConsumable = false;
+		skill=false;
+		skill2 = false;
 		
+		test =0;
 		turn = 0;
 		counter = 0;
 		switched =0;
-		
-		System.out.println(mainScreen.getWidth());	
+			
 		addButtons();
 		
 		
@@ -110,7 +114,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		screenWidth = MainApplication.WINDOW_WIDTH;
 		buttonHeight = (screenHeight/10.0);
 		buttonWidth = screenWidth*(130.0/800.0);
-		System.out.println("Height: "+buttonHeight+" Width: "+buttonWidth);
 		
 		skillButton = createButton(0,screenHeight-buttonHeight,"Skills");
 		inventoryButton = createButton(skillButton.getWidth(),screenHeight-buttonHeight,"Inventory");
@@ -273,7 +276,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		i = 0;
-		System.out.println("Size "+myArrEnemies.length);
 		for (Enemy c:myArrEnemies) {
 			if (c!=null) {
 				GImage image = entityToImage(c);
@@ -351,7 +353,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Character c = e.playTurn(this);
 		otherEntity =c;
 		description.setLabel(e+" attacks "+c.getProfession());
-		System.out.println(e+" attacked");
 		description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
 	}
 	
@@ -406,8 +407,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(x+(button.getWidth()-label.getWidth())/2, y+(button.getHeight()-label.getHeight())/2+15);
 		
-		if (forSkills==true) allSkillsButtonLabels.add(label);
+		if (str == "Skill List"||str == "Consumable List") list = label;
+		if (forSkills==true && str != "Skill List") allSkillsButtonLabels.add(label);
 		if (forConsumable==true && str != "Consumable List") allConsumableButtonLabels.add(label);
+		
 		contents.add(label);
 		mainScreen.add(label);
 		return button;
@@ -469,8 +472,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		healthBars = new ArrayList<>();
 		manaBars = new ArrayList<>();
 		double barHeight = inventoryButton.getHeight()/3.0;
-		System.out.println("Inventory button height: "+inventoryButton.getHeight());
-		System.out.println("bar height: "+barHeight);
 		
 		
 		for (int i = 0;i<allyNumber;i++) {
@@ -577,20 +578,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void displaySkills(Character myChar) {
 		
+		skill = true;
+		double skillWidth = screenWidth*(320.0/800.0);
 		mySkills =myChar.getMySkills();
 		allSkillsButton = new ArrayList<>();
-		allSkillsButtonLabels = new ArrayList<>();
 
-		displayBox = new GRect(screenWidth*(340.0/800.0),screenHeight*(320/600.0));
+		displayBox = new GRect(skillWidth+20,buttonHeight*(mySkills.length+2)+20);
 		displayBox.setLocation((screenWidth-displayBox.getWidth())/2,(screenHeight-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
-		displayBox.setFillColor(Color.black);
+		displayBox.setFillColor(new Color(37,99,235));
         contents.add(displayBox);
 		mainScreen.add(displayBox);
 		
 		forSkills = true;
-		double skillWidth = screenWidth*(320.0/800.0);
-		extra = createButton((displayBox.getX())+((displayBox.getWidth()-skillWidth)/2),displayBox.getY()+10,"Skill List");
+		extra = createButton(displayBox.getX()+10,displayBox.getY()+10,"Skill List");
 		
 		for (int i = 0;i<mySkills.length;i++) {
 			String label = mySkills[i].getName();
@@ -598,10 +599,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			if (manaCost > 0) {
 				label += " (Costs " + (int)manaCost + " mana)";
 			}
-			GRect skill1 = createButton((displayBox.getX())+((displayBox.getWidth()-skillWidth)/2),displayBox.getY()+10+(i*buttonHeight)+buttonHeight,label);
+			GRect skill1 = createButton(extra.getX(),(extra.getY()+extra.getHeight())+(i*buttonHeight),label);
 			allSkillsButton.add(skill1);
-			
 		}
+		closeButton = createButton(extra.getX(),extra.getY()+(buttonHeight*(mySkills.length+1)),"Close");
 	}
 	public void hideSkills() {
 		for (GRect rect:allSkillsButton) {
@@ -618,13 +619,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.remove(displayBox);
 		contents.remove(extra);
 		mainScreen.remove(extra);
+		contents.remove(list);
+		mainScreen.remove(list);
+		contents.remove(closeButton);
+		mainScreen.remove(closeButton);
 		allSkillsButtonLabels.clear();
 		forSkills =false;
 	}
 		
 	public void showConsumables() {
 		double consumableWidth = screenWidth*(320.0/800.0);
-		allConsumableButtonLabels = new ArrayList<>();
 		ConsumableItem[] myConsumables = CharacterSelectionPane.myInventory.getConsumables();
 		forConsumable = true;
 		
@@ -638,13 +642,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		
 		extra = createButton(displayBox.getX()+10,displayBox.getY()+10,"Consumable List");
-		closeButton = createButton(extra.getX(),extra.getY()+(buttonHeight*(myConsumables.length+1)),"Close");
+		
 		for (int i = 0;i<myConsumables.length;i++) {
 			if (myConsumables[i]!=null) {
+				
 				String label = myConsumables[i].getType().toString();
-				System.out.println(label);
 				GRect rect = createButton(extra.getX(),(extra.getY()+extra.getHeight())+(i*buttonHeight),label);
 				allConsumableButton.add(rect);
+				
 			}
 			else {
 				GRect rect = createButton((displayBox.getX())+((displayBox.getWidth()-consumableWidth)/2),displayBox.getY()+10+(i*buttonHeight)+buttonHeight,"Empty");
@@ -652,6 +657,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			
 		}
+		closeButton = createButton(extra.getX(),extra.getY()+(buttonHeight*(myConsumables.length+1)),"Close");
 	}
 	
 	public void hideConsumables() {
@@ -669,6 +675,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.remove(displayBox);
 		contents.remove(extra);
 		mainScreen.remove(extra);
+		contents.remove(list);
+		mainScreen.remove(list);
 		contents.remove(closeButton);
 		mainScreen.remove(closeButton);
 		allConsumableButtonLabels.clear();
@@ -796,15 +804,21 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
+		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
-		if (obj == skillButton && playersTurn == true && forConsumable == false) {
+		if (obj == skillButton && playersTurn == true && forConsumable == false && skill ==false) {
 			displaySkills((Character) currentEntity);
-			skill = true;	
 		}
-		else if (obj == inventoryButton && playersTurn == true && forSkills == false) {
+		else if (obj == inventoryButton && playersTurn == true && forSkills == false && forConsumable == false) {
 			showConsumables();
 		}
-		if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
+		else if (obj == closeButton && skill == true) {
+			hideSkills();
+			skill =false;
+		}
+		
+		else if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
+			
 			if (allSkillsButton.contains(obj)) {
 				skillIndex = allSkillsButton.indexOf(obj);
 				
@@ -832,6 +846,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				
 			}
 		}
+		
 		if (allConsumableButton.size()!=0 && playersTurn == true && forConsumable==true) {
 			if (allConsumableButton.contains(obj)) {
 				if (CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)]!=null) {
@@ -898,11 +913,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			clearArrays();
 			mainScreen.switchToMenuPane();
 		}
+		
 	}
 	
 	public void mouseMoved(MouseEvent e) {
+		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
-		if (skill = true && allSkillsButton.contains(obj)) {
+		
+		if (skill == true && allSkillsButton.contains(obj)) {
 			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
 			highlighted =(GRect) obj;
 			highlighted.setFillColor(Color.LIGHT_GRAY);
@@ -914,20 +932,42 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
 			if (index==2) description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(10.0/600.0));
 		}
-		else {
-			highlighted.setFillColor(Color.DARK_GRAY);
+		else if (skill == true && closeButton == obj) {
+			
+			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =(GRect) obj;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
 		}
-		if (skill==false && inventory==false && playersTurn == true ) {
+		else if (forConsumable == true && allConsumableButton.contains(obj)) {
+			
+			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =(GRect) obj;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
+		}
+		else if (forConsumable == true && obj == closeButton) {
+			
+			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =(GRect) obj;
+			highlighted.setFillColor(Color.LIGHT_GRAY);
+		}
+		
+		else if (skill==false && inventory==false && playersTurn == true ) {
 			if (obj==skillButton) {
+				if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
 				skillButton.setFillColor(Color.LIGHT_GRAY);
+				highlighted = skillButton;
 			}
 			else if (obj==inventoryButton) {
+				if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
 				inventoryButton.setFillColor(Color.LIGHT_GRAY);
+				highlighted = inventoryButton;
 			}
 			else {
-				skillButton.setFillColor(Color.DARK_GRAY);
-				inventoryButton.setFillColor(Color.DARK_GRAY);
+				highlighted.setFillColor(Color.DARK_GRAY);
 			}
+		}
+		else {
+			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		
 		if (obj instanceof GImage && obj != background) {
