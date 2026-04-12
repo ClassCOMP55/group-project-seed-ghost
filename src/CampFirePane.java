@@ -349,7 +349,6 @@ public class CampFirePane extends GraphicsPane{
 	    
 	    //Preview screen for Recruit Mercenary
 	    private void displayMercenaryPreview() {
-	        // Remove previous preview
 	        for (GObject obj : mercPreviewObjects) {
 	            mainScreen.remove(obj);
 	            contents.remove(obj);
@@ -358,8 +357,8 @@ public class CampFirePane extends GraphicsPane{
 
 	        if (previewMercenary == null) return;
 
-	        int x = 630, y = 375;
-	        GRect box = new GRect(150, 185);
+	        int x = 600, y = 375;
+	        GRect box = new GRect(199, 200);
 	        box.setLocation(x, y);
 	        box.setColor(Color.BLACK);
 	        box.setFillColor(Color.BLACK);
@@ -367,13 +366,48 @@ public class CampFirePane extends GraphicsPane{
 	        mercPreviewObjects.add(box);
 	        contents.add(box);
 	        mainScreen.add(box);
+	        
+	        String prof = previewMercenary.getProfession();
+	        String imagePath;
+	        
+	        switch(prof) {
+	        case "knight": imagePath = "spr_Knight.png"; break;
+	        case "samurai": imagePath = "spr_Samurai.png"; break;
+	        case "thief": imagePath = "spr_Thief.png"; break;
+	        case "viking": imagePath = "spr_Viking.png"; break;
+	        case "sorcerer": imagePath = "spr_Sorcerer.png"; break;
+	        case "paladin": imagePath = "spr_Paladin.png"; break;
+	        case "cleric": imagePath = "spr_Cleric.png"; break;
+	        case "ranger": imagePath = "spr_RangerUpdated.png"; break;
+	        default: imagePath = "spr_Marksman.png"; break;
+	        
+	        }
+
+	        try {
+	            GImage mercImg = new GImage(imagePath);
+	            mercImg.setLocation(x + 25, y + 20);
+	            mercImg.setSize(100, 80);
+	            
+	            mercImg.setLocation(
+	                    x + (200 - mercImg.getWidth()) / 2,
+	                    y - mercImg.getHeight() - 10
+	                );
+	            
+	            mercPreviewObjects.add(mercImg);
+	            contents.add(mercImg);
+	            mainScreen.add(mercImg);
+	        } catch (Exception e) {
+	            System.out.println("Missing image: " + imagePath);
+	        }
+	        
+	        WeaponItem w = previewMercenary.getWeapon();
 
 	        String[] labels = {
 	            "Mercenary To Recruit",
 	            "Profession: " + previewMercenary.getProfession(),
 	            "HP: " + previewMercenary.getHpMax(),
 	            "MP: " + previewMercenary.getManaMax(),
-	            "Weapon: " + previewMercenary.getWeapon().getType()
+	            "Weapon: " + w.toString()
 	        };
 
 	        for (int i = 0; i < labels.length; i++) {
@@ -401,9 +435,9 @@ public class CampFirePane extends GraphicsPane{
 	    private void displayPartyStats() {
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
 
-	        int startX = 30;   
+	        int startX = 3;   
 	        int startY = 375;
-	        int spacingX = 180; 
+	        int spacingX = 201; 
 
 	        for (int i = 0; i < party.length; i++) {
 	            Character c = party[i];
@@ -413,7 +447,7 @@ public class CampFirePane extends GraphicsPane{
 	            int x = startX + (i * spacingX);
 	            int y = startY;
 
-	            GRect box = new GRect(150, 185);
+	            GRect box = new GRect(199, 200);
 	            box.setLocation(x, y);
 	            box.setColor(Color.BLACK);
 	            box.setFillColor(Color.BLACK);
@@ -447,7 +481,7 @@ public class CampFirePane extends GraphicsPane{
 	            mainScreen.add(mana);
 
 	            // Weapon
-	            GLabel weapon = new GLabel("Weapon: " + c.getWeapon().getType());
+	            GLabel weapon = new GLabel("Weapon: " + c.getWeapon());
 	            weapon.setLocation(x + 5, y + 60);
 	            weapon.setColor(Color.RED);
 	            weapon.setFont("DialogInput-PLAIN-12");
