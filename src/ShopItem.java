@@ -35,7 +35,8 @@ public class ShopItem {
 		        switch(c.getType()) {
 		            case HEALTH: return "Potion";       
 		            case MANA:   return "Mana Potion"; 
-		            case ELIXIR: return "Elixir";      
+		            case ELIXIR: return "Elixir";   
+		            case VITALITY: return "Vitality";
 		        }
 		    }
 
