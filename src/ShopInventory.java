@@ -31,6 +31,9 @@ public class ShopInventory {
 		            case ELIXIR:
 		                price =250; // Elixir price
 		                break;
+		            case VITALITY:
+		            	price = 250; //Vitality price
+		            	break; 
 		            default:
 		                price = 0;
 		        }
