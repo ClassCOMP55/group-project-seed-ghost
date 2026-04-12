@@ -49,7 +49,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	}
 	
 	private void createBackground() {
-		GRect backGround = new GRect(800,600);
+		GRect backGround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		backGround.setColor(Color.DARK_GRAY);
 		backGround.setFillColor(Color.DARK_GRAY);
 		backGround.setFilled(true);
@@ -82,7 +82,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 		case "ranger": charImage = new GImage("spr_RangerUpdated.png",50+(200*i),350);charImage.setSize(150, 150); break;
 		default: charImage = new GImage("spr_Marksman.png",50+(200*i),350); break;
 		}
-		charImage.setLocation(5+2*i*charImage.getWidth(), (600-charImage.getHeight())/2);
+		double width = MainApplication.WINDOW_WIDTH*((5.0+2.0*i*charImage.getWidth())/800.0);
+		charImage.scale(1.3, 1.3);
+		charImage.setLocation(width, (600-charImage.getHeight())/2);
 		myImages.add(charImage);
 		contents.add(charImage);
 		mainScreen.add(charImage);

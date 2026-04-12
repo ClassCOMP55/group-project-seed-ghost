@@ -90,7 +90,7 @@ public class MenuPane extends GraphicsPane {
 	}
 	
 	private void createBackground() {
-		GRect backGround = new GRect(800,600);
+		GRect backGround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		backGround.setColor(Color.RED);
 		backGround.setFillColor(Color.RED);
 		backGround.setFilled(true);

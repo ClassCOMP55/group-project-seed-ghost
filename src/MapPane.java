@@ -233,7 +233,6 @@ public class MapPane extends GraphicsPane {
 		
 		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
 		double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
-		
 		for (int i = 0;i<extraWeaponButtons.size();i++) {
 			
 			contents.remove(extraWeaponButtons.get(i));
@@ -283,7 +282,7 @@ public class MapPane extends GraphicsPane {
 		
 		extraLabels.clear();
 		
-		inventoryButtonLabel.setLabel("Inventory");
+		inventoryButtonLabel.setLabel("Exit Inventory");
 		inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
 		
 	}
@@ -292,13 +291,13 @@ public class MapPane extends GraphicsPane {
 	
 private void createMap() {
 	count =0;
-		
-		createRow(1,((mainScreen.getWidth() - 40) / 2),550);
-		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,450);
-		createRow(3,((mainScreen.getWidth() - 40) / 2)-100,350);
-		createRow(5,((mainScreen.getWidth() - 40) / 2)-200,250);
-		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,150);
-		createRow(1,((mainScreen.getWidth() - 40) / 2),50);
+		double screenHeight = MainApplication.WINDOW_HEIGHT;
+		createRow(1,((mainScreen.getWidth() - 40) / 2),screenHeight * (550.0/600.0));
+		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,screenHeight * (450.0/600.0));
+		createRow(3,((mainScreen.getWidth() - 40) / 2)-100,screenHeight * (350.0/600.0));
+		createRow(5,((mainScreen.getWidth() - 40) / 2)-200,screenHeight * (250.0/600.0));
+		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,screenHeight * (150.0/600.0));
+		createRow(1,((mainScreen.getWidth() - 40) / 2),screenHeight * (50.0/600.0));
 		drawLines();
 		
 	}
@@ -336,7 +335,7 @@ private void createMap() {
 	}
 	
 	private void createBackground() {
-		GRect backGround = new GRect(800,600);
+		GRect backGround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		backGround.setColor(Color.BLACK);
 		backGround.setFillColor(Color.BLACK);
 		backGround.setFilled(true);
