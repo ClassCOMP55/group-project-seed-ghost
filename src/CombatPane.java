@@ -804,7 +804,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		
+		test++;
+		if (test==3) {
+			System.out.println();
+		}
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		if (obj == skillButton && playersTurn == true && forConsumable == false && skill ==false) {
 			displaySkills((Character) currentEntity);
@@ -879,7 +882,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				Character c = (Character) currentEntity;
 				c.setLastUsedSkill(mySkills[skillIndex]);
-				
+				skill =false;
 				skillReady = false;
 				playersTurn = false;
 				
