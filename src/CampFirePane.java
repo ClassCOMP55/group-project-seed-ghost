@@ -357,7 +357,7 @@ public class CampFirePane extends GraphicsPane{
 
 	        if (previewMercenary == null) return;
 
-	        int x = 600, y = 375;
+	        int x = 599, y = 375;
 	        GRect box = new GRect(199, 200);
 	        box.setLocation(x, y);
 	        box.setColor(Color.BLACK);
