@@ -135,7 +135,7 @@ public class Character extends Entity {
 			break;
 			case "thief":
 				tempHp = Chance.range(100, 250);
-				tempMn = Chance.range(50, 90);
+				tempMn = Chance.range(100, 200);
 				tempDr = 0.1;
 				
 				tempDex = (int)Chance.range(30, 90);
@@ -144,8 +144,9 @@ public class Character extends Entity {
 				tempSprite = "spr_Thief.png";
 				allowedArmors = new String[] {"light"};
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"dagger","pistol","crossbow"}), Chance.choose(allowedAffinities));
-				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
+				
+				mySkills = new Skill[] {new SKILL_ProneShot(), new SKILL_Recovery(), new SKILL_Assassinate(), new SKILL_SleightOfGreed()};
 			break;
 			case "viking":
 				tempHp = Chance.range(300, 400);

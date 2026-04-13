@@ -5,7 +5,7 @@ public class SKILL_ProneShot extends Skill {
 	
 	public SKILL_ProneShot () {
 		super();
-		setName("Sniping Position");
+		setName("Reposition");
 		setDescription("Guard for 95% damage and make an attack against an enemy.");
 		tempArmor = null;
 		setvTarget("ENEMY");
