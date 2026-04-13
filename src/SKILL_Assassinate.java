@@ -9,10 +9,12 @@ public class SKILL_Assassinate extends Skill {
 	
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = me.attackOther();
+		boolean assassinate = (target.getHpMax() == target.getHp());
+		
 		target.attackMe(dmg);
 		target.attackMe(dmg);
 		
-		if (target.getHpMax() == target.getHp()) {
+		if (assassinate) {
 			target.attackMe(dmg);
 			target.attackMe(dmg);
 			
