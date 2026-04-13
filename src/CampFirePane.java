@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
 import acm.graphics.*;
 
 public class CampFirePane extends GraphicsPane{
+	public static final int WINDOW_WIDTH = 1366;
+	public static final int WINDOW_HEIGHT = 700;
+	
 	 private int actionPoints;
 	 private GLabel apLabel;
 	 private GLabel actionMessage;
@@ -64,7 +68,7 @@ public class CampFirePane extends GraphicsPane{
 	
 	//Background for Camp fire Pane 
 	private void addBackground() {
-	    GRect bg = new GRect(800, 600);
+	    GRect bg = new GRect(WINDOW_WIDTH, WINDOW_HEIGHT);
 	    bg.setLocation(0, 0);
 	    bg.setFilled(true);
 	    bg.setFillColor(new Color(30, 30, 40));
@@ -79,6 +83,7 @@ public class CampFirePane extends GraphicsPane{
 	        int x = 40;
 	        int yStart = 150;  
 	        int yStep = 50;
+
 
 	        createButton("Heal Party (50%)", x, yStart, "heal");
 	        createButton("Revive Allies (30%)", x, yStart + yStep, "revive");
