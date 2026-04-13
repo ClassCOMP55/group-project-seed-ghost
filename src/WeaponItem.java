@@ -77,6 +77,24 @@ public class WeaponItem {
 		applyAffinity();
 	}
 	
+	/*
+	 * Weapons generated after combat constructor
+	 */
+	public WeaponItem (String affinity) {
+		this.type = Chance.choose(new String[] {"greatsword","shortsword","katana","dagger","polearm","axe","hammer","longbow","shortbow","crossbow","rifle","pistol","stave","talisman","bomb"});
+		this.affinity = affinity;
+		
+		baseAttack = new double[] {0,0,0,0,0,0,0,0};
+		statScaling = new double[] {0,0,0,0,0,0,0,0};
+		baseStatus = new double[] {0,0,0,0,0,0,0,0,0};
+		
+		setMagic(false);
+		setRanged(false);
+		
+		applyWeaponType();
+		applyAffinity();
+	}
+	
 	private void applyWeaponType () {
 		switch (type) {
 			case "greatsword": 
