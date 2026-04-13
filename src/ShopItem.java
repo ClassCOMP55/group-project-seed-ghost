@@ -6,7 +6,6 @@ public class ShopItem {
 	public ShopItem(Object item, int price) {
 		this.item = item;
 		this.price = price; 
-	
 	}
 	
 	public Object getItem() {
@@ -45,27 +44,44 @@ public class ShopItem {
 	    	return "Mercenary: " + capitalize(c.getProfession());
 	    }
 	    return item.toString();
-	    }
+	}
 	
-	public void giveTo(PlayerInventory inv) {
+	public boolean giveTo(PlayerInventory inv) {
         Object item = this.item;
 
         if (item instanceof ArmorItem) {
             inv.addArmor((ArmorItem) item);
+            return true;
         }
         else if (item instanceof WeaponItem) {
             inv.addWeapon((WeaponItem) item);
+            return true;
         }
         else if (item instanceof ConsumableItem) {
             inv.addConsumable((ConsumableItem) item);
+            return true;
         }
         else if (item instanceof Character) {
-            System.out.println("Mercenary acquired!");
+            Character c = (Character) item;
+
+            Character[] party = inv.getPartyMembers();
+
+            for (int i = 0; i < party.length; i++) {
+                if (party[i] == null) {
+                    party[i] = c;
+                    System.out.println("Mercenary added to party!");
+                    return true;
+                }
+            }
+
+            System.out.println("Party is full!");
+            return false;
         }
+        return false;
     }
-	 private String capitalize(String str) {
-		 return str.substring(0,1).toUpperCase() + str.substring(1);
-	 }
 
 
+	private String capitalize(String str) {
+		return str.substring(0,1).toUpperCase() + str.substring(1);
+	}
 }
