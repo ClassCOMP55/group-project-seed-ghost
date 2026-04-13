@@ -16,9 +16,11 @@ public class SKILL_SleightOfGreed extends Skill {
 		if (!(target.getHp() > 0)) {
 			CharacterSelectionPane.myInventory.setGold(CharacterSelectionPane.myInventory.getGold() + 100);
 		}
+		
+		me.drainMana(getManaCost());
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return "Intends to attack " + target + " for " + ((Character)target).calculateDamage((Enemy)me) + " damage!";
+		return "Intends to attack " + target + " for " + (((Character)target).calculateDamage((Enemy)me) * 3) + " damage!";
 	}
 }
