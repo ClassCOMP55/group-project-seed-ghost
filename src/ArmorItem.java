@@ -38,6 +38,18 @@ public class ArmorItem {
 		applyModifiers();
 	}
 	
+	public ArmorItem (String affinity) {
+		setDefaults();
+		
+		setWeight(Chance.choose(new String[] {"light","medium","heavy"}));
+		setAffinity(Chance.choose(new String[] {affinity,affinity,affinity,affinity,"null","Ballistics","Crushing","Slashing"}));
+		setMetal(Chance.coinflip(0.3));
+		setMagic(Chance.coinflip(0.1));
+		setCloth(Chance.coinflip(0.5));
+		
+		applyModifiers();
+	}
+	
 	public ArmorItem (String weight, String affinity) {
 		setDefaults();
 		
