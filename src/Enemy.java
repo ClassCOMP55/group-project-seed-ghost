@@ -277,13 +277,13 @@ public class Enemy extends Entity {
 				HP = 200;
 			break;
 			case "imagefriend":
-				damageResist[DamageType.SLASH.ordinal()] = 0.0;
-				damageResist[DamageType.PIERCE.ordinal()] = 0.0;
-				damageResist[DamageType.CRUSH.ordinal()] = 0.0;
-				damageResist[DamageType.BLAST.ordinal()] = 0.0;
-				damageResist[DamageType.HOLY.ordinal()] = 2.5;
+				damageResist[DamageType.SLASH.ordinal()] = 1.0;
+				damageResist[DamageType.PIERCE.ordinal()] = 1.0;
+				damageResist[DamageType.CRUSH.ordinal()] = 1.0;
+				damageResist[DamageType.BLAST.ordinal()] = 1.0;
+				damageResist[DamageType.HOLY.ordinal()] = 5.0;
 				
-				weaponDamage[DamageType.MAGIC.ordinal()] = 30;
+				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
 				arc = (int)(scaling * 2.0);
 				ist = 1;
