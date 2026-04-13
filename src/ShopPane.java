@@ -8,9 +8,6 @@ import java.util.ArrayList;
 
 //The ShopPane
 public class ShopPane extends GraphicsPane {
-	public static final int WINDOW_WIDTH = 1366;
-	public static final int WINDOW_HEIGHT = 700;
-
 	
 	private ShopInventory inventory;
 	private PlayerInventory playerInventory;
@@ -65,7 +62,7 @@ public class ShopPane extends GraphicsPane {
 	}
 	//Shop Layout
 	private void drawShopLayout() {
-		GRect bg = new GRect(WINDOW_WIDTH, WINDOW_HEIGHT);
+		GRect bg = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 		bg.setFilled(true);
 		bg.setFillColor(new Color(40, 60, 90));
 		bg.setColor(new Color(40, 60, 90));

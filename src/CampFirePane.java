@@ -8,8 +8,6 @@ import java.util.List;
 import acm.graphics.*;
 
 public class CampFirePane extends GraphicsPane{
-	public static final int WINDOW_WIDTH = 1366;
-	public static final int WINDOW_HEIGHT = 700;
 	
 	 private int actionPoints;
 	 private GLabel apLabel;
@@ -68,7 +66,7 @@ public class CampFirePane extends GraphicsPane{
 	
 	//Background for Camp fire Pane 
 	private void addBackground() {
-	    GRect bg = new GRect(WINDOW_WIDTH, WINDOW_HEIGHT);
+	    GRect bg = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 	    bg.setLocation(0, 0);
 	    bg.setFilled(true);
 	    bg.setFillColor(new Color(30, 30, 40));
