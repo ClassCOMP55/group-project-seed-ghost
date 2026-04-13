@@ -1,6 +1,6 @@
 public class Character extends Entity {
 	public static final int MAX_SKILLS = 4;
-	public static final double MAX_HEALTH_UNIVERSAL_BOOSTER = 1.0;
+	public static final double MAX_HEALTH_UNIVERSAL_BOOSTER = 1.5;
 	
 	private WeaponItem myWeapon;
 	private ArmorItem myArmor;
@@ -85,6 +85,7 @@ public class Character extends Entity {
 	private void applyProfession (String profession, String[] allowedAffinities) {
 		this.profession = profession.toLowerCase();
 		String tempSprite = "spr_Knight.png";
+		String tempTooltip = "Player Character";
 		
 		double tempHp = 1.0;
 		double tempMn = 1.0;
@@ -260,6 +261,10 @@ public class Character extends Entity {
 		int[] stats = new int[] {tempStr, tempDex, tempPrc, tempIst, tempCon, tempWil, tempFth, tempArc};
 		setStatSpread(stats);
 		setSprite(tempSprite);
+		
+		tempTooltip = toString() + "\n" + myWeapon + ": " + myWeapon.scaledDamageFlat(stats) + "\n" + myArmor + ": " + myArmor.printStats();
+		
+		generateTooltip(tempTooltip);
 	}
 	
 	/*

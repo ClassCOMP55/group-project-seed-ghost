@@ -6,6 +6,7 @@ public class Entity {
 	private double[] statusLevels;
 	private EntityStats mainStat;
 	private GImage sprite;
+	private String tooltip;
 	
 	public Entity (double hpMax, double manaMax, double deathResist, int str, int dex, int prc, int ist, int con, int wil, int fth, int arc) {
 		this.hp = hpMax;
@@ -28,6 +29,8 @@ public class Entity {
 		
 		this.statSpread = temp;
 		findMainStat();
+		
+		generateTooltip();
 	}
 	
 	/*
@@ -237,5 +240,20 @@ public class Entity {
 	public double[] attackOther () {
 		double[] temp = new double[] {0,0,0,0,0,0,0,0};
 		return temp;
+	}
+	
+	/*
+	 * Gets the tooltip
+	 */
+	public String getTooltip () {
+		return tooltip;
+	}
+	
+	public void generateTooltip () {
+		tooltip = "ENTITY /nDoes the silly.";
+	}
+	
+	public void generateTooltip (String in) {
+		tooltip = in;
 	}
 }

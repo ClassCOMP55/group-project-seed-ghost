@@ -348,6 +348,24 @@ public class WeaponItem {
 	}
 	
 	/*
+	 * Returns the amount of damage the weapon does after stat scaling
+	 * 
+	 * @param double[] the party member's stats
+	 * @return double final damage output
+	 */
+	public double scaledDamageFlat (int[] stats) {
+		double[] scaling = getStatScaling();
+		
+		double addDmg = 0;
+		for (int i = 0; i < stats.length; i++) {
+			addDmg += scaling[i] * stats[i];
+		}
+		
+		double dmg = getBaseDamage() + addDmg;
+		return dmg;
+	}
+	
+	/*
 	 * Returns the amount of status application the weapon does after scaling.
 	 * Different statuses scale with different entity stats, thereby making this abomination.
 	 * 

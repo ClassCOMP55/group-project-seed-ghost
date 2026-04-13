@@ -73,17 +73,17 @@ public class ArmorItem {
 	public void applyModifiers () {
 		switch (getWeight()) {
 			case "light":
-				changeDamageMultipliers(0.025);
+				changeDamageMultipliers(0.05);
 				setCloth(true);
 				setPurchaseCost(Chance.range(10, 30));
 			break;
 			case "medium":
-				changeDamageMultipliers(0.05);
+				changeDamageMultipliers(0.1);
 				changeArmor(1);
 				setPurchaseCost(Chance.range(80, 200));
 			break;
 			case "heavy":
-				changeDamageMultipliers(0.1);
+				changeDamageMultipliers(0.2);
 				setMetal(true);
 				changeArmor(3);
 				setPurchaseCost(Chance.range(300, 500));
@@ -269,7 +269,7 @@ public class ArmorItem {
 		return name;
 	}
 	
-	public void printStats () {
+	public String printStats () {
 		System.out.println(this);
 		
 		String rtn = "";
@@ -307,7 +307,7 @@ public class ArmorItem {
 		tst = (double)Math.round(tst * 1000) / 1000;
 		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Magic   : " + tst + " (" + tst2 + " flat) \n";}
 		
-		System.out.println(rtn);
+		return rtn;
 	}
 	
 	public double calculateDamage (double[] incDamage) {
