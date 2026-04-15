@@ -29,7 +29,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private boolean skill;
 	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable,skill2;
-	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber,test;
+	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber,test,scale;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	
 	private Entity currentEntity,otherEntity;
@@ -39,6 +39,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
+		scale = 0;
 	}
 
 	@Override
@@ -181,7 +182,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		for(int i = 0;i<pool.length;i++) {
 			
 			
-			myArrEnemies[i] = new Enemy(pool[i],0);
+			myArrEnemies[i] = new Enemy(pool[i],MapPane.currPosition.getDifficulty()*(2*scale));
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
 			System.out.println(myArrEnemies[i].getIntent());
@@ -547,6 +548,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	public void updateHealthAndManaBarSize(Character c) {
+		try {
 		int index = allEntities.indexOf(c);
 		GRect health = healthBars.get(index);
 		GRect mana = manaBars.get(index);
@@ -554,6 +556,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		health.setSize(barSizeChar*ratio, health.getHeight());
 		ratio = c.getMana()/c.getManaMax();
 		mana.setSize(barSizeChar*ratio, mana.getHeight());
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println();
+		}
 	}
 	
 	
@@ -1006,6 +1012,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
 			entityToImage(currentEntity).setColor(null);
 			clearArrays();
+			scale++;
 			mainScreen.switchToMapPane();
 			MapPane.mapPath.clear();
 			MapPane.createPath();

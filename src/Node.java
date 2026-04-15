@@ -66,12 +66,12 @@ public void assignCombatAffinity(int i) {
 public void assignDifficulty(int i) {
 	switch(i) {
 	case 0: difficulty =1;break;
-	case 3: difficulty =5;break;
-	case 4: difficulty =5;break;
-	case 5: difficulty =5;break;
-	case 11: difficulty =15;break;
-	case 12: difficulty =15;break;
-	case 13: difficulty =30;break;
+	case 3: difficulty =2;break;
+	case 4: difficulty =2;break;
+	case 5: difficulty =2;break;
+	case 11: difficulty =3;break;
+	case 12: difficulty =3;break;
+	case 13: difficulty =10;break;
 	
 	}
 }
