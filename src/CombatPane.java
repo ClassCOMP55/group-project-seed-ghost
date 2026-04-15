@@ -164,6 +164,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private void generateEnemiesAndAllies(){
 		
 		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
+		myArrAllies = aliveAllies();
 		allEntities = new ArrayList<>();
 		temp = new ArrayList<>();
 		
@@ -281,14 +282,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 */
 	
 	private GImage entityToImage(Entity e){
-		try {
 		int index = allEntities.indexOf(e);
 		GImage image = allImages.get(index);
 		return image;
-	} catch (ArrayIndexOutOfBoundsException a) {
-		System.out.println("");
-	}
-		return null;
 	}
 	
 	/*
@@ -513,7 +509,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			health = new GRect(width,barHeight);
 			mana = new GRect(width,barHeight);
 			nameDisplay =  new GRect(width,barHeight);
-			name = new GLabel(myArrAllies[i].getProfession());
+			name = new GLabel(myArrAllies[i].toString());
 			
 			switch(allyNumber) {
 			case 3:width = screenWidth*(180.0/800);break;
@@ -574,18 +570,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	public void updateHealthAndManaBarSize(Character c) {
-		try {
 		int index = allEntities.indexOf(c);
 		GRect health = healthBars.get(index);
+		if(index>manaBars.size()-1) {
+			System.out.println();
+		}
 		GRect mana = manaBars.get(index);
 		double ratio = c.getHp()/c.getHpMax();
 		health.setSize(barSizeChar*ratio, health.getHeight());
 		ratio = c.getMana()/c.getManaMax();
 		mana.setSize(barSizeChar*ratio, mana.getHeight());
-		}
-		catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println();
-		}
 	}
 	
 	
@@ -643,6 +637,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		closeButton = createButton(extra.getX(),extra.getY()+(buttonHeight*(mySkills.length+1)),"Close");
 	}
+	
 	public void hideSkills() {
 		for (GRect rect:allSkillsButton) {
 			contents.remove(rect);
@@ -975,7 +970,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (allConsumableButton.size()!=0 && playersTurn == true && forConsumable==true) {
 			if (allConsumableButton.contains(obj)) {
 				if (CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)]!=null) {
-					
 					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)].use(currentEntity);
 					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)] = null;
 					
