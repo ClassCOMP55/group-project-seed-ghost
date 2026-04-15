@@ -66,14 +66,13 @@ public class CampFirePane extends GraphicsPane{
 	
 	//Background for Camp fire Pane 
 	private void addBackground() {
-	    GRect bg = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
-	    bg.setLocation(0, 0);
-	    bg.setFilled(true);
-	    bg.setFillColor(new Color(30, 30, 40));
-	    bg.setColor(new Color(30, 30, 40));
+		 GImage bg = new GImage("spr_BACKGROUND_CAMPFIRE.gif"); 
+		    bg.setLocation(0, 0);
 
-	    contents.add(bg);
-	    mainScreen.add(bg);
+		    bg.setSize(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+
+		    contents.add(bg);
+		    mainScreen.add(bg);
 	}
 	
 	// HEAL, REVIVE, TRAIN, MERCENARY, EXIT buttons
@@ -360,11 +359,11 @@ public class CampFirePane extends GraphicsPane{
 
 	        if (previewMercenary == null) return;
 
-	        int x = 599, y = 375;
+	        int x = 40, y = 460;
 	        GRect box = new GRect(199, 200);
 	        box.setLocation(x, y);
-	        box.setColor(Color.BLACK);
-	        box.setFillColor(Color.BLACK);
+	        box.setColor(Color.DARK_GRAY);
+	        box.setFillColor(Color.DARK_GRAY);
 	        box.setFilled(true);
 	        mercPreviewObjects.add(box);
 	        contents.add(box);
@@ -438,22 +437,22 @@ public class CampFirePane extends GraphicsPane{
 	    private void displayPartyStats() {
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
 
-	        int startX = 3;   
-	        int startY = 375;
-	        int spacingX = 201; 
+	        int startX = 1140;   
+	        int startY = 50;
+	        int spacingY = 205; 
 
 	        for (int i = 0; i < party.length; i++) {
 	            Character c = party[i];
 
 	            if (c == null) continue;
 
-	            int x = startX + (i * spacingX);
-	            int y = startY;
+	            int x = startX;
+	            int y = startY+ (i * spacingY);
 
 	            GRect box = new GRect(199, 200);
 	            box.setLocation(x, y);
-	            box.setColor(Color.BLACK);
-	            box.setFillColor(Color.BLACK);
+	            box.setColor(Color.DARK_GRAY);
+	            box.setFillColor(Color.DARK_GRAY);
 	            box.setFilled(true);
 
 	            contents.add(box);
@@ -462,7 +461,7 @@ public class CampFirePane extends GraphicsPane{
 	            // Profession
 	            GLabel prof = new GLabel("Profession: " + c.getProfession());
 	            prof.setLocation(x + 5, y + 15);
-	            prof.setColor(Color.RED);
+	            prof.setColor(Color.WHITE);
 	            prof.setFont("DialogInput-PLAIN-12");
 	            contents.add(prof);
 	            mainScreen.add(prof);
@@ -470,7 +469,7 @@ public class CampFirePane extends GraphicsPane{
 	            // HP
 	            GLabel health = new GLabel("HP: " + c.getHp() + "/" + c.getHpMax());
 	            health.setLocation(x + 5, y + 30);
-	            health.setColor(Color.RED);
+	            health.setColor(Color.WHITE);
 	            health.setFont("DialogInput-PLAIN-12");
 	            contents.add(health);
 	            mainScreen.add(health);
@@ -478,7 +477,7 @@ public class CampFirePane extends GraphicsPane{
 	            // Mana
 	            GLabel mana = new GLabel("MP: " + c.getMana() + "/" + c.getManaMax());
 	            mana.setLocation(x + 5, y + 45);
-	            mana.setColor(Color.RED);
+	            mana.setColor(Color.WHITE);
 	            mana.setFont("DialogInput-PLAIN-12");
 	            contents.add(mana);
 	            mainScreen.add(mana);
@@ -486,7 +485,7 @@ public class CampFirePane extends GraphicsPane{
 	            // Weapon
 	            GLabel weapon = new GLabel("Weapon: " + c.getWeapon());
 	            weapon.setLocation(x + 5, y + 60);
-	            weapon.setColor(Color.RED);
+	            weapon.setColor(Color.WHITE);
 	            weapon.setFont("DialogInput-PLAIN-12");
 	            contents.add(weapon);
 	            mainScreen.add(weapon);
@@ -501,7 +500,7 @@ public class CampFirePane extends GraphicsPane{
 	            for (int j = 0; j < stats.length; j++) {
 	                GLabel stat = new GLabel(statNames[j] + ": " + stats[j]);
 	                stat.setLocation(x + 5, y + 75 + (j * 13));
-	                stat.setColor(Color.RED);
+	                stat.setColor(Color.WHITE);
 	                stat.setFont("DialogInput-PLAIN-11");
 
 	                contents.add(stat);

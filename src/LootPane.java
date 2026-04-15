@@ -14,6 +14,7 @@ public class LootPane extends GraphicsPane {
 	private ArrayList<GRect> takeBtns = new ArrayList<GRect>();
 	private ArrayList<GLabel> takeLbls = new ArrayList<GLabel>();
 	private ArrayList<Boolean> claimed = new ArrayList<Boolean>();
+	private boolean anyClaimed = false;
 
 	public LootPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -36,6 +37,7 @@ public class LootPane extends GraphicsPane {
 		takeBtns.clear();
 		takeLbls.clear();
 		claimed.clear();
+		anyClaimed = false;
 	}
 
 	private void generateLoot() {
@@ -61,6 +63,22 @@ public class LootPane extends GraphicsPane {
 		bg.setLocation(0, 0);
 		contents.add(bg);
 		mainScreen.add(bg);
+
+		// banner
+		GRect banner = new GRect(0, 0, MainApplication.WINDOW_WIDTH, 60);
+		banner.setFilled(true);
+		banner.setFillColor(new Color(20, 20, 20));
+		banner.setColor(new Color(180, 140, 60));
+		contents.add(banner);
+		mainScreen.add(banner);
+
+		GLabel bannerLbl = new GLabel("Only one treasure can be taken. Choose wisely.");
+		bannerLbl.setFont("DialogInput-BOLD-14");
+		bannerLbl.setColor(new Color(220, 190, 100));
+		bannerLbl.setLocation((MainApplication.WINDOW_WIDTH - bannerLbl.getWidth()) / 2,
+				(60 + bannerLbl.getAscent()) / 2);
+		contents.add(bannerLbl);
+		mainScreen.add(bannerLbl);
 
 		int numItems = lootItems.size();
 		int boxWidth = 200;
@@ -108,11 +126,11 @@ public class LootPane extends GraphicsPane {
 
 			takeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseEntered(MouseEvent e) {
-					if (!claimed.get(index))
+					if (!anyClaimed && !claimed.get(index))
 						takeBtn.setFillColor(new Color(100, 70, 20));
 				}
 				public void mouseExited(MouseEvent e) {
-					if (!claimed.get(index))
+					if (!anyClaimed && !claimed.get(index))
 						takeBtn.setFillColor(new Color(60, 40, 10));
 				}
 				public void mouseClicked(MouseEvent e) {
@@ -169,11 +187,22 @@ public class LootPane extends GraphicsPane {
 	}
 
 	private void takeItem(int index) {
+		if (anyClaimed) return;
 		if (claimed.get(index)) return;
+		anyClaimed = true;
 		claimed.set(index, true);
 		takeBtns.get(index).setFillColor(new Color(40, 40, 40));
 		takeBtns.get(index).setColor(new Color(80, 80, 80));
 		takeLbls.get(index).setLabel("Claimed");
 		takeLbls.get(index).setColor(new Color(100, 100, 100));
+
+		// the other icons should become unavailabe
+		for (int i = 0; i < takeBtns.size(); i++) {
+			if (i != index) {
+				takeBtns.get(i).setFillColor(new Color(40, 40, 40));
+				takeBtns.get(i).setColor(new Color(80, 80, 80));
+				takeLbls.get(i).setColor(new Color(100, 100, 100));
+			}
+		}
 	}
 }
