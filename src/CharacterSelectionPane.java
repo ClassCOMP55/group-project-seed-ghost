@@ -20,6 +20,10 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
+		MapPane.mapPath.clear();
+		MapPane.createPath();
+		MapPane.currPosition = MapPane.mapPath.get(0);
+		
 		myChars = new ArrayList<>();
 		myImages = new ArrayList<>();
 		createBackground();

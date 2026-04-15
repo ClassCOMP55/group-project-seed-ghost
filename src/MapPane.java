@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MapPane extends GraphicsPane {
 	
-	private ArrayList<Node> mapPath;
+	public static ArrayList<Node> mapPath;
 	private ArrayList<GObject> myNodeObjects;
 	private ArrayList<GRect> extraArmorButtons,extraWeaponButtons,consumablesButtons,extra,charButtons;
 	private ArrayList<GLabel> extraArmorLabels,extraWeaponLabel,consumablesLabel,extraLabels,charLabels;
@@ -28,8 +28,6 @@ public class MapPane extends GraphicsPane {
 	public MapPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 		mapPath = new ArrayList<>();
-		createPath();
-		currPosition = mapPath.get(0);
 	}
 	
 	@Override
@@ -60,7 +58,7 @@ public class MapPane extends GraphicsPane {
 		contents.clear();
 	}
 	
-	public void createPath() {
+	public static void createPath() {
 		for (int i=0;i<14;i++) {
 			mapPath.add(new Node(i));
 		}
