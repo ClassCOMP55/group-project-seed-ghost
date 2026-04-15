@@ -59,6 +59,13 @@ public class MainApplication extends GraphicsProgram{
 		mapPane =  new MapPane(this);
 		combatPane = new CombatPane(this);
 		lootPane = new LootPane(this);
+		
+		AudioManager.preloadMusic(
+	THEME_MAIN_MENU,
+	THEME_LOW,
+	THEME_HIGH,
+	THEME_BOSS
+);
 
 		//TheDefaultPane
 		switchToScreen(menuPane);

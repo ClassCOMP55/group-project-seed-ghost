@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AudioManager {
-	private static final int CROSSFADE_MS = 900;
+	private static final int CROSSFADE_MS = 1000;
 	private static final int FADE_STEPS = 18;
 	private static Clip currentMusicClip;
 	private static String currentMusicPath;
 	private static final Map<String, Clip> clipCache = new HashMap<String, Clip>();
+	private static final Map<String, Long> trackResumePositionMicros = new HashMap<String, Long>();
 
 	public static synchronized void playMusicLoop(String path) {
 		if (path == null || path.trim().isEmpty()) {
@@ -29,7 +30,8 @@ public class AudioManager {
 				return;
 			}
 
-			crossfadeTo(nextClip);
+			long startMicros = getResumePositionMicros(normalizedPath, nextClip);
+			crossfadeTo(nextClip, startMicros);
 			currentMusicClip = nextClip;
 			currentMusicPath = normalizedPath;
 		} catch (Exception e) {
@@ -37,7 +39,24 @@ public class AudioManager {
 			currentMusicPath = null;
 		}
 	}
+	
+	public static synchronized void preloadMusic(String... paths) {
+		if (paths == null) {
+			return;
+		}
+		for (String path : paths) {
+			if (path == null || path.trim().isEmpty()) {
+				continue;
+			}
+			try {
+				loadClip(path.trim());
+			} catch (Exception e) {
+				System.out.println("AudioManager: Failed to preload music: " + path);
+			}
+		}
+	}
 
+	
 	public static synchronized void stopMusic() {
 		stopCurrentClipOnly();
 		currentMusicPath = null;
@@ -45,11 +64,20 @@ public class AudioManager {
 
 	private static void stopCurrentClipOnly() {
 		if (currentMusicClip != null) {
+			saveResumePosition(currentMusicPath, currentMusicClip);
 			currentMusicClip.stop();
 		}
 	}
-	private static void crossfadeTo(Clip nextClip) throws InterruptedException {
+	
+	private static void crossfadeTo(Clip nextClip, long startMicros) throws InterruptedException {
 		Clip oldClip = currentMusicClip;
+		if (oldClip == null || !oldClip.isRunning()) {
+		nextClip.stop();
+		nextClip.setMicrosecondPosition(startMicros);
+		nextClip.loop(Clip.LOOP_CONTINUOUSLY);
+		nextClip.start();
+			return;
+		}
 		FloatControl oldGain = getGainControl(oldClip);
 		FloatControl newGain = getGainControl(nextClip);
 		float oldTargetDb = getDefaultDb(oldGain);
@@ -58,7 +86,7 @@ public class AudioManager {
 		float minNewDb = getMinDb(newGain);
 
 		nextClip.stop();
-		nextClip.setFramePosition(0);
+		nextClip.setMicrosecondPosition(startMicros);
 		setGain(newGain, minNewDb);
 		nextClip.loop(Clip.LOOP_CONTINUOUSLY);
 		nextClip.start();
@@ -72,6 +100,7 @@ public class AudioManager {
 		}
 
 		if (oldClip != null) {
+			saveResumePosition(currentMusicPath, oldClip);
 			oldClip.stop();
 		}
 		setGain(newGain, newTargetDb);
@@ -108,6 +137,31 @@ public class AudioManager {
 		float bounded = Math.max(gainControl.getMinimum(), Math.min(gainControl.getMaximum(), value));
 		gainControl.setValue(bounded);
 	}
+	private static void saveResumePosition(String path, Clip clip) {
+		if (path == null || clip == null) {
+			return;
+		}
+		long length = clip.getMicrosecondLength();
+		if (length <= 0) {
+			trackResumePositionMicros.put(path, 0L);
+			return;
+		}
+		long pos = clip.getMicrosecondPosition() % length;
+		trackResumePositionMicros.put(path, pos);
+	}
+
+	private static long getResumePositionMicros(String path, Clip clip) {
+		Long savedPosition = trackResumePositionMicros.get(path);
+		if (savedPosition == null || clip == null) {
+			return 0L;
+		}
+		long length = clip.getMicrosecondLength();
+		if (length <= 0) {
+			return 0L;
+		}
+		return savedPosition % length;
+	}
+	
 
 	private static Clip loadClip(String path) throws Exception {
 		Clip cachedClip = clipCache.get(path);
