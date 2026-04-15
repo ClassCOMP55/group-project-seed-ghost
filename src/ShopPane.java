@@ -302,7 +302,12 @@ public class ShopPane extends GraphicsPane {
 	    }
 	    else if (obj instanceof Character) {
 	        Character c = (Character) obj;
-	        text +=" Profession: " + c.getProfession();
+	        text +=" Profession: " + c.getProfession()
+	        + "| HP: " + c.getHp() + "/" + c.getHpMax()
+	        + "| MP: " + c.getMana() + "/" + c.getManaMax()
+	        + "| Weapon: " + c.getWeapon()
+	        + "| Armor: " + c.getArmor();	    
+	        
 	    }
 
 	    int startX = 920;
@@ -512,7 +517,7 @@ public class ShopPane extends GraphicsPane {
 	            return false;
 	        }
 	    }
-	    return true; 
+	    return true;
 	}
 
 	//Shows gold amount after buying
