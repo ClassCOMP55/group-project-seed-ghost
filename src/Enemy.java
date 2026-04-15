@@ -20,7 +20,7 @@ public class Enemy extends Entity {
 	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"boss_deathknight"},{"chefbot","irongremlin"},{"irongremlin","johnexplode","irongremlin"},{"johnexplode","johnexplode","johnexplode"},{"bladedevil","bladedevil"}};
 	private static final String[][] ELEC_ENEMIES_HARD = new String[][] {{"chefbot","imagefriend"},{"zapball","zapball","zapball"},{"chefbot","gunturtle","irongremlin"},{"irongremlin","zapball","zapball"}};
 	
-	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip"},{"orb","boss_mage","orb"},{"boss_deathknight","bladedevil"},{"boss_spiritofstorms"}};
+	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip","johnexplode"},{"orb","boss_mage","orb"},{"boss_deathknight"},{"zapball","boss_spiritofstorms","zapball"}};
 	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
