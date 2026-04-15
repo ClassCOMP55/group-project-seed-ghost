@@ -10,6 +10,7 @@ public class MainApplication extends GraphicsProgram{
 	public static final int WINDOW_WIDTH = 1366;
 	public static final int WINDOW_HEIGHT = 700;
 	
+	
 	//List of all the full screen panes
 	private WelcomePane welcomePane;
 	private DescriptionPane descriptionPane;
@@ -22,6 +23,10 @@ public class MainApplication extends GraphicsProgram{
 	private CampFirePane campFirePane;
 	public static CombatPane combatPane; 
 	private LootPane lootPane;
+	private static final String THEME_MAIN_MENU = "SONG_mainmenu.wav";
+	private static final String THEME_LOW = "SONG_low.wav";
+	private static final String THEME_HIGH = "SONG_high.wav";
+	private static final String THEME_GAME = "SONG_bossnode.wav";
 
 
 
@@ -34,6 +39,7 @@ public class MainApplication extends GraphicsProgram{
 		addKeyListeners();
 		addMouseListeners();
 	}
+	
 	
 	public void init() {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -110,8 +116,31 @@ public class MainApplication extends GraphicsProgram{
 		if(currentScreen != null) {
 			currentScreen.hideContent();
 		}
+		playMusicForScreen(newScreen);
 		newScreen.showContent();
 		currentScreen = newScreen;
+	}
+	private void playMusicForScreen(GraphicsPane screen) {
+		String trackName = getThemeForScreen(screen);
+		if (trackName == null) {
+			AudioManager.stopMusic();
+			return;
+		}
+		AudioManager.playMusicLoop(trackName);
+	}
+
+	private String getThemeForScreen(GraphicsPane screen) {
+		if (screen instanceof LootPane) return THEME_HIGH;
+		if (screen instanceof ShopPane) return THEME_LOW;
+		if (screen instanceof SettingsPane) return THEME_MAIN_MENU;
+		if (screen instanceof MenuPane) return THEME_MAIN_MENU;
+		if (screen instanceof WelcomePane) return THEME_MAIN_MENU;
+		if (screen instanceof DescriptionPane) return THEME_MAIN_MENU;
+		if (screen instanceof CharacterSelectionPane) return THEME_MAIN_MENU;
+		if (screen instanceof MapPane) return THEME_GAME;
+		if (screen instanceof CombatPane) return THEME_GAME;
+		if (screen instanceof CampFirePane) return THEME_GAME;
+		return null;
 	}
 	
 	public GObject getElementAtLocation(double x, double y) {
@@ -158,7 +187,8 @@ public class MainApplication extends GraphicsProgram{
 		if(currentScreen != null) {
 			currentScreen.keyPressed(e);
 		}
-	}
+	} 
+	
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
