@@ -796,25 +796,31 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	
 	public void displayGameOver() {
-		GRect backround = new GRect(800,600);
+		GRect backround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		backround.setFilled(true);
 		backround.setFillColor(Color.RED);
-		
 		contents.add(backround);
 		mainScreen.add(backround);
 		
 		GLabel label = new GLabel("Game Over!");
-		label.setFont("DialogInput-PLAIN-50");
-		label.setLocation((800-label.getWidth())/2, (800-label.getHeight())/2-200);
+		label.setFont("SERIF-PLAIN-150");
+		label.setLocation((MainApplication.WINDOW_WIDTH-label.getWidth())/2,label.getHeight());
 		contents.add(label);
 		mainScreen.add(label);
 		
-		menuButton = new GRect(160,50);
-		menuButton.setLocation((800-label.getWidth())/2, 350);
+		menuButton = new GRect(MainApplication.WINDOW_WIDTH*(200.0/800.0),MainApplication.WINDOW_HEIGHT*(70.0/600.0));
+		menuButton.setLocation((MainApplication.WINDOW_WIDTH-menuButton.getWidth())/2, MainApplication.WINDOW_HEIGHT/2);
 		menuButton.setFilled(true);
 		menuButton.setFillColor(Color.DARK_GRAY);
 		contents.add(menuButton);
 		mainScreen.add(menuButton);
+		menuButton.sendToFront();
+		
+		menuButtonLabel = new GLabel("Return to Menu");
+		menuButtonLabel.setFont("DialogInput-PLAIN-25");
+		menuButtonLabel.setLocation(menuButton.getX() + (menuButton.getWidth() - menuButtonLabel.getWidth()) / 2, menuButton.getY() + (menuButton.getHeight() + menuButtonLabel.getAscent()) / 2);
+		contents.add(menuButtonLabel);
+		mainScreen.add(menuButtonLabel);
 		
 		
 		
