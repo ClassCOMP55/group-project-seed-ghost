@@ -561,23 +561,6 @@ private void createMap() {
 			forConsumable =false;
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
 		if (myNodeObjects.contains(obj)) {
 			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			

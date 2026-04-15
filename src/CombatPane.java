@@ -196,23 +196,25 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		int index = MapPane.currPosition.getIndex();
 		String[][] pool = null;
 		
-		if (index>10) {
+		if (index>10 && index !=13) {
 			switch(affinity) {
 			case "combatHoly": pool = Enemy.getHolyEnemiesHard();
 			case "combatFire": pool = Enemy.getFireEnemiesHard();
 			case "combatMagic": pool = Enemy.getMageEnemiesHard();
 			case "combatLightning": pool = Enemy.getElecEnemiesHard();
 			
-			
 			}
 		}
-		else {
+		else if (index<10) {
 			switch(affinity) {
 			case "combatHoly": pool = Enemy.getHolyEnemiesEasy();
 			case "combatFire": pool = Enemy.getFireEnemiesEasy();
 			case "combatMagic": pool = Enemy.getMageEnemiesEasy();
 			case "combatLightning": pool = Enemy.getElecEnemiesEasy();
 			}
+		}
+		else {
+			pool = Enemy.getBossEnemies();
 		}
 		
 		int tier = Chance.range(0, pool.length-1);
@@ -991,9 +993,17 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 		}
 		update();
-		if ((obj==mapButton||obj==mapButtonLabel)&&won==true) {
+		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
 			clearArrays();
 			mainScreen.switchToMapPane();
+		}
+		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
+			clearArrays();
+			mainScreen.switchToMapPane();
+			MapPane.mapPath.clear();
+			MapPane.createPath();
+			MapPane.currPosition = MapPane.mapPath.get(0);
+			
 		}
 		else if ((obj==menuButton||obj==menuButtonLabel)&&lost==true) {
 			clearArrays();

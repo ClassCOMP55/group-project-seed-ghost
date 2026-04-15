@@ -5,7 +5,8 @@ public class Node {
 private String type,combatAffinity;
 int[] accessibleNodes;
 int index,difficulty;
-boolean cleared;
+boolean cleared, isBoss;
+Enemy boss;
 GImage sprite;
 
 
@@ -14,6 +15,7 @@ public Node(int i) {
 	assignType(i);
 	accessibleNodes = setAvailableNodes();
 	cleared = false;
+	isBoss = false;
 	loadSprite();
 }
 
@@ -53,7 +55,8 @@ public void assignType(int i) {
 	case 9: type = getRandomType(); break;
 	case 10: type = getRandomType() ;break;
 	default: type = "Combat";assignCombatAffinity(i);assignDifficulty(i);
-	}		
+	}
+	if (i==13) isBoss=true;
 }
 
 public void assignCombatAffinity(int i) {
@@ -88,6 +91,7 @@ public int[] setAvailableNodes() {
 	case 10: return new int[]{12};
 	case 11: return new int[]{13};
 	case 12: return new int[]{13};
+	case 13: return new int[]{0};
 	}
 	return null;
 }
