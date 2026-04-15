@@ -328,7 +328,7 @@ public class Enemy extends Entity {
 				HP = 60.0;
 			break;
 			case "gunturtle":
-				damageResist[DamageType.PIERCE.ordinal()] = 0.003;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.01;
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
 				
 				weaponDamage[DamageType.PIERCE.ordinal()] = 200 * scaling;
