@@ -43,16 +43,22 @@ public class ShopInventory {
 	    }
 
         // Mercenary
-        items.add(new ShopItem(generateMercenary(), Chance.range(200, 400)));
+		 items.add(generateMercenaryItem());
 	}
 
-    private Character generateMercenary() {
-    	String[] professions = {
-    			"knight","samurai","thief","viking",
-    			"cleric","sorcerer","paladin","ranger","marksman"
-    	};
-    	return new Character(Chance.choose(professions));
+	private ShopItem generateMercenaryItem() {
+
+        String[] professions = {
+            "knight","samurai","thief","viking",
+            "cleric","sorcerer","paladin","ranger","marksman"
+        };
+
+        return new ShopItem(
+            new Character(Chance.choose(professions), true),
+            Chance.range(200, 400)
+        );
     }
+
     
     public ArrayList<ShopItem> getItems() {
     	return items;

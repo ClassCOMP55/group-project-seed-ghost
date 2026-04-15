@@ -67,10 +67,10 @@ public class ShopItem {
             Character[] party = inv.getPartyMembers();
 
             for (int i = 0; i < party.length; i++) {
-                if (party[i] == null) {
+                if ( party[i] == null ) {
                     party[i] = c;
                     System.out.println("Mercenary added to party!");
-                    return true;
+                    return  true;
                 }
             }
 

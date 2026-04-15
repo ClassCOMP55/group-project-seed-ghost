@@ -16,6 +16,7 @@ public class ShopPane extends GraphicsPane {
 	private int hoverIndex = -1;
 	private GLabel selectedLabel = null; 
 	private ArrayList<GLabel> itemLabels = new ArrayList<>();
+	private ArrayList<GLabel> priceLabels = new ArrayList<>();
 	private ArrayList<GLabel> previewLines = new ArrayList<>();
 	private GLabel bagLabel;
 	private GLabel cursor;
@@ -88,6 +89,19 @@ public class ShopPane extends GraphicsPane {
 	
 	//DISPLAYING ITEMS
 	private void displayItems() {
+		for (GLabel lbl : itemLabels) {
+		    mainScreen.remove(lbl);
+		    contents.remove(lbl);
+		}
+		itemLabels.clear();
+
+
+		for (GLabel lbl : priceLabels) {
+		    mainScreen.remove(lbl);
+		    contents.remove(lbl);
+		}
+		priceLabels.clear();
+	    
 	    int y= 190;
 	    itemLabels.clear();
 
@@ -102,6 +116,8 @@ public class ShopPane extends GraphicsPane {
 	        GLabel price = new GLabel(item.getPrice() + "g", 780, y);
 	        price.setFont("DialogInput-PLAIN-18");
 	        price.setColor(Color.WHITE);
+	        itemLabels.add(name);
+	        priceLabels.add(price); 
 
 	        int index = i;
 
@@ -124,8 +140,6 @@ public class ShopPane extends GraphicsPane {
 	            	   setSelected(index);
 	            }
 	        });
-
-	        itemLabels.add(name);
 
 	        contents.add(name);
 	        contents.add(price);
@@ -356,7 +370,7 @@ public class ShopPane extends GraphicsPane {
 	    }
 
 	    equippedLabel = new GLabel("Party: " + partyCount,920, 230);
-	    bagLabel = new GLabel("Bag: " + totalItems, 920, 260);
+	    bagLabel = new GLabel("Bag: " + totalItems + " (Consumables: " + consumableCount + "/3)", 920, 260);
 
 	    equippedLabel.setFont("DialogInput-PLAIN-16");
 	    bagLabel.setFont("DialogInput-PLAIN-16");
@@ -393,7 +407,16 @@ public class ShopPane extends GraphicsPane {
 	        }
 	    }
 	    equippedLabel.setLabel("Party: " + partyCount);
-	    bagLabel.setLabel("Bag: " + totalItems);
+	    bagLabel.setLabel("Bag: " + totalItems + " (Consumables: " + consumableCount + "/3)");
+	}
+	
+	//checks to see if the Consumables is full
+	private boolean isConsumablesFull() {
+	    int count = 0;
+	    for (ConsumableItem c : playerInventory.getConsumables()) {
+	        if (c != null) count++;
+	    }
+	    return count >= 3;
 	}
 
 	//BUYING ITEMS SYSTEM
@@ -408,6 +431,15 @@ public class ShopPane extends GraphicsPane {
 	    	setClerkMessage("YOU AINT GOT ENOUGH GOLD!");
 	        return;
 	    }
+	    
+	    Object obj = shopItem.getItem();
+
+	    if (obj instanceof ConsumableItem) {
+	        if (isConsumablesFull()) {
+	            setClerkMessage("Yer consumable bag is full! (Max 3 consumables)");
+	            return;
+	        }
+	    }
 
 	    boolean success = shopItem.giveTo(playerInventory);
 
@@ -417,7 +449,7 @@ public class ShopPane extends GraphicsPane {
 	    }
 
 	    playerInventory.setGold(playerInventory.getGold() - price);
-	    Object obj = shopItem.getItem();
+	    updateGoldDisplay();
 
 	    if (obj instanceof WeaponItem) {
 	        setClerkMessage("pack a punch that thing first!");
@@ -429,24 +461,65 @@ public class ShopPane extends GraphicsPane {
 	        setClerkMessage("Good for a tough fight!");
 	    }
 	    else if (obj instanceof Character) {
+
+	        if (isPartyFull()) {
+	            setClerkMessage("Your party is full!");
+	            return;
+	        }
+
 	        setClerkMessage("Well you got sum one to join ya..huh");
+
+	        playerInventory.setGold(playerInventory.getGold() - price);
+	        updateGoldDisplay();
+
+	        inventory.getItems().set(index, generateMercenaryItem());
+
+	        displayItems();
+	        selectedIndex = index;
+	        updateItemPreview();
+	        drawCursor();
+	        updatePlayerInfo();
+
+	        return;
 	    }
 
 	    System.out.println("Bought: " + shopItem.getDisplayName());
 
-	    updateGoldDisplay();
 	    updatePlayerInfo();
-	    
 	    fixSelectedIndex();
 	    displayItems();
+	}
+	//Mercenary Generate for shop
+	private ShopItem generateMercenaryItem() {
+
+	    String[] professions = {
+	        "knight","samurai","thief","viking",
+	        "cleric","sorcerer","paladin","ranger","marksman"
+	    };
+
+	    return new ShopItem(
+	        new Character(Chance.choose(professions), true),
+	        Chance.range(200, 400)
+	    );
+	}
+	
+	//Checks to see if party is full
+	private boolean isPartyFull() {
+	    Character[] party = playerInventory.getPartyMembers();
+
+	    for (Character c : party) {
+	        if (c == null) {
+	            return false;
+	        }
+	    }
+	    return true; 
 	}
 
 	//Shows gold amount after buying
 	private void updateGoldDisplay() {
 	    if (goldLabel == null) return;
 
-	    int currentGold = playerInventory.getGold();
-	    goldLabel.setLabel("Gold: " + currentGold + "g");
+	    goldLabel.setLabel("Gold: " + playerInventory.getGold() + "g");
 	}
 	
 	//Display Total Amount of GOLD 
