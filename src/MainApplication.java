@@ -26,8 +26,7 @@ public class MainApplication extends GraphicsProgram{
 	private static final String THEME_MAIN_MENU = "SONG_mainmenu.wav";
 	private static final String THEME_LOW = "SONG_low.wav";
 	private static final String THEME_HIGH = "SONG_high.wav";
-	private static final String THEME_GAME = "SONG_bossnode.wav";
-
+	private static final String THEME_BOSS = "SONG_bossnode.wav";
 
 
 	public MainApplication() {
@@ -130,16 +129,21 @@ public class MainApplication extends GraphicsProgram{
 	}
 
 	private String getThemeForScreen(GraphicsPane screen) {
-		if (screen instanceof LootPane) return THEME_HIGH;
+		if (screen instanceof LootPane) return THEME_LOW;
 		if (screen instanceof ShopPane) return THEME_LOW;
 		if (screen instanceof SettingsPane) return THEME_MAIN_MENU;
 		if (screen instanceof MenuPane) return THEME_MAIN_MENU;
 		if (screen instanceof WelcomePane) return THEME_MAIN_MENU;
 		if (screen instanceof DescriptionPane) return THEME_MAIN_MENU;
 		if (screen instanceof CharacterSelectionPane) return THEME_MAIN_MENU;
-		if (screen instanceof MapPane) return THEME_GAME;
-		if (screen instanceof CombatPane) return THEME_GAME;
-		if (screen instanceof CampFirePane) return THEME_GAME;
+		if (screen instanceof MapPane) return THEME_LOW;
+		if (screen instanceof CampFirePane) return THEME_LOW;
+		if (screen instanceof CombatPane) {
+			if (MapPane.currPosition != null && MapPane.currPosition.getIndex() == 13) {
+				return THEME_BOSS;
+			}
+			return THEME_HIGH;
+		}
 		return null;
 	}
 	

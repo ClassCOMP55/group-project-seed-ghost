@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AudioManager {
+	private static final int CROSSFADE_MS = 900;
+	private static final int FADE_STEPS = 18;
 	private static Clip currentMusicClip;
 	private static String currentMusicPath;
 	private static final Map<String, Clip> clipCache = new HashMap<String, Clip>();
 
-	public static void playMusicLoop(String path) {
+	public static synchronized void playMusicLoop(String path) {
 		if (path == null || path.trim().isEmpty()) {
 			stopMusic();
 			return;
@@ -19,28 +21,24 @@ public class AudioManager {
 			return;
 		}
 
-		stopCurrentClipOnly();
-
 		try {
-			Clip clip = loadClip(normalizedPath);
-			if (clip == null) {
+			Clip nextClip = loadClip(normalizedPath);
+			if (nextClip == null) {
 				System.out.println("AudioManager: Could not load music track " + normalizedPath);
 				currentMusicPath = null;
 				return;
 			}
 
-			currentMusicClip = clip;
+			crossfadeTo(nextClip);
+			currentMusicClip = nextClip;
 			currentMusicPath = normalizedPath;
-			currentMusicClip.setFramePosition(0);
-			currentMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
-			currentMusicClip.start();
 		} catch (Exception e) {
 			System.out.println("AudioManager: Failed to play music: " + normalizedPath);
 			currentMusicPath = null;
 		}
 	}
 
-	public static void stopMusic() {
+	public static synchronized void stopMusic() {
 		stopCurrentClipOnly();
 		currentMusicPath = null;
 	}
@@ -49,6 +47,66 @@ public class AudioManager {
 		if (currentMusicClip != null) {
 			currentMusicClip.stop();
 		}
+	}
+	private static void crossfadeTo(Clip nextClip) throws InterruptedException {
+		Clip oldClip = currentMusicClip;
+		FloatControl oldGain = getGainControl(oldClip);
+		FloatControl newGain = getGainControl(nextClip);
+		float oldTargetDb = getDefaultDb(oldGain);
+		float newTargetDb = getDefaultDb(newGain);
+		float minOldDb = getMinDb(oldGain);
+		float minNewDb = getMinDb(newGain);
+
+		nextClip.stop();
+		nextClip.setFramePosition(0);
+		setGain(newGain, minNewDb);
+		nextClip.loop(Clip.LOOP_CONTINUOUSLY);
+		nextClip.start();
+
+		int sleepMs = Math.max(1, CROSSFADE_MS / FADE_STEPS);
+		for (int i = 1; i <= FADE_STEPS; i++) {
+			float ratio = i / (float) FADE_STEPS;
+			setGain(newGain, minNewDb + ((newTargetDb - minNewDb) * ratio));
+			setGain(oldGain, oldTargetDb + ((minOldDb - oldTargetDb) * ratio));
+			Thread.sleep(sleepMs);
+		}
+
+		if (oldClip != null) {
+			oldClip.stop();
+		}
+		setGain(newGain, newTargetDb);
+	}
+
+	private static FloatControl getGainControl(Clip clip) {
+		if (clip == null) {
+			return null;
+		}
+		if (!clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+			return null;
+		}
+		return (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	}
+
+	private static float getMinDb(FloatControl gainControl) {
+		if (gainControl == null) {
+			return 0f;
+		}
+		return gainControl.getMinimum();
+	}
+
+	private static float getDefaultDb(FloatControl gainControl) {
+		if (gainControl == null) {
+			return 0f;
+		}
+		return Math.min(0f, gainControl.getMaximum());
+	}
+
+	private static void setGain(FloatControl gainControl, float value) {
+		if (gainControl == null) {
+			return;
+		}
+		float bounded = Math.max(gainControl.getMinimum(), Math.min(gainControl.getMaximum(), value));
+		gainControl.setValue(bounded);
 	}
 
 	private static Clip loadClip(String path) throws Exception {
