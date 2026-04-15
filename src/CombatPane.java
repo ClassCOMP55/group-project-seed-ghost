@@ -178,11 +178,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		myArrEnemies = new Enemy[pool.length];
 		enemyNumber = pool.length;
 		allyNumber = aliveAllies().length;
+		int difficulty;
+		
+		if (scale==0) {
+			difficulty = MapPane.currPosition.getDifficulty();
+		}
+		else {
+			difficulty = MapPane.currPosition.getDifficulty()*(2*scale);
+		}
+		System.out.println("Difficulty: "+difficulty);
+		
 
 		for(int i = 0;i<pool.length;i++) {
 			
-			
-			myArrEnemies[i] = new Enemy(pool[i],MapPane.currPosition.getDifficulty()*(2*scale));
+			myArrEnemies[i] = new Enemy(pool[i],difficulty);
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
 			System.out.println(myArrEnemies[i].getIntent());
