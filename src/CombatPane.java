@@ -723,6 +723,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			break;
 		}
 		
+		int oldGold = CharacterSelectionPane.myInventory.getGold();
+		CharacterSelectionPane.myInventory.setGold(oldGold+gold);
+		
 		rewardItem.setFont("DialogInput-PLAIN-15");
 		rewardItem.setLocation(reward.getX()+(reward.getWidth()-rewardItem.getWidth())/2, rewardTitle.getY()+rewardItem.getHeight()+rewardItem.getHeight()/2);
 		rewardItem.setColor(new Color(192,192,192));
