@@ -208,19 +208,35 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (index>10 && index !=13) {
 			switch(affinity) {
-			case "combatHoly": pool = Enemy.getHolyEnemiesHard();
-			case "combatFire": pool = Enemy.getFireEnemiesHard();
-			case "combatMagic": pool = Enemy.getMageEnemiesHard();
-			case "combatLightning": pool = Enemy.getElecEnemiesHard();
+			case "combatHoly":
+				pool = Enemy.getHolyEnemiesHard();
+				break;
+			case "combatFire":
+				pool = Enemy.getFireEnemiesHard();
+				break;
+			case "combatMagic":
+				pool = Enemy.getMageEnemiesHard();
+				break;
+			case "combatLightning":
+				pool = Enemy.getElecEnemiesHard();
+				break;
 			
 			}
 		}
 		else if (index<10) {
 			switch(affinity) {
-			case "combatHoly": pool = Enemy.getHolyEnemiesEasy();
-			case "combatFire": pool = Enemy.getFireEnemiesEasy();
-			case "combatMagic": pool = Enemy.getMageEnemiesEasy();
-			case "combatLightning": pool = Enemy.getElecEnemiesEasy();
+			case "combatHoly":
+				pool = Enemy.getHolyEnemiesEasy();
+				break;
+			case "combatFire":
+				pool = Enemy.getFireEnemiesEasy();
+				break;
+			case "combatMagic":
+				pool = Enemy.getMageEnemiesEasy();
+				break;
+			case "combatLightning":
+				pool = Enemy.getElecEnemiesEasy();
+				break;
 			}
 		}
 		else {
