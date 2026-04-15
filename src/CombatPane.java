@@ -420,7 +420,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(button);
 		
 		GLabel label = new GLabel(str);
-	
+		
+		label.setColor(Color.WHITE);
 		label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(x+(button.getWidth()-label.getWidth())/2, y+(button.getHeight()-label.getHeight())/2+15);
 		
