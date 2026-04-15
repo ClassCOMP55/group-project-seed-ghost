@@ -255,9 +255,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 */
 	
 	private GImage entityToImage(Entity e){
+		try {
 		int index = allEntities.indexOf(e);
 		GImage image = allImages.get(index);
 		return image;
+	} catch (ArrayIndexOutOfBoundsException a) {
+		System.out.println("");
+	}
+		return null;
 	}
 	
 	/*
@@ -994,10 +999,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		update();
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
+			entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			mainScreen.switchToMapPane();
 		}
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
+			entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			mainScreen.switchToMapPane();
 			MapPane.mapPath.clear();

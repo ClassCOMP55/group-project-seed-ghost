@@ -477,7 +477,7 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.BLAST.ordinal()] = 30;
 				weaponScales[EntityStats.WIL.ordinal()] = 1.0;
 				wil = (int)(scaling * 1.5);
-				spr = "spr_BOSS_SpiritofStorms.png";
+				spr = "spr_BOSS_SpiritofStorms.jpg";
 				
 				name = "Spirit of Storms";
 				
