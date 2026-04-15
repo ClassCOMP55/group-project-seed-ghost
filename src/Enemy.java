@@ -511,7 +511,7 @@ public class Enemy extends Entity {
 				
 				sprScale = 2.5;
 				
-				HP = 1400;
+				HP = 800;
 			break;
 		}
 		
