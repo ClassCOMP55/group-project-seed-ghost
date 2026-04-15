@@ -14,7 +14,8 @@ public class SKILL_SpiritsLightningBolt extends Skill {
 		System.out.println(dmg[DamageType.ELEC.ordinal()]);
 		target.attackMe(dmg);
 		
-		me.getStatSpread()[EntityStats.WIL.ordinal()] += 10;
+		me.getStatSpread()[EntityStats.WIL.ordinal()] += me.getStatSpread()[EntityStats.FTH.ordinal()];
+		me.getStatSpread()[EntityStats.ARC.ordinal()] += me.getStatSpread()[EntityStats.FTH.ordinal()];
 		
 		if (me instanceof Enemy) {
 			double[] res = ((Enemy)me).getDamageMultipliers();

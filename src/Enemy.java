@@ -370,6 +370,7 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.ELEC.ordinal()] = 30;
 				weaponScales[EntityStats.WIL.ordinal()] = 1.0;
 				wil = 10 + (scaling * 2);
+				arc = 50;
 				spr = "spr_ball.gif";
 				
 				defSkillP = new int[] {1,0,1,0};
@@ -500,8 +501,10 @@ public class Enemy extends Entity {
 				
 				weaponDamage[DamageType.ELEC.ordinal()] = 30;
 				weaponDamage[DamageType.BLAST.ordinal()] = 30;
-				weaponScales[EntityStats.WIL.ordinal()] = 1.0;
+				weaponScales[EntityStats.WIL.ordinal()] = scaling;
 				wil = (int)(scaling * 1.5);
+				arc = (int)(scaling * 1.5);
+				fth = scaling + 3;
 				spr = "spr_BOSS_SpiritofStorms.jpg";
 				
 				name = "Spirit of Storms";
