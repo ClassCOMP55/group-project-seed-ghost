@@ -684,6 +684,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void displayRewards() {
+		String[] possibleRewards = {"weapon","armor"};
+		String rewardType = Chance.choose(possibleRewards);
+		WeaponItem weapon = getWeaponReward();
+		ArmorItem armor = getArmorReward();
+		int gold = Chance.range(150, 200);
 		
 		displayBox = new GRect(screenWidth*(340.0/800.0),screenHeight*(200.0/600.0));
 		displayBox.setLocation((screenWidth-displayBox.getWidth())/2,(screenHeight-displayBox.getHeight())/2);
@@ -712,14 +717,75 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.add(reward);
 		mainScreen.add(reward);
 		
-		GLabel rewardLabel = new GLabel("Reward goes here!");
-		rewardLabel.setFont("DialogInput-PLAIN-20");
-		rewardLabel.setLocation(reward.getX() + (reward.getWidth() - rewardLabel.getWidth()) / 2, reward.getY() + (reward.getHeight() + rewardLabel.getAscent()) / 2);
-		contents.add(rewardLabel);
-		mainScreen.add(rewardLabel);
+		GLabel rewardItem =null;
+		
+		switch(rewardType) {
+		case "weapon":
+			rewardItem = new GLabel("Weapon Found!: "+weapon.toString());
+			CharacterSelectionPane.myInventory.addWeapon(weapon);
+			break;
+		default:
+			rewardItem = new GLabel("Armor Found!: "+armor.toString());
+			CharacterSelectionPane.myInventory.addArmor(armor);
+			break;
+		}
+		
+		rewardItem.setFont("DialogInput-PLAIN-16");
+		rewardItem.setLocation(reward.getX() + (reward.getWidth() - rewardItem.getWidth()) / 2, reward.getY() + (reward.getHeight() + rewardItem.getAscent()) / 2);
+		contents.add(rewardItem);
+		mainScreen.add(rewardItem);
+		
+		GLabel goldLabel = new GLabel("Gold Earned: "+gold);
+		goldLabel.setFont("DialogInput-PLAIN-16");
+		goldLabel.setLocation(rewardItem.getX(),rewardItem.getY()+goldLabel.getHeight());
+		contents.add(goldLabel);
+		mainScreen.add(goldLabel);
 		
 		
 	}
+	
+	public WeaponItem getWeaponReward() {
+		String type = MapPane.currPosition.getCombatAffinity();
+		WeaponItem weapon = null;
+		
+		switch(type) {
+		case "combatMagic":
+			weapon = new WeaponItem("magic");
+			break;
+		case "combatFire":
+			weapon = new WeaponItem("fire");
+			break;
+		case "combatHoly":
+			weapon = new WeaponItem("holy");
+			break;
+		case "combatLightning":
+			weapon = new WeaponItem("lightning");
+			break;	
+		}
+		return weapon;
+	}
+	
+	public ArmorItem getArmorReward() {
+		String type = MapPane.currPosition.getCombatAffinity();
+		ArmorItem armor = null;
+		
+		switch(type) {
+		case "combatMagic":
+			armor = new ArmorItem("magic");
+			break;
+		case "combatFire":
+			armor = new ArmorItem("fire");
+			break;
+		case "combatHoly":
+			armor = new ArmorItem("holy");
+			break;
+		case "combatLightning":
+			armor = new ArmorItem("lightning");
+			break;	
+		}
+		return armor;
+	}
+		
 	
 	public void displayGameOver() {
 		GRect backround = new GRect(800,600);
