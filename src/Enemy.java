@@ -12,7 +12,7 @@ public class Enemy extends Entity {
 	
 	private static final String[][] HOLY_ENEMIES_EASY = new String[][] {{"holyghost","holyghost"},{"fairie","magicsword"},{"prunsel"}};
 	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"orb","casper"},{"chefbot"},{"casper","magicsword"},{"magicsword","orb"},{"fairie"}};
-	private static final String[][] FIRE_ENEMIES_EASY = new String[][] {{"imagefriend","johnexplode"},{"chefbot"},{"irongremlin"},{"bladedevil"},{"soosk"},{"gunturtle","gunturtle","gunturtle"}};
+	private static final String[][] FIRE_ENEMIES_EASY = new String[][] {{"imagefriend","johnexplode"},{"johnexplode"},{"chefbot","johnexplode"},{"irongremlin"},{"bladedevil"},{"soosk"},{"gunturtle","gunturtle","gunturtle"}};
 	private static final String[][] ELEC_ENEMIES_EASY = new String[][] {{"imagefriend"},{"slime","slime","slime"},{"chefbot"},{"soosk"},{"gunturtle","gunturtle","gunturtle"},{"zapball","slime","zapball"}};
 	
 	private static final String[][] HOLY_ENEMIES_HARD = new String[][] {{"holyghost","magicsword","holyghost"},{"fairie","boss_seraphim"},{"prunsel","prunsel","prunsel"},{"holyghost","casper","holyghost"}};
@@ -154,7 +154,7 @@ public class Enemy extends Entity {
 				
 				weaponDamage[DamageType.SLASH.ordinal()] = 60;
 				weaponDamage[DamageType.FIRE.ordinal()] = 20;
-				weaponScales[EntityStats.STR.ordinal()] = 1.0;
+				weaponScales[EntityStats.STR.ordinal()] = scaling;
 				str = 10 + (scaling * 3);
 				ist = 0;
 				spr = "spr_BladeDevil.gif";
@@ -163,7 +163,7 @@ public class Enemy extends Entity {
 				
 				sprScale = 2;
 				
-				HP = 350;
+				HP = 450;
 			break;
 			case "magicsword":
 				damageResist[DamageType.MAGIC.ordinal()] = 0.8;
@@ -179,7 +179,7 @@ public class Enemy extends Entity {
 				
 				name = "Magic Sword";
 				
-				HP = 120;
+				HP = 200;
 			break;
 			case "casper":
 				damageResist[DamageType.HOLY.ordinal()] = 2.5;
@@ -194,7 +194,7 @@ public class Enemy extends Entity {
 				arc = 10 + (scaling * 2);
 				spr = "spr_Spectre.png";
 				
-				HP = 60.0;
+				HP = 160.0;
 			break;
 			case "slime":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
@@ -207,7 +207,7 @@ public class Enemy extends Entity {
 				str = 10 + (scaling * 2);
 				spr = "spr_Slime.png";
 				
-				HP = 80.0;
+				HP = 100.0;
 			break;
 			case "irongremlin":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.4;
@@ -325,7 +325,7 @@ public class Enemy extends Entity {
 				defSkill.add(new SKILL_EnemyBuffAllies());
 				defSkill.add(new SKILL_BasicAttack());
 				
-				HP = 60.0;
+				HP = 260.0;
 			break;
 			case "gunturtle":
 				damageResist[DamageType.PIERCE.ordinal()] = 0.01;
