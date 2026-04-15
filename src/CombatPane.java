@@ -693,29 +693,22 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		displayBox = new GRect(screenWidth*(340.0/800.0),screenHeight*(200.0/600.0));
 		displayBox.setLocation((screenWidth-displayBox.getWidth())/2,(screenHeight-displayBox.getHeight())/2);
 		displayBox.setFilled(true);
-		displayBox.setFillColor(Color.black);
+		displayBox.setFillColor(new Color(11,35,64));
         contents.add(displayBox);
 		mainScreen.add(displayBox);
 		
-		mapButton = new GRect(screenWidth*(160.0/800.0),screenHeight *(50.0/600.0));
-		mapButton.setLocation(displayBox.getX()+(displayBox.getWidth()-mapButton.getWidth())/2, displayBox.getY()+displayBox.getHeight()-mapButton.getHeight());
-		mapButton.setFilled(true);
-		mapButton.setFillColor(Color.DARK_GRAY);
-		contents.add(mapButton);
-		mainScreen.add(mapButton);
-		
-		mapButtonLabel = new GLabel("Continue to Map");
-		mapButtonLabel.setFont("DialogInput-PLAIN-15");
-		mapButtonLabel.setLocation(mapButton.getX() + (mapButton.getWidth() - mapButtonLabel.getWidth()) / 2, mapButton.getY() + (mapButton.getHeight() + mapButtonLabel.getAscent()) / 2);
-		contents.add(mapButtonLabel);
-		mainScreen.add(mapButtonLabel);
-		
-		GRect reward = new GRect(screenWidth *(320.0/800.0),screenHeight*(100.0/600.0));
-		reward.setLocation(displayBox.getX()+10, displayBox.getY()+20);
+		GRect reward = new GRect(displayBox.getWidth(),displayBox.getHeight()/2);
+		reward.setLocation(displayBox.getX(), displayBox.getY());
 		reward.setFilled(true);
-		reward.setFillColor(Color.YELLOW);
+		reward.setFillColor(new Color(47, 49, 51));
 		contents.add(reward);
 		mainScreen.add(reward);
+		
+		GLabel rewardTitle = new GLabel("Rewards");
+		rewardTitle.setFont("SERIF-PLAIN-40");
+		rewardTitle.setLocation(reward.getX()+(reward.getWidth()-rewardTitle.getWidth())/2, reward.getY()+rewardTitle.getHeight());
+		contents.add(rewardTitle);
+		mainScreen.add(rewardTitle);
 		
 		GLabel rewardItem =null;
 		
@@ -730,16 +723,31 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			break;
 		}
 		
-		rewardItem.setFont("DialogInput-PLAIN-16");
-		rewardItem.setLocation(reward.getX() + (reward.getWidth() - rewardItem.getWidth()) / 2, reward.getY() + (reward.getHeight() + rewardItem.getAscent()) / 2);
+		rewardItem.setFont("DialogInput-PLAIN-15");
+		rewardItem.setLocation(reward.getX()+(reward.getWidth()-rewardItem.getWidth())/2, rewardTitle.getY()+rewardItem.getHeight()+rewardItem.getHeight()/2);
+		rewardItem.setColor(new Color(192,192,192));
 		contents.add(rewardItem);
 		mainScreen.add(rewardItem);
 		
 		GLabel goldLabel = new GLabel("Gold Earned: "+gold);
-		goldLabel.setFont("DialogInput-PLAIN-16");
-		goldLabel.setLocation(rewardItem.getX(),rewardItem.getY()+goldLabel.getHeight());
+		goldLabel.setFont("DialogInput-PLAIN-15");
+		goldLabel.setLocation(reward.getX()+(reward.getWidth()-goldLabel.getWidth())/2,rewardItem.getY()+goldLabel.getHeight());
+		goldLabel.setColor(Color.YELLOW);
 		contents.add(goldLabel);
 		mainScreen.add(goldLabel);
+		
+		mapButton = new GRect(screenWidth*(160.0/800.0),screenHeight *(50.0/600.0));
+		mapButton.setLocation(displayBox.getX()+(displayBox.getWidth()-mapButton.getWidth())/2,reward.getY()+reward.getHeight()+reward.getHeight()/4);
+		mapButton.setFilled(true);
+		mapButton.setFillColor(new Color(47, 49, 51));
+		contents.add(mapButton);
+		mainScreen.add(mapButton);
+		
+		mapButtonLabel = new GLabel("Continue to Map");
+		mapButtonLabel.setFont("DialogInput-PLAIN-15");
+		mapButtonLabel.setLocation(mapButton.getX() + (mapButton.getWidth() - mapButtonLabel.getWidth()) / 2, mapButton.getY() + (mapButton.getHeight() + mapButtonLabel.getAscent()) / 2);
+		contents.add(mapButtonLabel);
+		mainScreen.add(mapButtonLabel);
 		
 		
 	}
