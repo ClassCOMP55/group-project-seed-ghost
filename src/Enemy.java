@@ -327,7 +327,7 @@ public class Enemy extends Entity {
 				HP = 60.0;
 			break;
 			case "gunturtle":
-				damageResist[DamageType.PIERCE.ordinal()] = 0.0;
+				damageResist[DamageType.PIERCE.ordinal()] = 0.003;
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
 				
 				weaponDamage[DamageType.PIERCE.ordinal()] = 200;
@@ -449,7 +449,7 @@ public class Enemy extends Entity {
 				wil = 1;
 				arc = 50;
 				ist = 40;
-				spr = "spr_BOSS_DeathKnight.png";
+				spr = "spr_BOSS_DeathKnight.gif";
 				
 				name = "Death Knight";
 				
@@ -479,7 +479,7 @@ public class Enemy extends Entity {
 				wil = (int)(scaling * 1.5);
 				spr = "spr_BOSS_SpiritofStorms.png";
 				
-				name = "John Zapathan";
+				name = "Spirit of Storms";
 				
 				defSkillP = new int[] {0};
 				defSkill.add(new SKILL_SpiritsLightningBolt());
@@ -687,5 +687,20 @@ public class Enemy extends Entity {
 		return BOSS_ENEMIES;
 	}
 
-	
+	public static String getBossAffinities (String bossname) {
+		String str = "";
+		switch (bossname) {
+			case "boss_drip": str = "Name: Completely Original Boss\nAttack Type: Slashing\nVulnerabilities: None\nResistances: Affinities";
+			break;
+			case "boss_mage": str = "Name: Supreme Mage\nAttack Type: Magic\nVulnerabilities: Blast\nResistances: Magic";
+			break;
+			case "boss_seraphim": str = "Name: Seraphim Vassal\nAttack Type: Holy\nVulnerabilities: Fire\nResistances: Holy";
+			break;
+			case "boss_deathknight": str = "Name: Death Knight\nAttack Type: Slashing + Fire\nVulnerabilities: Electric + Holy\nResistances: Fire";
+			break;
+			case "boss_spiritofstorms": str = "Name: Spirit of Storms\nAttack Type: Electric + Blast\nVulnerabilities: Magic\nResistances: Electric";
+			break;
+		}
+		return str;
+	}
 }
