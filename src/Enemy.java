@@ -281,7 +281,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.PIERCE.ordinal()] = 1.0;
 				damageResist[DamageType.CRUSH.ordinal()] = 1.0;
 				damageResist[DamageType.BLAST.ordinal()] = 1.0;
-				damageResist[DamageType.HOLY.ordinal()] = 5.0;
+				damageResist[DamageType.HOLY.ordinal()] = 3.0;
 				
 				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
