@@ -433,12 +433,20 @@ public class ShopPane extends GraphicsPane {
 	    int price = shopItem.getPrice();
 
 	    if (playerInventory.getGold() < price) {
-	    	setClerkMessage("YOU AINT GOT ENOUGH GOLD!");
+	        setClerkMessage("YOU AINT GOT ENOUGH GOLD!");
 	        return;
 	    }
-	    
+
 	    Object obj = shopItem.getItem();
 
+	    if (obj instanceof Character) {
+	        if (isPartyFull()) {
+	            setClerkMessage("Your party is full!");
+	            return;
+	        }
+	    }
+
+	
 	    if (obj instanceof ConsumableItem) {
 	        if (isConsumablesFull()) {
 	            setClerkMessage("Yer consumable bag is full! (Max 3 consumables)");
@@ -449,15 +457,16 @@ public class ShopPane extends GraphicsPane {
 	    boolean success = shopItem.giveTo(playerInventory);
 
 	    if (!success) {
-	    	setClerkMessage("Could not complete purchase! Dija mess up somethin?");
+	        setClerkMessage("Could not complete purchase! Dija mess up somethin?");
 	        return;
 	    }
 
 	    playerInventory.setGold(playerInventory.getGold() - price);
 	    updateGoldDisplay();
 
+	  
 	    if (obj instanceof WeaponItem) {
-	        setClerkMessage("pack a punch that thing first!");
+	        setClerkMessage("Pack a punch that thing first!");
 	    }
 	    else if (obj instanceof ArmorItem) {
 	        setClerkMessage("That piece shud serve ya well!");
@@ -467,15 +476,7 @@ public class ShopPane extends GraphicsPane {
 	    }
 	    else if (obj instanceof Character) {
 
-	        if (isPartyFull()) {
-	            setClerkMessage("Your party is full!");
-	            return;
-	        }
-
 	        setClerkMessage("Well you got sum one to join ya..huh");
-
-	        playerInventory.setGold(playerInventory.getGold() - price);
-	        updateGoldDisplay();
 
 	        inventory.getItems().set(index, generateMercenaryItem());
 
@@ -494,6 +495,7 @@ public class ShopPane extends GraphicsPane {
 	    fixSelectedIndex();
 	    displayItems();
 	}
+
 	//Mercenary Generate for shop
 	private ShopItem generateMercenaryItem() {
 
