@@ -106,7 +106,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 			contents.add(box);
 			mainScreen.add(box);
 			
-			GLabel prof = new GLabel("Profession: "+myChar.getProfession());
+			GLabel prof = new GLabel("Character: "+myChar.toString());
 			prof.setLocation(box.getX()+5, box.getY()+15);
 			prof.setColor(Color.RED);
 			prof.setFont("ARIEL-PLAIN-14");
@@ -127,7 +127,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 			contents.add(mana);
 			mainScreen.add(mana);
 			
-			GLabel weapon = new GLabel("Weapon: "+myChar.getWeapon().getType());
+			GLabel weapon = new GLabel("Weapon: "+myChar.getWeapon().toString());
 			weapon.setLocation(box.getX()+5, box.getY()+60);
 			weapon.setColor(Color.RED);
 			weapon.setFont("ARIEL-PLAIN-14");
