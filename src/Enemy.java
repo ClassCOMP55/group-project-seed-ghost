@@ -10,13 +10,13 @@ public class Enemy extends Entity {
 	private String name;
 	private double sprScale;
 	
-	private static final String[][] HOLY_ENEMIES_EASY = new String[][] {{"holyghost","holyghost"},{"fairie","magicsword"},{"prunsel"}};
-	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"imagefriend"},{"orb","casper"},{"chefbot"},{"casper","magicsword"},{"magicsword","orb"},{"fairie"}};
-	private static final String[][] FIRE_ENEMIES_EASY = new String[][] {{"imagefriend","johnexplode"},{"johnexplode"},{"chefbot","johnexplode"},{"irongremlin"},{"bladedevil"},{"soosk"},{"gunturtle","gunturtle","gunturtle"}};
-	private static final String[][] ELEC_ENEMIES_EASY = new String[][] {{"imagefriend"},{"slime","slime","slime"},{"chefbot"},{"soosk"},{"gunturtle","gunturtle","gunturtle"},{"zapball","slime","zapball"}};
+	private static final String[][] HOLY_ENEMIES_EASY = new String[][] {{"holyghost","holyghost"},{"fairie","magicsword"},{"prunsel"},{"fairie"}};
+	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"orb","casper"},{"casper","magicsword"},{"magicsword","orb"}};
+	private static final String[][] FIRE_ENEMIES_EASY = new String[][] {{"imagefriend","johnexplode"},{"johnexplode"},{"chefbot","johnexplode"},{"irongremlin"},{"bladedevil"},{"soosk"}};
+	private static final String[][] ELEC_ENEMIES_EASY = new String[][] {{"slime","slime","slime"},{"soosk"},{"gunturtle","gunturtle","gunturtle"},{"zapball","slime","zapball"}};
 	
-	private static final String[][] HOLY_ENEMIES_HARD = new String[][] {{"holyghost","magicsword","holyghost"},{"fairie","boss_seraphim"},{"prunsel","prunsel","prunsel"},{"holyghost","casper","holyghost"}};
-	private static final String[][] MAGE_ENEMIES_HARD = new String[][] {{"magicsword","imagefriend","magicsword"},{"orb","orb","orb"},{"casper","magicsword"},{"magicsword","orb"},{"orb","fairie","casper"},{"soosk","soosk","soosk"}};
+	private static final String[][] HOLY_ENEMIES_HARD = new String[][] {{"holyghost","magicsword","holyghost"},{"fairie","boss_seraphim"},{"prunsel","prunsel"},{"holyghost","casper","holyghost"}};
+	private static final String[][] MAGE_ENEMIES_HARD = new String[][] {{"magicsword","imagefriend","magicsword"},{"orb","orb","orb"},{"casper","magicsword"},{"magicsword","orb"},{"orb","fairie","casper"},{"boss_mage"}};
 	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"boss_deathknight"},{"chefbot","irongremlin"},{"irongremlin","johnexplode","irongremlin"},{"johnexplode","johnexplode","johnexplode"},{"bladedevil","bladedevil"}};
 	private static final String[][] ELEC_ENEMIES_HARD = new String[][] {{"chefbot","imagefriend"},{"zapball","zapball","zapball"},{"chefbot","gunturtle","irongremlin"},{"irongremlin","zapball","zapball"}};
 	
@@ -106,6 +106,7 @@ public class Enemy extends Entity {
 			damageResist[DamageType.HOLY.ordinal()] = 0.0;
 			damageResist[DamageType.PIERCE.ordinal()] = 3.0;
 			damageResist[DamageType.SLASH.ordinal()] = 3.0;
+			damageResist[DamageType.FIRE.ordinal()] = 3.0;
 			damageResist[DamageType.MAGIC.ordinal()] = 0.2;
 			
 			weaponDamage[DamageType.HOLY.ordinal()] = 10;
@@ -128,6 +129,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
+				damageResist[DamageType.FIRE.ordinal()] = 3.0;
 				
 				weaponDamage[DamageType.HOLY.ordinal()] = 10;
 				weaponScales[EntityStats.FTH.ordinal()] = 3.0;
@@ -150,7 +152,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.SLASH.ordinal()] = 0.65;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.75;
 				damageResist[DamageType.BLAST.ordinal()] = 0.4;
-				damageResist[DamageType.FIRE.ordinal()] = 0.5;
+				damageResist[DamageType.FIRE.ordinal()] = 0.2;
 				
 				weaponDamage[DamageType.SLASH.ordinal()] = 60;
 				weaponDamage[DamageType.FIRE.ordinal()] = 20;
@@ -166,10 +168,10 @@ public class Enemy extends Entity {
 				HP = 450;
 			break;
 			case "magicsword":
-				damageResist[DamageType.MAGIC.ordinal()] = 0.8;
-				damageResist[DamageType.FIRE.ordinal()] = 0.0;
-				damageResist[DamageType.ELEC.ordinal()] = 0.0;
-				damageResist[DamageType.HOLY.ordinal()] = 0.0;
+				damageResist[DamageType.MAGIC.ordinal()] = 0.2;
+				damageResist[DamageType.FIRE.ordinal()] = 0.8;
+				damageResist[DamageType.ELEC.ordinal()] = 2.0;
+				damageResist[DamageType.HOLY.ordinal()] = 0.8;
 				
 				weaponDamage[DamageType.SLASH.ordinal()] = 20;
 				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
@@ -182,11 +184,12 @@ public class Enemy extends Entity {
 				HP = 200;
 			break;
 			case "casper":
-				damageResist[DamageType.HOLY.ordinal()] = 2.5;
+				damageResist[DamageType.ELEC.ordinal()] = 2.5;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.2;
 				damageResist[DamageType.SLASH.ordinal()] = 0.2;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.2;
 				damageResist[DamageType.BLAST.ordinal()] = 0.2;
+				damageResist[DamageType.MAGIC.ordinal()] = 0.0;
 				
 				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponScales[EntityStats.FTH.ordinal()] = 1.0;
@@ -233,6 +236,7 @@ public class Enemy extends Entity {
 			break;
 			case "orb":
 				damageResist[DamageType.MAGIC.ordinal()] = -2.0;
+				damageResist[DamageType.ELEC.ordinal()] = 2.0;
 				
 				weaponDamage[DamageType.BLAST.ordinal()] = 40;
 				weaponDamage[DamageType.MAGIC.ordinal()] = 40;
@@ -282,6 +286,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.CRUSH.ordinal()] = 1.0;
 				damageResist[DamageType.BLAST.ordinal()] = 1.0;
 				damageResist[DamageType.HOLY.ordinal()] = 3.0;
+				damageResist[DamageType.FIRE.ordinal()] = 0.0;
 				
 				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
@@ -300,6 +305,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.BLAST.ordinal()] = 10.0;
 				damageResist[DamageType.FIRE.ordinal()] = 10.0;
 				damageResist[DamageType.MAGIC.ordinal()] = 0.2;
+				damageResist[DamageType.HOLY.ordinal()] = 0.0;
 				
 				weaponDamage[DamageType.SLASH.ordinal()] = 30;
 				weaponDamage[DamageType.MAGIC.ordinal()] = 10;
@@ -311,6 +317,7 @@ public class Enemy extends Entity {
 			break;
 			case "fairie":
 				damageResist[DamageType.HOLY.ordinal()] = 1.2;
+				damageResist[DamageType.FIRE.ordinal()] = 0.3;
 				
 				weaponDamage[DamageType.MAGIC.ordinal()] = 20;
 				weaponDamage[DamageType.FIRE.ordinal()] = 20;
@@ -346,9 +353,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.CRUSH.ordinal()] = 2.0;
 				damageResist[DamageType.SLASH.ordinal()] = 1.0;
 				damageResist[DamageType.FIRE.ordinal()] = -5.0;
-				damageResist[DamageType.HOLY.ordinal()] = 0.0;
-				damageResist[DamageType.ELEC.ordinal()] = -5.0;
-				damageResist[DamageType.MAGIC.ordinal()] = 1.0;
+				damageResist[DamageType.HOLY.ordinal()] = 2.0;
 				
 				spr = "spr_JohnExplode.gif";
 				con = scaling * 20;
@@ -362,7 +367,7 @@ public class Enemy extends Entity {
 			break;
 			case "zapball":
 				damageResist[DamageType.ELEC.ordinal()] = -2.0;
-				damageResist[DamageType.FIRE.ordinal()] = 2.0;
+				damageResist[DamageType.MAGIC.ordinal()] = 2.0;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.5;
 				damageResist[DamageType.SLASH.ordinal()] = 0.5;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.5;
@@ -411,7 +416,7 @@ public class Enemy extends Entity {
 				damageResist[DamageType.BLAST.ordinal()] = 2.5;
 				damageResist[DamageType.HOLY.ordinal()] = 0.5;
 				damageResist[DamageType.FIRE.ordinal()] = 0.5;
-				damageResist[DamageType.ELEC.ordinal()] = 0.5;
+				damageResist[DamageType.ELEC.ordinal()] = 1.5;
 				
 				weaponDamage[DamageType.MAGIC.ordinal()] = 80;
 				weaponDamage[DamageType.PIERCE.ordinal()] = 40;
@@ -461,7 +466,6 @@ public class Enemy extends Entity {
 			case "boss_deathknight":
 				damageResist[DamageType.HOLY.ordinal()] = 2.0;
 				damageResist[DamageType.FIRE.ordinal()] = 0.0;
-				damageResist[DamageType.ELEC.ordinal()] = 2.0;
 				damageResist[DamageType.SLASH.ordinal()] = 0.5;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.8;
 				damageResist[DamageType.CRUSH.ordinal()] = 0.5;
@@ -490,8 +494,6 @@ public class Enemy extends Entity {
 				HP = 800;
 			break;
 			case "boss_spiritofstorms":
-				damageResist[DamageType.HOLY.ordinal()] = 0.5;
-				damageResist[DamageType.FIRE.ordinal()] = 2.0;
 				damageResist[DamageType.ELEC.ordinal()] = 0.0;
 				damageResist[DamageType.MAGIC.ordinal()] = 2.0;
 				damageResist[DamageType.SLASH.ordinal()] = 0.5;
