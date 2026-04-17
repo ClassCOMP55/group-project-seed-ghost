@@ -253,7 +253,7 @@ public class MapPane extends GraphicsPane {
 			mainScreen.remove(extraWeaponLabel.get(i));
 		}
 		extraWeaponButtons.clear();
-		extraWeaponButtons.clear();
+		extraWeaponLabel.clear();
 		
 		
 		for (int i = 0;i<extraArmorButtons.size();i++) {
