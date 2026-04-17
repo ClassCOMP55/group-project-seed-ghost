@@ -161,6 +161,15 @@ private String[] getPool() {
 	}
 	else {
 		temp = Enemy.getBossEnemies();
+		int hornet = Chance.range(0, 5);
+		
+		if (hornet == 1) {
+			boss = new Enemy ("boss_drip",10);
+			sprite = new GImage("spr_BOSS_Hornet.png");
+			sprite.setSize(70, 70);
+			return temp[1];
+		}
+		
 		switch(combatAffinity) {
 		case "combatHoly":
 			boss = new Enemy ("boss_seraphim",10);
