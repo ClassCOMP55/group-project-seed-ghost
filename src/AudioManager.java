@@ -73,8 +73,7 @@ public class AudioManager {
 		stopCurrentClip();
 		currentMusicPath = null;
 	}
-
-	// -------- Settings API --------
+//setting
 
 	public static synchronized void setMusicVolumePercent(int value) {
 		if (value < 0) value = 0;
@@ -106,8 +105,7 @@ public class AudioManager {
 	public static synchronized boolean isMusicMuted() {
 		return musicMuted;
 	}
-
-	// -------- Internal helpers --------
+//internal helpers
 
 	private static void stopCurrentClip() {
 		if (currentMusicClip != null) {
