@@ -98,7 +98,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		for (Character myChar:myChars) {
 			int index = myChars.indexOf(myChar);
 			GImage image = myImages.get(index);
-			GRect box = new GRect(150,185);
+			GRect box = new GRect(275,185);
 			box.setLocation(image.getX(), image.getY()+image.getHeight());
 			box.setColor(Color.BLACK);
 			box.setFillColor(Color.BLACK);
