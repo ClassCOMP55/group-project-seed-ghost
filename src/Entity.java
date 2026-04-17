@@ -75,7 +75,7 @@ public class Entity {
 	 * @param the amount of health to heal
 	 */
 	public void heal (double health) {
-		if (hp <= 0) {
+		if (hp >= 0) {
 			hp += health;
 		}
 		
