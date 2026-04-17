@@ -7,6 +7,7 @@ int[] accessibleNodes;
 int index,difficulty;
 boolean cleared, isBoss;
 Enemy boss;
+String[] pool;
 GImage sprite;
 
 
@@ -17,6 +18,7 @@ public Node(int i) {
 	cleared = false;
 	isBoss = false;
 	loadSprite();
+	if (combatAffinity!=null) pool = getPool();
 }
 
 public boolean isCleared() {
@@ -119,6 +121,72 @@ public void loadSprite() {
 		}
 	}
 	sprite.setSize(50, 50);
+}
+
+private String[] getPool() {
+	String[][] temp = null;
+	
+	if (index>10 && index !=13) {
+		switch(combatAffinity) {
+		case "combatHoly":
+			temp = Enemy.getHolyEnemiesHard();
+			break;
+		case "combatFire":
+			temp = Enemy.getFireEnemiesHard();
+			break;
+		case "combatMagic":
+			temp = Enemy.getMageEnemiesHard();
+			break;
+		case "combatLightning":
+			temp = Enemy.getElecEnemiesHard();
+			break;
+		
+		}
+	}
+	else if (index<10) {
+		switch(combatAffinity) {
+		case "combatHoly":
+			temp = Enemy.getHolyEnemiesEasy();
+			break;
+		case "combatFire":
+			temp = Enemy.getFireEnemiesEasy();
+			break;
+		case "combatMagic":
+			temp = Enemy.getMageEnemiesEasy();
+			break;
+		case "combatLightning":
+			temp = Enemy.getElecEnemiesEasy();
+			break;
+		}
+	}
+	else {
+		temp = Enemy.getBossEnemies();
+		switch(combatAffinity) {
+		case "combatHoly":
+			boss = new Enemy ("boss_seraphim",10);
+			sprite = new GImage("spr_BOSS_Seraphim.png");
+			sprite.setSize(70, 70);
+			return temp[0];
+		case "combatFire":
+			boss = new Enemy ("boss_deathknight",10);
+			sprite = new GImage("spr_BOSS_DeathKnight.gif");
+			sprite.setSize(70, 70);
+			return temp[3];
+		case "combatMagic":
+			boss = new Enemy ("boss_mage",10);
+			sprite = new GImage("spr_BOSS_GreatMage.png");
+			sprite.setSize(70, 70);
+			return temp[2];
+		case "combatLightning":
+			boss = new Enemy ("boss_spiritofstorms",10);
+			sprite = new GImage("spr_BOSS_SpiritofStorms.jpg");
+			sprite.setSize(50, 50);
+			return temp[4];
+		}
+	}
+	
+	int tier = Chance.range(0, temp.length-1);
+	return temp[tier];
 }
 
 

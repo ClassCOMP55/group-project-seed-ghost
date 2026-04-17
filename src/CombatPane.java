@@ -158,7 +158,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 
 	/*
-	 * Creates Enemies based off party size
+	 * Creates Enemies based on affinity
 	 * Stores the Enemies in a basic array
 	 */
 	
@@ -176,7 +176,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		
-		String[] pool = getPool();
+		String[] pool = MapPane.currPosition.pool;
 		myArrEnemies = new Enemy[pool.length];
 		enemyNumber = pool.length;
 		allyNumber = aliveAllies().length;
@@ -188,11 +188,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else {
 			difficulty = MapPane.currPosition.getDifficulty()*(2*scale);
 		}
+		
 		System.out.println("Difficulty: "+difficulty);
 		
 
 		for(int i = 0;i<pool.length;i++) {
-			
 			myArrEnemies[i] = new Enemy(pool[i],difficulty);
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
@@ -201,52 +201,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			temp.add(myArrEnemies[i]);
 		}
 		generateImages();
-	}
-	
-	private String[] getPool() {
-		String affinity = MapPane.currPosition.getCombatAffinity();
-		int index = MapPane.currPosition.getIndex();
-		String[][] pool = null;
-		
-		if (index>10 && index !=13) {
-			switch(affinity) {
-			case "combatHoly":
-				pool = Enemy.getHolyEnemiesHard();
-				break;
-			case "combatFire":
-				pool = Enemy.getFireEnemiesHard();
-				break;
-			case "combatMagic":
-				pool = Enemy.getMageEnemiesHard();
-				break;
-			case "combatLightning":
-				pool = Enemy.getElecEnemiesHard();
-				break;
-			
-			}
-		}
-		else if (index<10) {
-			switch(affinity) {
-			case "combatHoly":
-				pool = Enemy.getHolyEnemiesEasy();
-				break;
-			case "combatFire":
-				pool = Enemy.getFireEnemiesEasy();
-				break;
-			case "combatMagic":
-				pool = Enemy.getMageEnemiesEasy();
-				break;
-			case "combatLightning":
-				pool = Enemy.getElecEnemiesEasy();
-				break;
-			}
-		}
-		else {
-			pool = Enemy.getBossEnemies();
-		}
-		
-		int tier = Chance.range(0, pool.length-1);
-		return pool[tier];
 	}
 	
 	/*
