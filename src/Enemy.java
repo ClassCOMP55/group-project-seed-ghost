@@ -120,7 +120,7 @@ public class Enemy extends Entity {
 			defSkill.add(new SKILL_EnemyBuffAllies());
 			defSkill.add(new SKILL_BasicAttack());
 			
-			HP = 1225.0;
+			HP = 770.0;
 		break;	
 		case "holyghost":
 				damageResist[DamageType.HOLY.ordinal()] = 0.0;
@@ -262,8 +262,8 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.SLASH.ordinal()] = 50;
 				weaponScales[EntityStats.DEX.ordinal()] = 1.0;
 				dex = (int)(scaling * 2.5);
-				wil = (int)(scaling * 2.5);
-				arc = (int)(scaling * 4.0);
+				wil = 15 + (int)(scaling * 2.5);
+				arc = 15 + (int)(scaling * 4.0);
 				ist = 1;
 				spr = "spr_ChefBot.png";
 				
