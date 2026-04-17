@@ -112,7 +112,7 @@ public class Character extends Entity {
 		switch (profession) {
 			case "knight": 
 				tempHp = Chance.range(200, 400);
-				tempMn = Chance.range(10, 100);
+				tempMn = Chance.range(100, 200);
 				tempDr = 0.25;
 				
 				tempStr = (int)Chance.range(40, 90);
@@ -128,7 +128,7 @@ public class Character extends Entity {
 			break;
 			case "samurai":
 				tempHp = Chance.range(150, 400);
-				tempMn = Chance.range(40, 100);
+				tempMn = Chance.range(100, 400);
 				tempDr = 0.3;
 				
 				tempDex = (int)Chance.range(30, 60);
@@ -160,7 +160,7 @@ public class Character extends Entity {
 			break;
 			case "viking":
 				tempHp = Chance.range(300, 400);
-				tempMn = Chance.range(10, 100);
+				tempMn = Chance.range(100, 200);
 				tempDr = 0.5;
 				
 				tempStr = (int)Chance.range(60, 90);
@@ -208,7 +208,7 @@ public class Character extends Entity {
 			break;
 			case "paladin":
 				tempHp = Chance.range(200, 400);
-				tempMn = Chance.range(50, 300);
+				tempMn = Chance.range(150, 250);
 				tempDr = 0.3;
 				
 				tempStr = (int)Chance.range(40, 60);
