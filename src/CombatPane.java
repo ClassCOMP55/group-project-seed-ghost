@@ -186,7 +186,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 
 		for(int i = 0;i<pool.length;i++) {
-			myArrEnemies[i] = new Enemy(pool[i],-20);
+			myArrEnemies[i] = new Enemy(pool[i],difficulty);
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
 			System.out.println(myArrEnemies[i].getIntent());
