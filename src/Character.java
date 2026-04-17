@@ -283,7 +283,10 @@ public class Character extends Entity {
 									       "Gargamel","Gimley","Gandalf","Sauruman","Saul","Mari","Marianne",
 									       "Lucille","Sara","Nora","Chione","Aisha","Alexis","Alex","Christine","Kris",
 									       "Susie","Ralsei","W.D.","Yuki","Makima","Jolyne","Trish","Diavolo","Veneto",
-									       "Jotaro","Joseph","Josuke","Jorge","Johnny","Jonathan"}) 
+									       "Jotaro","Joseph","Josuke","Jorge","Johnny","Jonathan","Winter","Summer","Afsoon",
+									       "Malenia","Miquella","Marika","Cyan","Grungus","Silent","Ironclad","Watcher","Necrobinder",
+									       "Sir.","Lady","King","Queen","Poor","Defect","Phineas","Cheese","Perry","Ramona","Vanessa",
+									       "Gangsta","Golden","Ashley","Big"}) 
 				+ " " + 
 			   Chance.choose(new String[] {"Una","Gaster","Beckett","Smith","White","Hamilton","Burr","Prosecco",
 					   					   "Pane'e","Luther","Swinson","Franks","Ochoa","Vang","Green","Suzuki","Sora",
@@ -291,7 +294,9 @@ public class Character extends Entity {
 					   					   "Chance","Black","Grey","Yellow","Blue","Winston","Kvitko","Us","Cujoh","Parton",
 					   					   "Gift","Destiny","Waterfall","Rivers","Katana","Bloodsteel","Windsworn","Zaptastic",
 					   					   "Fantastic","Chungus","Corporeal","Swiss","Vengeance","Blessed","Aeshma","Wongo",
-					   					   "Joestar"});
+					   					   "Joestar","Ghoodjani","Triumph","Yousefi","Rich","Crimson","Metallica","Bravo",
+					   					   "Fletcher","Shrieber","Kim","Harold","Flynn","Burger","Platypus","Doofenshmirtz","星",
+					   					   "Rittenhouse","Cropduster","Allard","Toussard","Ball"});
 	}
 	
 	/*
