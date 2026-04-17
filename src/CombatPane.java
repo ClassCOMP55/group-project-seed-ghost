@@ -24,7 +24,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton;
-	private GLabel displayBoxLabel,description,TurnLabel,mapButtonLabel,menuButtonLabel,intent,list;
+	private GLabel displayBoxLabel,description,toolTip,mapButtonLabel,menuButtonLabel,intent,list;
 	private GImage background;
 	
 	private boolean skill;
@@ -44,6 +44,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void showContent() {
+		
 		t = new Timer(1000, this);
 		hideContent();
 		
@@ -448,17 +449,25 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void addText() {
 		description = new GLabel("Click a Action");
-		description.setColor(Color.GREEN);
-		intent = new GLabel("");
-		description.setFont("DialogInput-PLAIN-15");
-		intent.setFont("DialogInput-PLAIN-15");
-		intent.setColor(Color.GREEN);
+		description.setColor(Color.BLUE);
+		description.setFont("ARIEL-BOLD-15");
 		description.setLocation((screenWidth-description.getWidth())/2,screenHeight*(50.0/600.0));
-		intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight *(70.0/600.0));
 		contents.add(description);
 		mainScreen.add(description);
+		
+		intent = new GLabel("");
+		intent.setFont("ARIEL-BOLD-15");
+		intent.setColor(Color.BLUE);
+		intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight *(70.0/600.0));
 		contents.add(intent);
 		mainScreen.add(intent);
+		
+		toolTip = new GLabel("");
+		toolTip.setLocation((screenWidth-toolTip.getWidth())/2,(screenHeight-toolTip.getHeight())/2);
+		toolTip.setFont("ARIEL-BOLD-12");
+		toolTip.setColor(Color.BLUE);
+		contents.add(toolTip);
+		mainScreen.add(toolTip);
 		
 	}
 	
@@ -857,11 +866,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		menuButtonLabel.setFont("DialogInput-PLAIN-25");
 		menuButtonLabel.setLocation(menuButton.getX() + (menuButton.getWidth() - menuButtonLabel.getWidth()) / 2, menuButton.getY() + (menuButton.getHeight() + menuButtonLabel.getAscent()) / 2);
 		contents.add(menuButtonLabel);
-		mainScreen.add(menuButtonLabel);
-		
-		
-		
-		
+		mainScreen.add(menuButtonLabel);	
 	}
 	
 	public void yourTurn(GImage image) {
@@ -1102,15 +1107,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (obj instanceof GImage && obj != background) {
 		
-			Entity potentialEnemy = imageToEntity((GImage) obj);
-			if (potentialEnemy instanceof Enemy) {
-				Enemy enemy = (Enemy) potentialEnemy;
+			Entity entity = imageToEntity((GImage) obj);
+			if (entity instanceof Enemy) {
+				Enemy enemy = (Enemy) entity;
 				intent.setLabel(enemy.getIntent());
 				intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 			}
-			
+			else if (entity instanceof Character) {
+				toolTip.setLabel(entity.getTooltip());
+				toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
+			}
 		}
 		else {
+			toolTip.setLabel("");
+			toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
 			intent.setLabel("");
 			intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 		}
@@ -1337,11 +1347,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 
 	public GLabel getTurnLabel() {
-		return TurnLabel;
+		return toolTip;
 	}
 
-	public void setTurnLabel(GLabel turnLabel) {
-		TurnLabel = turnLabel;
+	public void setTurnLabel(GLabel toolTip) {
+		this.toolTip = toolTip;
 	}
 
 	public ArrayList<GRect> getAllSkillsButton() {
