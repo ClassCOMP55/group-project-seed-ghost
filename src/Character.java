@@ -9,6 +9,7 @@ public class Character extends Entity {
 	private String[] allowedArmors;
 	private Skill lastUsedSkill;
 	private int recruitCost;
+	private String name;
 	
 	/*
 	 * Constructors
@@ -21,6 +22,8 @@ public class Character extends Entity {
 	 */
 	public Character () {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
+		
+		generateName();
 		
 		setRecruitCost(0);
 		
@@ -38,6 +41,8 @@ public class Character extends Entity {
 	 */
 	public Character (double hp, double mana, double deathResist, int str, int dex, int prc, int ist, int con, int wil, int fth, int arc, WeaponItem weapon, ArmorItem armor, String profession) {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
+		
+		generateName();
 		
 		this.myWeapon = weapon;
 		this.myArmor = armor;
@@ -64,6 +69,8 @@ public class Character extends Entity {
 	public Character (String profession) {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
 		
+		generateName();
+		
 		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
 		applyProfession(profession, new String [] {"null"});
 		
@@ -75,6 +82,8 @@ public class Character extends Entity {
 	 */
 	public Character (String profession, Boolean affinitiesAllowed) {
 		super(1.0,1.0,0.0,0,0,0,0,0,0,0,0);
+		
+		generateName();
 		
 		setMySkills(new Skill[]{new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_LightningBolt(), new SKILL_PrayerOfHealing()});
 		applyProfession(profession, new String[] {"null","null","holy","fire","elec","magic"});
@@ -267,6 +276,24 @@ public class Character extends Entity {
 		generateTooltip(tempTooltip);
 	}
 	
+	private void generateName () {
+		name = Chance.choose(new String[] {"Jake","Austin","Loretta","Gloria","Among","Mina","Celeste",
+										   "Charlie","Negar","Isaac","Lance","Yeshua","Steve","Bob",
+									       "Jack","Omori","Sunny","Aubrey","Hero","Nakoa","Seraphina",
+									       "Gargamel","Gimley","Gandalf","Sauruman","Saul","Mari","Marianne",
+									       "Lucille","Sara","Nora","Chione","Aisha","Alexis","Alex","Christine","Kris",
+									       "Susie","Ralsei","W.D.","Yuki","Makima","Jolyne","Trish","Diavolo","Veneto",
+									       "Jotaro","Joseph","Josuke","Jorge","Johnny","Jonathan"}) 
+				+ " " + 
+			   Chance.choose(new String[] {"Una","Gaster","Beckett","Smith","White","Hamilton","Burr","Prosecco",
+					   					   "Pane'e","Luther","Swinson","Franks","Ochoa","Vang","Green","Suzuki","Sora",
+					   					   "Brando","Reyes","Reed","Malicious","Vasquez","Beauforte","Goodman","Hungary",
+					   					   "Chance","Black","Grey","Yellow","Blue","Winston","Kvitko","Us","Cujoh","Parton",
+					   					   "Gift","Destiny","Waterfall","Rivers","Katana","Bloodsteel","Windsworn","Zaptastic",
+					   					   "Fantastic","Chungus","Corporeal","Swiss","Vengeance","Blessed","Aeshma","Wongo",
+					   					   "Joestar"});
+	}
+	
 	/*
 	 * Setters and getters
 	 */
@@ -367,7 +394,7 @@ public class Character extends Entity {
 	}
 	
 	public String toString () {
-		return profession.substring(0, 1).toUpperCase() + profession.substring(1);
+		return name + " the " + profession.substring(0, 1).toUpperCase() + profession.substring(1);
 	}
 	
 	public boolean guarding () {

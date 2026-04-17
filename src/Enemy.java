@@ -84,9 +84,9 @@ public class Enemy extends Entity {
 	 * Specific Enemy constructor
 	 */
 	public Enemy (String id, int scaling) {
-		int str = scaling, dex = scaling, prc = scaling, ist = scaling, 
+		int str = scaling, dex = scaling, prc = scaling, ist = Chance.range(-10, 10), 
 			con = scaling, wil = scaling, fth = scaling, arc = scaling;
-		double HP = 100.0, Mana = 100000.0, DR = 0.0;
+		double HP = 100.0, Mana = 200000.0, DR = 0.0;
 		
 		this.name = id;
 		
@@ -423,7 +423,6 @@ public class Enemy extends Entity {
 				weaponScales[EntityStats.ARC.ordinal()] = 1.0;
 				arc = (int)(scaling * 2.0);
 				wil = scaling * 3;
-				ist = 30;
 				spr = "spr_BOSS_GreatMage.png";
 				
 				name = "Supreme Mage";
@@ -449,7 +448,7 @@ public class Enemy extends Entity {
 				dex = (int)(scaling * 2.0);
 				wil = 1;
 				arc = 1;
-				ist = 60;
+				ist = 600;
 				spr = "spr_BOSS_Hornet.png";
 				
 				name = "Completely Original Boss";
@@ -478,12 +477,12 @@ public class Enemy extends Entity {
 				con = 20 + (int)(scaling * 2.0);
 				wil = 1;
 				arc = 50;
-				ist = 40;
+				ist = 20;
 				spr = "spr_BOSS_DeathKnight.gif";
 				
 				name = "Death Knight";
 				
-				defSkillP = new int[] {1,0,1,2,3};
+				defSkillP = new int[] {2,1,0,1,2,3};
 				defSkill.add(new SKILL_IronWave());
 				defSkill.add(new SKILL_Fireball());
 				defSkill.add(new SKILL_BossBuffSelf());
@@ -491,7 +490,7 @@ public class Enemy extends Entity {
 				
 				sprScale = 2.5;
 				
-				HP = 800;
+				HP = 700;
 			break;
 			case "boss_spiritofstorms":
 				damageResist[DamageType.ELEC.ordinal()] = 0.0;
