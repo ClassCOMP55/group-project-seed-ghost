@@ -17,10 +17,10 @@ public class Enemy extends Entity {
 	
 	private static final String[][] HOLY_ENEMIES_HARD = new String[][] {{"holyghost","magicsword","holyghost"},{"boss_seraphim"},{"prunsel","prunsel"},{"holyghost","casper","holyghost"},{"soosk","soosk","soosk"},{"goldeneye","prunsel","soosk"}};
 	private static final String[][] MAGE_ENEMIES_HARD = new String[][] {{"magicsword","imagefriend","magicsword"},{"orb","orb","orb"},{"casper","magicsword","purple"},{"orb","magicsword","orb"},{"orb","purple","casper"},{"boss_mage"},{"purple","purple"}};
-	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"boss_deathknight"},{"chefbot","irongremlin"},{"irongremlin","johnexplode","irongremlin"},{"johnexplode","johnexplode","johnexplode"},{"bladedevil","bladedevil"}};
+	private static final String[][] FIRE_ENEMIES_HARD = new String[][] {{"boss_deathknight"},{"chefbot","irongremlin"},{"irongremlin","johnexplode","irongremlin"},{"johnexplode","janeexplode","johnexplode"},{"bladedevil","bladedevil"},{"bladedevil","janeexplode"}};
 	private static final String[][] ELEC_ENEMIES_HARD = new String[][] {{"chefbot","imagefriend"},{"zapball","zapball","zapball"},{"chefbot","gunturtle","irongremlin"},{"irongremlin","zapball","zapball"},{"boss_spiritofstorms"}};
 	
-	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip","johnexplode"},{"orb","boss_mage","orb"},{"boss_deathknight"},{"zapball","boss_spiritofstorms","zapball"}};
+	private static final String[][] BOSS_ENEMIES = new String[][] {{"holyghost","boss_seraphim","fairie"},{"boss_drip","janeexplode"},{"orb","boss_mage","orb"},{"boss_deathknight"},{"zapball","boss_spiritofstorms","zapball"}};
 	
 	private void setDefaultAttackPattern () {
 		skillPattern = new int[] {0};
@@ -400,11 +400,32 @@ public class Enemy extends Entity {
 				con = scaling * 20;
 				arc = scaling + 10;
 				
+				name = "John Explode";
 				
 				defSkillP = new int[] {0};
 				defSkill.add(new SKILL_Explode());
 				
 				HP = 80.0;
+			break;
+			case "janeexplode":
+				damageResist[DamageType.PIERCE.ordinal()] = 0.5;
+				damageResist[DamageType.BLAST.ordinal()] = 2.0;
+				damageResist[DamageType.CRUSH.ordinal()] = 2.0;
+				damageResist[DamageType.SLASH.ordinal()] = 1.0;
+				damageResist[DamageType.FIRE.ordinal()] = 0.0;
+				damageResist[DamageType.HOLY.ordinal()] = 2.0;
+				
+				spr = "spr_JohnExplode.gif";
+				con = scaling * 40;
+				arc = scaling * 10;
+				
+				name = "Jane Explode";
+				
+				defSkillP = new int[] {0,0,Chance.range(0, 1),Chance.range(0, 1),Chance.range(0, 1),Chance.range(0, 1),Chance.range(0, 1)};
+				defSkill.add(new SKILL_EnemyBuffAllies());
+				defSkill.add(new SKILL_Explode());
+				
+				HP = 600.0;
 			break;
 			case "zapball":
 				damageResist[DamageType.ELEC.ordinal()] = -2.0;
