@@ -26,7 +26,7 @@ public class CampFirePane extends GraphicsPane{
 	}
 	
 	public void startCampSession() {
-		actionPoints = 2;
+		actionPoints = 3;
 		usedActions.clear();
 	}
 	
@@ -177,7 +177,7 @@ public class CampFirePane extends GraphicsPane{
 	    private void handleAction(String actionType) {
 	    	if (actionType.equals("leave")) {
 	            mainScreen.switchToMapPane();
-	            MapPane.currPosition.isCleared(); 
+	            MapPane.currPosition.cleared(); 
 	            return;
 	        }
 	    	
@@ -403,13 +403,15 @@ public class CampFirePane extends GraphicsPane{
 	        }
 	        
 	        WeaponItem w = previewMercenary.getWeapon();
+	        ArmorItem a = previewMercenary.getArmor();
 
 	        String[] labels = {
 	            "Mercenary To Recruit",
 	            "Profession: " + previewMercenary.getProfession(),
 	            "HP: " + previewMercenary.getHpMax(),
 	            "MP: " + previewMercenary.getManaMax(),
-	            "Weapon: " + w.toString()
+	            "Weapon: " + w.toString(),
+	            "Armor: " + a.toString()
 	        };
 
 	        for (int i = 0; i < labels.length; i++) {
@@ -438,7 +440,7 @@ public class CampFirePane extends GraphicsPane{
 	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
 
 	        int startX = 1140;   
-	        int startY = 50;
+	        int startY = 40;
 	        int spacingY = 205; 
 
 	        for (int i = 0; i < party.length; i++) {
@@ -489,6 +491,15 @@ public class CampFirePane extends GraphicsPane{
 	            weapon.setFont("DialogInput-PLAIN-12");
 	            contents.add(weapon);
 	            mainScreen.add(weapon);
+	            
+	            //Armor
+	            GLabel armor = new GLabel("Armor: " + c.getArmor());
+	            armor.setLocation(x + 5, y + 60);
+	            armor.setColor(Color.WHITE);
+	            armor.setFont("DialogInput-PLAIN-12");
+	            contents.add(armor);
+	            mainScreen.add(armor);
+
 
 	            int[] stats = c.getStatSpread();
 
