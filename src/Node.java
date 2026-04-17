@@ -13,10 +13,10 @@ GImage sprite;
 
 public Node(int i) {
 	index = i;
+	isBoss = false;
 	assignType(i);
 	accessibleNodes = setAvailableNodes();
 	cleared = false;
-	isBoss = false;
 	loadSprite();
 	if (combatAffinity!=null) pool = getPool();
 }

@@ -29,7 +29,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private boolean skill;
 	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable,skill2;
-	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber,test,scale;
+	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber,test,scaling;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	
 	private Entity currentEntity,otherEntity;
@@ -39,7 +39,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	public CombatPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
-		scale = 0;
+		scaling = 1;
 	}
 
 	@Override
@@ -180,20 +180,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		myArrEnemies = new Enemy[pool.length];
 		enemyNumber = pool.length;
 		allyNumber = aliveAllies().length;
-		int difficulty;
-		
-		if (scale==0) {
-			difficulty = MapPane.currPosition.getDifficulty();
-		}
-		else {
-			difficulty = MapPane.currPosition.getDifficulty()*(2*scale);
-		}
+		int difficulty = MapPane.currPosition.getDifficulty()*scaling;
 		
 		System.out.println("Difficulty: "+difficulty);
 		
 
 		for(int i = 0;i<pool.length;i++) {
-			myArrEnemies[i] = new Enemy(pool[i],difficulty);
+			myArrEnemies[i] = new Enemy(pool[i],-20);
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
 			System.out.println(myArrEnemies[i].getIntent());
@@ -880,10 +873,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		test++;
-		if (test==3) {
-			System.out.println();
-		}
+		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		if (obj == skillButton && playersTurn == true && forConsumable == false && skill ==false) {
 			displaySkills((Character) currentEntity);
@@ -982,6 +972,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 	
 		}
+		
 		update();
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
 			entityToImage(currentEntity).setColor(null);
@@ -991,11 +982,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
 			entityToImage(currentEntity).setColor(null);
 			clearArrays();
-			scale++;
-			mainScreen.switchToMapPane();
+			scaling = scaling*2;
 			MapPane.mapPath.clear();
 			MapPane.createPath();
 			MapPane.currPosition = MapPane.mapPath.get(0);
+			mainScreen.switchToMapPane();
 			
 		}
 		else if ((obj==menuButton||obj==menuButtonLabel)&&lost==true) {
