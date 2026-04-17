@@ -112,7 +112,7 @@ public class Character extends Entity {
 		switch (profession) {
 			case "knight": 
 				tempHp = Chance.range(200, 400);
-				tempMn = Chance.range(100, 200);
+				tempMn = Chance.range(100, 210);
 				tempDr = 0.25;
 				
 				tempStr = (int)Chance.range(40, 90);
