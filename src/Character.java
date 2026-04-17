@@ -103,7 +103,7 @@ public class Character extends Entity {
 		int tempStr = (int)Chance.range(0, 15);
 		int tempDex = (int)Chance.range(0, 15);
 		int tempPrc = (int)Chance.range(0, 15);
-		int tempIst = (int)Chance.range(0, 15);
+		int tempIst = (int)Chance.range(7, 15);
 		int tempCon = (int)Chance.range(0, 15);
 		int tempWil = (int)Chance.range(0, 15);
 		int tempFth = (int)Chance.range(0, 15);
