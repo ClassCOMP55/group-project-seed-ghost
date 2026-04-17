@@ -85,7 +85,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				background = new GImage("spr_BACKGROUND_Fire.png");
 				break;
 			case "combatMagic": 
-				background = new GImage("spr_BACKGROUND_Magic.png");
+				background = new GImage("spr_BACKGROUND_Magic2.png");
 				break;
 			case "combatLightning": 
 				background = new GImage("spr_BACKGROUND_Lightning.jpg");
