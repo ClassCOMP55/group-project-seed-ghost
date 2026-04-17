@@ -66,7 +66,7 @@ public class MapPane extends GraphicsPane {
 	
 	private void addText() {
 		
-		GLabel title = new GLabel("Map", 100, 100);
+		GLabel title = new GLabel("Map", MainApplication.WINDOW_WIDTH*(100.0/800.0), MainApplication.WINDOW_HEIGHT*(100.0/600.0));
 		title.setColor(Color.RED);
 		title.setFont("DialogInput-PLAIN-45");
 		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 30);
@@ -87,6 +87,8 @@ public class MapPane extends GraphicsPane {
 		mainScreen.add(inventoryButton);
 		
 		inventoryButtonLabel = new GLabel("Inventory");
+		inventoryButtonLabel.setFont("DialogInput-BOLD-17");
+		inventoryButtonLabel.setColor(Color.WHITE);
 		inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
 		contents.add(inventoryButtonLabel);
 		mainScreen.add(inventoryButtonLabel);
@@ -120,6 +122,8 @@ public class MapPane extends GraphicsPane {
 		extra.add(extraRect);
 		
 		GLabel extraLabel = new GLabel("Extra Weapons");
+		extraLabel.setColor(Color.BLACK);
+		extraLabel.setFont("DialogInput-Bold-17");
 		extraLabel.setLocation(extraRect.getX()+(extraRect.getWidth()-extraLabel.getWidth())/2, extraRect.getY()+(extraRect.getHeight()-extraLabel.getHeight())/2+extraLabel.getHeight());
 		contents.add(extraLabel);
 		mainScreen.add(extraLabel);
@@ -135,6 +139,7 @@ public class MapPane extends GraphicsPane {
 			extraWeaponButtons.add(button);
 			
 			GLabel label = new GLabel(weapons.get(i).toString()+" (Affinity:"+weapons.get(i).getAffinity()+")");
+			label.setColor(Color.WHITE);
 			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
 			contents.add(label);
 			mainScreen.add(label);
@@ -160,6 +165,8 @@ public class MapPane extends GraphicsPane {
 		extra.add(extraRect);
 		
 		extraLabel = new GLabel("Extra Armors");
+		extraLabel.setColor(Color.BLACK);
+		extraLabel.setFont("DialogInput-Bold-17");
 		extraLabel.setLocation(extraRect.getX()+(extraRect.getWidth()-extraLabel.getWidth())/2, extraRect.getY()+(extraRect.getHeight()-extraLabel.getHeight())/2+extraLabel.getHeight());
 		contents.add(extraLabel);
 		mainScreen.add(extraLabel);
@@ -176,6 +183,7 @@ public class MapPane extends GraphicsPane {
 			
 			GLabel label = new GLabel(armors.get(i).toString()+" (Affinity:"+armors.get(i).getAffinity()+")");
 			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
+			label.setColor(Color.WHITE);
 			contents.add(label);
 			mainScreen.add(label);
 			extraArmorLabels.add(label);
@@ -198,6 +206,8 @@ public class MapPane extends GraphicsPane {
 		extra.add(extraRect);
 		
 		extraLabel = new GLabel("Consumables");
+		extraLabel.setColor(Color.BLACK);
+		extraLabel.setFont("DialogInput-Bold-17");
 		extraLabel.setLocation(extraRect.getX()+(extraRect.getWidth()-extraLabel.getWidth())/2, extraRect.getY()+(extraRect.getHeight()-extraLabel.getHeight())/2+extraLabel.getHeight());
 		contents.add(extraLabel);
 		mainScreen.add(extraLabel);
@@ -219,6 +229,7 @@ public class MapPane extends GraphicsPane {
 				label = new GLabel("Empty");
 			}
 			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
+			label.setColor(Color.WHITE);
 			contents.add(label);
 			mainScreen.add(label);
 			consumablesLabel.add(label);
