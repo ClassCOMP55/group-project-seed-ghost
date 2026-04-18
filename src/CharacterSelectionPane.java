@@ -12,6 +12,8 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	private ArrayList<Character> myChars;
 	private ArrayList<GImage> myImages;
+	private ArrayList<GLabel> infoLabels;
+	private ArrayList<GRect> infoButtons;
 	public static PlayerInventory myInventory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
@@ -26,11 +28,12 @@ public class CharacterSelectionPane extends GraphicsPane {
 		
 		myChars = new ArrayList<>();
 		myImages = new ArrayList<>();
+		infoLabels = new ArrayList<>();
+		infoButtons = new ArrayList<>();
 		createBackground();
 		addText();
 		createCharacters();
-		showStats();
-		
+		nameAndInfoDisplay();
 	}
 
 	@Override
@@ -73,20 +76,42 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	private void DrawCharacter(int i) {
 		GImage charImage;
+		
 		switch(myChars.get(i).getProfession()) {
-		case "knight": charImage = new GImage("spr_Knight.png",50+(200*i),350) ; break;
-		case "samurai": charImage = new GImage("spr_Samurai.png",50+(200*i),350) ; break;
-		case "thief": charImage = new GImage("spr_Thief.png",50+(200*i),350) ; break;
-		case "viking": charImage = new GImage("spr_Viking.png",50+(200*i),350); break;
-		case "sorcerer": charImage = new GImage("spr_Sorcerer.png",50+(200*i),350); break;
-		case "paladin": charImage = new GImage("spr_Paladin.png",50+(200*i),350); break;
-		case "cleric": charImage = new GImage("spr_Cleric.png",50+(200*i),350); break;
-		case "ranger": charImage = new GImage("spr_RangerUpdated.png",50+(200*i),350);charImage.setSize(150, 150); break;
-		default: charImage = new GImage("spr_Marksman.png",50+(200*i),350); break;
+		case "knight":
+			charImage = new GImage("spr_Knight.png");
+			break;
+		case "samurai":
+			charImage = new GImage("spr_Samurai.png");
+			break;
+		case "thief":
+			charImage = new GImage("spr_Thief.png");
+			break;
+		case "viking":
+			charImage = new GImage("spr_Viking.png");
+			break;
+		case "sorcerer":
+			charImage = new GImage("spr_Sorcerer.png");
+			break;
+		case "paladin":
+			charImage = new GImage("spr_Paladin.png");
+			break;
+		case "cleric":
+			charImage = new GImage("spr_Cleric.png");
+			break;
+		case "ranger":
+			charImage = new GImage("spr_RangerUpdated.png");
+			charImage.setSize(140, 140);
+			break;
+		default:
+			charImage = new GImage("spr_Marksman.png");
+			break;
 		}
+		
+		double height = (MainApplication.WINDOW_HEIGHT-charImage.getHeight())/2;
 		double width = MainApplication.WINDOW_WIDTH*((5.0+2.0*i*charImage.getWidth())/800.0);
 		charImage.scale(1.3, 1.3);
-		charImage.setLocation(width, (600-charImage.getHeight())/2);
+		charImage.setLocation(width, height);
 		myImages.add(charImage);
 		contents.add(charImage);
 		mainScreen.add(charImage);
@@ -96,7 +121,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		for (Character myChar:myChars) {
 			int index = myChars.indexOf(myChar);
 			GImage image = myImages.get(index);
-			GRect box = new GRect(275,185);
+			GRect box = new GRect(275,170);
 			box.setLocation(image.getX(), image.getY()+image.getHeight());
 			box.setColor(Color.BLACK);
 			box.setFillColor(Color.BLACK);
@@ -104,29 +129,22 @@ public class CharacterSelectionPane extends GraphicsPane {
 			contents.add(box);
 			mainScreen.add(box);
 			
-			GLabel prof = new GLabel("Character: "+myChar.toString());
-			prof.setLocation(box.getX()+5, box.getY()+15);
-			prof.setColor(Color.RED);
-			prof.setFont("ARIEL-PLAIN-14");
-			contents.add(prof);
-			mainScreen.add(prof);
-			
 			GLabel health = new GLabel("Health: "+myChar.getHp());
-			health.setLocation(box.getX()+5, box.getY()+30);
+			health.setLocation(box.getX()+5, box.getY()+15);
 			health.setColor(Color.RED);
 			health.setFont("ARIEL-PLAIN-14");
 			contents.add(health);
 			mainScreen.add(health);
 			
 			GLabel mana = new GLabel("Mana: "+myChar.getManaMax());
-			mana.setLocation(box.getX()+5, box.getY()+45);
+			mana.setLocation(box.getX()+5, box.getY()+30);
 			mana.setColor(Color.RED);
 			mana.setFont("ARIEL-PLAIN-14");
 			contents.add(mana);
 			mainScreen.add(mana);
 			
 			GLabel weapon = new GLabel("Weapon: "+myChar.getWeapon().toString());
-			weapon.setLocation(box.getX()+5, box.getY()+60);
+			weapon.setLocation(box.getX()+5, box.getY()+45);
 			weapon.setColor(Color.RED);
 			weapon.setFont("ARIEL-PLAIN-14");
 			contents.add(weapon);
@@ -135,60 +153,108 @@ public class CharacterSelectionPane extends GraphicsPane {
 			int[] stats = myChar.getStatSpread();
 			
 			GLabel str = new GLabel("Strength: "+stats[0]);
-			str.setLocation(box.getX()+5, box.getY()+75);
+			str.setLocation(box.getX()+5, box.getY()+60);
 			str.setColor(Color.RED);
 			str.setFont("ARIEL-PLAIN-14");
 			contents.add(str);
 			mainScreen.add(str);
 			
 			GLabel dex = new GLabel("Dexterity: "+stats[1]);
-			dex.setLocation(box.getX()+5, box.getY()+90);
+			dex.setLocation(box.getX()+5, box.getY()+75);
 			dex.setColor(Color.RED);
 			dex.setFont("ARIEL-PLAIN-14");
 			contents.add(dex);
 			mainScreen.add(dex);
 			
 			GLabel prc = new GLabel("Precison: "+stats[2]);
-			prc.setLocation(box.getX()+5, box.getY()+105);
+			prc.setLocation(box.getX()+5, box.getY()+90);
 			prc.setColor(Color.RED);
 			prc.setFont("ARIEL-PLAIN-14");
 			contents.add(prc);
 			mainScreen.add(prc);
 			
 			GLabel ist = new GLabel("Instinct: "+stats[3]);
-			ist.setLocation(box.getX()+5, box.getY()+120);
+			ist.setLocation(box.getX()+5, box.getY()+105);
 			ist.setColor(Color.RED);
 			ist.setFont("ARIEL-PLAIN-14");
 			contents.add(ist);
 			mainScreen.add(ist);
 			
 			GLabel con = new GLabel("Constitution: "+stats[4]);
-			con.setLocation(box.getX()+5, box.getY()+135);
+			con.setLocation(box.getX()+5, box.getY()+120);
 			con.setColor(Color.RED);
 			con.setFont("ARIEL-PLAIN-14");
 			contents.add(con);
 			mainScreen.add(con);
 			
 			GLabel wil = new GLabel("Willpower: "+stats[5]);
-			wil.setLocation(box.getX()+5, box.getY()+150);
+			wil.setLocation(box.getX()+5, box.getY()+135);
 			wil.setColor(Color.RED);
 			wil.setFont("ARIEL-PLAIN-14");
 			contents.add(wil);
 			mainScreen.add(wil);
 			
 			GLabel fth = new GLabel("Faith: "+stats[6]);
-			fth.setLocation(box.getX()+5, box.getY()+165);
+			fth.setLocation(box.getX()+5, box.getY()+150);
 			fth.setColor(Color.RED);
 			fth.setFont("ARIEL-PLAIN-14");
 			contents.add(fth);
 			mainScreen.add(fth);
 			
 			GLabel arc = new GLabel("Arcane: "+stats[7]);
-			arc.setLocation(box.getX()+5, box.getY()+180);
+			arc.setLocation(box.getX()+5, box.getY()+165);
 			arc.setColor(Color.RED);
 			arc.setFont("ARIEL-PLAIN-14");
 			contents.add(arc);
-			mainScreen.add(arc);
+			mainScreen.add(arc);	
+		}
+	}
+	
+	public void nameAndInfoDisplay(){
+		for (Character c:myChars) {
+			
+			int index = myChars.indexOf(c);
+			GImage image = myImages.get(index);
+			
+			GLabel name = new GLabel(c.toString());
+			name.setFont(("ARIEL-BOLD-13"));
+			
+			GRect box = new GRect(name.getWidth()+10,name.getHeight()+10);
+			box.setFilled(true);
+			box.setFillColor(Color.DARK_GRAY);
+			box.setLocation(image.getX()+(image.getWidth()-box.getWidth())/2, image.getY()-name.getHeight()-10);
+			contents.add(box);
+			mainScreen.add(box);
+			
+			double centerX = box.getX() + box.getWidth() / 2;
+			double centerY = box.getY() + box.getHeight() / 2;
+			double x = centerX - name.getWidth() / 2;
+			double y = centerY + name.getHeight() / 2 - name.getDescent();
+
+			name.setLocation(x,y);
+			contents.add(name);
+			mainScreen.add(name);
+			
+			GLabel info = new GLabel("More Information");
+			info.setFont(("ARIEL-BOLD-18"));
+			info.setColor(Color.WHITE);
+			
+			GRect infoBox = new GRect(info.getWidth()+10,info.getHeight()+20);
+			infoBox.setFilled(true);
+			infoBox.setFillColor(Color.DARK_GRAY);
+			infoBox.setLocation(image.getX()+(image.getWidth()-infoBox.getWidth())/2, image.getY()+image.getHeight()+10);
+			contents.add(infoBox);
+			mainScreen.add(infoBox);
+			
+			centerX = infoBox.getX() + infoBox.getWidth() / 2;
+			centerY = infoBox.getY() + infoBox.getHeight() / 2;
+			x = centerX - info.getWidth() / 2;
+			y = centerY + info.getHeight() / 2 - info.getDescent();
+			
+			info.setLocation(x,y);
+			contents.add(info);
+			mainScreen.add(info);
+			
 			
 			
 		}
