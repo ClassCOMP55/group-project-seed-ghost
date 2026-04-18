@@ -173,22 +173,22 @@ private String[] getPool() {
 		switch(combatAffinity) {
 		case "combatHoly":
 			boss = new Enemy ("boss_seraphim",10);
-			sprite = new GImage("spr_BOSS_Seraphim.png");
+			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(70, 70);
 			return temp[0];
 		case "combatFire":
 			boss = new Enemy ("boss_deathknight",10);
-			sprite = new GImage("spr_BOSS_DeathKnight.gif");
+			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(70, 70);
 			return temp[3];
 		case "combatMagic":
 			boss = new Enemy ("boss_mage",10);
-			sprite = new GImage("spr_BOSS_GreatMage.png");
+			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(70, 70);
 			return temp[2];
 		case "combatLightning":
 			boss = new Enemy ("boss_spiritofstorms",10);
-			sprite = new GImage("spr_BOSS_SpiritofStorms.jpg");
+			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(50, 50);
 			return temp[4];
 		}
