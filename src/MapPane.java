@@ -460,8 +460,7 @@ private void createMap() {
 		 	
 	}
 	
-	public String resistances(Enemy e) {
-		String name = e.getName();
+	public String resistances(String name) {
 		String str = "";
 		
 		switch (name) {
@@ -474,6 +473,24 @@ private void createMap() {
 		case "boss_deathknight": str = "Resistances: Fire";
 		break;
 		case "boss_spiritofstorms": str = "Resistances: Electric";
+		break;
+		}
+		return str;
+	}
+	
+	public String vulnerabilities(String name) {
+		String str = "";
+		
+		switch (name) {
+		case "boss_drip": str = "Vulnerabilities: None";
+		break;
+		case "boss_mage": str = "Vulnerabilities: Blast";
+		break;
+		case "boss_seraphim": str = "Vulnerabilities: Fire";
+		break;
+		case "boss_deathknight": str = "Vulnerabilities: Electric + Holy";
+		break;
+		case "boss_spiritofstorms": str = "Vulnerabilities: Magic";
 		break;
 		}
 		return str;
