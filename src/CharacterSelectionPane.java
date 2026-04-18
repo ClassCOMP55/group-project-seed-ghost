@@ -53,13 +53,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 	}
 	
 	private void createBackground() {
-		GRect backGround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
-		backGround.setColor(Color.DARK_GRAY);
-		backGround.setFillColor(Color.DARK_GRAY);
-		backGround.setFilled(true);
-		backGround.setLocation(0, 0);
-		contents.add(backGround);
-		mainScreen.add(backGround);
+		GImage background = new GImage("CharacterSelectionBackground.jpeg");
+		background.setSize(1366,700);
+		background.setLocation(0, 0);
+		contents.add(background);
+		mainScreen.add(background);
 	}
 	
 	private void createCharacters() {
