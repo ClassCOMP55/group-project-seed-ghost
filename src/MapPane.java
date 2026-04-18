@@ -524,6 +524,24 @@ private void createMap() {
 		return str;
 	}
 	
+	public String attackType(String name) {
+		String str = "";
+		
+		switch (name) {
+		case "Completely Original Boss": str = ". Attack Type: Slashing";
+		break;
+		case "Supreme Mage": str = ". Attack Type: Magic";
+		break;
+		case "Seraphim Vassal": str = ". Attack Type: Holy";
+		break;
+		case "Death Knight": str = ". Attack Type: Slashing + Fire";
+		break;
+		case "Spirit of Storms": str = ". Attack Type: Electric + Blast";
+		break;
+		}
+		return str;
+	}
+	
 	public Node ovalToNode(GObject obj) {
 		return mapPath.get(myNodeObjects.indexOf(obj));
 	}
