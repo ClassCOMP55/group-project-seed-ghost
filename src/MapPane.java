@@ -485,6 +485,13 @@ private void createMap() {
 		vul.setLocation(res.getX(), res.getY()+vul.getHeight()*2);
 		contents.add(vul);
 		mainScreen.add(vul);
+		
+		GLabel atk = new GLabel(attackType(boss.getName()));
+		atk.setColor(Color.WHITE);
+		atk.setFont("ARIEL-BOLD-13");
+		atk.setLocation(vul.getX(), vul.getY()+atk.getHeight()*2);
+		contents.add(atk);
+		mainScreen.add(atk);
 		 	
 	}
 	
