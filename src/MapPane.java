@@ -48,6 +48,7 @@ public class MapPane extends GraphicsPane {
 		addText();
 		addButtons();
 		createMap();
+		bossInfo();
 	}
 
 	@Override
@@ -428,36 +429,54 @@ private void createMap() {
 	}
 	
 	private void createBackground() {
-		GRect backGround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
-		backGround.setColor(Color.BLACK);
-		backGround.setFillColor(Color.BLACK);
-		backGround.setFilled(true);
-		backGround.setLocation(0, 0);
-		contents.add(backGround);
-		mainScreen.add(backGround);
+		GImage background = new GImage("MapTowerBackground.jpeg");
+		background.setSize(1366,700);
+		background.setLocation(0, 0);
+		contents.add(background);
+		mainScreen.add(background);
 	}
 	
-	private void setColor(GOval oval) {
-		String type =mapPath.get(myNodeObjects.lastIndexOf(oval)).getType();
-		switch(type) {
-		case "Shop":
-			oval.setColor(Color.BLUE);
-			oval.setFillColor(Color.BLUE);
-			break;
-		case "CampFire":
-			oval.setColor(Color.ORANGE);
-			oval.setFillColor(Color.ORANGE);
-			break;
-		case "Loot":
-			oval.setColor(Color.BLACK);
-			oval.setFillColor(Color.BLACK);
-			break;
-		default:
-			oval.setColor(Color.RED);
-			oval.setFillColor(Color.RED);
-			break;
+	private void bossInfo() {
+		GRect box = new GRect(182,182);
+		box.setLocation(0,0);
+		box.setFilled(true);
+		box.setFillColor(new Color(0,0,0));
+		contents.add(box);
+		mainScreen.add(box);
+		
+		GRect infoBox = new GRect(182,182);
+		infoBox.setLocation(box.getWidth(),box.getY());
+		infoBox.setFilled(true);
+		infoBox.setFillColor(new Color(0,0,0));
+		contents.add(infoBox);
+		mainScreen.add(infoBox);
+		
+		Enemy boss = mapPath.get(13).boss;
+		GImage bossImage = boss.getSprite();
+		bossImage.setSize(162, 162);
+		bossImage.setLocation(10,10);
+		contents.add(bossImage);
+		mainScreen.add(bossImage);
+		 	
+	}
+	
+	public String resistances(Enemy e) {
+		String name = e.getName();
+		String str = "";
+		
+		switch (name) {
+		case "boss_drip": str = "Resistances: All Affinities";
+		break;
+		case "boss_mage": str = "Resistances: Magic";
+		break;
+		case "boss_seraphim": str = "Resistances: Holy";
+		break;
+		case "boss_deathknight": str = "Resistances: Fire";
+		break;
+		case "boss_spiritofstorms": str = "Resistances: Electric";
+		break;
 		}
-		oval.setFilled(true);
+		return str;
 	}
 	
 	public Node ovalToNode(GObject obj) {
