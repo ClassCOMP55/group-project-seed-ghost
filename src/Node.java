@@ -240,11 +240,17 @@ public String getType() {
 }
 
 public void cleared() {
+	sprite.setImage("spr_FinishedNode.png");
+	sprite.setSize(40, 40);
 	cleared =true;
 }
 
 public GImage getSprite() {
 	return sprite;
+}
+
+public void setSprite(GImage sprite) {
+	this.sprite = sprite;
 }
 	
 
