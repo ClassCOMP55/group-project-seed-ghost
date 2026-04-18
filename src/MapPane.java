@@ -444,7 +444,7 @@ private void createMap() {
 		contents.add(box);
 		mainScreen.add(box);
 		
-		GRect infoBox = new GRect(182,182);
+		GRect infoBox = new GRect(222,182);
 		infoBox.setLocation(box.getWidth(),box.getY());
 		infoBox.setFilled(true);
 		infoBox.setFillColor(new Color(0,0,0));
@@ -457,6 +457,34 @@ private void createMap() {
 		bossImage.setLocation(10,10);
 		contents.add(bossImage);
 		mainScreen.add(bossImage);
+		
+		GLabel bossTitle = new GLabel("Boss");
+		bossTitle.setColor(Color.RED);
+		bossTitle.setFont("ARIEL-BOLD-25");
+		bossTitle.setLocation(infoBox.getX(), infoBox.getY()+bossTitle.getHeight());
+		contents.add(bossTitle);
+		mainScreen.add(bossTitle);
+		
+		GLabel name = new GLabel(". Name: "+boss.getName());
+		name.setColor(Color.WHITE);
+		name.setFont("ARIEL-BOLD-13");
+		name.setLocation(bossTitle.getX(), bossTitle.getY()+name.getHeight()*2);
+		contents.add(name);
+		mainScreen.add(name);
+		
+		GLabel res = new GLabel(resistances(boss.getName()));
+		res.setColor(Color.WHITE);
+		res.setFont("ARIEL-BOLD-13");
+		res.setLocation(name.getX(), name.getY()+res.getHeight()*2);
+		contents.add(res);
+		mainScreen.add(res);
+		
+		GLabel vul = new GLabel(vulnerabilities(boss.getName()));
+		vul.setColor(Color.WHITE);
+		vul.setFont("ARIEL-BOLD-13");
+		vul.setLocation(res.getX(), res.getY()+vul.getHeight()*2);
+		contents.add(vul);
+		mainScreen.add(vul);
 		 	
 	}
 	
@@ -464,15 +492,15 @@ private void createMap() {
 		String str = "";
 		
 		switch (name) {
-		case "boss_drip": str = "Resistances: All Affinities";
+		case "Completely Original Boss": str = ". Resistances: All Affinities";
 		break;
-		case "boss_mage": str = "Resistances: Magic";
+		case "Supreme Mage": str = ". Resistances: Magic";
 		break;
-		case "boss_seraphim": str = "Resistances: Holy";
+		case "Seraphim Vassal": str = ". Resistances: Holy";
 		break;
-		case "boss_deathknight": str = "Resistances: Fire";
+		case "Death Knight": str = ". Resistances: Fire";
 		break;
-		case "boss_spiritofstorms": str = "Resistances: Electric";
+		case "Spirit of Storms": str = ". Resistances: Electric";
 		break;
 		}
 		return str;
@@ -482,15 +510,15 @@ private void createMap() {
 		String str = "";
 		
 		switch (name) {
-		case "boss_drip": str = "Vulnerabilities: None";
+		case "Completely Original Boss": str = ". Vulnerabilities: None";
 		break;
-		case "boss_mage": str = "Vulnerabilities: Blast";
+		case "Supreme Mage": str = ". Vulnerabilities: Blast";
 		break;
-		case "boss_seraphim": str = "Vulnerabilities: Fire";
+		case "Seraphim Vassal": str = ". Vulnerabilities: Fire";
 		break;
-		case "boss_deathknight": str = "Vulnerabilities: Electric + Holy";
+		case "Death Knight": str = ". Vulnerabilities: Electric + Holy";
 		break;
-		case "boss_spiritofstorms": str = "Vulnerabilities: Magic";
+		case "Spirit of Storms": str = ". Vulnerabilities: Magic";
 		break;
 		}
 		return str;

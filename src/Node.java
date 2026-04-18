@@ -165,8 +165,8 @@ private String[] getPool() {
 		
 		if (hornet == 1) {
 			boss = new Enemy ("boss_drip",10);
-			sprite = new GImage("spr_BOSS_Hornet.png");
-			sprite.setSize(70, 70);
+			sprite = new GImage("spr_BossNode.png");
+			sprite.setSize(50, 50);
 			return temp[1];
 		}
 		
@@ -174,17 +174,17 @@ private String[] getPool() {
 		case "combatHoly":
 			boss = new Enemy ("boss_seraphim",10);
 			sprite = new GImage("spr_BossNode.png");
-			sprite.setSize(70, 70);
+			sprite.setSize(50, 50);
 			return temp[0];
 		case "combatFire":
 			boss = new Enemy ("boss_deathknight",10);
 			sprite = new GImage("spr_BossNode.png");
-			sprite.setSize(70, 70);
+			sprite.setSize(50, 50);
 			return temp[3];
 		case "combatMagic":
 			boss = new Enemy ("boss_mage",10);
 			sprite = new GImage("spr_BossNode.png");
-			sprite.setSize(70, 70);
+			sprite.setSize(50, 50);
 			return temp[2];
 		case "combatLightning":
 			boss = new Enemy ("boss_spiritofstorms",10);
