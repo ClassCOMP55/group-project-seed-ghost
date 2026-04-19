@@ -104,7 +104,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 			break;
 		case "ranger":
 			charImage = new GImage("spr_RangerUpdated.png");
-			charImage.setSize(140, 140);
+			charImage.setSize(162, 145);
 			break;
 		default:
 			charImage = new GImage("spr_Marksman.png");
