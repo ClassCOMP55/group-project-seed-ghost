@@ -23,7 +23,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Enemy[] myArrEnemies;
 	Skill[] mySkills;
 	
-	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox;
+	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
 	private GImage background;
 	
@@ -47,7 +47,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		t = new Timer(1000, this);
 		hideContent();
-		System.out.println();
 		allSkillsButtonLabels = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
 		allConsumableButton = new ArrayList<>();
@@ -61,19 +60,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		forSkills = false;
 		forConsumable = false;
 		skill=false;
-		
 		counter = 0;
 			
 		addButtons();
-		
-		
 		generateEnemiesAndAllies();
-		
 		otherEntity = myArrEnemies[0]; //Temporary Fix for glitch
 		update();
 		nextCombat();
 		addBackground();
-
 	}
 
 	@Override
@@ -412,12 +406,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.add(description);
 		mainScreen.add(description);
 		
+		intentBox = new GRect(0,0);
 		intent = new GLabel("");
 		intent.setFont("ARIEL-BOLD-15");
-		intent.setColor(Color.BLUE);
+		intent.setColor(Color.RED);
 		intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight *(70.0/600.0));
-		contents.add(intent);
-		mainScreen.add(intent);
 		
 		
 	}
@@ -892,6 +885,23 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		 toolTipLabels.clear();
 	}
 	
+	public void intent(Enemy e) {
+		intent.setLabel(e.getIntent());
+		
+		intentBox.setSize(intent.getWidth()+10, intent.getHeight()+10);
+		intentBox.setFilled(true);
+		intentBox.setFillColor(Color.DARK_GRAY);
+		intentBox.setColor(Color.BLACK);
+		intentBox.setLocation((screenWidth-intent.getWidth())/2, descriptionBox.getY()+descriptionBox.getHeight()+5);
+		contents.add(intentBox);
+		mainScreen.add(intentBox);
+		
+		intent.setLocation(intentBox.getX()+(intentBox.getWidth()-intent.getWidth())/2,intentBox.getY()+(intentBox.getHeight()+intent.getAscent())/2);
+		contents.add(intent);
+		mainScreen.add(intent);
+		
+	}
+	
 	public void yourDead(Entity entity) {
 		GImage image = entityToImage(entity);
 		GLine line1 = new GLine(image.getX(),image.getY(),image.getX()+image.getWidth(),image.getY()+image.getHeight());
@@ -1136,8 +1146,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			Entity entity = imageToEntity((GImage) obj);
 			if (entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
-				intent.setLabel(enemy.getIntent());
-				intent.setLocation((screenWidth-intent.getWidth())/2, descriptionBox.getY()+descriptionBox.getHeight()+intent.getHeight());
+				intent(enemy);
 			}
 			else if (entity instanceof Character) {
 				toolTips((Character) entity);
@@ -1146,6 +1155,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else {
 			hideToolTips();
 			intent.setLabel("");
+			intentBox.setSize(0,0);
 			intent.setLocation((screenWidth-intent.getWidth())/2, descriptionBox.getY()+descriptionBox.getHeight()+intent.getHeight());
 		}
 	}
