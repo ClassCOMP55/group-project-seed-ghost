@@ -326,14 +326,14 @@ public class CampFirePane extends GraphicsPane{
 
 	        HashSet<String> used = new HashSet<>();
 
-	        // collect all professions currently in party
+	    
 	        for (Character c : party) {
 	            if (c != null) {
 	                used.add(c.getProfession());
 	            }
 	        }
 
-	        // build list of unused professions
+	    
 	        List<String> available = new ArrayList<>();
 	        for (String prof : allProfessions) {
 	            if (!used.contains(prof)) {
@@ -341,7 +341,7 @@ public class CampFirePane extends GraphicsPane{
 	            }
 	        }
 
-	        // if everything is already used, allow duplicates again
+	    
 	        if (available.isEmpty()) {
 	            return Chance.choose(allProfessions);
 	        }
