@@ -12,8 +12,8 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	private ArrayList<Character> myChars;
 	private ArrayList<GImage> myImages;
-	private ArrayList<GLabel> infoLabels;
-	private ArrayList<GRect> infoButtons;
+	private ArrayList<GLabel> infoLabels,extraRects;
+	private ArrayList<GRect> infoButtons,extraLabels;
 	public static PlayerInventory myInventory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
@@ -30,10 +30,13 @@ public class CharacterSelectionPane extends GraphicsPane {
 		myImages = new ArrayList<>();
 		infoLabels = new ArrayList<>();
 		infoButtons = new ArrayList<>();
+		extraLabels = new ArrayList<>();
+		extraRects = new ArrayList<>();
 		createBackground();
 		addText();
 		createCharacters();
 		nameAndInfoDisplay();
+		//showStats(myChars.get(0));
 	}
 
 	@Override
@@ -117,97 +120,114 @@ public class CharacterSelectionPane extends GraphicsPane {
 		mainScreen.add(charImage);
 	}
 	
-	private void showStats() {
-		for (Character myChar:myChars) {
-			int index = myChars.indexOf(myChar);
-			GImage image = myImages.get(index);
-			GRect box = new GRect(275,170);
-			box.setLocation(image.getX(), image.getY()+image.getHeight());
-			box.setColor(Color.BLACK);
-			box.setFillColor(Color.BLACK);
-			box.setFilled(true);
-			contents.add(box);
-			mainScreen.add(box);
-			
-			GLabel health = new GLabel("Health: "+myChar.getHp());
-			health.setLocation(box.getX()+5, box.getY()+15);
-			health.setColor(Color.RED);
-			health.setFont("ARIEL-PLAIN-14");
-			contents.add(health);
-			mainScreen.add(health);
-			
-			GLabel mana = new GLabel("Mana: "+myChar.getManaMax());
-			mana.setLocation(box.getX()+5, box.getY()+30);
-			mana.setColor(Color.RED);
-			mana.setFont("ARIEL-PLAIN-14");
-			contents.add(mana);
-			mainScreen.add(mana);
-			
-			GLabel weapon = new GLabel("Weapon: "+myChar.getWeapon().toString());
-			weapon.setLocation(box.getX()+5, box.getY()+45);
-			weapon.setColor(Color.RED);
-			weapon.setFont("ARIEL-PLAIN-14");
-			contents.add(weapon);
-			mainScreen.add(weapon);
-			
-			int[] stats = myChar.getStatSpread();
-			
-			GLabel str = new GLabel("Strength: "+stats[0]);
-			str.setLocation(box.getX()+5, box.getY()+60);
-			str.setColor(Color.RED);
-			str.setFont("ARIEL-PLAIN-14");
-			contents.add(str);
-			mainScreen.add(str);
-			
-			GLabel dex = new GLabel("Dexterity: "+stats[1]);
-			dex.setLocation(box.getX()+5, box.getY()+75);
-			dex.setColor(Color.RED);
-			dex.setFont("ARIEL-PLAIN-14");
-			contents.add(dex);
-			mainScreen.add(dex);
-			
-			GLabel prc = new GLabel("Precison: "+stats[2]);
-			prc.setLocation(box.getX()+5, box.getY()+90);
-			prc.setColor(Color.RED);
-			prc.setFont("ARIEL-PLAIN-14");
-			contents.add(prc);
-			mainScreen.add(prc);
-			
-			GLabel ist = new GLabel("Instinct: "+stats[3]);
-			ist.setLocation(box.getX()+5, box.getY()+105);
-			ist.setColor(Color.RED);
-			ist.setFont("ARIEL-PLAIN-14");
-			contents.add(ist);
-			mainScreen.add(ist);
-			
-			GLabel con = new GLabel("Constitution: "+stats[4]);
-			con.setLocation(box.getX()+5, box.getY()+120);
-			con.setColor(Color.RED);
-			con.setFont("ARIEL-PLAIN-14");
-			contents.add(con);
-			mainScreen.add(con);
-			
-			GLabel wil = new GLabel("Willpower: "+stats[5]);
-			wil.setLocation(box.getX()+5, box.getY()+135);
-			wil.setColor(Color.RED);
-			wil.setFont("ARIEL-PLAIN-14");
-			contents.add(wil);
-			mainScreen.add(wil);
-			
-			GLabel fth = new GLabel("Faith: "+stats[6]);
-			fth.setLocation(box.getX()+5, box.getY()+150);
-			fth.setColor(Color.RED);
-			fth.setFont("ARIEL-PLAIN-14");
-			contents.add(fth);
-			mainScreen.add(fth);
-			
-			GLabel arc = new GLabel("Arcane: "+stats[7]);
-			arc.setLocation(box.getX()+5, box.getY()+165);
-			arc.setColor(Color.RED);
-			arc.setFont("ARIEL-PLAIN-14");
-			contents.add(arc);
-			mainScreen.add(arc);	
-		}
+	private void showStats(Character myChar) {
+		
+		
+		
+		GRect border = new GRect(320,410);
+		double x = (MainApplication.WINDOW_WIDTH - border.getWidth()) / 2.0;
+		double y = (MainApplication.WINDOW_HEIGHT - border.getHeight()) / 2.0;
+		
+		border.setLocation(x, y);
+		border.setFillColor(Color.BLACK);
+		border.setColor(Color.BLACK);
+		border.setFilled(true);
+		contents.add(border);
+		mainScreen.add(border);
+		
+		GRect box = new GRect(280,370);
+		box.setLocation(x+(border.getWidth()-box.getWidth())/2, y+(border.getHeight()-box.getHeight())/2);
+		box.setFillColor(Color.DARK_GRAY);
+		box.setColor(Color.BLACK);
+		box.setFilled(true);
+		contents.add(box);
+		mainScreen.add(box);
+		
+		GLabel title = new GLabel("Stats");
+		title.setFont("ARIEL-Bold-35");
+		title.setLocation(box.getX()+5, box.getY()+title.getHeight());
+		title.setColor(Color.BLACK);
+		contents.add(title);
+		mainScreen.add(title);
+		
+		GLabel health = new GLabel(". Health: "+myChar.getHp());
+		health.setFont("ARIEL-Bold-20");
+		health.setLocation(box.getX()+5, title.getY()+health.getHeight()+5);
+		health.setColor(Color.WHITE);
+		contents.add(health);
+		mainScreen.add(health);
+		
+		GLabel mana = new GLabel(". Mana: "+myChar.getManaMax());
+		mana.setFont("ARIEL-Bold-20");
+		mana.setLocation(box.getX()+5, health.getY()+mana.getHeight());
+		mana.setColor(Color.WHITE);
+		contents.add(mana);
+		mainScreen.add(mana);
+		
+		GLabel weapon = new GLabel(". Weapon: "+myChar.getWeapon().toString());
+		weapon.setFont("ARIEL-Bold-20");
+		weapon.setLocation(box.getX()+5, mana.getY()+weapon.getHeight());
+		weapon.setColor(Color.WHITE);
+		contents.add(weapon);
+		mainScreen.add(weapon);
+		
+		int[] stats = myChar.getStatSpread();
+		
+		GLabel str = new GLabel(". Strength: "+stats[0]);
+		str.setFont("ARIEL-Bold-20");
+		str.setLocation(box.getX()+5, weapon.getY()+str.getHeight());
+		str.setColor(Color.WHITE);
+		contents.add(str);
+		mainScreen.add(str);
+		
+		GLabel dex = new GLabel(". Dexterity: "+stats[1]);
+		dex.setFont("ARIEL-Bold-20");
+		dex.setLocation(box.getX()+5,str.getY()+dex.getHeight());
+		dex.setColor(Color.WHITE);
+		contents.add(dex);
+		mainScreen.add(dex);
+		
+		GLabel prc = new GLabel(". Precison: "+stats[2]);
+		prc.setFont("ARIEL-Bold-20");
+		prc.setLocation(box.getX()+5, dex.getY()+prc.getHeight());
+		prc.setColor(Color.WHITE);
+		contents.add(prc);
+		mainScreen.add(prc);
+		
+		GLabel ist = new GLabel(". Instinct: "+stats[3]);
+		ist.setFont("ARIEL-Bold-20");
+		ist.setLocation(box.getX()+5,  prc.getY()+ist.getHeight());
+		ist.setColor(Color.WHITE);
+		contents.add(ist);
+		mainScreen.add(ist);
+		
+		GLabel con = new GLabel(". Constitution: "+stats[4]);
+		con.setFont("ARIEL-Bold-20");
+		con.setLocation(box.getX()+5, ist.getY()+con.getHeight());
+		con.setColor(Color.WHITE);
+		contents.add(con);
+		mainScreen.add(con);
+		
+		GLabel wil = new GLabel(". Willpower: "+stats[5]);
+		wil.setFont("ARIEL-Bold-20");
+		wil.setLocation(box.getX()+5,con.getY()+wil.getHeight());
+		wil.setColor(Color.WHITE);
+		contents.add(wil);
+		mainScreen.add(wil);
+		
+		GLabel fth = new GLabel(". Faith: "+stats[6]);
+		fth.setFont("ARIEL-Bold-20");
+		fth.setLocation(box.getX()+5,wil.getY()+fth.getHeight());
+		fth.setColor(Color.WHITE);
+		contents.add(fth);
+		mainScreen.add(fth);
+		
+		GLabel arc = new GLabel(". Arcane: "+stats[7]);
+		arc.setFont("ARIEL-Bold-20");
+		arc.setLocation(box.getX()+5, fth.getY()+arc.getHeight());
+		arc.setColor(Color.WHITE);
+		contents.add(arc);
+		mainScreen.add(arc);	
 	}
 	
 	public void nameAndInfoDisplay(){
@@ -255,8 +275,8 @@ public class CharacterSelectionPane extends GraphicsPane {
 			contents.add(info);
 			mainScreen.add(info);
 			
-			
-			
+			infoButtons.add(infoBox);
+			infoLabels.add(info);	
 		}
 		
 	}
