@@ -323,10 +323,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
 		otherEntity =c;
-		description.setLabel(e+" attacks "+c.getProfession());
-		descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
-		descriptionBox.setLocation((screenWidth-descriptionBox.getWidth())/2,screenHeight*(20.0/600.0));
-		description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
 	}
 	
 	public void nextCombat() {
@@ -340,6 +336,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
+			setDescription("Choose a action");
 			Character c = (Character) currentEntity;
 			
 			if (c.getLastUsedSkill()!=null) {
@@ -349,6 +346,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			counter++;
 		}
 		else if (currentEntity instanceof Enemy) {
+			Enemy e = (Enemy) currentEntity;
+			setDescription(e+" Acts on intent:  "+e.getIntent());
 		    Timer timer = new Timer(3000, new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
@@ -391,18 +390,18 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void addText() {
-		description = new GLabel("Click a Action");
+		description = new GLabel("");
 		description.setColor(Color.WHITE);
-		description.setFont("ARIEL-BOLD-15");
+		description.setFont("ARIEL-PLAIN-15");
 		
-		descriptionBox = new GRect(description.getWidth()+2,description.getHeight()+1);
+		descriptionBox = new GRect(0,0);
 		descriptionBox.setFilled(true);
 		descriptionBox.setFillColor(Color.DARK_GRAY);
-		descriptionBox.setLocation((screenWidth-description.getWidth())/2,screenHeight*(50.0/600.0));
 		contents.add(descriptionBox);
 		mainScreen.add(descriptionBox);
 		
-		description.setLocation(descriptionBox.getX(),descriptionBox.getY()+description.getHeight());
+		setDescription("Welcome to combat!");
+		
 		contents.add(description);
 		mainScreen.add(description);
 		
@@ -972,6 +971,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		else if (obj == closeButton && skill == true) {
 			hideSkills();
+			setDescription("Choose a Action");
 			skill =false;
 		}
 		
@@ -994,6 +994,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 					else {
 						hideSkills();
 						skillReady = true;
+						setDescription("Choose a Target");
 					}
 				}
 				else {
@@ -1023,6 +1024,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			else if (obj == closeButton) {
 				hideConsumables();
+				setDescription("Choose a Action");
 			}
 		}
 		
