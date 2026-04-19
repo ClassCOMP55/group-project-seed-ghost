@@ -33,10 +33,7 @@ public class CampFirePane extends GraphicsPane{
 	@Override
 	public void showContent() {
         addBackground();
-        previewMercenary = new Character(Chance.choose(new String[] {
-            "knight","samurai","thief","viking","cleric",
-            "sorcerer","paladin","ranger","marksman"
-        }),true);
+        previewMercenary = new Character(getUniqueProfession(), true);
         addText();
         addButtons();
         displayActionPoints();
@@ -157,7 +154,8 @@ public class CampFirePane extends GraphicsPane{
 	            return false;
 	        }
 
-	        if (!actionType.equals("train") && !actionType.equals("heal")
+	        if (!actionType.equals("train") && !actionType.equals("heal") 
+	        		&& !actionType.equals("mercenary")
 	                && usedActions.contains(actionType)) {
 	            showMessage("Action already used.");
 	            return false;
@@ -165,7 +163,8 @@ public class CampFirePane extends GraphicsPane{
 
 	        actionPoints--;
 
-	        if (!actionType.equals("train") && !actionType.equals("heal")) {
+	        if (!actionType.equals("train") && !actionType.equals("heal")
+	        		&&  !actionType.equals("mercenary")) {
 	            usedActions.add(actionType);
 	        }
 
@@ -308,16 +307,46 @@ public class CampFirePane extends GraphicsPane{
 	            if (inv.getPartyMembers()[i] == null) {
 	                inv.getPartyMembers()[i] = previewMercenary;
 	                showMessage("Recruited a new mercenary: " + previewMercenary.getProfession());
-	                previewMercenary = new Character(Chance.choose(new String[]{
-	                        "knight","samurai","thief","viking","cleric",
-	                        "sorcerer","paladin","ranger","marksman"
-	                 }));
+	                previewMercenary = new Character(getUniqueProfession());
 	                displayMercenaryPreview();
 	                return;
 	            }
 	        }
 
 	        showMessage("Party full! Mercenary cannot join");
+	    }
+	    
+	    private String getUniqueProfession() {
+	        String[] allProfessions = {
+	            "knight","samurai","thief","viking","cleric",
+	            "sorcerer","paladin","ranger","marksman"
+	        };
+
+	        Character[] party = CharacterSelectionPane.myInventory.getPartyMembers();
+
+	        HashSet<String> used = new HashSet<>();
+
+	        // collect all professions currently in party
+	        for (Character c : party) {
+	            if (c != null) {
+	                used.add(c.getProfession());
+	            }
+	        }
+
+	        // build list of unused professions
+	        List<String> available = new ArrayList<>();
+	        for (String prof : allProfessions) {
+	            if (!used.contains(prof)) {
+	                available.add(prof);
+	            }
+	        }
+
+	        // if everything is already used, allow duplicates again
+	        if (available.isEmpty()) {
+	            return Chance.choose(allProfessions);
+	        }
+
+	        return Chance.choose(available.toArray(new String[0]));
 	    }
 	    
 	    //Displays the messages on the pane
@@ -415,7 +444,7 @@ public class CampFirePane extends GraphicsPane{
 	        };
 
 	        for (int i = 0; i < labels.length; i++) {
-	            GLabel label = new GLabel(labels[i], x + 5, y + 15 + (i * 15));
+	            GLabel label = new GLabel(labels[i], x + 5, y + 16 + (i * 15));
 	            label.setColor(i == 0 ? Color.YELLOW : Color.RED);
 	            label.setFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, i == 0 ? 12 : 12));
 	            mercPreviewObjects.add(label);
@@ -426,7 +455,7 @@ public class CampFirePane extends GraphicsPane{
 	        int[] stats = previewMercenary.getStatSpread();
 	        String[] statNames = {"STR","DEX","PRC","INS","CON","WIL","FTH","ARC"};
 	        for (int i = 0; i < stats.length; i++) {
-	            GLabel stat = new GLabel(statNames[i] + ": " + stats[i], x + 5, y + 90 + (i * 13));
+	            GLabel stat = new GLabel(statNames[i] + ": " + stats[i], x + 5, y + 105 + (i * 13));
 	            stat.setColor(Color.RED);
 	            stat.setFont(new java.awt.Font("DialogInput", java.awt.Font.PLAIN, 11));
 	            mercPreviewObjects.add(stat);
@@ -494,7 +523,7 @@ public class CampFirePane extends GraphicsPane{
 	            
 	            //Armor
 	            GLabel armor = new GLabel("Armor: " + c.getArmor());
-	            armor.setLocation(x + 5, y + 60);
+	            armor.setLocation(x + 5, y + 75);
 	            armor.setColor(Color.WHITE);
 	            armor.setFont("DialogInput-PLAIN-12");
 	            contents.add(armor);
@@ -510,7 +539,7 @@ public class CampFirePane extends GraphicsPane{
 
 	            for (int j = 0; j < stats.length; j++) {
 	                GLabel stat = new GLabel(statNames[j] + ": " + stats[j]);
-	                stat.setLocation(x + 5, y + 75 + (j * 13));
+	                stat.setLocation(x + 5, y + 90 + (j * 13));
 	                stat.setColor(Color.WHITE);
 	                stat.setFont("DialogInput-PLAIN-11");
 
