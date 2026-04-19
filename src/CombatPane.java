@@ -902,6 +902,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	public void setDescription(String str) {
+		description.setLabel(str);
+		descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
+		descriptionBox.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
+		description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+	}
+	
 	public void yourDead(Entity entity) {
 		GImage image = entityToImage(entity);
 		GLine line1 = new GLine(image.getX(),image.getY(),image.getX()+image.getWidth(),image.getY()+image.getHeight());
@@ -990,11 +997,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 					}
 				}
 				else {
-					description.setLabel("Not enough mana try again!");
-					description.setFont("DialogInput-PLAIN-15");
-					descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
-					descriptionBox.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
-					description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+					setDescription("Not enough mana try again!");
 				}
 				
 			}
@@ -1014,11 +1017,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 					
 				}
 				else {
-					description.setLabel("Empty try again!");
-					description.setFont("DialogInput-PLAIN-15");
-					descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
-					descriptionBox.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
-					description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+					setDescription("Empty try again!");
 				}
 				
 			}
@@ -1053,11 +1052,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				return;
 			}
 			else {
-				description.setLabel("Thats not a target!");
-				description.setFont("DialogInput-PLAIN-15");
-				descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
-				descriptionBox.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
-				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+				setDescription("Thats not a target!");
 			}
 	
 		}
@@ -1096,12 +1091,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			int index = allSkillsButton.indexOf(highlighted);
 			Character c = (Character) currentEntity;
 			Skill temp = c.getMySkills()[index];
-			description.setLabel(temp.getDescription());
-			description.setFont("DialogInput-PLAIN-12");
-			descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
-			descriptionBox.setLocation((screenWidth-description.getWidth())/2,screenHeight*(20.0/600.0));
-			description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
-
+			setDescription(temp.getDescription());
 		}
 		else if (skill == true && closeButton == obj) {
 			
@@ -1374,10 +1364,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	public GLabel getDescription() {
 		return description;
-	}
-
-	public void setDescription(GLabel description) {
-		this.description = description;
 	}
 
 	public ArrayList<GRect> getAllSkillsButton() {
