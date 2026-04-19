@@ -17,19 +17,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private ArrayList<Entity> allEntities, temp,initiativeArr;
 	private ArrayList<GImage> allImages;
-	private ArrayList<GRect> allSkillsButton,healthBars,manaBars,allConsumableButton;
-	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels,allConsumableButtonLabels;
+	private ArrayList<GRect> allSkillsButton,healthBars,manaBars,allConsumableButton,toolTipBoxes;
+	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels,allConsumableButtonLabels,toolTipLabels;
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
 	Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton;
-	private GLabel displayBoxLabel,description,toolTip,mapButtonLabel,menuButtonLabel,intent,list;
+	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
 	private GImage background;
 	
 	private boolean skill;
-	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable,skill2;
-	private int turn,counter,skillIndex,switched,enemyNumber,allyNumber,test,scaling;
+	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
+	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	
 	private Entity currentEntity,otherEntity;
@@ -59,12 +59,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		forSkills = false;
 		forConsumable = false;
 		skill=false;
-		skill2 = false;
 		
-		test =0;
-		turn = 0;
 		counter = 0;
-		switched =0;
 			
 		addButtons();
 		
@@ -409,12 +405,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.add(intent);
 		mainScreen.add(intent);
 		
-		toolTip = new GLabel("");
-		toolTip.setLocation((screenWidth-toolTip.getWidth())/2,(screenHeight-toolTip.getHeight())/2);
-		toolTip.setFont("ARIEL-BOLD-12");
-		toolTip.setColor(Color.BLUE);
-		contents.add(toolTip);
-		mainScreen.add(toolTip);
 		
 	}
 	
@@ -820,6 +810,65 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		image.setColor(Color.YELLOW);
 	}
 	
+	public void toolTips(Character c) {
+		toolTipBoxes = new ArrayList<>();
+		toolTipLabels = new ArrayList<>();
+		
+		GLabel armor = new GLabel(c.getArmor().printStats());
+		armor.setFont("ARIEL-BOLD-12");
+		armor.setColor(Color.WHITE);
+		
+		GRect armorBox = new GRect(armor.getWidth()+2,armor.getHeight()+2);
+		armorBox.setFilled(true);
+		armorBox.setFillColor(Color.DARK_GRAY);
+		armorBox.setColor(Color.BLACK);
+		armorBox.setLocation(skillButton.getX(), skillButton.getY()-armorBox.getHeight());
+		contents.add(armorBox);
+		mainScreen.add(armorBox);
+		toolTipBoxes.add(armorBox);
+		
+		armor.setLocation(armorBox.getX()+2, armorBox.getY()+armor.getHeight());
+		contents.add(armor);
+		mainScreen.add(armor);
+		toolTipLabels.add(armor);
+		
+		GRect box = new GRect(232,50);
+		box.setFilled(true);
+		box.setFillColor(Color.DARK_GRAY);
+		box.setColor(Color.BLACK);
+		box.setLocation(armorBox.getX(), armorBox.getY()-box.getHeight());
+		contents.add(box);
+		mainScreen.add(box);
+		toolTipBoxes.add(box);
+		
+		
+		GLabel name = new GLabel(c.toString());
+		name.setFont("ARIEL-BOLD-12");
+		name.setColor(Color.WHITE);
+		name.setLocation(box.getX()+2, box.getY()+name.getHeight());
+		contents.add(name);
+		mainScreen.add(name);
+		toolTipLabels.add(name);
+		
+		GLabel weapon = new GLabel(c.getWeapon().toString());
+		weapon.setFont("ARIEL-BOLD-12");
+		weapon.setColor(Color.WHITE);
+		weapon.setLocation(name.getX(), name.getY()+weapon.getHeight());
+		contents.add(weapon);
+		mainScreen.add(weapon);
+		toolTipLabels.add(weapon);
+		
+		int[] statSpread = c.getStatSpread();
+		GLabel calc = new GLabel("Weapon damage: "+c.getWeapon().scaledDamageFlat(statSpread));
+		calc.setFont("ARIEL-BOLD-12");
+		calc.setColor(Color.WHITE);
+		calc.setLocation(name.getX(), weapon.getY()+calc.getHeight());
+		contents.add(calc);
+		mainScreen.add(calc);
+		toolTipLabels.add(calc);
+		
+	}
+	
 	public void yourDead(Entity entity) {
 		GImage image = entityToImage(entity);
 		GLine line1 = new GLine(image.getX(),image.getY(),image.getX()+image.getWidth(),image.getY()+image.getHeight());
@@ -1059,13 +1108,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 			}
 			else if (entity instanceof Character) {
-				toolTip.setLabel(entity.getTooltip());
-				toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
+				toolTips((Character) entity);
+				//toolTip.setLabel(entity.getTooltip());
+				//toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
 			}
 		}
 		else {
-			toolTip.setLabel("");
-			toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
+			//toolTip.setLabel("");
+			//toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
 			intent.setLabel("");
 			intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 		}
@@ -1289,14 +1339,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	public void setDescription(GLabel description) {
 		this.description = description;
-	}
-
-	public GLabel getTurnLabel() {
-		return toolTip;
-	}
-
-	public void setTurnLabel(GLabel toolTip) {
-		this.toolTip = toolTip;
 	}
 
 	public ArrayList<GRect> getAllSkillsButton() {
