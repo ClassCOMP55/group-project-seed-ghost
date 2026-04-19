@@ -52,6 +52,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allSkillsButton = new ArrayList<>();
 		allConsumableButton = new ArrayList<>();
 		allConsumableButtonLabels = new ArrayList<>();
+		toolTipBoxes = new ArrayList<>();
+		toolTipLabels = new ArrayList<>();
 	
 		otherEntity = new Enemy();
 		highlighted = new GRect(0,0);
@@ -811,8 +813,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void toolTips(Character c) {
-		toolTipBoxes = new ArrayList<>();
-		toolTipLabels = new ArrayList<>();
 		
 		GLabel armor = new GLabel(c.getArmor().printStats());
 		armor.setFont("ARIEL-BOLD-12");
@@ -867,6 +867,20 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(calc);
 		toolTipLabels.add(calc);
 		
+	}
+	
+	public void hideToolTips() {
+		 for (GRect rect:toolTipBoxes) {
+			 contents.remove(rect);
+			 mainScreen.remove(rect);
+		 }
+		 toolTipBoxes.clear();
+		 
+		 for (GLabel label:toolTipLabels) {
+			 contents.remove(label);
+			 mainScreen.remove(label);
+		 }
+		 toolTipLabels.clear();
 	}
 	
 	public void yourDead(Entity entity) {
@@ -1109,13 +1123,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			else if (entity instanceof Character) {
 				toolTips((Character) entity);
-				//toolTip.setLabel(entity.getTooltip());
-				//toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
 			}
 		}
 		else {
-			//toolTip.setLabel("");
-			//toolTip.setLocation((screenWidth-toolTip.getWidth())/2,inventoryButton.getY()-toolTip.getHeight());
+			hideToolTips();
 			intent.setLabel("");
 			intent.setLocation((screenWidth-intent.getWidth())/2, screenHeight*(70.0/600.0));
 		}
