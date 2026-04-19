@@ -47,7 +47,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		t = new Timer(1000, this);
 		hideContent();
-		
+		System.out.println();
 		allSkillsButtonLabels = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
 		allConsumableButton = new ArrayList<>();
@@ -72,33 +72,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		otherEntity = myArrEnemies[0]; //Temporary Fix for glitch
 		update();
 		nextCombat();
-		
-		
-		background = null;
-		switch (getNodeAffinity()) {
-			case "combatHoly": 
-				background = new GImage("spr_BACKGROUND_Holy.png");
-				break;
-			case "combatFire": 
-				background = new GImage("spr_BACKGROUND_Fire.png");
-				break;
-			case "combatMagic": 
-				background = new GImage("spr_BACKGROUND_Magic2.png");
-				break;
-			case "combatLightning": 
-				background = new GImage("spr_BACKGROUND_Lightning.jpg");
-				break;
-		}
-//		int height = MainApplication.WINDOW_HEIGHT;
-//		double ratio = MainApplication.WINDOW_HEIGHT / background.getHeight();
-		
-		background.setLocation(0, 0);
-		background.setSize(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
-		
-		contents.add(background);
-		mainScreen.add(background);
-		
-		background.sendToBack();
+		addBackground();
+
 	}
 
 	@Override
@@ -117,6 +92,33 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		skillButton = createButton(0,screenHeight-buttonHeight,"Skills");
 		inventoryButton = createButton(skillButton.getWidth(),screenHeight-buttonHeight,"Inventory");
+	}
+	
+	public void addBackground() {
+		
+		background = null;
+		switch (getNodeAffinity()) {
+			case "combatHoly": 
+				background = new GImage("spr_BACKGROUND_Holy.png");
+				break;
+			case "combatFire": 
+				background = new GImage("spr_BACKGROUND_Fire.png");
+				break;
+			case "combatMagic": 
+				background = new GImage("spr_BACKGROUND_Magic.png");
+				break;
+			case "combatLightning": 
+				background = new GImage("spr_BACKGROUND_Lightning.jpg");
+				break;
+		}
+		
+		background.setLocation(0, 0);
+		background.setSize(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
+		
+		contents.add(background);
+		mainScreen.add(background);
+		
+		background.sendToBack();
 	}
 	
 	/*
@@ -530,9 +532,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void updateHealthAndManaBarSize(Character c) {
 		int index = allEntities.indexOf(c);
 		GRect health = healthBars.get(index);
-		if(index>manaBars.size()-1) {
-			System.out.println();
-		}
 		GRect mana = manaBars.get(index);
 		double ratio = c.getHp()/c.getHpMax();
 		health.setSize(barSizeChar*ratio, health.getHeight());
