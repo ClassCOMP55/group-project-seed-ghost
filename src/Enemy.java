@@ -534,12 +534,10 @@ public class Enemy extends Entity {
 				weaponDamage[DamageType.SLASH.ordinal()] = 75;
 				weaponDamage[DamageType.FIRE.ordinal()] = 75;
 				weaponScales[EntityStats.STR.ordinal()] = 2.0;
-				weaponScales[EntityStats.CON.ordinal()] = 1.0;
-				str = 10 + (int)(scaling * 2.0);
+				str = 10 + scaling;
 				con = 20 + (int)(scaling * 2.0);
 				wil = 1;
-				arc = 50;
-				ist = 20;
+				arc = 30 + scaling;
 				spr = "spr_BOSS_DeathKnight.gif";
 				
 				name = "Death Knight";
@@ -786,7 +784,7 @@ public class Enemy extends Entity {
 		switch (bossname) {
 			case "boss_drip": str = "Name: Completely Original Boss\nAttack Type: Slashing\nVulnerabilities: None\nResistances: Affinities";
 			break;
-			case "boss_mage": str = "Name: Supreme Mage\nAttack Type: Magic\nVulnerabilities: Blast\nResistances: Magic";
+			case "boss_mage": str = "Name: Supreme Mage\nAttack Type: Magic\nVulnerabilities: Electric + Blast\nResistances: Magic";
 			break;
 			case "boss_seraphim": str = "Name: Seraphim Vassal\nAttack Type: Holy\nVulnerabilities: Fire\nResistances: Holy";
 			break;
