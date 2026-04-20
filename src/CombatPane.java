@@ -429,6 +429,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			 break;
 		 case "TriSlash":
 			 animation.setImage("spr_ATTACK_trislash.gif");
+			 animTime = 1.09;
 			 break;
 		 }
 		 GImage image = entityToImage(target);
