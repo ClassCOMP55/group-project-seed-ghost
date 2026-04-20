@@ -741,6 +741,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void displayRewards() {
+		
+		GameSounds.playVictory();
+		
 		String[] possibleRewards = {"weapon","armor"};
 		String rewardType = Chance.choose(possibleRewards);
 		WeaponItem weapon = getWeaponReward();
@@ -856,6 +859,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	
 	public void displayGameOver() {
+		
+		GameSounds.playGameOver();
 		GRect backround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		backround.setFilled(true);
 		backround.setFillColor(Color.RED);
@@ -1060,6 +1065,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 					if (mySkills[skillIndex].getvTarget()=="NA") {
 						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 						update();
+						GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 						skill = false;
 						Character c = (Character) currentEntity;
 						c.setLastUsedSkill(mySkills[skillIndex]);
@@ -1085,6 +1091,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			if (allConsumableButton.contains(obj)) {
 				if (CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)]!=null) {
 					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)].use(currentEntity);
+					GameSounds.playConsumableUse();
 					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)] = null;
 					
 					GRect button = (GRect) obj;
@@ -1108,8 +1115,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
 			otherEntity = imageToEntity((GImage) obj);
 			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
+				
 				animation(mySkills[skillIndex].getAnimationType(),otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				Character c = (Character) currentEntity;
 				c.setLastUsedSkill(mySkills[skillIndex]);
 				skill =false;
@@ -1121,6 +1130,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
 				animation("DefenseOrUtility",otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				skill = false;
 				skillReady = false;
 				playersTurn = false;
