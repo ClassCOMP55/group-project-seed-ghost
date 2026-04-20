@@ -18,6 +18,19 @@ public class LootPane extends GraphicsPane {
 	private ArrayList<Boolean> claimed = new ArrayList<Boolean>();
 	private boolean anyClaimed = false;
 
+	Color BG_DARK = new Color(10, 12, 28);
+	Color PANEL_BG = new Color(28, 33, 62);
+	Color PANEL_BORDER = new Color(55, 63, 105);
+	Color TEAL = new Color(0, 210, 195);
+	Color TEAL_TRACK = new Color(15, 50, 60);
+	Color WHITE = new Color(240, 242, 255);
+	Color GREY_TEXT = new Color(140, 152, 180);
+	Color DIVIDER = new Color(55, 63, 105);
+	Color HOVER_BTN = new Color(40, 55, 90);
+	Color RED_BTN = new Color(60, 20, 45);
+	Color RED_BORDER = new Color(180, 60, 100);
+	Color RED_TEXT = new Color(210, 100, 140);
+
 	public LootPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
 	}
@@ -44,7 +57,6 @@ public class LootPane extends GraphicsPane {
 
 	private void generateLoot() {
 		lootItems.clear();
-		// random number of items 1-3
 		int numItems = (int)(Math.random() * 3) + 1;
 		ArrayList<String> usedTypes = new ArrayList<String>();
 		while (lootItems.size() < numItems) {
@@ -54,20 +66,18 @@ public class LootPane extends GraphicsPane {
 				lootItems.add(w);
 			}
 		}
-		System.out.println("generated " + lootItems.size() + " loot items");
 	}
 
 	private void displayLoot() {
-		// dark background
+		// galaxy background
 		GRect bg = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 		bg.setFilled(true);
-		bg.setFillColor(new Color(10, 12, 28));
-		bg.setColor(new Color(10, 12, 28));
+		bg.setFillColor(BG_DARK);
+		bg.setColor(BG_DARK);
 		bg.setLocation(0, 0);
 		contents.add(bg);
 		mainScreen.add(bg);
 
-		// nebula blobs for galaxy look
 		GOval nebula1 = new GOval(600, 400);
 		nebula1.setLocation(-100, 50);
 		nebula1.setFilled(true);
@@ -92,7 +102,6 @@ public class LootPane extends GraphicsPane {
 		contents.add(nebula3);
 		mainScreen.add(nebula3);
 
-		// stars
 		java.util.Random rng = new java.util.Random(77);
 		for (int i = 0; i < 200; i++) {
 			int x = rng.nextInt(MainApplication.WINDOW_WIDTH);
@@ -110,7 +119,6 @@ public class LootPane extends GraphicsPane {
 			mainScreen.add(star);
 		}
 
-		// bigger glowy stars
 		for (int i = 0; i < 12; i++) {
 			int x = rng.nextInt(MainApplication.WINDOW_WIDTH);
 			int y = rng.nextInt(MainApplication.WINDOW_HEIGHT);
@@ -123,7 +131,7 @@ public class LootPane extends GraphicsPane {
 			mainScreen.add(glowStar);
 		}
 
-		// main panel - centered on screen
+		// panel
 		int numItems = lootItems.size();
 		int cardW = 180;
 		int cardH = 220;
@@ -131,47 +139,53 @@ public class LootPane extends GraphicsPane {
 		int totalCardsW = numItems * cardW + (numItems - 1) * gap;
 		int panelW = Math.max(500, totalCardsW + 120);
 		int panelH = 420;
-		// trying to center it
 		int panelX = (MainApplication.WINDOW_WIDTH - panelW) / 2;
-		int panelY = 80; // idk if this looks right
+		int panelY = (MainApplication.WINDOW_HEIGHT - panelH) / 2;
+
+		GRect shadow = new GRect(panelW + 20, panelH + 20);
+		shadow.setLocation(panelX - 10, panelY - 10);
+		shadow.setFilled(true);
+		shadow.setFillColor(new Color(0, 0, 10));
+		shadow.setColor(new Color(0, 0, 10));
+		contents.add(shadow);
+		mainScreen.add(shadow);
 
 		GRect panel = new GRect(panelW, panelH);
 		panel.setLocation(panelX, panelY);
 		panel.setFilled(true);
-		panel.setFillColor(new Color(28, 33, 62));
-		panel.setColor(new Color(55, 63, 105));
+		panel.setFillColor(PANEL_BG);
+		panel.setColor(PANEL_BORDER);
 		contents.add(panel);
 		mainScreen.add(panel);
 
-		// teal bar at top of panel
 		GRect topBar = new GRect(panelW, 5);
 		topBar.setLocation(panelX, panelY);
 		topBar.setFilled(true);
-		topBar.setFillColor(new Color(0, 210, 195));
-		topBar.setColor(new Color(0, 210, 195));
+		topBar.setFillColor(TEAL);
+		topBar.setColor(TEAL);
 		contents.add(topBar);
 		mainScreen.add(topBar);
 
 		GLabel title = new GLabel("Loot");
 		title.setFont("DialogInput-BOLD-30");
-		title.setColor(new Color(240, 242, 255));
+		title.setColor(WHITE);
 		title.setLocation(panelX + (panelW - title.getWidth()) / 2, panelY + 50);
 		contents.add(title);
 		mainScreen.add(title);
 
 		GLine divider1 = new GLine(panelX + 40, panelY + 65, panelX + panelW - 40, panelY + 65);
-		divider1.setColor(new Color(55, 63, 105));
+		divider1.setColor(DIVIDER);
 		contents.add(divider1);
 		mainScreen.add(divider1);
 
 		GLabel bannerLbl = new GLabel("Only one treasure can be taken. Choose wisely.");
 		bannerLbl.setFont("DialogInput-PLAIN-13");
-		bannerLbl.setColor(new Color(140, 152, 180));
+		bannerLbl.setColor(GREY_TEXT);
 		bannerLbl.setLocation(panelX + (panelW - bannerLbl.getWidth()) / 2, panelY + 90);
 		contents.add(bannerLbl);
 		mainScreen.add(bannerLbl);
 
-		// draw each loot card
+		// loot cards
 		int startX = panelX + (panelW - totalCardsW) / 2;
 		int cardY = panelY + 110;
 
@@ -183,23 +197,22 @@ public class LootPane extends GraphicsPane {
 			box.setLocation(x, cardY);
 			box.setFilled(true);
 			box.setFillColor(new Color(20, 25, 50));
-			box.setColor(new Color(0, 210, 195));
+			box.setColor(TEAL);
 			contents.add(box);
 			mainScreen.add(box);
 			lootBoxes.add(box);
 
-			// little teal bar on each card
 			GRect cardTopBar = new GRect(cardW, 3);
 			cardTopBar.setLocation(x, cardY);
 			cardTopBar.setFilled(true);
-			cardTopBar.setFillColor(new Color(0, 210, 195));
-			cardTopBar.setColor(new Color(0, 210, 195));
+			cardTopBar.setFillColor(TEAL);
+			cardTopBar.setColor(TEAL);
 			contents.add(cardTopBar);
 			mainScreen.add(cardTopBar);
 
 			GLabel nameLabel = new GLabel(lootItems.get(i).toString());
 			nameLabel.setFont("DialogInput-BOLD-13");
-			nameLabel.setColor(new Color(240, 242, 255));
+			nameLabel.setColor(WHITE);
 			nameLabel.setLocation(x + (cardW - nameLabel.getWidth()) / 2, cardY + 35);
 			contents.add(nameLabel);
 			mainScreen.add(nameLabel);
@@ -207,12 +220,11 @@ public class LootPane extends GraphicsPane {
 
 			GLabel typeLabel = new GLabel(lootItems.get(i).getType());
 			typeLabel.setFont("DialogInput-PLAIN-11");
-			typeLabel.setColor(new Color(140, 152, 180));
+			typeLabel.setColor(GREY_TEXT);
 			typeLabel.setLocation(x + (cardW - typeLabel.getWidth()) / 2, cardY + 55);
 			contents.add(typeLabel);
 			mainScreen.add(typeLabel);
 
-			// show ranged/magic tag if applicable
 			String tag = "";
 			if (lootItems.get(i).isRanged()) tag += "Ranged ";
 			if (lootItems.get(i).isMagic()) tag += "Magic";
@@ -227,17 +239,16 @@ public class LootPane extends GraphicsPane {
 
 			final int index = i;
 
-			// claim button for each card
 			GRect takeBtn = new GRect(cardW - 30, 34);
 			takeBtn.setLocation(x + 15, cardY + cardH - 48);
 			takeBtn.setFilled(true);
-			takeBtn.setFillColor(new Color(15, 50, 60));
-			takeBtn.setColor(new Color(0, 210, 195));
+			takeBtn.setFillColor(TEAL_TRACK);
+			takeBtn.setColor(TEAL);
 			takeBtns.add(takeBtn);
 
 			GLabel takeLbl = new GLabel("Claim");
 			takeLbl.setFont("DialogInput-BOLD-13");
-			takeLbl.setColor(new Color(0, 210, 195));
+			takeLbl.setColor(TEAL);
 			takeLbl.setLocation(
 					takeBtn.getX() + (takeBtn.getWidth() - takeLbl.getWidth()) / 2,
 					takeBtn.getY() + (takeBtn.getHeight() + takeLbl.getAscent()) / 2);
@@ -246,11 +257,11 @@ public class LootPane extends GraphicsPane {
 			takeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseEntered(MouseEvent e) {
 					if (!anyClaimed && !claimed.get(index))
-						takeBtn.setFillColor(new Color(40, 55, 90));
+						takeBtn.setFillColor(HOVER_BTN);
 				}
 				public void mouseExited(MouseEvent e) {
 					if (!anyClaimed && !claimed.get(index))
-						takeBtn.setFillColor(new Color(15, 50, 60));
+						takeBtn.setFillColor(TEAL_TRACK);
 				}
 				public void mouseClicked(MouseEvent e) {
 					takeItem(index);
@@ -268,24 +279,23 @@ public class LootPane extends GraphicsPane {
 			mainScreen.add(takeLbl);
 		}
 
-		// divider above leave button
 		GLine divider2 = new GLine(panelX + 40, panelY + panelH - 65, panelX + panelW - 40, panelY + panelH - 65);
-		divider2.setColor(new Color(55, 63, 105));
+		divider2.setColor(DIVIDER);
 		contents.add(divider2);
 		mainScreen.add(divider2);
 
-		// leave button - goes back to map
-		int leaveX = panelX + (panelW - 180) / 2;
-
-		GRect leaveBtn = new GRect(180, 38);
+		int leaveBtnWidth = 180;
+		int leaveX = panelX + (panelW - leaveBtnWidth) / 2;
+		
+		GRect leaveBtn = new GRect(leaveBtnWidth, 38);
 		leaveBtn.setLocation(leaveX, panelY + panelH - 52);
 		leaveBtn.setFilled(true);
-		leaveBtn.setFillColor(new Color(60, 20, 45));
-		leaveBtn.setColor(new Color(180, 60, 100));
+		leaveBtn.setFillColor(RED_BTN);
+		leaveBtn.setColor(RED_BORDER);
 
 		GLabel leaveLbl = new GLabel("Leave");
 		leaveLbl.setFont("DialogInput-BOLD-14");
-		leaveLbl.setColor(new Color(210, 100, 140));
+		leaveLbl.setColor(RED_TEXT);
 		leaveLbl.setLocation(
 				leaveBtn.getX() + (leaveBtn.getWidth() - leaveLbl.getWidth()) / 2,
 				leaveBtn.getY() + (leaveBtn.getHeight() + leaveLbl.getAscent()) / 2);
@@ -293,9 +303,11 @@ public class LootPane extends GraphicsPane {
 		leaveBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(MouseEvent e) {
 				leaveBtn.setFillColor(new Color(90, 30, 60));
+				MapPane.currPosition.cleared();
+				
 			}
 			public void mouseExited(MouseEvent e) {
-				leaveBtn.setFillColor(new Color(60, 20, 45));
+				leaveBtn.setFillColor(RED_BTN);
 			}
 			public void mouseClicked(MouseEvent e) {
 				mainScreen.switchToMapPane();
@@ -319,40 +331,36 @@ public class LootPane extends GraphicsPane {
 		anyClaimed = true;
 		claimed.set(index, true);
 
-		// add weapon to inventory
+		// save weapon to player inventory weapon array
 		CharacterSelectionPane.myInventory.addWeapon(lootItems.get(index));
-		System.out.println("claimed: " + lootItems.get(index).toString());
 		showInventoryMessage(lootItems.get(index).toString() + " added to inventory!");
 
-		// gray out the claimed button
 		takeBtns.get(index).setFillColor(new Color(30, 30, 30));
 		takeBtns.get(index).setColor(new Color(60, 60, 60));
 		takeLbls.get(index).setLabel("Claimed");
-		takeLbls.get(index).setColor(new Color(140, 152, 180));
+		takeLbls.get(index).setColor(GREY_TEXT);
 
-		// gray out all the other buttons too
 		for (int i = 0; i < takeBtns.size(); i++) {
 			if (i != index) {
 				takeBtns.get(i).setFillColor(new Color(30, 30, 30));
 				takeBtns.get(i).setColor(new Color(60, 60, 60));
-				takeLbls.get(i).setColor(new Color(140, 152, 180));
+				takeLbls.get(i).setColor(GREY_TEXT);
 			}
 		}
 	}
 
 	private void showInventoryMessage(String message) {
-		// little notification at the bottom
 		GRect msgBg = new GRect(MainApplication.WINDOW_WIDTH, 38);
 		msgBg.setLocation(0, MainApplication.WINDOW_HEIGHT - 42);
 		msgBg.setFilled(true);
 		msgBg.setFillColor(new Color(15, 18, 38));
-		msgBg.setColor(new Color(0, 210, 195));
+		msgBg.setColor(TEAL);
 		contents.add(msgBg);
 		mainScreen.add(msgBg);
 
 		GLabel msgLbl = new GLabel(message);
 		msgLbl.setFont("DialogInput-BOLD-13");
-		msgLbl.setColor(new Color(0, 210, 195));
+		msgLbl.setColor(TEAL);
 		msgLbl.setLocation(
 				(MainApplication.WINDOW_WIDTH - msgLbl.getWidth()) / 2,
 				MainApplication.WINDOW_HEIGHT - 42 + (38 + msgLbl.getAscent()) / 2);
