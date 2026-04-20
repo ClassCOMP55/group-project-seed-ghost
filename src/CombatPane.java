@@ -403,10 +403,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void animation(String type, Entity target) {
 		animation = new GImage("spr_SHIELD_guard.gif");
+		double animTime = 0.25;
 		
 		 switch(type) {
 		 case "DefenseOrUtility":
 			 animation.setImage("spr_SHIELD_guard.gif");
+			 animTime = 0.5;
 			 break;
 		 case "NonMagicAttack":
 			 animation.setImage("spr_ATTACK_slash.gif");
@@ -417,13 +419,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		 case "LightningAttack":
 			 animation.setImage("spr_ATTACK_bolt.gif");
 			 break;
+		 case "FireAttack":
+			 animation.setImage("spr_ATTACK_fire.gif");
+			 break;
 		 }
 		 GImage image = entityToImage(target);
 		 animation.setLocation(image.getX(), image.getY());
          mainScreen.add(animation);
          mainScreen.add(animation);
 		 
-		 Timer timer = new Timer(1500, new ActionListener() {
+		 Timer timer = new Timer((int)(animTime * 1000), new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
 		        	 mainScreen.remove(animation);
