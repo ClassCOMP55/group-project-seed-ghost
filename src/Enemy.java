@@ -421,8 +421,9 @@ public class Enemy extends Entity {
 				
 				name = "Jane Explode";
 				
-				defSkillP = new int[] {0,0,Chance.range(0, 1),Chance.range(0, 1),Chance.range(0, 1),Chance.range(0, 1),Chance.range(0, 1)};
+				defSkillP = new int[] {1,Chance.range(0, 1),Chance.range(0, 2),Chance.range(0, 2),Chance.range(0, 2),Chance.range(0, 2),2};
 				defSkill.add(new SKILL_EnemyBuffAllies());
+				defSkill.add(new SKILL_BossBuffSelf());
 				defSkill.add(new SKILL_Explode());
 				
 				HP = 600.0;
