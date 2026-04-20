@@ -24,13 +24,13 @@ public class ShopInventory {
 	        int price;
 	        switch (type) {
 	            case HEALTH:
-	                price = 50;
+	                price = 30;
 	                break;
 	            case MANA:
-	                price = 75;
+	                price = 50;
 	                break;
 	            case ELIXIR:
-	                price = 250;
+	                price = 150;
 	                break;
 	            case VITALITY:
 	            	price = 250;
