@@ -25,14 +25,15 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
-	private GImage background,animation;
+	private GImage background,animation,highlightedCharacter;
 	
 	private boolean skill;
 	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
 	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	private boolean playersTurn;
-	private Entity currentEntity,otherEntity;
+	private Entity otherEntity;
+	private Entity currentEntity;
 	
 	Timer t;
 	
@@ -130,7 +131,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				healthLabels.get(index).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
 				updateHealthAndManaBarSize(e);
 				if (e.isDead()) {
-					if(healthLabels.get(index).getLabel()!="Dead")initiativeArr.remove(e);
+					if(healthLabels.get(index).getLabel()!="Dead") initiativeArr.remove(e);
 					healthLabels.get(index).setLabel("Dead");
 					 yourDead(e);
 				}
@@ -142,7 +143,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				healthLabels.get(index).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
 				updateHealthAndManaBarSize(c);
 				if (!(c.getHp()>0)) {
-					if(healthLabels.get(index).getLabel()!="Dead")initiativeArr.remove(c);
+					if(healthLabels.get(index).getLabel()!="Dead") initiativeArr.remove(c);
 					healthLabels.get(index).setLabel("Dead");
 					 yourDead(c);
 				}
@@ -201,6 +202,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			image.setSize(140, 140);
 			allImages.add(image);
 		}
+		highlightedCharacter = allImages.get(0);
 		setLocationandAddToScreen();
 	}
 	
@@ -329,11 +331,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void nextCombat() {
-		update();
 		if (counter>0)entityToImage(currentEntity).setColor(null);
-		if (checkResult()) return;
 		
+		if (counter==initiativeArr.size()) counter = 0;
 		currentEntity = initiativeArr.get(counter);
+		if (checkResult()) return;
 		yourTurn(entityToImage(currentEntity));
 		
 		int prevSize = initiativeArr.size();
@@ -347,8 +349,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
+				checkResult();
 			}
+			
 			updateCounter(prevSize,previousIndex);
+			return;
 		}
 		else if (currentEntity instanceof Enemy) {
 			Enemy e = (Enemy) currentEntity;
@@ -361,7 +366,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		            updateCounter(prevSize,previousIndex);
 		            if (currentEntity != null) {
 		            	entityToImage(currentEntity).setColor(null);
-		            	update();
 		            	nextCombat(); 
 		            }
 		        }
@@ -369,9 +373,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		    
 		    timer.setRepeats(false);
 		    timer.start();
+		    return;
 		}
-		update();
-		if (checkResult()) return;
 	}
 	
 	public void updateCounter(int prevSize,int previousIndex) {
@@ -420,11 +423,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
          mainScreen.add(animation);
          mainScreen.add(animation);
 		 
-		 Timer timer = new Timer(3000, new ActionListener() {
+		 Timer timer = new Timer(1500, new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
 		        	 mainScreen.remove(animation);
 		             mainScreen.remove(animation);
+		             update();
 		             nextCombat();
 		            return;
 		            
@@ -880,6 +884,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void yourTurn(GImage image) {
+		if (highlightedCharacter != image) highlightedCharacter.setColor(null) ;
+		highlightedCharacter = image;
 		image.setColor(Color.YELLOW);
 	}
 	
@@ -1053,6 +1059,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				if (mySkills[skillIndex].preconditionsMet(currentEntity, currentEntity)) {
 					if (mySkills[skillIndex].getvTarget()=="NA") {
 						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
+						update();
 						skill = false;
 						Character c = (Character) currentEntity;
 						c.setLastUsedSkill(mySkills[skillIndex]);
@@ -1129,12 +1136,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
-			//entityToImage(currentEntity).setColor(null);
+			
+			entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			mainScreen.switchToMapPane();
 		}
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
-			//entityToImage(currentEntity).setColor(null);
+			entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			scaling = scaling*2;
 			MapPane.mapPath.clear();
