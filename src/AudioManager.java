@@ -6,7 +6,6 @@ import java.util.Map;
 public class AudioManager {
 
 	// Crossfade
-	
 	private static final int CROSSFADE_MS = 1000;
 	private static final int FADE_STEPS = 18;
 
@@ -23,7 +22,7 @@ public class AudioManager {
 	private static int sfxVolumePercent = 80;
 	private static boolean musicMuted = false;
 
-	// Looped ambience (campfire). Not stored in clipCache so playSfxOnce on the same file will not stop it.
+	// Looped ambience (campfire). Not stored in clipCache so playSfxOnce on same file won't stop it.
 	private static Clip ambientSfxClip;
 
 	public static synchronized void playMusicLoop(String path) {
@@ -60,14 +59,10 @@ public class AudioManager {
 	}
 
 	public static synchronized void preloadMusic(String... paths) {
-		if (paths == null) {
-			return;
-		}
+		if (paths == null) return;
 
 		for (String p : paths) {
-			if (p == null || p.trim().isEmpty()) {
-				continue;
-			}
+			if (p == null || p.trim().isEmpty()) continue;
 			try {
 				loadClip(p.trim());
 			} catch (Exception e) {
@@ -76,15 +71,11 @@ public class AudioManager {
 		}
 	}
 
-
 	public static synchronized void preloadSfx(String... paths) {
-		if (paths == null) {
-			return;
-		}
+		if (paths == null) return;
+
 		for (String p : paths) {
-			if (p == null || p.trim().isEmpty()) {
-				continue;
-			}
+			if (p == null || p.trim().isEmpty()) continue;
 			try {
 				loadClip(p.trim());
 			} catch (Exception e) {
@@ -98,15 +89,10 @@ public class AudioManager {
 		currentMusicPath = null;
 	}
 
-	// setting
-
+	// settings
 	public static synchronized void setMusicVolumePercent(int value) {
-		if (value < 0) {
-			value = 0;
-		}
-		if (value > 100) {
-			value = 100;
-		}
+		if (value < 0) value = 0;
+		if (value > 100) value = 100;
 		musicVolumePercent = value;
 		applyMusicVolumeToCurrentClip();
 	}
@@ -116,12 +102,8 @@ public class AudioManager {
 	}
 
 	public static synchronized void setSfxVolumePercent(int value) {
-		if (value < 0) {
-			value = 0;
-		}
-		if (value > 100) {
-			value = 100;
-		}
+		if (value < 0) value = 0;
+		if (value > 100) value = 100;
 		sfxVolumePercent = value;
 		applySfxVolumeToClip(ambientSfxClip);
 	}
@@ -139,15 +121,13 @@ public class AudioManager {
 		return musicMuted;
 	}
 
+	// one-shot SFX
 	public static synchronized void playSfxOnce(String path) {
-		if (path == null || path.trim().isEmpty()) {
-			return;
-		}
+		if (path == null || path.trim().isEmpty()) return;
+
 		try {
 			Clip clip = loadClip(path.trim());
-			if (clip == null) {
-				return;
-			}
+			if (clip == null) return;
 			clip.stop();
 			clip.setFramePosition(0);
 			applySfxVolumeToClip(clip);
@@ -157,28 +137,33 @@ public class AudioManager {
 		}
 	}
 
-	
+	// looping ambient SFX
 	public static synchronized void playAmbientSfxLoop(String path) {
 		if (path == null || path.trim().isEmpty()) {
 			stopAmbientSfx();
 			return;
 		}
+
 		stopAmbientSfx();
 		String p = path.trim();
+
 		try {
 			File audioFile = resolveAudioFile(p);
 			if (audioFile == null || !audioFile.exists()) {
 				System.out.println("AudioManager: Ambience file not found: " + p);
 				return;
 			}
+
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(audioFile);
 			Clip clip = AudioSystem.getClip();
 			clip.open(inputStream);
+
 			ambientSfxClip = clip;
 			applySfxVolumeToClip(clip);
 			clip.setFramePosition(0);
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			clip.start();
+
 		} catch (Exception e) {
 			System.out.println("AudioManager: Failed to play ambient sfx: " + p);
 			ambientSfxClip = null;
@@ -198,7 +183,6 @@ public class AudioManager {
 	}
 
 	// internal helpers
-
 	private static void stopCurrentClip() {
 		if (currentMusicClip != null) {
 			saveResumePos(currentMusicPath, currentMusicClip);
@@ -250,14 +234,10 @@ public class AudioManager {
 	}
 
 	private static void applyMusicVolumeToCurrentClip() {
-		if (currentMusicClip == null || !currentMusicClip.isOpen()) {
-			return;
-		}
+		if (currentMusicClip == null || !currentMusicClip.isOpen()) return;
 
 		FloatControl gain = getGain(currentMusicClip);
-		if (gain == null) {
-			return;
-		}
+		if (gain == null) return;
 
 		if (musicMuted) {
 			gain.setValue(gain.getMinimum());
@@ -267,20 +247,16 @@ public class AudioManager {
 		float min = gain.getMinimum();
 		float target = getDefaultDb(gain);
 		float ratio = musicVolumePercent / 100f;
-
 		float finalDb = min + (target - min) * ratio;
 		setDb(gain, finalDb);
 	}
 
-
 	private static void applySfxVolumeToClip(Clip clip) {
-		if (clip == null || !clip.isOpen()) {
-			return;
-		}
+		if (clip == null || !clip.isOpen()) return;
+
 		FloatControl gain = getGain(clip);
-		if (gain == null) {
-			return;
-		}
+		if (gain == null) return;
+
 		float min = gain.getMinimum();
 		float target = getDefaultDb(gain);
 		float ratio = sfxVolumePercent / 100f;
@@ -289,9 +265,7 @@ public class AudioManager {
 	}
 
 	private static void saveResumePos(String path, Clip clip) {
-		if (path == null || clip == null) {
-			return;
-		}
+		if (path == null || clip == null) return;
 
 		long len = clip.getMicrosecondLength();
 		if (len <= 0) {
@@ -305,60 +279,42 @@ public class AudioManager {
 
 	private static long getResumePos(String path, Clip clip) {
 		Long saved = resumePositions.get(path);
-		if (saved == null || clip == null) {
-			return 0L;
-		}
+		if (saved == null || clip == null) return 0L;
 
 		long len = clip.getMicrosecondLength();
-		if (len <= 0) {
-			return 0L;
-		}
+		if (len <= 0) return 0L;
 
 		return saved % len;
 	}
 
 	private static FloatControl getGain(Clip clip) {
-		if (clip == null) {
-			return null;
-		}
-		if (!clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-			return null;
-		}
+		if (clip == null) return null;
+		if (!clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) return null;
 		return (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 	}
 
 	private static float getMinDb(FloatControl c) {
-		if (c == null) {
-			return 0f;
-		}
+		if (c == null) return 0f;
 		return c.getMinimum();
 	}
 
 	private static float getDefaultDb(FloatControl c) {
-		if (c == null) {
-			return 0f;
-		}
+		if (c == null) return 0f;
 		return Math.min(0f, c.getMaximum());
 	}
 
 	private static void setDb(FloatControl c, float value) {
-		if (c == null) {
-			return;
-		}
+		if (c == null) return;
 		float bounded = Math.max(c.getMinimum(), Math.min(c.getMaximum(), value));
 		c.setValue(bounded);
 	}
 
 	private static Clip loadClip(String path) throws Exception {
 		Clip cached = clipCache.get(path);
-		if (cached != null) {
-			return cached;
-		}
+		if (cached != null) return cached;
 
 		File file = resolveAudioFile(path);
-		if (file == null || !file.exists()) {
-			return null;
-		}
+		if (file == null || !file.exists()) return null;
 
 		AudioInputStream input = AudioSystem.getAudioInputStream(file);
 		Clip clip = AudioSystem.getClip();
@@ -368,16 +324,20 @@ public class AudioManager {
 		return clip;
 	}
 
+	// FIXED: includes ../Audio and ../Music to support different IDE run directories
 	private static File resolveAudioFile(String path) {
 		File direct = new File(path);
-		if (direct.exists()) {
-			return direct;
-		}
+		if (direct.exists()) return direct;
 
 		File[] places = new File[] {
 			new File("Music", path),
 			new File("Audio", path),
 			new File("Media", path),
+
+			new File("../Music", path),
+			new File("../Audio", path),
+			new File("../Media", path),
+
 			new File("resources/Music", path),
 			new File("resources/Audio", path),
 			new File("resources/Media", path),
@@ -387,11 +347,8 @@ public class AudioManager {
 		};
 
 		for (File f : places) {
-			if (f.exists()) {
-				return f;
-			}
+			if (f.exists()) return f;
 		}
-
 		return null;
 	}
 }
