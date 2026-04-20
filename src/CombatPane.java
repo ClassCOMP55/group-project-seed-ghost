@@ -431,6 +431,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			 animation.setImage("spr_ATTACK_trislash.gif");
 			 animTime = 1.09;
 			 break;
+		 case "SelfSac":
+			 animation.setImage("spr_ATTACK_judge.gif");
+			 animTime = 1;
 		 }
 		 GImage image = entityToImage(target);
 		 animation.setLocation(image.getX(), image.getY());
