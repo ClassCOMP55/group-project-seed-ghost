@@ -176,7 +176,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		enemyNumber = pool.length;
 		allyNumber = aliveAllies().length;
 		int difficulty = MapPane.currPosition.getDifficulty()*scaling;
-		
+		System.out.println("Difficulty: "+difficulty);
 		
 
 		for(int i = 0;i<pool.length;i++) {
