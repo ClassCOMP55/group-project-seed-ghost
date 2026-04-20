@@ -33,6 +33,7 @@ public class CampFirePane extends GraphicsPane{
 	@Override
 	public void showContent() {
         addBackground();
+        GameSounds.startCampfireAmbience();
         previewMercenary = new Character(getUniqueProfession(), true);
         addText();
         addButtons();
@@ -43,6 +44,7 @@ public class CampFirePane extends GraphicsPane{
 
 	@Override
 	public void hideContent() {
+		GameSounds.stopCampfireAmbience();
 		for(GObject item : contents) {
 			mainScreen.remove(item);
 		}
