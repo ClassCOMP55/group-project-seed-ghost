@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
@@ -15,6 +17,8 @@ public class ShopPane extends GraphicsPane {
 	private int selectedIndex = 0;
 	private int hoverIndex = -1;
 	private GLabel selectedLabel = null; 
+	private GImage mercenaryImage;
+	private GImage clerkImage;
 	private ArrayList<GLabel> itemLabels = new ArrayList<>();
 	private ArrayList<GLabel> priceLabels = new ArrayList<>();
 	private ArrayList<GLabel> previewLines = new ArrayList<>();
@@ -22,6 +26,7 @@ public class ShopPane extends GraphicsPane {
 	private GLabel cursor;
 	private GLabel equippedLabel; 
 	private GLabel clerkMessage;
+	private String clerkState = "idle";
 
 	
 	public ShopPane(MainApplication mainScreen) {
@@ -54,7 +59,7 @@ public class ShopPane extends GraphicsPane {
 	//SHOP NAME
 	private void addText() {
 		GLabel title = new GLabel("SHOP", 100, 70);
-		title.setColor(Color.BLUE);
+		title.setColor(Color.BLUE); 
 		title.setFont("DialogInput-PLAIN-80");
 		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
 		
@@ -63,13 +68,15 @@ public class ShopPane extends GraphicsPane {
 	}
 	//Shop Layout
 	private void drawShopLayout() {
-		GRect bg = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
-		bg.setFilled(true);
-		bg.setFillColor(new Color(40, 60, 90));
-		bg.setColor(new Color(40, 60, 90));
+		 GImage bg = new GImage("spr_ShopBackground.jpeg"); 
+		    bg.setLocation(0, 0);
+
+		    bg.setSize(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 		
-		GRect topBar = new GRect(20,20,1326,50);
+		GRect topBar = new GRect(600,20,185,60);
 		topBar.setColor(new Color(200,200,200));
+		topBar.setFillColor(Color.BLACK);
+		topBar.setFilled(true);
 		
 		GRect itemPanel = new GRect(20, 150, 850, 500);
 		itemPanel.setColor(Color.WHITE);
@@ -110,12 +117,12 @@ public class ShopPane extends GraphicsPane {
 	        ShopItem item = inventory.getItems().get(i);
 
 	        GLabel name = new GLabel(item.getDisplayName(), 40, y);
-	        name.setFont("DialogInput-PLAIN-18");
-	        name.setColor(Color.WHITE);
+	        name.setFont("DialogInput-BOLD-18");
+	        name.setColor(Color.YELLOW);
 
 	        GLabel price = new GLabel(item.getPrice() + "g", 780, y);
-	        price.setFont("DialogInput-PLAIN-18");
-	        price.setColor(Color.WHITE);
+	        price.setFont("DialogInput-BOLD-18");
+	        price.setColor(Color.YELLOW);
 	        itemLabels.add(name);
 	        priceLabels.add(price); 
 
@@ -161,13 +168,11 @@ public class ShopPane extends GraphicsPane {
 
 	    selectedIndex = index;
 
-	    for (GLabel l : itemLabels) {
-	        l.setColor(Color.WHITE);
-	    }
 
 	    selectedLabel = itemLabels.get(index);
-	    selectedLabel.setColor(Color.YELLOW);
-
+	    selectedLabel.setColor(Color.WHITE);
+	    
+	    updateSelectionVisual();
 	    drawCursor();
 	    updateItemPreview();
 	}
@@ -193,7 +198,7 @@ public class ShopPane extends GraphicsPane {
 	    GLabel selected = itemLabels.get(selectedIndex);
 
 	    cursor = new GLabel("▶", selected.getX() - 20, selected.getY());
-	    cursor.setColor(Color.YELLOW);
+	    cursor.setColor(Color.WHITE);
 	    cursor.setFont("DialogInput-BOLD-18");
 
 	    contents.add(cursor);
@@ -241,12 +246,15 @@ public class ShopPane extends GraphicsPane {
 	private void updateSelectionVisual() {
 
 	    for (int i = 0; i < itemLabels.size(); i++) {
-	        itemLabels.get(i).setColor(Color.WHITE);
-	    }
+	        GLabel label = itemLabels.get(i);
 
-	    if (selectedIndex >= 0 && selectedIndex < itemLabels.size()) {
-	        selectedLabel = itemLabels.get(selectedIndex);
-	        selectedLabel.setColor(Color.YELLOW);
+	        if (i == selectedIndex) {
+	            label.setFont("DialogInput-BOLD-18");
+	            label.setColor(Color.WHITE); 
+	        } else {
+	            label.setFont("DialogInput-BOLD-18");
+	            label.setColor(Color.YELLOW); 
+	        }
 	    }
 	}
 	
@@ -272,15 +280,19 @@ public class ShopPane extends GraphicsPane {
 	
 	//Updates the items and shows its description
 	private void updateItemPreview() {
-		if (inventory.getItems().isEmpty()) return;
-	    if (selectedIndex < 0 || selectedIndex >= inventory.getItems().size()) return;
 
-	    if (inventory.getItems().size() == 0) return;
+	    if (mercenaryImage != null) {
+	        mainScreen.remove(mercenaryImage);
+	        contents.remove(mercenaryImage);
+	        mercenaryImage = null;
+	    }
+
+	    if (inventory.getItems().isEmpty()) return;
+	    if (selectedIndex < 0 || selectedIndex >= inventory.getItems().size()) return;
 
 	    ShopItem item = inventory.getItems().get(selectedIndex);
 
 	    String text = "";
-
 	    Object obj = item.getItem();
 
 	    if (obj instanceof WeaponItem) {
@@ -289,59 +301,42 @@ public class ShopPane extends GraphicsPane {
 	              + " | Affinity: " + w.getAffinity()
 	              + " | Base DMG: " + w.getBaseDamage();
 	    }
-
 	    else if (obj instanceof ArmorItem) {
 	        ArmorItem a = (ArmorItem) obj;
 	        text += " Weight: " + a.getWeight()
 	              + " | Affinity: " + a.getAffinity();
 	    }
-
 	    else if (obj instanceof ConsumableItem) {
 	        ConsumableItem c = (ConsumableItem) obj;
 	        text += " Effect: " + c.getType();
 	    }
 	    else if (obj instanceof Character) {
 	        Character c = (Character) obj;
-	        text +=" Profession: " + c.getProfession()
+	        text += " Profession: " + c.getProfession()
 	        + "| HP: " + c.getHp() + "/" + c.getHpMax()
 	        + "| MP: " + c.getMana() + "/" + c.getManaMax()
 	        + "| Weapon: " + c.getWeapon()
-	        + "| Armor: " + c.getArmor();	    
-	        
+	        + "| Armor: " + c.getArmor();
 	    }
 
 	    int startX = 920;
 	    int startY = 330;
 	    int lineHeight = 18;
-	    
+
+
 	    for (GLabel lbl : previewLines) {
 	        mainScreen.remove(lbl);
 	        contents.remove(lbl);
 	    }
 	    previewLines.clear();
-	    
+
+
 	    String name = item.getDisplayName();
 	    String[] nameLines = splitName(name, 28);
+
 	    int currentY = startY;
 
-	    for (int i = 0; i < nameLines.length; i++) {
-
-	        GLabel line = new GLabel(nameLines[i], startX, currentY);
-	        line.setColor(Color.YELLOW);
-	        line.setFont("DialogInput-BOLD-14");
-
-	        previewLines.add(line);
-	        contents.add(line);
-	        mainScreen.add(line);
-	        
-	        currentY += lineHeight;
-	    }
-	    
-	    String[] lines = text.split("\\|");
-
-	    for (int i = 0; i < lines.length; i++) {
-	        String lineText = lines[i].trim();
-
+	    for (String lineText : nameLines) {
 	        GLabel line = new GLabel(lineText, startX, currentY);
 	        line.setColor(Color.YELLOW);
 	        line.setFont("DialogInput-BOLD-14");
@@ -351,7 +346,37 @@ public class ShopPane extends GraphicsPane {
 	        mainScreen.add(line);
 
 	        currentY += lineHeight;
-	     }
+	    }
+
+
+	    String[] lines = text.split("\\|");
+
+	    for (String lineText : lines) {
+	        GLabel line = new GLabel(lineText.trim(), startX, currentY);
+	        line.setColor(Color.YELLOW);
+	        line.setFont("DialogInput-BOLD-14");
+
+	        previewLines.add(line);
+	        contents.add(line);
+	        mainScreen.add(line);
+
+	        currentY += lineHeight;
+	    }
+
+	    
+	    if (obj instanceof Character) {
+	        Character c = (Character) obj;
+
+	        String imgPath = getMercenaryImagePath(c.getProfession());
+	        mercenaryImage = new GImage(imgPath);
+
+	        mercenaryImage.setLocation(startX, currentY + 10);
+
+	        mercenaryImage.setSize(150, 150);
+
+	        contents.add(mercenaryImage);
+	        mainScreen.add(mercenaryImage);
+	    }
 	}
 	
 	//Displays Player info
@@ -377,8 +402,8 @@ public class ShopPane extends GraphicsPane {
 	    equippedLabel = new GLabel("Party: " + partyCount,920, 230);
 	    bagLabel = new GLabel("Bag: " + totalItems + " (Consumables: " + consumableCount + "/3)", 920, 260);
 
-	    equippedLabel.setFont("DialogInput-PLAIN-16");
-	    bagLabel.setFont("DialogInput-PLAIN-16");
+	    equippedLabel.setFont("DialogInput-BOLD-16");
+	    bagLabel.setFont("DialogInput-BOLD-16");
 
 	    equippedLabel.setColor(Color.WHITE);
 	    bagLabel.setColor(Color.WHITE);
@@ -433,7 +458,7 @@ public class ShopPane extends GraphicsPane {
 	    int price = shopItem.getPrice();
 
 	    if (playerInventory.getGold() < price) {
-	        setClerkMessage("YOU AINT GOT ENOUGH GOLD!");
+	        setClerkMessage("YOU AINT GOT ENOUGH GOLD!", "mad");
 	        return;
 	    }
 
@@ -441,7 +466,7 @@ public class ShopPane extends GraphicsPane {
 
 	    if (obj instanceof Character) {
 	        if (isPartyFull()) {
-	            setClerkMessage("Your party is full!");
+	            setClerkMessage("Your party is full!", "mad");
 	            return;
 	        }
 	    }
@@ -449,7 +474,7 @@ public class ShopPane extends GraphicsPane {
 	
 	    if (obj instanceof ConsumableItem) {
 	        if (isConsumablesFull()) {
-	            setClerkMessage("Yer consumable bag is full! (Max 3 consumables)");
+	            setClerkMessage("Yer consumable bag is full! (Max 3 consumables)","annoyed");
 	            return;
 	        }
 	    }
@@ -457,7 +482,7 @@ public class ShopPane extends GraphicsPane {
 	    boolean success = shopItem.giveTo(playerInventory);
 
 	    if (!success) {
-	        setClerkMessage("Could not complete purchase! Dija mess up somethin?");
+	        setClerkMessage("Could not complete purchase! Dija mess up somethin?","annoyed");
 	        return;
 	    }
 
@@ -466,17 +491,17 @@ public class ShopPane extends GraphicsPane {
 
 	  
 	    if (obj instanceof WeaponItem) {
-	        setClerkMessage("Pack a punch that thing first!");
+	        setClerkMessage("Pack a punch that thing first!","mad");
 	    }
 	    else if (obj instanceof ArmorItem) {
-	        setClerkMessage("That piece shud serve ya well!");
+	        setClerkMessage("That piece shud serve ya well!", "happy");
 	    }
 	    else if (obj instanceof ConsumableItem) {
-	        setClerkMessage("Good for a tough fight!");
+	        setClerkMessage("Good for a tough fight!","happy");
 	    }
 	    else if (obj instanceof Character) {
 
-	        setClerkMessage("Well you got sum one to join ya..huh");
+	        setClerkMessage("Well you got sum one to join ya..huh","surprised");
 
 	        inventory.getItems().set(index, generateMercenaryItem());
 
@@ -504,8 +529,28 @@ public class ShopPane extends GraphicsPane {
 	        "cleric","sorcerer","paladin","ranger","marksman"
 	    };
 
+	    ArrayList<String> existingProfessions = new ArrayList<>();
+
+	    for (ShopItem item : inventory.getItems()) {
+	        if (item.getItem() instanceof Character) {
+	            Character c = (Character) item.getItem();
+	            existingProfessions.add(c.getProfession());
+	        }
+	    }
+
+	    String newProfession;
+	    int attempts = 0;
+
+	    do {
+	        newProfession = Chance.choose(professions);
+	        attempts++;
+	        
+	        if (attempts > 20) break;
+
+	    } while (existingProfessions.contains(newProfession));
+
 	    return new ShopItem(
-	        new Character(Chance.choose(professions), true),
+	        new Character(newProfession, true),
 	        Chance.range(200, 400)
 	    );
 	}
@@ -520,6 +565,22 @@ public class ShopPane extends GraphicsPane {
 	        }
 	    }
 	    return true;
+	}
+	
+	//image of mercenary
+	private String getMercenaryImagePath(String profession) {
+	    switch (profession.toLowerCase()) {
+	        case "knight": return "spr_knight.png";
+	        case "samurai": return "spr_samurai.png";
+	        case "thief": return "spr_thief.png";
+	        case "viking": return "spr_viking.png";
+	        case "cleric": return "spr_cleric.png";
+	        case "sorcerer": return "spr_sorcerer.png";
+	        case "paladin": return "spr_paladin.png";
+	        case "ranger": return "spr_ranger.png";
+	        case "marksman": return "spr_marksman.png";
+	        default: return "spr_Knight.png";
+	    }
 	}
 
 	//Shows gold amount after buying
@@ -547,12 +608,20 @@ public class ShopPane extends GraphicsPane {
 	    clerkMessage.setFont("DialogInput-BOLD-18");
 	    clerkMessage.setColor(Color.WHITE);
 	    
+	    clerkImage = new GImage("spr_ClerkIdle.gif"); 
+	    clerkImage.setLocation(50, 40); 
+	    clerkImage.setSize(120, 120);
 
-	    contents.add( clerkMessage);
+	    contents.add(clerkMessage);
+	    contents.add(clerkImage);
+
 	    mainScreen.add(clerkMessage);
+	    mainScreen.add(clerkImage);
 	}
 	//Clerk Message
-	private void setClerkMessage(String msg) {
+	private void setClerkMessage(String msg, String state) {
+	    clerkState = state;
+
 	    if (clerkMessage != null) {
 	        mainScreen.remove(clerkMessage);
 	        contents.remove(clerkMessage);
@@ -564,6 +633,40 @@ public class ShopPane extends GraphicsPane {
 
 	    contents.add(clerkMessage);
 	    mainScreen.add(clerkMessage);
+
+	    updateClerkImage();
+	}
+	//Clerk Expressions
+	private void updateClerkImage() {
+
+	    if (clerkImage != null) {
+	        mainScreen.remove(clerkImage);
+	        contents.remove(clerkImage);
+	    }
+
+	    String imgPath = "spr_ClerkIdle.gif";
+
+	    switch (clerkState) {
+	        case "mad": 
+	            imgPath = "spr_ClerkMad.gif";
+	            break;
+	        case "annoyed":
+	            imgPath = "spr_ClerkAnnoy.gif";
+	            break;
+	        case "happy":
+	            imgPath = "spr_ClerkHappy.gif";
+	            break;
+	        case "surprised":
+	            imgPath = "spr_ClerkSurprise.gif";
+	            break;
+	    }
+
+	    clerkImage = new GImage(imgPath);
+	    clerkImage.setLocation(50, 40);
+	    clerkImage.setSize(120, 120);
+
+	    contents.add(clerkImage);
+	    mainScreen.add(clerkImage);
 	}
 	
 	//buy button
