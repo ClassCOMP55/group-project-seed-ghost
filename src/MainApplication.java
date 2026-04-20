@@ -60,12 +60,17 @@ public class MainApplication extends GraphicsProgram{
 		combatPane = new CombatPane(this);
 		lootPane = new LootPane(this);
 		
+		// preload music + sound effects once at startup
 		AudioManager.preloadMusic(
-	THEME_MAIN_MENU,
-	THEME_LOW,
-	THEME_HIGH,
-	THEME_BOSS
-);
+			THEME_MAIN_MENU,
+			THEME_LOW,
+			THEME_HIGH,
+			THEME_BOSS
+		);
+		GameSounds.preloadAll();
+
+		
+		
 
 		//TheDefaultPane
 		switchToScreen(menuPane);
