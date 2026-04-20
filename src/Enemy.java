@@ -686,6 +686,7 @@ public class Enemy extends Entity {
 		
 		Skill now = skills.get(skillPattern[turn]);
 		now.activationEffect(this, nextTarget);
+		GameSounds.playEnemyAction();
 		
 		turn += 1;
 		if (turn > skillPattern.length - 1) {
