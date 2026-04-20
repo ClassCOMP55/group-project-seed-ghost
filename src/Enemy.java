@@ -272,10 +272,10 @@ public class Enemy extends Entity {
 				
 				if (Chance.coinflip(0.5)) {
 					defSkillP = new int[] {0};
-					defSkill.add(new SKILL_WeakenFoe());
+					defSkill.add(new SKILL_WeakenFoeOrb());
 				} else {
 					defSkillP = new int[] {0,1};
-					defSkill.add(new SKILL_WeakenFoe());
+					defSkill.add(new SKILL_WeakenFoeOrb());
 					defSkill.add(new SKILL_EnemyBuffAllies());
 				}
 				
@@ -564,7 +564,7 @@ public class Enemy extends Entity {
 				
 				weaponDamage[DamageType.ELEC.ordinal()] = 30;
 				weaponDamage[DamageType.BLAST.ordinal()] = 30;
-				weaponScales[EntityStats.WIL.ordinal()] = scaling;
+				weaponScales[EntityStats.WIL.ordinal()] = 0.2;
 				wil = (int)(scaling * 1.5);
 				arc = (int)(scaling * 1.5);
 				fth = scaling + 3;
@@ -572,8 +572,10 @@ public class Enemy extends Entity {
 				
 				name = "Spirit of Storms";
 				
-				defSkillP = new int[] {0};
+				defSkillP = new int[] {0,1,2};
 				defSkill.add(new SKILL_SpiritsLightningBolt());
+				defSkill.add(new SKILL_WeakenFoeOrb());
+				defSkill.add(new SKILL_BasicAttack());
 				
 				sprScale = 2.5;
 				
