@@ -5,6 +5,7 @@ public class SKILL_LightningBolt extends Skill {
 		setName("Lightning Bolt");
 		setDescription("Attack an enemy with a bolt of LIGHTNING damage, scaling with your ARCANE and WILLPOWER. Costs 50 mana.");
 		setvTarget("ENEMY");
+		setAnimationType("LightningAttack");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

@@ -5,6 +5,7 @@ public class SKILL_IronWave extends Skill {
 		setName("Iron Wave");
 		setDescription("Permanently increase your Strength stat by 4 and attack. Costs 30 mana.");
 		setvTarget("ENEMY");
+		setAnimationType("NonMagicAttack");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

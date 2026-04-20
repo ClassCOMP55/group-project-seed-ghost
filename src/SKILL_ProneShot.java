@@ -9,6 +9,7 @@ public class SKILL_ProneShot extends Skill {
 		setDescription("Guard for 95% damage and make an attack against an enemy.");
 		tempArmor = null;
 		setvTarget("ENEMY");
+		setAnimationType("NonMagicAttack");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

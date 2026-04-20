@@ -5,6 +5,7 @@ public class SKILL_ShatteringShot extends Skill {
 		setName(".50 Caliber");
 		setDescription("Shoot an enemy, lowering their defenses.");
 		setvTarget("ENEMY");
+		setAnimationType("NonMagicAttack");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

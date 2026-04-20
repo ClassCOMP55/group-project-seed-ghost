@@ -4,7 +4,7 @@
 
 
 public class Skill {
-	private String name, description, vTarget, enemyIntentMsg;
+	private String name, description, vTarget, enemyIntentMsg,animationType;
 	private double manaCost;
 	
 	public Skill () {
@@ -82,5 +82,14 @@ public class Skill {
 
 	public void setEnemyIntentMsg(String enemyIntentMsg) {
 		this.enemyIntentMsg = enemyIntentMsg;
+	}
+	
+	public void setAnimationType(String animationType) {
+		
+		this.animationType = animationType;
+	}
+	
+	public String getAnimationType() {
+		return animationType;
 	}
 }

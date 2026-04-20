@@ -25,7 +25,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
-	private GImage background;
+	private GImage background,animation;
 	
 	private boolean skill;
 	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
@@ -212,7 +212,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 * @return the Entity
 	 */
 	private Entity imageToEntity(GImage image){
-		int index = allImages.lastIndexOf(image);
+		int index = allImages.indexOf(image);
+		if (index == -1) {
+			System.out.println();
+		}
 		Entity e = allEntities.get(index);
 		return e;
 	}
@@ -225,6 +228,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GImage entityToImage(Entity e){
 		int index = allEntities.indexOf(e);
+		
 		GImage image = allImages.get(index);
 		return image;
 	}
@@ -327,32 +331,35 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void nextCombat() {
 		if (counter>0)entityToImage(currentEntity).setColor(null);
-		update();
-		
-		
+	
 		counter = counter%initiativeArr.size();
 		currentEntity = initiativeArr.get(counter);
+		update();
 		yourTurn(entityToImage(currentEntity));
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
-			setDescription("Choose a action");
 			Character c = (Character) currentEntity;
+			System.out.println(c+" had a turn counter: "+counter);
+			setDescription("Choose a action");
 			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
 				update();
 			}
 			counter++;
+			System.out.println("Counter went up line 352");
 		}
 		else if (currentEntity instanceof Enemy) {
 			Enemy e = (Enemy) currentEntity;
 			setDescription(e+" Acts on intent:  "+e.getIntent());
-		    Timer timer = new Timer(3000, new ActionListener() {
+			System.out.println(e+" had a turn counter: "+counter);
+		    Timer timer = new Timer(1000, new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
 		            EnemyAttack();
 		            counter++;
+		            System.out.println("Counter went up line 362");
 		            nextCombat();
 		            return;
 		            
@@ -363,6 +370,43 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		    timer.start();
 		}
 		if (checkResult()==true) return;
+	}
+	
+	public void animation(String type, Entity target) {
+		animation = new GImage("spr_SHIELD_guard.gif");
+		
+		 switch(type) {
+		 case "DefenseOrUtility":
+			 animation.setImage("spr_SHIELD_guard.gif");
+			 break;
+		 case "NonMagicAttack":
+			 animation.setImage("spr_ATTACK_slash.gif");
+			 break;
+		 case "MagicAttack":
+			 animation.setImage("spr_ATTACK_blast.gif");
+			 break;
+		 case "LightningAttack":
+			 animation.setImage("spr_ATTACK_bolt.gif");
+			 break;
+		 }
+		 GImage image = entityToImage(target);
+		 animation.setLocation(image.getX(), image.getY());
+         mainScreen.add(animation);
+         mainScreen.add(animation);
+		 
+		 Timer timer = new Timer(3000, new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		        	 mainScreen.remove(animation);
+		             mainScreen.remove(animation);
+		             nextCombat();
+		            return;
+		            
+		        }
+		    });
+		    timer.setRepeats(false);
+		    timer.start();
+		    
 	}
 	
 	public GRect createButton(double x,double y,String str){
@@ -1031,7 +1075,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
 			otherEntity = imageToEntity((GImage) obj);
 			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
-				
+				animation(mySkills[skillIndex].getAnimationType(),otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				Character c = (Character) currentEntity;
 				c.setLastUsedSkill(mySkills[skillIndex]);
@@ -1039,10 +1083,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				skillReady = false;
 				playersTurn = false;
 				
-				nextCombat();
 				return;
 			}
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
+				animation("DefenseOrUtility",otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				skill = false;
 				skillReady = false;
@@ -1050,7 +1094,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				Character c = (Character) currentEntity;
 				c.setLastUsedSkill(mySkills[skillIndex]);
 				
-				nextCombat();
 				return;
 			}
 			else {
@@ -1133,7 +1176,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		
-		if (obj instanceof GImage && obj != background) {
+		if (obj instanceof GImage && obj != background && obj != animation) {
 		
 			Entity entity = imageToEntity((GImage) obj);
 			if (entity instanceof Enemy) {

@@ -5,6 +5,7 @@ public class SKILL_BasicAttack extends Skill {
 		setName("Strike");
 		setDescription("Attack with your main weapon.");
 		setvTarget("ENEMY");
+		setAnimationType("NonMagicAttack");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
