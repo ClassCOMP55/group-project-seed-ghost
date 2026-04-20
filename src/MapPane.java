@@ -519,7 +519,7 @@ private void createMap() {
 		switch (name) {
 		case "Completely Original Boss": str = ". Vulnerabilities: None";
 		break;
-		case "Supreme Mage": str = ". Vulnerabilities: Blast";
+		case "Supreme Mage": str = ". Vulnerabilities: Electric + Blast";
 		break;
 		case "Seraphim Vassal": str = ". Vulnerabilities: Fire";
 		break;
