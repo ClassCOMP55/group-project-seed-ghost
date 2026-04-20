@@ -7,7 +7,7 @@ public class SKILL_HeavyAttack extends Skill {
 		setName("Heavy Blow");
 		setDescription("Take a turn to wind up a swing, dealing triple damage at the start of your next turn.");
 		setvTarget("ENEMY");
-		setAnimationType("NonMagicAttack");
+		setAnimationType("TriSlash");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

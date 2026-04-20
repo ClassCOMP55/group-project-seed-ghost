@@ -5,7 +5,7 @@ public class SKILL_Assassinate extends Skill {
 		setName("Assassinate");
 		setDescription("If the target is at full hit points, deal huge damage and lower their damage resistances. Otherwise just deals big damage.");
 		setvTarget("ENEMY");
-		setAnimationType("NonMagicAttack");
+		setAnimationType("TriSlash");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
