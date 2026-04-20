@@ -28,10 +28,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private GImage background,animation;
 	
 	private boolean skill;
-	private boolean inventory,playersTurn,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
+	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
 	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
-	
+	private boolean playersTurn;
 	private Entity currentEntity,otherEntity;
 	
 	Timer t;
@@ -45,7 +45,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	@Override
 	public void showContent() {
 		
-		t = new Timer(1000, this);
+		System.out.println();
 		hideContent();
 		allSkillsButtonLabels = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
@@ -176,14 +176,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allyNumber = aliveAllies().length;
 		int difficulty = MapPane.currPosition.getDifficulty()*scaling;
 		
-		System.out.println("Difficulty: "+difficulty);
 		
 
 		for(int i = 0;i<pool.length;i++) {
 			myArrEnemies[i] = new Enemy(pool[i],difficulty);
 			Character[] targets = aliveAllies();
 			myArrEnemies[i].setNextTarget(targets[Chance.range(0, targets.length - 1)]);
-			System.out.println(myArrEnemies[i].getIntent());
 			allEntities.add(myArrEnemies[i]);
 			temp.add(myArrEnemies[i]);
 		}
@@ -227,6 +225,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 */
 	
 	private GImage entityToImage(Entity e){
+		
 		int index = allEntities.indexOf(e);
 		
 		GImage image = allImages.get(index);
@@ -330,46 +329,73 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void nextCombat() {
-		if (counter>0)entityToImage(currentEntity).setColor(null);
-	
-		counter = counter%initiativeArr.size();
-		currentEntity = initiativeArr.get(counter);
 		update();
+		if (counter>0)entityToImage(currentEntity).setColor(null);
+		if (checkResult()) return;
+		
+		currentEntity = initiativeArr.get(counter);
 		yourTurn(entityToImage(currentEntity));
+		
+		int prevSize = initiativeArr.size();
+		int previousIndex = initiativeArr.indexOf(currentEntity);
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
 			Character c = (Character) currentEntity;
-			System.out.println(c+" had a turn counter: "+counter);
+			System.out.println("Player: "+c+" had a turn counter: "+counter);
 			setDescription("Choose a action");
 			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
-				update();
 			}
-			counter++;
-			System.out.println("Counter went up line 352");
+			updateCounter(prevSize,previousIndex);
 		}
 		else if (currentEntity instanceof Enemy) {
 			Enemy e = (Enemy) currentEntity;
 			setDescription(e+" Acts on intent:  "+e.getIntent());
-			System.out.println(e+" had a turn counter: "+counter);
+			System.out.println("Enemy: "+e+" had a turn counter: "+counter);
 		    Timer timer = new Timer(1000, new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
 		            EnemyAttack();
-		            counter++;
-		            System.out.println("Counter went up line 362");
-		            nextCombat();
-		            return;
-		            
+		            updateCounter(prevSize,previousIndex);
+		            if (currentEntity != null) {
+		            	entityToImage(currentEntity).setColor(null);
+		            	update();
+		            	nextCombat(); 
+		            }
 		        }
 		    });
 		    
 		    timer.setRepeats(false);
 		    timer.start();
 		}
-		if (checkResult()==true) return;
+		update();
+		if (checkResult()) return;
+	}
+	
+	public void updateCounter(int prevSize,int previousIndex) {
+		update();
+
+		if (initiativeArr.isEmpty()) {
+		    counter = -1;
+		    currentEntity = null;
+		    if (checkResult()) return;
+		}
+		if (initiativeArr.size() == prevSize && initiativeArr.indexOf(currentEntity) != -1) {
+		    counter = (initiativeArr.indexOf(currentEntity) + 1) % initiativeArr.size();
+		}
+		else if (initiativeArr.indexOf(currentEntity) == -1) {
+		    if (previousIndex >= initiativeArr.size()) {
+		        counter = 0;
+		    } else {
+		        counter = previousIndex;
+		    }
+		}
+		else {
+		    int newIndex = initiativeArr.indexOf(currentEntity);
+		    counter = (newIndex + 1) % initiativeArr.size();
+		}
 	}
 	
 	public void animation(String type, Entity target) {
@@ -1102,14 +1128,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 		}
 		
-		update();
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
-			entityToImage(currentEntity).setColor(null);
+			//entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			mainScreen.switchToMapPane();
 		}
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
-			entityToImage(currentEntity).setColor(null);
+			//entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			scaling = scaling*2;
 			MapPane.mapPath.clear();
