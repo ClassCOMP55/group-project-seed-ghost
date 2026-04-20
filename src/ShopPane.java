@@ -647,7 +647,7 @@ public class ShopPane extends GraphicsPane {
 	    String imgPath = "spr_ClerkIdle.gif";
 
 	    switch (clerkState) {
-	        case "mad":
+	        case "mad": 
 	            imgPath = "spr_ClerkMad.gif";
 	            break;
 	        case "annoyed":

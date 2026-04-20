@@ -5,7 +5,7 @@ public class ShopItem {
 	
 	public ShopItem(Object item, int price) {
 		this.item = item;
-		this.price = price; 
+		this.price = price;  
 	}
 	
 	public Object getItem() {

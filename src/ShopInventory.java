@@ -6,7 +6,7 @@ public class ShopInventory {
 	public ShopInventory() {
 		items = new ArrayList<>();
 		generateInventory(); 
-	}
+	} 
 	
 	private void generateInventory() {
 		// The Weapons
