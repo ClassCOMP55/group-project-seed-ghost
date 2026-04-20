@@ -282,8 +282,6 @@ public class ArmorItem {
 	}
 	
 	public String printStats () {
-		System.out.println(this);
-		
 		String rtn = "";
 		
 		double tst = 1 - incDamageMultipliers[DamageType.SLASH.ordinal()];
