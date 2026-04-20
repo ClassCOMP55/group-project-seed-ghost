@@ -666,6 +666,7 @@ private void createMap() {
 			
 			if (currPosition.hasAccess(myNodeObjects.indexOf(oval))==true) {
 				currPosition = ovalToNode(oval);
+				GameSounds.playMapNodeAttach();
 				switch(ovalToNode(oval).getType()){
 				case "Shop": mainScreen.switchToShopPane(); break;
 				case "Combat": mainScreen.switchToCombatPane(); break;
@@ -674,8 +675,9 @@ private void createMap() {
 				}
 			}
 			else if (obj == nodeToOval(currPosition) && currPosition.isCleared()==false) {
-				
+				GameSounds.playMapNodeAttach();
 				switch(ovalToNode(oval).getType()){
+				
 				case "Shop": mainScreen.switchToShopPane(); break;
 				case "Combat": mainScreen.switchToCombatPane(); break;
 				case "CampFire": mainScreen.switchToCampFirePane(); break;
