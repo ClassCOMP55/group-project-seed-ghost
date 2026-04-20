@@ -434,10 +434,10 @@ public class Enemy extends Entity {
 				damageResist[DamageType.SLASH.ordinal()] = 0.5;
 				damageResist[DamageType.PIERCE.ordinal()] = 0.5;
 				
-				weaponDamage[DamageType.ELEC.ordinal()] = 30;
-				weaponScales[EntityStats.WIL.ordinal()] = 1.0;
+				weaponDamage[DamageType.ELEC.ordinal()] = 10;
+				weaponScales[EntityStats.WIL.ordinal()] = 0.5;
 				wil = 10 + (scaling * 2);
-				arc = 50;
+				arc = 10 + (scaling * 2);
 				spr = "spr_ball.gif";
 				
 				defSkillP = new int[] {1,0,1,0};
