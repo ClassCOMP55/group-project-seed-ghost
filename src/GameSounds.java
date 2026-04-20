@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class GameSounds {
 
-	// Basic sounds
+	// General game sounds
 	public static final String MAP_NODE_ATTACH = "SFX_map_node.wav";
 	public static final String CAMPFIRE_LOOP = "CampFirecrackling.wav";
 	public static final String GAME_OVER = "SFX_game_over.wav";
@@ -11,14 +11,14 @@ public class GameSounds {
 	public static final String CONSUMABLE_USE = "SFX_consumable.wav";
 	public static final String VICTORY_STINGER = "SuccessSoundEffect.wav";
 
-	// Each class/profession gets its own sound
+	// Profession then sound file
 	private static Map<String, String> professionSound = new HashMap<String, String>();
 
-	// Optional: skill specific sounds (uses Skill.getName())
+	// Skill name then sound file
 	private static Map<String, String> skillSound = new HashMap<String, String>();
 
 	static {
-		// profession sounds (you already have these files in Audio/)
+		// profession sounds
 		professionSound.put("knight", "SFX_char_knight.wav");
 		professionSound.put("samurai", "SFX_char_samurai.wav");
 		professionSound.put("thief", "SFX_char_thief.wav");
@@ -30,7 +30,7 @@ public class GameSounds {
 		professionSound.put("marksman", "SFX_char_marksman.wav");
 		professionSound.put("none", "SFX_char_none.wav");
 
-		// skill sounds (mapped to files you already have)
+		// skill sounds
 		skillSound.put("Strike", "AttackBlock.wav");
 		skillSound.put("Heavy Blow", "AttackBlock.wav");
 		skillSound.put("Iron Wave", "MedievalFanFire.wav");
@@ -86,12 +86,12 @@ public class GameSounds {
 		AudioManager.playSfxOnce(VICTORY_STINGER);
 	}
 
-	// fallback if you only pass character
+	// if only character is passed
 	public static void playCharacterAction(Character c) {
 		playCharacterAction(c, null);
 	}
 
-	// prefers skill sound, otherwise uses profession sound
+	// prefer skill sound, fallback to profession sound
 	public static void playCharacterAction(Character c, Skill s) {
 		if (c == null) return;
 
@@ -115,7 +115,7 @@ public class GameSounds {
 		AudioManager.playSfxOnce(profFile);
 	}
 
-	// preload all known game sounds
+	// preload sounds once at startup
 	public static void preloadAll() {
 		AudioManager.preloadSfx(
 			MAP_NODE_ATTACH,
