@@ -8,7 +8,7 @@ public class SKILL_EnemyBuffAllies extends Skill {
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
-		Enemy[] currentEnemies = MainApplication.combatPane.getMyArrEnemies();
+		Enemy[] currentEnemies = MainApplication.combatPane.aliveEnemies();
 		
 		for (Enemy e : currentEnemies) {
 			for (int i = 0; i < e.getStatSpread().length; i++) {
