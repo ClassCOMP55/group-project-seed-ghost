@@ -31,15 +31,8 @@ public class MenuPane extends GraphicsPane {
 	}
 	
 	private void addText() {
-		GLabel title = new GLabel("FateBound", 100, 70);
-		title.setColor(Color.BLACK);
-		title.setFont("SERIF-PLAIN-140");
-		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 130);
 		
-		contents.add(title);
-		mainScreen.add(title);
-		
-		newGameButton.setLocation((mainScreen.getWidth() - newGameButton.getWidth()) / 2, 240);
+		newGameButton.setLocation((mainScreen.getWidth() - newGameButton.getWidth()) / 2, 290);
 		newGameButton.setFillColor(Color.DARK_GRAY);
 		newGameButton.setFilled(true);
 		
@@ -90,13 +83,11 @@ public class MenuPane extends GraphicsPane {
 	}
 	
 	private void createBackground() {
-		GRect backGround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
-		backGround.setColor(Color.RED);
-		backGround.setFillColor(Color.RED);
-		backGround.setFilled(true);
-		backGround.setLocation(0, 0);
-		contents.add(backGround);
-		mainScreen.add(backGround);
+		GImage background = new GImage("spr_MenuBackground.jpeg");
+		background.setSize(1366,700);
+		background.setLocation(0, 0);
+		contents.add(background);
+		mainScreen.add(background);
 	}
 	
 	@Override
