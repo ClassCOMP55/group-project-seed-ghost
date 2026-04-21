@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -9,7 +8,6 @@ import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GLine;
 import acm.graphics.GObject;
-import acm.graphics.GOval;
 import acm.graphics.GRect;
 import javax.swing.*;
 
@@ -541,7 +539,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void createStatsBar() {
 		
 		GRect health,mana,nameDisplay;
-		GLabel manaLabel,name = new GLabel("Mana goes here");
+		GLabel name = new GLabel("Mana goes here");
 		healthBars = new ArrayList<>();
 		manaBars = new ArrayList<>();
 		double barHeight = inventoryButton.getHeight()/3.0;
@@ -600,7 +598,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			health = new GRect(barSizeEnemy,15);
 			int index = allEntities.indexOf(myArrEnemies[i]);
 			GLabel healthLabel = healthLabels.get(index);
-			GImage image = allImages.get(index);
 			health.setLocation(allImages.get(index).getX(), allImages.get(index).getY());
 			healthLabel.setLocation(health.getX(), health.getY()+15);
 			health.setColor(Color.RED);
