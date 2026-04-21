@@ -8,7 +8,7 @@ public class SKILL_Recovery extends Skill {
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
-		target.gainMana(99999.9);
+		target.gainMana(me.getStatSpread()[me.getMainStat().ordinal()] * 2);
 		
 		me.drainMana(getManaCost());
 	}
