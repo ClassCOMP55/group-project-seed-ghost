@@ -404,54 +404,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
-	public void animation(String type, Entity target) {
-		animation = new GImage("spr_SHIELD_guard.gif");
-		double animTime = 0.25;
-		
-		 switch(type) {
-		 case "DefenseOrUtility":
-			 animation.setImage("spr_SHIELD_guard.gif");
-			 animTime = 0.5;
-			 break;
-		 case "NonMagicAttack":
-			 animation.setImage("spr_ATTACK_slash.gif");
-			 break;
-		 case "MagicAttack":
-			 animation.setImage("spr_ATTACK_blast.gif");
-			 break;
-		 case "LightningAttack":
-			 animation.setImage("spr_ATTACK_bolt.gif");
-			 break;
-		 case "FireAttack":
-			 animation.setImage("spr_ATTACK_fire.gif");
-			 break;
-		 case "TriSlash":
-			 animation.setImage("spr_ATTACK_trislash.gif");
-			 animTime = 1.09;
-			 break;
-		 case "SelfSac":
-			 animation.setImage("spr_ATTACK_judge.gif");
-			 animTime = 1;
-		 }
-		 GImage image = entityToImage(target);
-		 animation.setLocation(image.getX(), image.getY());
-         mainScreen.add(animation);
-         mainScreen.add(animation);
-		 
-		 Timer timer = new Timer((int)(animTime * 1000), new ActionListener() {
-		        @Override
-		        public void actionPerformed(ActionEvent e) {
-		        	 mainScreen.remove(animation);
-		             mainScreen.remove(animation);
-		            return;
-		            
-		        }
-		    });
-		    timer.setRepeats(false);
-		    timer.start();
-		    
-	}
-	
 	public GRect createButton(double x,double y,String str){
 		GRect button = new GRect(buttonWidth,buttonHeight);
 		if (forSkills==true || forConsumable == true) button.setSize(screenWidth*(320.0/800.0), buttonHeight);
