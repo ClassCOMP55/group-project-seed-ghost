@@ -27,11 +27,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private boolean skill;
 	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
-	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling;
+	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling,previousIndex,prevSize;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	private boolean playersTurn;
 	private Entity otherEntity;
 	private Entity currentEntity;
+	private Animation play;
 	
 	Timer t;
 	
@@ -44,7 +45,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	@Override
 	public void showContent() {
 		
-		System.out.println();
+		play = new Animation();
 		hideContent();
 		allSkillsButtonLabels = new ArrayList<>();
 		allSkillsButton = new ArrayList<>();
@@ -341,8 +342,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (checkResult()) return;
 		yourTurn(entityToImage(currentEntity));
 		
-		int prevSize = initiativeArr.size();
-		int previousIndex = initiativeArr.indexOf(currentEntity);
+		prevSize = initiativeArr.size();
+		previousIndex = initiativeArr.indexOf(currentEntity);
 		
 		if (currentEntity instanceof Character) {
 			playersTurn = true;
@@ -352,10 +353,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 			if (c.getLastUsedSkill()!=null) {
 				c.startTurn();
+				update();
 				checkResult();
 			}
-			
-			updateCounter(prevSize,previousIndex);
 			return;
 		}
 		else if (currentEntity instanceof Enemy) {
@@ -443,8 +443,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		        public void actionPerformed(ActionEvent e) {
 		        	 mainScreen.remove(animation);
 		             mainScreen.remove(animation);
-		             update();
-		             nextCombat();
 		            return;
 		            
 		        }
@@ -1084,6 +1082,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 						Character c = (Character) currentEntity;
 						c.setLastUsedSkill(mySkills[skillIndex]);
 						hideSkills();
+						updateCounter(prevSize,previousIndex);
 						nextCombat();
 						return;
 						
@@ -1130,7 +1129,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			otherEntity = imageToEntity((GImage) obj);
 			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
 				
-				animation(mySkills[skillIndex].getAnimationType(),otherEntity);
+				play.animate(mySkills[skillIndex].getAnimationType(),otherEntity, entityToImage(otherEntity), mainScreen);
+				//animation(mySkills[skillIndex].getAnimationType(),otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				Character c = (Character) currentEntity;
@@ -1138,11 +1138,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				skill =false;
 				skillReady = false;
 				playersTurn = false;
-				
+				update();
+				updateCounter(prevSize,previousIndex);
+	            nextCombat();
 				return;
 			}
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
-				animation("DefenseOrUtility",otherEntity);
+				play.animate("DefenseOrUtility",otherEntity, entityToImage(otherEntity), mainScreen);
+				//animation("DefenseOrUtility",otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				skill = false;
@@ -1150,7 +1153,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				playersTurn = false;
 				Character c = (Character) currentEntity;
 				c.setLastUsedSkill(mySkills[skillIndex]);
-				
+				update();
+				updateCounter(prevSize,previousIndex);
+	            nextCombat();
 				return;
 			}
 			else {
@@ -1235,7 +1240,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		
-		if (obj instanceof GImage && obj != background && obj != animation) {
+		if (obj instanceof GImage && obj != background && obj != play.getAnimation()) {
 		
 			Entity entity = imageToEntity((GImage) obj);
 			if (entity instanceof Enemy) {
