@@ -33,7 +33,7 @@ public class ArmorItem {
 		setAffinity(Chance.choose(new String[] {"null","null","null","null","null","null","null","Fire","Lightning","Magic","Holy","Ballistics","Crushing","Slashing"}));
 		setMetal(Chance.coinflip(0.3));
 		setMagic(Chance.coinflip(0.1));
-		setCloth(Chance.coinflip(0.5));
+		setCloth(false);
 		
 		applyModifiers();
 	}
@@ -43,9 +43,9 @@ public class ArmorItem {
 		
 		setWeight(Chance.choose(new String[] {"light","medium","heavy"}));
 		setAffinity(Chance.choose(new String[] {affinity,affinity,affinity,affinity,"null","Ballistics","Crushing","Slashing"}));
-		setMetal(Chance.coinflip(0.3));
+		setMetal(Chance.coinflip(0.2));
 		setMagic(Chance.coinflip(0.1));
-		setCloth(Chance.coinflip(0.5));
+		setCloth(false);
 		
 		applyModifiers();
 	}
@@ -86,20 +86,22 @@ public class ArmorItem {
 		switch (getWeight()) {
 			case "light":
 				changeDamageMultipliers(0.05);
-				setCloth(true);
 				setPurchaseCost(Chance.range(10, 30));
 			break;
 			case "medium":
-				changeDamageMultipliers(0.1);
+				changeDamageMultipliers(0.2);
 				changeArmor(1);
 				setPurchaseCost(Chance.range(80, 200));
 			break;
 			case "heavy":
-				changeDamageMultipliers(0.2);
-				setMetal(true);
+				changeDamageMultipliers(0.5);
 				changeArmor(3);
 				setPurchaseCost(Chance.range(300, 500));
 			break;
+		}
+		
+		if (isMetal()) {
+			changeDamageMultipliers(0.1);
 		}
 		
 		switch (getAffinity()) {
@@ -145,32 +147,6 @@ public class ArmorItem {
 				addArmor(DamageType.SLASH, -2);
 				setPurchaseCost((int) (getPurchaseCost() * Chance.range(0.5, 1.2)));
 			break;
-		}
-		
-		if (isMetal()) {
-			changeDamageMultiplier(DamageType.SLASH, 0.1);
-			changeDamageMultiplier(DamageType.PIERCE, 0.1);
-			if (getAffinity() == "Lightning") {
-				changeDamageMultiplier(DamageType.ELEC, -0.5);
-			} else {
-				changeDamageMultiplier(DamageType.ELEC, -1.5);
-			}
-			addArmor(DamageType.ELEC, -3);
-			addArmor(DamageType.HOLY, 2);
-			
-			setPurchaseCost(getPurchaseCost() + Chance.range(50, 100));
-		}
-		
-		if (isCloth()) {
-			changeDamageMultipliers(0.05);
-			if (getAffinity() == "Fire") {
-				changeDamageMultiplier(DamageType.FIRE, -0.5);
-			} else {
-				changeDamageMultiplier(DamageType.FIRE, -1.5);
-			}
-			addArmor(DamageType.FIRE, -3);
-			addArmor(DamageType.MAGIC, 2);
-			setPurchaseCost(getPurchaseCost() + Chance.range(-200, 100));
 		}
 	}
 	
