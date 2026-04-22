@@ -831,16 +831,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		switch(type) {
 		case "combatMagic":
-			armor = new ArmorItem("magic");
+			armor = new ArmorItem("Magic");
 			break;
 		case "combatFire":
-			armor = new ArmorItem("fire");
+			armor = new ArmorItem("Fire");
 			break;
 		case "combatHoly":
-			armor = new ArmorItem("holy");
+			armor = new ArmorItem("Holy");
 			break;
 		case "combatLightning":
-			armor = new ArmorItem("lightning");
+			armor = new ArmorItem("Lightning");
 			break;	
 		}
 		return armor;
