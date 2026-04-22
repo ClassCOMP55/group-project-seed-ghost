@@ -23,7 +23,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
-	private GImage background,animation,highlightedCharacter;
+	private GImage background,animation,highlightedCharacter,arrow;
 	
 	private boolean skill;
 	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
@@ -86,6 +86,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		skillButton = createButton(0,screenHeight-buttonHeight,"Skills");
 		inventoryButton = createButton(skillButton.getWidth(),screenHeight-buttonHeight,"Inventory");
+		
+		arrow = new GImage("spr_DownArrow.png");
+		arrow.setSize(0, 0);
+		mainScreen.add(arrow);
+		contents.add(arrow);
 	}
 	
 	public void addBackground() {
@@ -847,9 +852,16 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void yourTurn(GImage image) {
-		if (highlightedCharacter != image) highlightedCharacter.setColor(null) ;
-		highlightedCharacter = image;
-		image.setColor(Color.YELLOW);
+		//if (highlightedCharacter != image) highlightedCharacter.setColor(null) ;
+		//highlightedCharacter = image;
+		//image.setColor(Color.YELLOW);
+		arrow.setSize(40, 40);
+		if (imageToEntity(image) instanceof Character) {
+			arrow.setLocation(image.getX()+(image.getWidth()-arrow.getWidth())/2, image.getY()-30);
+		}
+		else {
+			arrow.setLocation(image.getX()+(image.getWidth()-arrow.getWidth())/2, image.getY()-45);
+		}
 	}
 	
 	public void toolTips(Character c) {
@@ -1071,7 +1083,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 		}
 		
-		if (obj instanceof GImage && playersTurn == true && skillReady==true) {
+		if (obj instanceof GImage && playersTurn == true && skillReady==true && obj != background && obj != arrow) {
 			otherEntity = imageToEntity((GImage) obj);
 			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
 				
@@ -1186,7 +1198,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		
-		if (obj instanceof GImage && obj != background && obj != play.getAnimation()) {
+		if (obj instanceof GImage && obj != background && obj != play.getAnimation() && obj != arrow) {
 		
 			Entity entity = imageToEntity((GImage) obj);
 			if (entity instanceof Enemy) {
