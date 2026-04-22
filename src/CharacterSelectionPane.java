@@ -16,6 +16,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private ArrayList<GRect> infoButtons,extraRects;
 	private GRect close,highlighted;
 	private GLabel closeLabel;
+	private boolean open;
 	public static PlayerInventory myInventory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
@@ -35,6 +36,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		extraLabels = new ArrayList<>();
 		extraRects = new ArrayList<>();
 		highlighted = new GRect(0,0);
+		open = false;
 		createBackground();
 		addText();
 		createCharacters();
@@ -352,16 +354,19 @@ public class CharacterSelectionPane extends GraphicsPane {
 			System.out.println("You are a "+myChars.get(2).getProfession());
 			mainScreen.switchToMapPane();
 		}
-		else if (infoButtons.contains(obj)) {
+		else if (infoButtons.contains(obj) && open == false) {
 			int index = infoButtons.indexOf(obj);
 			showStats(myChars.get(index));
+			open = true;
 		}
-		else if (infoLabels.contains(obj)) {
+		else if (infoLabels.contains(obj) && open == false) {
 			int index = infoLabels.indexOf(obj);
 			showStats(myChars.get(index));
+			open = true;
 		}
 		else if (obj == close || obj == closeLabel) {
 			hideStats();
+			open = false;
 		}
 		
 	}
