@@ -166,7 +166,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		    heartbeatPlaying = true;
 		}
 		else if (!anyLow && heartbeatPlaying) {
-		    GameSounds.stopHeartbeat();
+		    //GameSounds.stopHeartbeat();
 		    heartbeatPlaying = false;
 		}
 	}
@@ -354,7 +354,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
 		otherEntity =c;
-		play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen);
+		play.animate(e.getLastUsedSkill().getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen);
+		update();
 	}
 	
 	public void nextCombat() {
@@ -391,7 +392,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		            update();
 		            updateCounter(prevSize,previousIndex);
 		            if (currentEntity != null) {
-		            	entityToImage(currentEntity).setColor(null);
 		            	nextCombat(); 
 		            }
 		        }
@@ -730,7 +730,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void displayRewards() {
 		
 		GameSounds.playVictory();
-		GameSounds.stopHeartbeat();
+		//GameSounds.stopHeartbeat();
 		heartbeatPlaying = false;
 		
 		String[] possibleRewards = {"weapon","armor"};
