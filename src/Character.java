@@ -119,7 +119,7 @@ public class Character extends Entity {
 				tempDex = (int)Chance.range(20, 50);
 				tempCon = (int)Chance.range(20, 40);
 				tempSprite = "spr_Knight.png";
-				allowedArmors = new String[] {"light", "medium","heavy"};
+				allowedArmors = new String[] {"medium","heavy"};
 				
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Taunt()};
 				
@@ -165,7 +165,7 @@ public class Character extends Entity {
 				
 				tempStr = (int)Chance.range(60, 90);
 				tempCon = (int)Chance.range(40, 60);
-				allowedArmors = new String[] {"light", "medium","heavy"};
+				allowedArmors = new String[] {"light","medium","heavy"};
 				
 				mySkills = new Skill[] {new SKILL_HeavyAttack(), new SKILL_IronWave(), new SKILL_Drain(), new SKILL_Recovery()};
 				
@@ -217,7 +217,7 @@ public class Character extends Entity {
 				
 				tempSprite = "spr_Paladin.png";
 				
-				allowedArmors = new String[] {"light", "medium","heavy"};
+				allowedArmors = new String[] {"medium","heavy"};
 				
 				mySkills = new Skill[] {new SKILL_HeavyAttack(), new SKILL_HolyShield(), new SKILL_SelfSacrifice(), new SKILL_IronWave()};
 				
