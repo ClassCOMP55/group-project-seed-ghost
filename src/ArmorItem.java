@@ -244,7 +244,7 @@ public class ArmorItem {
 				case "Crushing":
 					name += "Adamantine ";
 				break;
-				case "Piercing":
+				case "Ballistics":
 					name += "Kevlar ";
 				break;
 				case "Slashing":
@@ -285,37 +285,29 @@ public class ArmorItem {
 		String rtn = "";
 		
 		double tst = 1 - incDamageMultipliers[DamageType.SLASH.ordinal()];
-		int tst2 = (int)incDamageArmor[DamageType.SLASH.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Slash Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Slash Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.CRUSH.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.CRUSH.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Crush Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Crush Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.PIERCE.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.PIERCE.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Pierce Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Pierce Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.BLAST.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.BLAST.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Blast Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Blast Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.FIRE.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.FIRE.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Fire Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Fire Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.HOLY.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.HOLY.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Holy Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Holy Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.ELEC.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.ELEC.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Electric Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Electric Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.MAGIC.ordinal()];
-		tst2 = (int)incDamageArmor[DamageType.MAGIC.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "Magic Resist: " + tst + "  \n";}
+		if ((tst != 0)) { rtn += "Magic Resist: " + tst + "  \n";}
 		
 		return rtn;
 	}
