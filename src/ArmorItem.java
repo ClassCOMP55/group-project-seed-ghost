@@ -22,6 +22,23 @@ public class ArmorItem {
 		}
 	}
 	
+	public ArmorItem (ArmorItem guardOver) {
+		setDefaults();
+		
+		setWeight("light");
+		setAffinity("null");
+		setMetal(false);
+		setMagic(false);
+		setCloth(false);
+		guarding = true;
+		
+		incDamageMultipliers = new double[] {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+		
+		for (int i = 0; i < guardOver.incDamageMultipliers.length; i++) {
+			incDamageMultipliers[i] = guardOver.incDamageMultipliers[i] * 0.05;
+		}
+	}
+	
 	public boolean guarding () {
 		return guarding;
 	}

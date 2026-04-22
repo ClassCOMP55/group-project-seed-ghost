@@ -1,6 +1,5 @@
 
 public class SKILL_Guard extends Skill {
-	private static final ArmorItem GUARD_ARMOR = new ArmorItem(true);
 	ArmorItem tempArmor;
 	
 	public SKILL_Guard () {
@@ -14,7 +13,7 @@ public class SKILL_Guard extends Skill {
 	
 	public void activationEffect (Entity me, Entity target) {
 		tempArmor = ((Character)me).getArmor();
-		((Character)me).setArmor(GUARD_ARMOR);
+		((Character)me).setArmor(new ArmorItem(tempArmor));
 		
 		System.out.println(tempArmor);
 	}

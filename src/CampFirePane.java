@@ -500,7 +500,7 @@ public class CampFirePane extends GraphicsPane{
 	            mainScreen.add(prof);
 
 	            // HP
-	            GLabel health = new GLabel("HP: " + c.getHp() + "/" + c.getHpMax());
+	            GLabel health = new GLabel("HP: " + (int)c.getHp() + "/" + (int)c.getHpMax());
 	            health.setLocation(x + 5, y + 30);
 	            health.setColor(Color.WHITE);
 	            health.setFont("DialogInput-PLAIN-12");
@@ -508,7 +508,7 @@ public class CampFirePane extends GraphicsPane{
 	            mainScreen.add(health);
 
 	            // Mana
-	            GLabel mana = new GLabel("MP: " + c.getMana() + "/" + c.getManaMax());
+	            GLabel mana = new GLabel("MP: " + (int)c.getMana() + "/" + (int)c.getManaMax());
 	            mana.setLocation(x + 5, y + 45);
 	            mana.setColor(Color.WHITE);
 	            mana.setFont("DialogInput-PLAIN-12");
