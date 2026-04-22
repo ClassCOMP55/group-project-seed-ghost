@@ -12,6 +12,8 @@ public class SKILL_WeakenFoe extends Skill {
 		for (int i = 0; i < target.getStatSpread().length; i++) {
 			target.getStatSpread()[i] -= 30;
 		}
+		
+		me.drainMana(getManaCost());
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
