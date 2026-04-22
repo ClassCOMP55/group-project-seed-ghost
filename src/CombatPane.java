@@ -730,6 +730,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void displayRewards() {
 		
 		GameSounds.playVictory();
+		GameSounds.stopHeartbeat();
+		heartbeatPlaying = false;
 		
 		String[] possibleRewards = {"weapon","armor"};
 		String rewardType = Chance.choose(possibleRewards);
