@@ -195,11 +195,19 @@ public class CharacterSelectionPane extends GraphicsPane {
 		mainScreen.add(weapon);
 		extraLabels.add(weapon);
 		
+		GLabel armor = new GLabel(". Armor: "+myChar.getArmor().toString());
+		armor.setFont("ARIEL-Bold-15");
+		armor.setLocation(box.getX()+5, weapon.getY()+armor.getHeight());
+		armor.setColor(Color.WHITE);
+		contents.add(armor);
+		mainScreen.add(armor);
+		extraLabels.add(armor);
+		
 		int[] stats = myChar.getStatSpread();
 		
 		GLabel str = new GLabel(". Strength: "+stats[0]);
 		str.setFont("ARIEL-Bold-15");
-		str.setLocation(box.getX()+5, weapon.getY()+str.getHeight());
+		str.setLocation(box.getX()+5, armor.getY()+str.getHeight());
 		str.setColor(Color.WHITE);
 		contents.add(str);
 		mainScreen.add(str);
