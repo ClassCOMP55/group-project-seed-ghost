@@ -150,6 +150,7 @@ public class GameSounds {
 			"SFX_sacrifice.wav",
 			"SFX_drain.wav",
 			"SFX_determination.wav"
+			,"SFX_heartbeat.wav"
 		);
 	}
 }
