@@ -5,6 +5,7 @@ public class SKILL_Explode extends Skill {
 		setName("Explode");
 		setDescription("FUKCING EXPLODES.");
 		setvTarget("NA");
+		setAnimationType("spr_ATTACK_blast.gif");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

@@ -5,6 +5,7 @@ public class SKILL_EnemyBuffAllies extends Skill {
 		setName("Buff Allies");
 		setDescription("Increases stats for all allies by +15 and heal them.");
 		setvTarget("NA");
+		setAnimationType("DefenseOrUtility");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

@@ -5,6 +5,7 @@ public class SKILL_PrayerOfHealing extends Skill {
 		setName("Prayer of Healing");
 		setDescription("Heal a party member, scales with FAITH. Costs 40 mana.");
 		setvTarget("CHARA");
+		setAnimationType("DefenseOrUtility");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

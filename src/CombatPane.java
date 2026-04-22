@@ -337,10 +337,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
 		otherEntity =c;
+		play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen);
 	}
 	
 	public void nextCombat() {
-		if (counter>0)entityToImage(currentEntity).setColor(null);
 		
 		if (counter==initiativeArr.size()) counter = 0;
 		currentEntity = initiativeArr.get(counter);
@@ -371,6 +371,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
 		            EnemyAttack();
+		            update();
 		            updateCounter(prevSize,previousIndex);
 		            if (currentEntity != null) {
 		            	entityToImage(currentEntity).setColor(null);
@@ -1098,7 +1099,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				return;
 			}
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
-				play.animate("DefenseOrUtility", entityToImage(otherEntity),entityToImage(currentEntity), mainScreen);
+				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				skill = false;

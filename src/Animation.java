@@ -16,7 +16,7 @@ public class Animation {
 		 switch(type) {
 		 case "DefenseOrUtility":
 			 animation.setImage("spr_SHIELD_guard.gif");
-			 animation.setLocation(user.getX(), user.getY());
+			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 0.5;
 			 break;
 		 case "NonMagicAttack":

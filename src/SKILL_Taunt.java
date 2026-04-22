@@ -5,6 +5,7 @@ public class SKILL_Taunt extends Skill {
 		setName("Taunt");
 		setDescription("Heal 50 HP. All enemies lose 30 strength and will target the character who uses this skill next turn.");
 		setvTarget("NA");
+		setAnimationType("DefenseOrUtility");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

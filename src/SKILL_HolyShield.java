@@ -10,6 +10,7 @@ public class SKILL_HolyShield extends Skill {
 		setDescription("Make a CHARACTER immune to damage until the end of your next turn.");
 		tempArmor = null;
 		setvTarget("CHARA");
+		setAnimationType("DefenseOrUtility");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
