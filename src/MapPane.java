@@ -21,7 +21,7 @@ public class MapPane extends GraphicsPane {
 	private ArmorItem armorItem;
 	private ConsumableItem consumableItem;
 	public static Node currPosition;
-	int count;
+	int count, consumeableIndex;
 	GRect inventoryButton,closeButton;
 	GLabel inventoryButtonLabel;
 	
@@ -606,9 +606,9 @@ private void createMap() {
 			inventoryOpen = false;
 		}
 		else if (inventoryOpen==true && consumablesButtons.contains(obj)) {
-			int index = consumablesButtons.indexOf(obj);
+			consumeableIndex = consumablesButtons.indexOf(obj);
 			PlayerInventory inventory = CharacterSelectionPane.myInventory;
-			 consumableItem = inventory.getConsumables()[index];
+			 consumableItem = inventory.getConsumables()[consumeableIndex];
 			 
 			 if (consumableItem!=null) {
 				 hideInventory();
@@ -654,8 +654,8 @@ private void createMap() {
 			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
 
 			System.out.println(consumableItem.getType().toString()+" Used on: "+c);
-			consumableItem.use(c);
-			consumableItem =null;
+			CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex].use(c);
+			CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex] =null;
 			
 			hideParty();
 			forConsumable =false;
