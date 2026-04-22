@@ -852,12 +852,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	public void yourTurn(GImage image) {
-		//if (highlightedCharacter != image) highlightedCharacter.setColor(null) ;
-		//highlightedCharacter = image;
-		//image.setColor(Color.YELLOW);
 		arrow.setSize(40, 40);
 		if (imageToEntity(image) instanceof Character) {
-			arrow.setLocation(image.getX()+(image.getWidth()-arrow.getWidth())/2, image.getY()-30);
+			arrow.setLocation(image.getX()+(image.getWidth()-arrow.getWidth())/2-3, image.getY()-35);
 		}
 		else {
 			arrow.setLocation(image.getX()+(image.getWidth()-arrow.getWidth())/2, image.getY()-45);
@@ -1088,7 +1085,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
 				
 				play.animate(mySkills[skillIndex].getAnimationType(),otherEntity, entityToImage(otherEntity), mainScreen);
-				//animation(mySkills[skillIndex].getAnimationType(),otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				Character c = (Character) currentEntity;
@@ -1103,7 +1099,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
 				play.animate("DefenseOrUtility",otherEntity, entityToImage(otherEntity), mainScreen);
-				//animation("DefenseOrUtility",otherEntity);
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				skill = false;
@@ -1219,13 +1214,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//numTimes++;
-		
-		//if (numTimes <= 10) targeterObj.move(15, 0);
-		//else if (numTimes <= 20) targeterObj.move(-15, 0);
-		//else if (numTimes <= 30) targetObj.move(5, 0);
-		//else if(numTimes <= 40) targetObj.move(-5, 0);
-		//t.stop();
+		//Empty
 		
 	}
 

@@ -24,6 +24,7 @@ public class MapPane extends GraphicsPane {
 	int count, consumeableIndex;
 	GRect inventoryButton,closeButton;
 	GLabel inventoryButtonLabel;
+	GImage arrow;
 	
 	public MapPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -394,6 +395,12 @@ private void createMap() {
 		createRow(1,((mainScreen.getWidth() - 40) / 2),screenHeight * (50.0/600.0));
 		drawLines();
 		
+		arrow = new GImage("spr_DownArrow.png");
+		arrow.setSize(30, 30);
+		GObject image = nodeToImage(currPosition);
+		arrow.setLocation(image.getX()+(image.getWidth()-arrow.getWidth())/2+3, image.getY()-25);
+		contents.add(arrow);
+		mainScreen.add(arrow);
 	}
 
 	public void drawLines() {
@@ -549,11 +556,11 @@ private void createMap() {
 		return str;
 	}
 	
-	public Node ovalToNode(GObject obj) {
+	public Node imageToNode(GObject obj) {
 		return mapPath.get(myNodeObjects.indexOf(obj));
 	}
 	
-	public GObject nodeToOval(Node node) {
+	public GObject nodeToImage(Node node) {
 		return myNodeObjects.get(mapPath.indexOf(node));
 	}
 	
@@ -662,21 +669,21 @@ private void createMap() {
 		}
 		
 		if (myNodeObjects.contains(obj)) {
-			GObject oval = mainScreen.getElementAtLocation(e.getX(), e.getY());
+			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			
-			if (currPosition.hasAccess(myNodeObjects.indexOf(oval))==true) {
-				currPosition = ovalToNode(oval);
+			if (currPosition.hasAccess(myNodeObjects.indexOf(image))==true) {
+				currPosition = imageToNode(image);
 				GameSounds.playMapNodeAttach();
-				switch(ovalToNode(oval).getType()){
+				switch(imageToNode(image).getType()){
 				case "Shop": mainScreen.switchToShopPane(); break;
 				case "Combat": mainScreen.switchToCombatPane(); break;
 				case "CampFire": mainScreen.switchToCampFirePane(); break;
 				case "Loot": mainScreen.switchToLootPane(); break;
 				}
 			}
-			else if (obj == nodeToOval(currPosition) && currPosition.isCleared()==false) {
+			else if (obj == nodeToImage(currPosition) && currPosition.isCleared()==false) {
 				GameSounds.playMapNodeAttach();
-				switch(ovalToNode(oval).getType()){
+				switch(imageToNode(image).getType()){
 				
 				case "Shop": mainScreen.switchToShopPane(); break;
 				case "Combat": mainScreen.switchToCombatPane(); break;
