@@ -1,9 +1,9 @@
 
 public class SKILL_Determination extends Skill {
 	public SKILL_Determination () {
-		super(35);
+		super(50);
 		setName("Determination");
-		setDescription("Permanently increase your MANA MAX, DEXTERITY and INSTINCT by 10.");
+		setDescription("Attack all enemies and permanently buff self.");
 		setvTarget("NA");
 		setAnimationType("DefenseOrUtility");
 	}
@@ -14,10 +14,23 @@ public class SKILL_Determination extends Skill {
 		me.setManaMax(me.getManaMax() + 10);
 		me.gainMana(10);
 		
+		double[] dmg = me.attackOther();
+		
+		CombatPane currentBattle = MainApplication.combatPane;
+		if (me instanceof Character) {
+			for (Enemy a : currentBattle.aliveEnemies()) {
+				a.attackMe(dmg);
+			}
+		} else if (me instanceof Enemy) {
+			for (Character a : currentBattle.aliveAllies()) {
+				a.attackMe(dmg);
+			}
+		}
+		
 		me.drainMana(getManaCost());
 	}
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
-		return "Intends to buff itself!";
+		return "Intends to buff itself and make an AoE attack!";
 	}
 }

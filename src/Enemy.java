@@ -523,7 +523,7 @@ public class Enemy extends Entity {
 				defSkillP = new int[] {1,0,1,0,1,2};
 				defSkill.add(new SKILL_BasicAttack());
 				defSkill.add(new SKILL_BossBuffSelf());
-				defSkill.add(new SKILL_LightningBolt());
+				defSkill.add(new SKILL_Determination());
 				
 				sprScale = 2.5;
 				
