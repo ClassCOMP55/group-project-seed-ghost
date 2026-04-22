@@ -174,7 +174,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void clearCharacters() {
 		for (Character c: myArrAllies) {
-			c.startTurn();
+			if (c.getLastUsedSkill()!=null) {
+				c.startTurn();
+			}
 		}
 	}
 
@@ -1138,14 +1140,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
-			
-			entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			clearCharacters();
 			mainScreen.switchToMapPane();
 		}
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
-			entityToImage(currentEntity).setColor(null);
 			clearArrays();
 			scaling = scaling * (scaling + 1);
 			MapPane.mapPath.clear();

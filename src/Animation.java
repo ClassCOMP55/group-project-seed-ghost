@@ -39,12 +39,17 @@ public class Animation {
 		 case "TriSlash":
 			 animation.setImage("spr_ATTACK_trislash.gif");
 			 animation.setLocation(target.getX(), target.getY());
-			 animTime = 1.09;
+			 animTime = 1;
 			 break;
 		 case "SelfSac":
 			 animation.setImage("spr_ATTACK_judge.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1;
+		 case "Explode":
+			 animation.setImage("spr_ATTACK_blast.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animTime = 1;
+			 
 		 }
          contents.add(animation);
          mainScreen.add(animation);
