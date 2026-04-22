@@ -288,21 +288,21 @@ public class CharacterSelectionPane extends GraphicsPane {
 			myInventory = new PlayerInventory(myChars.get(0));
 			System.out.println("option 1");
 			System.out.println("You are a "+myChars.get(0).getProfession());
+			mainScreen.switchToMapPane();
 		}
 		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(3)) {
 			myInventory = new PlayerInventory(myChars.get(1));
 			System.out.println("option 2");
 			System.out.println("You are a "+myChars.get(1).getProfession());
+			mainScreen.switchToMapPane();
 		}
 		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(4)) {
 			myInventory = new PlayerInventory(myChars.get(2));
 			System.out.println("option 3");
 			System.out.println("You are a "+myChars.get(2).getProfession());
-		}
-		
-		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) instanceof GImage) {
 			mainScreen.switchToMapPane();
 		}
+		
 	}
 		
 
