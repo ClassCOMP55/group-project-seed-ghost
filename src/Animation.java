@@ -45,6 +45,7 @@ public class Animation {
 			 animation.setImage("spr_ATTACK_judge.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1;
+			 break;
 		 case "Explode":
 			 animation.setImage("spr_ATTACK_blast.gif");
 			 animation.setLocation(target.getX(), target.getY());

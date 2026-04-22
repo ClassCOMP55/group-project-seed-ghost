@@ -5,7 +5,7 @@ public class SKILL_BossBuffSelf extends Skill {
 		setName("Buff Self");
 		setDescription("Increases all stats by +10 for this character.");
 		setvTarget("NA");
-		setAnimationType("DefenseOrUtility");
+		setAnimationType("Buff");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

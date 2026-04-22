@@ -5,7 +5,7 @@ public class SKILL_Recovery extends Skill {
 		setName("Recovery");
 		setDescription("Fully recover an ally's MANA.");
 		setvTarget("CHARA");
-		setAnimationType("DefenseOrUtility");
+		setAnimationType("Buff");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

@@ -5,7 +5,7 @@ public class SKILL_Drain extends Skill {
 		setName("Drain");
 		setDescription("Attack with your weapon and heal equal to half the damage dealt. Reduce your target's constitution by 20.");
 		setvTarget("ENEMY");
-		setAnimationType("NonMagicAttack");
+		setAnimationType("Debuff");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

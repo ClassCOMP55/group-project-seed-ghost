@@ -5,7 +5,7 @@ public class SKILL_WeakenFoeOrb extends Skill {
 		setName("Weaken Foe");
 		setDescription("Decreases all of a target's stats by -15 permanently.");
 		setvTarget("ENEMY");
-		setAnimationType("NonMagicAttack");
+		setAnimationType("Debuff");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

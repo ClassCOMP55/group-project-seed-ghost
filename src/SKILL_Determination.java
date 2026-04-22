@@ -5,7 +5,7 @@ public class SKILL_Determination extends Skill {
 		setName("Determination");
 		setDescription("Attack all enemies and permanently buff self.");
 		setvTarget("NA");
-		setAnimationType("DefenseOrUtility");
+		setAnimationType("Buff");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {
