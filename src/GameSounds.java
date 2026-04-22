@@ -8,6 +8,7 @@ public class GameSounds {
 	public static final String ENEMY_ACTION = "SFX_enemy_action.wav";
 	public static final String CONSUMABLE_USE = "SFX_consumable.wav";
 	public static final String VICTORY_STINGER = "SuccessSoundEffect.wav";
+	public static final String HEARTBEAT = "SFX_heartbeat.wav";
 	public static final String HEAL = "SFX_heal.wav";
 	public static final String SACRIFICE = "SFX_sacrifice.wav";
 	public static final String DRAIN = "SFX_drain.wav";
@@ -86,6 +87,13 @@ public class GameSounds {
 	public static void playVictory() {
 		AudioManager.playSfxOnce(VICTORY_STINGER);
 	}
+	public static void startHeartbeat() {
+	    AudioManager.playAmbientSfxLoop(HEARTBEAT);
+	}
+
+	public static void stopHeartbeat() {
+	    AudioManager.stopAmbientSfx();
+	}
 
 	// if only character is passed
 	public static void playCharacterAction(Character c) {
@@ -149,6 +157,7 @@ public class GameSounds {
 			"SFX_sacrifice.wav",
 			"SFX_drain.wav",
 			"SFX_determination.wav"
+			,"SFX_heartbeat.wav"
 		);
 	}
 }

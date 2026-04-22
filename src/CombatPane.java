@@ -30,6 +30,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling,previousIndex,prevSize;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	private boolean playersTurn;
+	private boolean heartbeatPlaying;
 	private Entity otherEntity;
 	private Entity currentEntity;
 	private Animation play;
