@@ -12,8 +12,10 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	private ArrayList<Character> myChars;
 	private ArrayList<GImage> myImages;
-	private ArrayList<GLabel> infoLabels,extraRects;
-	private ArrayList<GRect> infoButtons,extraLabels;
+	private ArrayList<GLabel> infoLabels,extraLabels;
+	private ArrayList<GRect> infoButtons,extraRects;
+	private GRect close,highlighted;
+	private GLabel closeLabel;
 	public static PlayerInventory myInventory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
@@ -32,11 +34,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 		infoButtons = new ArrayList<>();
 		extraLabels = new ArrayList<>();
 		extraRects = new ArrayList<>();
+		highlighted = new GRect(0,0);
 		createBackground();
 		addText();
 		createCharacters();
 		nameAndInfoDisplay();
-		//showStats(myChars.get(0));
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		
 		
 		
-		GRect border = new GRect(320,410);
+		GRect border = new GRect(300,400);
 		double x = (MainApplication.WINDOW_WIDTH - border.getWidth()) / 2.0;
 		double y = (MainApplication.WINDOW_HEIGHT - border.getHeight()) / 2.0;
 		
@@ -134,100 +136,147 @@ public class CharacterSelectionPane extends GraphicsPane {
 		border.setFilled(true);
 		contents.add(border);
 		mainScreen.add(border);
+		extraRects.add(border);
 		
-		GRect box = new GRect(280,370);
-		box.setLocation(x+(border.getWidth()-box.getWidth())/2, y+(border.getHeight()-box.getHeight())/2);
+		GRect box = new GRect(280,300);
+		box.setLocation(x+(border.getWidth()-box.getWidth())/2, y+10);
 		box.setFillColor(Color.DARK_GRAY);
 		box.setColor(Color.BLACK);
 		box.setFilled(true);
 		contents.add(box);
 		mainScreen.add(box);
+		extraRects.add(box);
+		
+		close = new GRect(280,70);
+		close.setLocation(box.getX(), box.getY()+box.getHeight()+10);
+		close.setColor(Color.BLACK);
+		close.setFillColor(Color.DARK_GRAY);
+		close.setFilled(true);
+		contents.add(close);
+		mainScreen.add(close);
+		
+		closeLabel = new GLabel("Close");
+		closeLabel.setFont("ARIEL-Bold-15");
+		closeLabel.setLocation(close.getX()+(close.getWidth()-closeLabel.getWidth())/2,close.getY()+(close.getHeight()+closeLabel.getAscent())/2);
+		contents.add(closeLabel);
+		mainScreen.add(closeLabel);
 		
 		GLabel title = new GLabel("Stats");
-		title.setFont("ARIEL-Bold-35");
+		title.setFont("ARIEL-Bold-30");
 		title.setLocation(box.getX()+5, box.getY()+title.getHeight());
 		title.setColor(Color.BLACK);
 		contents.add(title);
 		mainScreen.add(title);
+		extraLabels.add(title);
 		
 		GLabel health = new GLabel(". Health: "+myChar.getHp());
-		health.setFont("ARIEL-Bold-20");
+		health.setFont("ARIEL-Bold-15");
 		health.setLocation(box.getX()+5, title.getY()+health.getHeight()+5);
 		health.setColor(Color.WHITE);
 		contents.add(health);
 		mainScreen.add(health);
+		extraLabels.add(health);
 		
 		GLabel mana = new GLabel(". Mana: "+myChar.getManaMax());
-		mana.setFont("ARIEL-Bold-20");
+		mana.setFont("ARIEL-Bold-15");
 		mana.setLocation(box.getX()+5, health.getY()+mana.getHeight());
 		mana.setColor(Color.WHITE);
 		contents.add(mana);
 		mainScreen.add(mana);
+		extraLabels.add(mana);
 		
 		GLabel weapon = new GLabel(". Weapon: "+myChar.getWeapon().toString());
-		weapon.setFont("ARIEL-Bold-20");
+		weapon.setFont("ARIEL-Bold-15");
 		weapon.setLocation(box.getX()+5, mana.getY()+weapon.getHeight());
 		weapon.setColor(Color.WHITE);
 		contents.add(weapon);
 		mainScreen.add(weapon);
+		extraLabels.add(weapon);
 		
 		int[] stats = myChar.getStatSpread();
 		
 		GLabel str = new GLabel(". Strength: "+stats[0]);
-		str.setFont("ARIEL-Bold-20");
+		str.setFont("ARIEL-Bold-15");
 		str.setLocation(box.getX()+5, weapon.getY()+str.getHeight());
 		str.setColor(Color.WHITE);
 		contents.add(str);
 		mainScreen.add(str);
+		extraLabels.add(str);
 		
 		GLabel dex = new GLabel(". Dexterity: "+stats[1]);
-		dex.setFont("ARIEL-Bold-20");
+		dex.setFont("ARIEL-Bold-15");
 		dex.setLocation(box.getX()+5,str.getY()+dex.getHeight());
 		dex.setColor(Color.WHITE);
 		contents.add(dex);
 		mainScreen.add(dex);
+		extraLabels.add(dex);
 		
 		GLabel prc = new GLabel(". Precison: "+stats[2]);
-		prc.setFont("ARIEL-Bold-20");
+		prc.setFont("ARIEL-Bold-15");
 		prc.setLocation(box.getX()+5, dex.getY()+prc.getHeight());
 		prc.setColor(Color.WHITE);
 		contents.add(prc);
 		mainScreen.add(prc);
+		extraLabels.add(prc);
 		
 		GLabel ist = new GLabel(". Instinct: "+stats[3]);
-		ist.setFont("ARIEL-Bold-20");
+		ist.setFont("ARIEL-Bold-15");
 		ist.setLocation(box.getX()+5,  prc.getY()+ist.getHeight());
 		ist.setColor(Color.WHITE);
 		contents.add(ist);
 		mainScreen.add(ist);
+		extraLabels.add(ist);
 		
 		GLabel con = new GLabel(". Constitution: "+stats[4]);
-		con.setFont("ARIEL-Bold-20");
+		con.setFont("ARIEL-Bold-15");
 		con.setLocation(box.getX()+5, ist.getY()+con.getHeight());
 		con.setColor(Color.WHITE);
 		contents.add(con);
 		mainScreen.add(con);
+		extraLabels.add(con);
 		
 		GLabel wil = new GLabel(". Willpower: "+stats[5]);
-		wil.setFont("ARIEL-Bold-20");
+		wil.setFont("ARIEL-Bold-15");
 		wil.setLocation(box.getX()+5,con.getY()+wil.getHeight());
 		wil.setColor(Color.WHITE);
 		contents.add(wil);
 		mainScreen.add(wil);
+		extraLabels.add(wil);
 		
 		GLabel fth = new GLabel(". Faith: "+stats[6]);
-		fth.setFont("ARIEL-Bold-20");
+		fth.setFont("ARIEL-Bold-15");
 		fth.setLocation(box.getX()+5,wil.getY()+fth.getHeight());
 		fth.setColor(Color.WHITE);
 		contents.add(fth);
 		mainScreen.add(fth);
+		extraLabels.add(fth);
 		
 		GLabel arc = new GLabel(". Arcane: "+stats[7]);
-		arc.setFont("ARIEL-Bold-20");
+		arc.setFont("ARIEL-Bold-15");
 		arc.setLocation(box.getX()+5, fth.getY()+arc.getHeight());
 		arc.setColor(Color.WHITE);
 		contents.add(arc);
-		mainScreen.add(arc);	
+		mainScreen.add(arc);
+		extraLabels.add(arc);
+	}
+	
+	public void hideStats() {
+		for (GRect rect: extraRects) {
+			contents.remove(rect);
+			mainScreen.remove(rect);
+		}
+		extraRects.clear();
+		
+		for (GLabel label: extraLabels) {
+			contents.remove(label);
+			mainScreen.remove(label);
+		}
+		extraLabels.clear();
+		
+		mainScreen.remove(close);
+		contents.remove(close);
+		mainScreen.remove(closeLabel);
+		contents.remove(closeLabel);
 	}
 	
 	public void nameAndInfoDisplay(){
@@ -283,6 +332,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		
 		if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(2)) {
 			myInventory = new PlayerInventory(myChars.get(0));
@@ -301,6 +351,42 @@ public class CharacterSelectionPane extends GraphicsPane {
 			System.out.println("option 3");
 			System.out.println("You are a "+myChars.get(2).getProfession());
 			mainScreen.switchToMapPane();
+		}
+		else if (infoButtons.contains(obj)) {
+			int index = infoButtons.indexOf(obj);
+			showStats(myChars.get(index));
+		}
+		else if (infoLabels.contains(obj)) {
+			int index = infoLabels.indexOf(obj);
+			showStats(myChars.get(index));
+		}
+		else if (obj == close || obj == closeLabel) {
+			hideStats();
+		}
+		
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
+		
+		if (infoButtons.contains(obj)) {
+			int index = infoButtons.indexOf(obj);
+			infoButtons.get(index).setFillColor(Color.LIGHT_GRAY);
+			highlighted = infoButtons.get(index);
+		}
+		else if (infoLabels.contains(obj)) {
+			int index = infoLabels.indexOf(obj);
+			infoButtons.get(index).setFillColor(Color.LIGHT_GRAY);
+			highlighted = infoButtons.get(index);
+		}
+		else if(obj == close || obj == closeLabel){
+			close.setFillColor(Color.LIGHT_GRAY);
+			highlighted = close;
+		}
+		else {
+			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		
 	}
