@@ -50,6 +50,16 @@ public class Animation {
 			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1;
 			 break;
+		 case "Buff":
+			 animation.setImage("spr_SKILL_buff.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animTime = 0.5;
+			 break;
+		 case "Debuff":
+			 animation.setImage("spr_SKILL_debuff.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animTime = 0.5;
+			 break;
 		 }
          contents.add(animation);
          mainScreen.add(animation);
