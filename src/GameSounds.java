@@ -8,6 +8,7 @@ public class GameSounds {
 	public static final String ENEMY_ACTION = "SFX_enemy_action.wav";
 	public static final String CONSUMABLE_USE = "SFX_consumable.wav";
 	public static final String VICTORY_STINGER = "SuccessSoundEffect.wav";
+	public static final String HEARTBEAT = "SFX_heartbeat.wav";
 	public static final String HEAL = "SFX_heal.wav";
 	public static final String SACRIFICE = "SFX_sacrifice.wav";
 	public static final String DRAIN = "SFX_drain.wav";
