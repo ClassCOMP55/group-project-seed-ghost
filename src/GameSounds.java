@@ -13,7 +13,6 @@ public class GameSounds {
 	public static final String HEAL = "SFX_heal.wav";
 	public static final String SACRIFICE = "SFX_sacrifice.wav";
 	public static final String DRAIN = "SFX_drain.wav";
-	public static final String DETERMINATION = "SFX_determination.wav";
 	public static final String HEARTBEAT = "SFX_heartbeat.wav";
 
 	// Profession then sound file
@@ -44,7 +43,7 @@ public class GameSounds {
 
 		skillSound.put("Fireball", "FireSpell.wav");
 		skillSound.put("Lightning Bolt", "SlavicMagic.wav");
-		skillSound.put("Drain", "SFX_drain.wav"); // changed from SlavicMagic, drain should sound more sinister
+		skillSound.put("Drain", "SFX_drain.wav"); // changed, drain should sound sinister not magical
 		skillSound.put("Weaken Foe", "SlavicMagic.wav");
 
 		skillSound.put("Prayer of Healing", "SFX_heal.wav"); // changed from SuccessSoundEffect
@@ -57,7 +56,7 @@ public class GameSounds {
 		skillSound.put("Assassinate", "ArrowShoot.wav");
 
 		skillSound.put("Sleight of Greed", "GoldCoinPick.wav");
-		skillSound.put("Determination", "SFX_determination.wav"); // changed from MedievalFanFire
+		skillSound.put("Determination", "MedievalFanFire.wav");
 		skillSound.put("Self Sacrifice", "SFX_sacrifice.wav"); // changed from CartoonDrowning lol
 		skillSound.put("Buff Allies", "Pop.wav");
 		skillSound.put("Buff Self", "Pop.wav");
@@ -156,7 +155,6 @@ public class GameSounds {
 			"SFX_heal.wav",
 			"SFX_sacrifice.wav",
 			"SFX_drain.wav",
-			"SFX_determination.wav",
 			"SFX_heartbeat.wav"
 		);
 	}
