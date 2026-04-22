@@ -825,20 +825,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void displayGameOver() {
 		
 		GameSounds.playGameOver();
-		GRect backround = new GRect(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
-		backround.setFilled(true);
-		backround.setFillColor(Color.RED);
-		contents.add(backround);
-		mainScreen.add(backround);
-		
-		GLabel label = new GLabel("Game Over!");
-		label.setFont("SERIF-PLAIN-150");
-		label.setLocation((MainApplication.WINDOW_WIDTH-label.getWidth())/2,label.getHeight());
-		contents.add(label);
-		mainScreen.add(label);
+		background.setImage("spr_GameOver.jpeg");
+		background.setSize(1366,700);
+		background.setLocation(0, 0);
+		contents.add(background);
+		mainScreen.add(background);
 		
 		menuButton = new GRect(MainApplication.WINDOW_WIDTH*(200.0/800.0),MainApplication.WINDOW_HEIGHT*(70.0/600.0));
-		menuButton.setLocation((MainApplication.WINDOW_WIDTH-menuButton.getWidth())/2, MainApplication.WINDOW_HEIGHT/2);
+		menuButton.setLocation((MainApplication.WINDOW_WIDTH-menuButton.getWidth())/2, MainApplication.WINDOW_HEIGHT/2+100);
 		menuButton.setFilled(true);
 		menuButton.setFillColor(Color.DARK_GRAY);
 		contents.add(menuButton);
