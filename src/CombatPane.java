@@ -1147,7 +1147,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
 			entityToImage(currentEntity).setColor(null);
 			clearArrays();
-			scaling = scaling*2;
+			scaling = scaling * (scaling + 1);
 			MapPane.mapPath.clear();
 			MapPane.createPath();
 			MapPane.currPosition = MapPane.mapPath.get(0);
