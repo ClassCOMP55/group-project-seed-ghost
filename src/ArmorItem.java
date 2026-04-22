@@ -74,7 +74,7 @@ public class ArmorItem {
 		setAffinity(affinity);
 		setMetal(Chance.coinflip(0.3));
 		setMagic(Chance.coinflip(0.1));
-		setCloth(Chance.coinflip(0.5));
+		setCloth(false);
 		
 		applyModifiers();
 	}
@@ -119,6 +119,10 @@ public class ArmorItem {
 		
 		if (isMetal()) {
 			changeDamageMultipliers(0.1);
+			changeDamageMultiplier(DamageType.ELEC, 0.1);
+			if (isMagic()) {
+				changeDamageMultiplier(DamageType.ELEC, 0.1);
+			}
 		}
 		
 		switch (getAffinity()) {
@@ -149,19 +153,16 @@ public class ArmorItem {
 			case "Ballistics":
 				changeDamageMultiplier(DamageType.PIERCE, 0.5);
 				addArmor(DamageType.PIERCE, 2);
-				addArmor(DamageType.CRUSH, -2);
 				setPurchaseCost((int) (getPurchaseCost() * Chance.range(1.0, 1.4)));
 			break;
 			case "Slashing":
 				changeDamageMultiplier(DamageType.SLASH, 0.5);
 				addArmor(DamageType.SLASH, 2);
-				addArmor(DamageType.PIERCE, -2);
 				setPurchaseCost((int) (getPurchaseCost() * Chance.range(1.0, 1.4)));
 			break;
 			case "Crushing":
 				changeDamageMultiplier(DamageType.CRUSH, 0.5);
 				addArmor(DamageType.CRUSH, 2);
-				addArmor(DamageType.SLASH, -2);
 				setPurchaseCost((int) (getPurchaseCost() * Chance.range(0.5, 1.2)));
 			break;
 		}
@@ -237,11 +238,17 @@ public class ArmorItem {
 				case "Magic":
 					name += "Mythril ";
 				break;
+				case "Fire":
+					name += "Iron ";
+				break;
 				case "Crushing":
 					name += "Adamantine ";
 				break;
-				case "Fire":
-					name += "Iron ";
+				case "Piercing":
+					name += "Kevlar ";
+				break;
+				case "Slashing":
+					name += "Orichalcum ";
 				break;
 				default:
 					name += "Steel ";
@@ -280,35 +287,35 @@ public class ArmorItem {
 		double tst = 1 - incDamageMultipliers[DamageType.SLASH.ordinal()];
 		int tst2 = (int)incDamageArmor[DamageType.SLASH.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Slash   : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Slash Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.CRUSH.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.CRUSH.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Crush   : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Crush Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.PIERCE.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.PIERCE.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Pierce  : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Pierce Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.BLAST.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.BLAST.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Blast   : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Blast Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.FIRE.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.FIRE.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Fire    : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Fire Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.HOLY.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.HOLY.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Holy    : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Holy Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.ELEC.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.ELEC.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Electric: " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Electric Resist: " + tst + "  \n";}
 		tst = 1 - incDamageMultipliers[DamageType.MAGIC.ordinal()];
 		tst2 = (int)incDamageArmor[DamageType.MAGIC.ordinal()];
 		tst = (double)Math.round(tst * 1000) / 1000;
-		if ((tst != 0) || (tst2 != 0)) { rtn += "DMG Magic   : " + tst + " (" + tst2 + " flat) \n";}
+		if ((tst != 0) || (tst2 != 0)) { rtn += "Magic Resist: " + tst + "  \n";}
 		
 		return rtn;
 	}
