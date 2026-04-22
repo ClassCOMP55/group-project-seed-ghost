@@ -49,7 +49,7 @@ public class Animation {
 			 animation.setImage("spr_ATTACK_blast.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1;
-			 
+			 break;
 		 }
          contents.add(animation);
          mainScreen.add(animation);
