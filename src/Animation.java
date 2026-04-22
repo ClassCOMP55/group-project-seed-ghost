@@ -9,36 +9,42 @@ public class Animation {
 
 	private GImage animation;
 	
-	public void animate(String type, Entity target, GImage image, MainApplication mainScreen) {
+	public void animate(String type, GImage target,GImage user, MainApplication mainScreen) {
 		animation = new GImage("spr_SHIELD_guard.gif");
 		double animTime = 0.25;
 		
 		 switch(type) {
 		 case "DefenseOrUtility":
 			 animation.setImage("spr_SHIELD_guard.gif");
+			 animation.setLocation(user.getX(), user.getY());
 			 animTime = 0.5;
 			 break;
 		 case "NonMagicAttack":
 			 animation.setImage("spr_ATTACK_slash.gif");
+			 animation.setLocation(target.getX(), target.getY());
 			 break;
 		 case "MagicAttack":
 			 animation.setImage("spr_ATTACK_blast.gif");
+			 animation.setLocation(target.getX(), target.getY());
 			 break;
 		 case "LightningAttack":
 			 animation.setImage("spr_ATTACK_bolt.gif");
+			 animation.setLocation(target.getX(), target.getY());
 			 break;
 		 case "FireAttack":
 			 animation.setImage("spr_ATTACK_fire.gif");
+			 animation.setLocation(target.getX(), target.getY());
 			 break;
 		 case "TriSlash":
 			 animation.setImage("spr_ATTACK_trislash.gif");
+			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1.09;
 			 break;
 		 case "SelfSac":
 			 animation.setImage("spr_ATTACK_judge.gif");
+			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1;
 		 }
-		 animation.setLocation(image.getX(), image.getY());
          mainScreen.add(animation);
          mainScreen.add(animation);
 		 
