@@ -2,21 +2,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameSounds {
+
+	// General game sounds
 	public static final String MAP_NODE_ATTACH = "SFX_map_node.wav";
 	public static final String CAMPFIRE_LOOP = "CampFirecrackling.wav";
 	public static final String GAME_OVER = "SFX_game_over.wav";
 	public static final String ENEMY_ACTION = "SFX_enemy_action.wav";
 	public static final String CONSUMABLE_USE = "SFX_consumable.wav";
 	public static final String VICTORY_STINGER = "SuccessSoundEffect.wav";
-	public static final String HEARTBEAT = "SFX_heartbeat.wav";
 	public static final String HEAL = "SFX_heal.wav";
 	public static final String SACRIFICE = "SFX_sacrifice.wav";
 	public static final String DRAIN = "SFX_drain.wav";
 	public static final String DETERMINATION = "SFX_determination.wav";
+	public static final String HEARTBEAT = "SFX_heartbeat.wav";
 
-	//  sound file
+	// Profession then sound file
 	private static Map<String, String> professionSound = new HashMap<String, String>();
 
+	// Skill name then sound file
 	private static Map<String, String> skillSound = new HashMap<String, String>();
 
 	static {
@@ -54,7 +57,7 @@ public class GameSounds {
 		skillSound.put("Assassinate", "ArrowShoot.wav");
 
 		skillSound.put("Sleight of Greed", "GoldCoinPick.wav");
-		skillSound.put("Determination", "SFX_determination.wav"); // changed from MedievalFanFire, shouldnt sound like victory
+		skillSound.put("Determination", "SFX_determination.wav"); // changed from MedievalFanFire
 		skillSound.put("Self Sacrifice", "SFX_sacrifice.wav"); // changed from CartoonDrowning lol
 		skillSound.put("Buff Allies", "Pop.wav");
 		skillSound.put("Buff Self", "Pop.wav");
@@ -87,12 +90,9 @@ public class GameSounds {
 	public static void playVictory() {
 		AudioManager.playSfxOnce(VICTORY_STINGER);
 	}
-	public static void startHeartbeat() {
-	    AudioManager.playAmbientSfxLoop(HEARTBEAT);
-	}
 
-	public static void stopHeartbeat() {
-	    AudioManager.stopAmbientSfx();
+	public static void startHeartbeat() {
+		AudioManager.playSfxOnce(HEARTBEAT);
 	}
 
 	// if only character is passed
@@ -156,8 +156,8 @@ public class GameSounds {
 			"SFX_heal.wav",
 			"SFX_sacrifice.wav",
 			"SFX_drain.wav",
-			"SFX_determination.wav"
-			,"SFX_heartbeat.wav"
+			"SFX_determination.wav",
+			"SFX_heartbeat.wav"
 		);
 	}
 }

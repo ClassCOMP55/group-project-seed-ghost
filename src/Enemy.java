@@ -9,6 +9,7 @@ public class Enemy extends Entity {
 	private Character nextTarget,previousTarget;
 	private String name;
 	private double sprScale;
+	private Skill lastUsedSkill;
 	
 	private static final String[][] HOLY_ENEMIES_EASY = new String[][] {{"holyghost","holyghost"},{"fairie","goldeneye"},{"prunsel"},{"fairie","holyghost"},{"goldeneye"},{"holyghost","goldeneye"}};
 	private static final String[][] MAGE_ENEMIES_EASY = new String[][] {{"orb","casper"},{"casper","magicsword"},{"magicsword","orb"},{"casper","casper"},{"purple"},{"magicsword","magicsword"},{"orb","orb"}};
@@ -690,6 +691,7 @@ public class Enemy extends Entity {
 		
 		
 		Skill now = skills.get(skillPattern[turn]);
+		lastUsedSkill = now;
 		now.activationEffect(this, nextTarget);
 		GameSounds.playEnemyAction();
 		
@@ -782,6 +784,9 @@ public class Enemy extends Entity {
 
 	public static String[][] getBossEnemies() {
 		return BOSS_ENEMIES;
+	}
+	public Skill getLastUsedSkill() {
+		return lastUsedSkill;
 	}
 
 	public static String getBossAffinities (String bossname) {
