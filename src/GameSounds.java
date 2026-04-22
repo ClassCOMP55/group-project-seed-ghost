@@ -87,6 +87,13 @@ public class GameSounds {
 	public static void playVictory() {
 		AudioManager.playSfxOnce(VICTORY_STINGER);
 	}
+	public static void startHeartbeat() {
+	    AudioManager.playAmbientSfxLoop(HEARTBEAT);
+	}
+
+	public static void stopHeartbeat() {
+	    AudioManager.stopAmbientSfx();
+	}
 
 	// if only character is passed
 	public static void playCharacterAction(Character c) {
