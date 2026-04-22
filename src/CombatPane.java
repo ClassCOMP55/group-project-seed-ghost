@@ -127,9 +127,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 */
 	public void update() {
 		for (Entity entity:allEntities) {
-			
+
 			int index = allEntities.indexOf(entity);
-			
+
 			if (entity instanceof Enemy) {
 				Enemy e = (Enemy) entity;
 				manaLabels.get(index).setLabel("Mana: "+Math.round(e.getMana())+"/"+Math.round(e.getManaMax()));
@@ -143,7 +143,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			else if (entity instanceof Character) {
 				Character c = (Character) entity;
-				
+
 				manaLabels.get(index).setLabel("Mana: "+Math.round(c.getMana())+"/"+Math.round(c.getManaMax()));
 				healthLabels.get(index).setLabel("Health: "+Math.round(c.getHp())+"/"+Math.round(c.getHpMax()));
 				updateHealthAndManaBarSize(c);
@@ -154,7 +154,23 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				}
 			}
 		}
+		// check if any ally is below 25% hp this is the number that the game starts warning the player.
+		boolean anyLow = false;
+		for (Character c : myArrAllies) {
+		    if (c != null && c.getHp() > 0 && c.getHp() / c.getHpMax() <= 0.25) {
+		        anyLow = true;
+		    }
+		}
+		if (anyLow && !heartbeatPlaying) {
+		    GameSounds.startHeartbeat();
+		    heartbeatPlaying = true;
+		}
+		else if (!anyLow && heartbeatPlaying) {
+		    GameSounds.stopHeartbeat();
+		    heartbeatPlaying = false;
+		}
 	}
+	
 	
 	public void clearCharacters() {
 		for (Character c: myArrAllies) {
