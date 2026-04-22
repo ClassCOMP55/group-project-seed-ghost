@@ -1,15 +1,16 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
-
+import acm.graphics.GObject;
 import acm.graphics.GImage;
 
 public class Animation {
 
 	private GImage animation;
 	
-	public void animate(String type, GImage target,GImage user, MainApplication mainScreen) {
+	public void animate(String type, GImage target,GImage user, MainApplication mainScreen, ArrayList<GObject> contents) {
 		animation = new GImage("spr_SHIELD_guard.gif");
 		double animTime = 0.25;
 		
@@ -45,13 +46,13 @@ public class Animation {
 			 animation.setLocation(target.getX(), target.getY());
 			 animTime = 1;
 		 }
-         mainScreen.add(animation);
+         contents.add(animation);
          mainScreen.add(animation);
 		 
 		 Timer timer = new Timer((int)(animTime * 1000), new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
-		        	 mainScreen.remove(animation);
+		        	 contents.remove(animation);
 		             mainScreen.remove(animation);
 		            return;
 		            
