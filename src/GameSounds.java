@@ -2,19 +2,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameSounds {
-
-	// General game sounds
 	public static final String MAP_NODE_ATTACH = "SFX_map_node.wav";
 	public static final String CAMPFIRE_LOOP = "CampFirecrackling.wav";
 	public static final String GAME_OVER = "SFX_game_over.wav";
 	public static final String ENEMY_ACTION = "SFX_enemy_action.wav";
 	public static final String CONSUMABLE_USE = "SFX_consumable.wav";
 	public static final String VICTORY_STINGER = "SuccessSoundEffect.wav";
+	public static final String HEAL = "SFX_heal.wav";
+	public static final String SACRIFICE = "SFX_sacrifice.wav";
+	public static final String DRAIN = "SFX_drain.wav";
+	public static final String DETERMINATION = "SFX_determination.wav";
 
-	// Profession then sound file
+	//  sound file
 	private static Map<String, String> professionSound = new HashMap<String, String>();
 
-	// Skill name then sound file
 	private static Map<String, String> skillSound = new HashMap<String, String>();
 
 	static {
@@ -39,12 +40,12 @@ public class GameSounds {
 
 		skillSound.put("Fireball", "FireSpell.wav");
 		skillSound.put("Lightning Bolt", "SlavicMagic.wav");
-		skillSound.put("Drain", "SlavicMagic.wav");
+		skillSound.put("Drain", "SFX_drain.wav"); // changed from SlavicMagic, drain should sound more sinister
 		skillSound.put("Weaken Foe", "SlavicMagic.wav");
 
-		skillSound.put("Prayer of Healing", "SuccessSoundEffect.wav");
-		skillSound.put("Recovery", "SuccessSoundEffect.wav");
-		skillSound.put("Shield of Faith", "SuccessSoundEffect.wav");
+		skillSound.put("Prayer of Healing", "SFX_heal.wav"); // changed from SuccessSoundEffect
+		skillSound.put("Recovery", "SFX_heal.wav"); // changed from SuccessSoundEffect
+		skillSound.put("Shield of Faith", "SFX_heal.wav"); // changed from SuccessSoundEffect
 
 		skillSound.put("Perfect Precision", "ArrowShoot.wav");
 		skillSound.put("Reposition", "ArrowShoot.wav");
@@ -52,8 +53,8 @@ public class GameSounds {
 		skillSound.put("Assassinate", "ArrowShoot.wav");
 
 		skillSound.put("Sleight of Greed", "GoldCoinPick.wav");
-		skillSound.put("Determination", "MedievalFanFire.wav");
-		skillSound.put("Self Sacrifice", "CartoonDrowning.wav");
+		skillSound.put("Determination", "SFX_determination.wav"); // changed from MedievalFanFire, shouldnt sound like victory
+		skillSound.put("Self Sacrifice", "SFX_sacrifice.wav"); // changed from CartoonDrowning lol
 		skillSound.put("Buff Allies", "Pop.wav");
 		skillSound.put("Buff Self", "Pop.wav");
 	}
@@ -139,12 +140,15 @@ public class GameSounds {
 			"AttackBlock.wav",
 			"MedievalFanFire.wav",
 			"Pop.wav",
-			"CartoonDrowning.wav",
 			"SuccessSoundEffect.wav",
 			"FireSpell.wav",
 			"GoldCoinPick.wav",
 			"ArrowShoot.wav",
-			"SlavicMagic.wav"
+			"SlavicMagic.wav",
+			"SFX_heal.wav",
+			"SFX_sacrifice.wav",
+			"SFX_drain.wav",
+			"SFX_determination.wav"
 		);
 	}
 }
