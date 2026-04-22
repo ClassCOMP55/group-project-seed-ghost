@@ -174,7 +174,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	public void clearCharacters() {
 		for (Character c: myArrAllies) {
-			c.startTurn();
+			if (c.getLastUsedSkill()!=null) {
+				c.startTurn();
+			}
 		}
 	}
 
