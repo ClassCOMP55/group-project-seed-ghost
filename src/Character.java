@@ -138,7 +138,7 @@ public class Character extends Entity {
 				tempSprite = "spr_Samurai.png";
 				allowedArmors = new String[] {"light", "medium"};
 				
-				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_Determination(), new SKILL_Recovery()};
+				mySkills = new Skill[] {new SKILL_ProneShot(), new SKILL_Drain(), new SKILL_Determination(), new SKILL_Recovery()};
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"katana","dagger","rifle"}), Chance.choose(allowedAffinities));
@@ -253,7 +253,7 @@ public class Character extends Entity {
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"pistol","rifle","crossbow"}), Chance.choose(allowedAffinities));
 				
-				mySkills = new Skill[] {new SKILL_ProneShot(), new SKILL_ShatteringShot(), new SKILL_CriticalShot(), new SKILL_Determination()};
+				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_ShatteringShot(), new SKILL_CriticalShot()};
 			break;
 		}
 		
