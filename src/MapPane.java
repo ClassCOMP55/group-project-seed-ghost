@@ -113,6 +113,21 @@ public class MapPane extends GraphicsPane {
 		inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
 		contents.add(inventoryButtonLabel);
 		mainScreen.add(inventoryButtonLabel);
+		
+		GRect goldBox = new GRect(buttonWidth,buttonHeight);
+		goldBox.setFillColor(Color.BLACK);
+		goldBox.setFilled(true);
+		goldBox.setLocation(MainApplication.WINDOW_WIDTH-buttonWidth,0);
+		contents.add(goldBox);
+		mainScreen.add(goldBox);
+		
+		GLabel goldLabel = new GLabel("Gold: "+CharacterSelectionPane.myInventory.getGold());
+		goldLabel.setFont("DialogInput-BOLD-22");
+		goldLabel.setColor(new Color(255,215,0));
+		goldLabel.setLocation(goldBox.getX()+(buttonWidth-goldLabel.getWidth())/2, goldBox.getY()+(buttonHeight-goldLabel.getHeight())/2+goldLabel.getHeight());
+		contents.add(goldLabel);
+		mainScreen.add(goldLabel);
+		
 	}
 	
 	private void displayInventory() {
