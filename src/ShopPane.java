@@ -265,6 +265,7 @@ public class ShopPane extends GraphicsPane {
 	    }
 	}
 	
+	@SuppressWarnings("unused")
 	//Separates the long item names
 	private String[] splitName(String name, int maxChars) {
 
@@ -294,13 +295,21 @@ public class ShopPane extends GraphicsPane {
 	        mercenaryImage = null;
 	    }
 
-	    if (inventory.getItems().isEmpty()) return;
-	    if (selectedIndex < 0 || selectedIndex >= inventory.getItems().size()) return;
+	    Object obj;
 
-	    ShopItem item = inventory.getItems().get(selectedIndex);
+	    if (sellingMode) {
+	        if (playerItemRefs.isEmpty()) return;
+	        if (selectedIndex < 0 || selectedIndex >= playerItemRefs.size()) return;
+
+	        obj = playerItemRefs.get(selectedIndex);
+	    } else {
+	        if (inventory.getItems().isEmpty()) return;
+	        if (selectedIndex < 0 || selectedIndex >= inventory.getItems().size()) return;
+
+	        obj = inventory.getItems().get(selectedIndex).getItem();
+	    }
 
 	    String text = "";
-	    Object obj = item.getItem();
 
 	    if (obj instanceof WeaponItem) {
 	        WeaponItem w = (WeaponItem) obj;
@@ -319,17 +328,17 @@ public class ShopPane extends GraphicsPane {
 	    }
 	    else if (obj instanceof Character) {
 	        Character c = (Character) obj;
+
 	        text += " Profession: " + c.getProfession()
-	        + "| HP: " + c.getHp() + "/" + c.getHpMax()
-	        + "| MP: " + c.getMana() + "/" + c.getManaMax()
-	        + "| Weapon: " + c.getWeapon()
-	        + "| Armor: " + c.getArmor();
+	              + " | HP: " + c.getHp() + "/" + c.getHpMax()
+	              + " | MP: " + c.getMana() + "/" + c.getManaMax()
+	              + " | Weapon: " + c.getWeapon()
+	              + " | Armor: " + c.getArmor();
 	    }
 
 	    int startX = 920;
 	    int startY = 330;
 	    int lineHeight = 18;
-
 
 	    for (GLabel lbl : previewLines) {
 	        mainScreen.remove(lbl);
@@ -337,26 +346,8 @@ public class ShopPane extends GraphicsPane {
 	    }
 	    previewLines.clear();
 
-
-	    String name = item.getDisplayName();
-	    String[] nameLines = splitName(name, 28);
-
-	    int currentY = startY;
-
-	    for (String lineText : nameLines) {
-	        GLabel line = new GLabel(lineText, startX, currentY);
-	        line.setColor(Color.YELLOW);
-	        line.setFont("DialogInput-BOLD-14");
-
-	        previewLines.add(line);
-	        contents.add(line);
-	        mainScreen.add(line);
-
-	        currentY += lineHeight;
-	    }
-
-
 	    String[] lines = text.split("\\|");
+	    int currentY = startY;
 
 	    for (String lineText : lines) {
 	        GLabel line = new GLabel(lineText.trim(), startX, currentY);
@@ -370,7 +361,6 @@ public class ShopPane extends GraphicsPane {
 	        currentY += lineHeight;
 	    }
 
-	    
 	    if (obj instanceof Character) {
 	        Character c = (Character) obj;
 
@@ -378,7 +368,6 @@ public class ShopPane extends GraphicsPane {
 	        mercenaryImage = new GImage(imgPath);
 
 	        mercenaryImage.setLocation(startX, currentY + 10);
-
 	        mercenaryImage.setSize(150, 150);
 
 	        contents.add(mercenaryImage);
@@ -584,7 +573,7 @@ public class ShopPane extends GraphicsPane {
 	        case "cleric": return "spr_cleric.png";
 	        case "sorcerer": return "spr_sorcerer.png";
 	        case "paladin": return "spr_paladin.png";
-	        case "ranger": return "spr_ranger.png";
+	        case "ranger": return "spr_RangerUpdated.png";
 	        case "marksman": return "spr_marksman.png";
 	        default: return "spr_Knight.png";
 	    }
@@ -676,7 +665,7 @@ public class ShopPane extends GraphicsPane {
 	    mainScreen.add(clerkImage);
 	}
 	
-	//sell player Items:
+	//sell displays player Items:
 	private void displayPlayerItems() {
 
 	    for (GLabel lbl : itemLabels) {
@@ -698,7 +687,7 @@ public class ShopPane extends GraphicsPane {
 	    // Weapons
 	    for (WeaponItem w : playerInventory.getExtraWeapons()) {
 
-	    	GLabel name = new GLabel(w.toString(), 40, y);
+	    	GLabel name = new GLabel(getSellDisplayText(w), 40, y);
 	    	name.setFont("DialogInput-BOLD-18");
 	    	name.setColor(Color.YELLOW);
 
@@ -820,6 +809,12 @@ public class ShopPane extends GraphicsPane {
 	        playerInventory.getExtraArmors().remove(obj);
 	    }
 	    else if (obj instanceof Character) {
+
+	        if (!canSellCharacter()) {
+	            setClerkMessage("You must keep at least one party member!", "mad");
+	            return;
+	        }
+
 	        removeMercenary((Character)obj);
 	    }
 
@@ -830,6 +825,19 @@ public class ShopPane extends GraphicsPane {
 
 	    displayPlayerItems();
 	    updatePlayerInfo();
+	}
+	
+	//method to check if there is only one character in party
+	private boolean canSellCharacter() {
+	    Character[] party = playerInventory.getPartyMembers();
+
+	    int count = 0;
+	    for (Character c : party) {
+	        if (c != null) count++;
+	    }
+
+
+	    return count > 1;
 	}
 	
 	//sell price:
@@ -844,6 +852,33 @@ public class ShopPane extends GraphicsPane {
 	        return 150;
 	    }
 	    return 10;
+	    
+	}
+	
+	//displays the weapons/armor/merc stats:
+	private String getSellDisplayText(Object obj) {
+
+	    if (obj instanceof WeaponItem) {
+	        WeaponItem w = (WeaponItem) obj;
+	        return "Weapon: " + w.getType()
+	             + " | DMG: " + w.getBaseDamage()
+	             + " | Affinity: " + w.getAffinity();
+	    }
+
+	    if (obj instanceof ArmorItem) {
+	        ArmorItem a = (ArmorItem) obj;
+	        return "Armor | Weight: " + a.getWeight()
+	             + " | Affinity: " + a.getAffinity();
+	    }
+
+	    if (obj instanceof Character) {
+	        Character c = (Character) obj;
+	        return "Mercenary: " + c.getProfession()
+	             + " | HP: " + c.getHp() + "/" + c.getHpMax()
+	             + " | MP: " + c.getMana() + "/" + c.getManaMax();
+	    }
+
+	    return obj.toString();
 	}
 	
 	//boost stats after selling
@@ -921,12 +956,17 @@ public class ShopPane extends GraphicsPane {
 	private void switchToSellMode() {
 	    sellingMode = true;
 	    displayPlayerItems();
+	    selectedIndex = 0; 
+	    updateItemPreview();
 	    setClerkMessage("Whatcha sellin'? I'll make it worth yer while...", "idle");
 	}
-
+	
+	//buy mode
 	private void switchToBuyMode() {  
 	    sellingMode = false;
 	    displayItems();
+	    selectedIndex = 0; 
+	    updateItemPreview();
 	    setClerkMessage("What would you like to buy?", "idle");
 	}
 
@@ -947,4 +987,3 @@ public class ShopPane extends GraphicsPane {
 	    MapPane.currPosition.cleared();
 	}
 }
-//work in progress
