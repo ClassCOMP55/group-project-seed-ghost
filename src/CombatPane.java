@@ -1214,7 +1214,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 		
-		if (obj instanceof GImage && obj != background && obj != play.getAnimation() && obj != arrow && lost == false && won ==false) {
+		if (obj instanceof GImage && obj != background && play.getAnimations().contains(obj)==false && obj != arrow && lost == false && won ==false) {
 		
 			Entity entity = imageToEntity((GImage) obj);
 			if (entity instanceof Enemy) {
