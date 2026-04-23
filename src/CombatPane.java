@@ -359,7 +359,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
 		otherEntity =c;
-		play.animate(e.getLastUsedSkill().getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents);
+		play.animate(e.getLastUsedSkill().getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents,aliveEnemiesImages(),aliveAlliesImages());
 		update();
 	}
 	
@@ -1014,6 +1014,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return myArr;
 	}
 	
+	public GImage[] aliveAlliesImages() {
+		GImage[] myArr = new GImage[aliveAllies().length];
+		int i =0;
+		
+		for (Character c:aliveAllies()) {
+			GImage image = entityToImage(c);
+			myArr[i] = image;
+			i++;
+		}
+		
+		return myArr;
+	}
+	
 	public Enemy[] aliveEnemies() {
 		int length =0;
 		int num = 0;
@@ -1030,6 +1043,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				num++;
 			}
 		}
+		return myArr;
+	}
+	
+	public GImage[] aliveEnemiesImages() {
+		GImage[] myArr = new GImage[aliveEnemies().length];
+		int i =0;
+		
+		for (Enemy e:aliveEnemies()) {
+			GImage image = entityToImage(e);
+			myArr[i] = image;
+			i++;
+		}
+		
 		return myArr;
 	}
 	
@@ -1109,7 +1135,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			otherEntity = imageToEntity((GImage) obj);
 			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
 				
-				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents);
+				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents,aliveEnemiesImages(),aliveAlliesImages());
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				Character c = (Character) currentEntity;
@@ -1123,7 +1149,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				return;
 			}
 			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
-				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents);
+				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents,aliveEnemiesImages(),aliveAlliesImages());
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
 				skill = false;
@@ -1216,6 +1242,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (obj instanceof GImage && obj != background && play.getAnimations().contains(obj)==false && obj != arrow && lost == false && won ==false) {
 		
+			ArrayList<GImage> test = play.getAnimations();
 			Entity entity = imageToEntity((GImage) obj);
 			if (entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
