@@ -22,8 +22,8 @@ public class MapPane extends GraphicsPane {
 	private ConsumableItem consumableItem;
 	public static Node currPosition;
 	int count, consumeableIndex;
-	GRect inventoryButton,closeButton,descriptionBox;
-	GLabel inventoryButtonLabel, description;
+	GRect inventoryButton,closeButton,descriptionBox,menuButton;
+	GLabel inventoryButtonLabel, description,menuLabel;
 	GImage arrow;
 	
 	public MapPane(MainApplication mainScreen) {
@@ -127,6 +127,20 @@ public class MapPane extends GraphicsPane {
 		goldLabel.setLocation(goldBox.getX()+(buttonWidth-goldLabel.getWidth())/2, goldBox.getY()+(buttonHeight-goldLabel.getHeight())/2+goldLabel.getHeight());
 		contents.add(goldLabel);
 		mainScreen.add(goldLabel);
+		
+		menuButton = new GRect(buttonWidth,buttonHeight);
+		menuButton.setFillColor(Color.DARK_GRAY);
+		menuButton.setFilled(true);
+		menuButton.setLocation(0,MainApplication.WINDOW_HEIGHT-buttonHeight);
+		contents.add(menuButton);
+		mainScreen.add(menuButton);
+		
+		menuLabel = new GLabel("Return to menu");
+		menuLabel.setFont("DialogInput-BOLD-17");
+		menuLabel.setColor(Color.WHITE);
+		menuLabel.setLocation(menuButton.getX()+(buttonWidth-menuLabel.getWidth())/2, menuButton.getY()+(buttonHeight-menuLabel.getHeight())/2+menuLabel.getHeight());
+		contents.add(menuLabel);
+		mainScreen.add(menuLabel);
 		
 	}
 	
@@ -766,8 +780,11 @@ private void createMap() {
 			}
 			//&& currPosition.isCleared()
 			
+			
 		}
-				
+		if (obj == menuButton || obj == menuLabel) {
+			mainScreen.switchToMenuPane();
+		}	
 	}
 		
 
