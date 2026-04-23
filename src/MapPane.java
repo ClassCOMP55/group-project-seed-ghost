@@ -22,8 +22,8 @@ public class MapPane extends GraphicsPane {
 	private ConsumableItem consumableItem;
 	public static Node currPosition;
 	int count, consumeableIndex;
-	GRect inventoryButton,closeButton;
-	GLabel inventoryButtonLabel;
+	GRect inventoryButton,closeButton,descriptionBox;
+	GLabel inventoryButtonLabel, description;
 	GImage arrow;
 	
 	public MapPane(MainApplication mainScreen) {
@@ -75,6 +75,25 @@ public class MapPane extends GraphicsPane {
 		
 		contents.add(title);
 		mainScreen.add(title);
+		
+		description = new GLabel("");
+		description.setFont("DialogInput-PLAIN-20");
+		description.setColor(Color.WHITE);
+		
+		descriptionBox = new GRect(description.getWidth()+2,description.getHeight()+2);
+		descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, title.getY()+150);
+		descriptionBox.setFilled(true);
+		descriptionBox.setFillColor(Color.DARK_GRAY);
+		descriptionBox.setColor(Color.BLACK);
+		
+		contents.add(descriptionBox);
+		mainScreen.add(descriptionBox);
+		
+		
+		description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+		
+		contents.add(description);
+		mainScreen.add(description);
 	}
 	
 	private void addButtons() {
@@ -382,8 +401,6 @@ public class MapPane extends GraphicsPane {
 		extraLabels.clear();
 	}
 	
-	
-	
 private void createMap() {
 	count =0;
 		double screenHeight = MainApplication.WINDOW_HEIGHT;
@@ -593,6 +610,14 @@ private void createMap() {
 			
 			inventoryButtonLabel.setLabel("Inventory");
 			inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
+			
+			description.setLabel("");
+			descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
+			descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
+			description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+			forWeapon = false;
+			forArmor = false;
+			forConsumable = false;
 		}
 		else if (inventoryOpen==true && extraWeaponButtons.contains(obj)) {
 			int index = extraWeaponButtons.indexOf(obj);
@@ -645,16 +670,28 @@ private void createMap() {
 			int index = charButtons.indexOf(obj);
 			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
 			
-			System.out.println("Old Armor "+c.getArmor().toString());
 			ArmorItem temp = c.getArmor();
-			c.setArmor(armorItem);
-			System.out.println("New Armor "+c.getArmor().toString());
+			if (c.setArmor(armorItem)){
+				System.out.println("Old Armor "+temp.toString());
+				System.out.println("New Armor "+c.getArmor().toString());
+				CharacterSelectionPane.myInventory.getExtraArmors().add(temp);
+				CharacterSelectionPane.myInventory.getExtraArmors().remove(armorItem);
+				hideParty();
+				forArmor =false;
+				description.setLabel("");
+				descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
+				descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
+				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+			}
+			else {
+				description.setLabel("Not a Compatable armor for "+c);
+				descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
+				descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
+				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+				descriptionBox.sendToFront();
+				description.sendToFront();
+			}
 			
-			CharacterSelectionPane.myInventory.getExtraArmors().add(temp);
-			CharacterSelectionPane.myInventory.getExtraArmors().remove(armorItem);
-			
-			hideParty();
-			forArmor =false;
 		}
 		else if (charButtons.contains(obj)&& forConsumable ==true) {
 			int index = charButtons.indexOf(obj);

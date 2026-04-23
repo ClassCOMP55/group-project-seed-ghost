@@ -1158,7 +1158,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			clearArrays();
 			mainScreen.switchToMenuPane();
 		}
-		
 	}
 	
 	public void mouseMoved(MouseEvent e) {
