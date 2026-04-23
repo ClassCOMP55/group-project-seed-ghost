@@ -924,7 +924,7 @@ public class ShopPane extends GraphicsPane {
 	    setClerkMessage("Whatcha sellin'? I'll make it worth yer while...", "idle");
 	}
 
-	private void switchToBuyMode() {
+	private void switchToBuyMode() {  
 	    sellingMode = false;
 	    displayItems();
 	    setClerkMessage("What would you like to buy?", "idle");
