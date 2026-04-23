@@ -42,4 +42,20 @@ public class Chance {
 		int i = rgen.nextInt(options.length);
 		return options[i];
 	}
+	
+	/*
+	 * 
+	 */
+	public static double softExponential (double base, double exponent, double ceil, double logBase) {
+		double val = Math.pow(base, exponent);
+		
+		if (val > ceil) {
+			val -= ceil;
+			
+			val = Math.log(val) / Math.log(logBase);
+			val += ceil;
+		}
+		
+		return val;
+	}
 }

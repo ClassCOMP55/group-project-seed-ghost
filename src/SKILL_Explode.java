@@ -11,8 +11,8 @@ public class SKILL_Explode extends Skill {
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.4);
-		dmg[DamageType.BLAST.ordinal()] = 10 * Math.pow(1.025, scaling);
-		dmg[DamageType.FIRE.ordinal()] = 10 * Math.pow(1.025, scaling);
+		dmg[DamageType.BLAST.ordinal()] = 10 * Chance.softExponential(1.02, scaling, 1000, 5);
+		dmg[DamageType.FIRE.ordinal()] = 10 * Chance.softExponential(1.02, scaling, 1000, 5);
 		System.out.println(dmg[DamageType.BLAST.ordinal()] + dmg[DamageType.FIRE.ordinal()]);
 		
 		CombatPane currentBattle = MainApplication.combatPane;
@@ -32,6 +32,6 @@ public class SKILL_Explode extends Skill {
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.4);
-		return "Intends to violently self-detonate for " + 20 * Math.pow(1.025, scaling) + " damage!";
+		return "Intends to violently self-detonate for " + 20 * Chance.softExponential(1.02, scaling, 1000, 5) + " damage!";
 	}
 }
