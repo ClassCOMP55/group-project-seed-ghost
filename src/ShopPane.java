@@ -15,8 +15,7 @@ public class ShopPane extends GraphicsPane {
 	private PlayerInventory playerInventory;
 	private GLabel goldLabel; 
 	private int selectedIndex = 0;
-	private int hoverIndex = -1;
-	private GLabel selectedLabel = null; 
+	private int hoverIndex = -1; 
 	private GImage mercenaryImage;
 	private GImage clerkImage;
 	private ArrayList<GLabel> itemLabels = new ArrayList<>();
@@ -27,9 +26,16 @@ public class ShopPane extends GraphicsPane {
 	private GLabel equippedLabel; 
 	private GLabel clerkMessage;
 	private String clerkState = "idle";
-	private boolean sellingMode = false;
-	private ArrayList<Object> playerItemRefs = new ArrayList<>();
+	private GLabel buyBtn;
+	private GLabel sellBtn;
 
+	private enum ShopMode {
+		BUY,
+		SELL
+	}
+
+	private ShopMode currentMode = ShopMode.BUY;
+	private ArrayList<Object> itemRefs = new ArrayList<>();
 	
 	public ShopPane(MainApplication mainScreen) {
 		this.mainScreen = mainScreen;
@@ -41,15 +47,19 @@ public class ShopPane extends GraphicsPane {
 		
 		inventory = new ShopInventory();
 		playerInventory = CharacterSelectionPane.myInventory;
+		
 		addText();
 		addBuyButton();
 		addSellButton();
 		addClerk();
-		displayItems();
+		
+		switchMode(ShopMode.BUY);
+
 		displayGold();
 		drawPlayerInfo();
 		addReturnButton();
 	}
+
 
 	@Override
 	public void hideContent() {
@@ -99,68 +109,58 @@ public class ShopPane extends GraphicsPane {
 	
 	//DISPLAYING ITEMS
 	private void displayItems() {
+
 		for (GLabel lbl : itemLabels) {
-		    mainScreen.remove(lbl);
-		    contents.remove(lbl);
+			mainScreen.remove(lbl);
+			contents.remove(lbl);
 		}
 		itemLabels.clear();
 
-
 		for (GLabel lbl : priceLabels) {
-		    mainScreen.remove(lbl);
-		    contents.remove(lbl);
+			mainScreen.remove(lbl);
+			contents.remove(lbl);
 		}
 		priceLabels.clear();
-	    
-	    int y= 190;
-	    itemLabels.clear();
 
-	    for (int i = 0; i < inventory.getItems().size(); i++) {
+		itemRefs.clear(); 
 
-	        ShopItem item = inventory.getItems().get(i);
+		int y = 190;
 
-	        GLabel name = new GLabel(item.getDisplayName(), 40, y);
-	        name.setFont("DialogInput-BOLD-18");
-	        name.setColor(Color.YELLOW);
+		for (int i = 0; i < inventory.getItems().size(); i++) {
 
-	        GLabel price = new GLabel(item.getPrice() + "g", 780, y);
-	        price.setFont("DialogInput-BOLD-18");
-	        price.setColor(Color.YELLOW);
-	        itemLabels.add(name);
-	        priceLabels.add(price); 
+			ShopItem item = inventory.getItems().get(i);
 
-	        int index = i;
+			itemRefs.add(item.getItem()); // ✅ FIX
 
-	        name.addMouseListener(new MouseAdapter() {
+			GLabel name = new GLabel(item.getDisplayName(), 40, y);
+			name.setFont("DialogInput-BOLD-18");
+			name.setColor(Color.YELLOW);
 
-	            @Override
-	            public void mouseEntered(MouseEvent e) {
-	                hoverIndex = index;
-	                updateHoverVisual();
-	            }
+			GLabel price = new GLabel(item.getPrice() + "g", 780, y);
+			price.setFont("DialogInput-BOLD-18");
+			price.setColor(Color.YELLOW);
 
-	            @Override
-	            public void mouseExited(MouseEvent e) {
-	                hoverIndex = -1;
-	                updateHoverVisual();
-	            }
+			itemLabels.add(name);
+			priceLabels.add(price);
 
-	            @Override
-	            public void mouseClicked(MouseEvent e) {
-	            	   setSelected(index);
-	            }
-	        });
+			final int index = i;
 
-	        contents.add(name);
-	        contents.add(price);
-	        mainScreen.add(name);
-	        mainScreen.add(price);
+			name.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					setSelected(index);
+				}
+			});
 
-	        y += 35;
-	    }
+			contents.add(name);
+			contents.add(price);
+			mainScreen.add(name);
+			mainScreen.add(price);
 
-	    updateSelectionVisual();
-	    drawCursor();
+			y += 35;
+		}
+
+		updateSelectionVisual();
+		drawCursor();
 	}
 	
 	//Mouse Cursor
@@ -170,10 +170,6 @@ public class ShopPane extends GraphicsPane {
 	    if (index < 0 || index >= itemLabels.size()) return;
 
 	    selectedIndex = index;
-
-
-	    selectedLabel = itemLabels.get(index);
-	    selectedLabel.setColor(Color.WHITE);
 	    
 	    updateSelectionVisual();
 	    drawCursor();
@@ -196,7 +192,7 @@ public class ShopPane extends GraphicsPane {
 	        contents.remove(cursor);
 	    }
 
-	    if (selectedIndex < 0 || selectedIndex >= itemLabels.size()) return;
+	    if (selectedIndex < 0 || itemLabels.isEmpty() || selectedIndex >= itemLabels.size()) return;
 
 	    GLabel selected = itemLabels.get(selectedIndex);
 
@@ -241,11 +237,11 @@ public class ShopPane extends GraphicsPane {
 		    }
 
 		    if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-		        if (sellingMode) {
-		            sellItem(selectedIndex);
-		        } else {
-		            buyItem(selectedIndex);
-		        }
+		    	if (currentMode == ShopMode.SELL) {
+		    	    sellItem(selectedIndex);
+		    	} else {
+		    	    buyItem(selectedIndex);
+		    	}
 		    }
 	}
 	
@@ -288,24 +284,25 @@ public class ShopPane extends GraphicsPane {
 	
 	//Updates the items and shows its description
 	private void updateItemPreview() {
+		if (mercenaryImage != null) {
+		    mainScreen.remove(mercenaryImage);
+		    contents.remove(mercenaryImage);
+		    mercenaryImage = null;
+		}
 
-	    if (mercenaryImage != null) {
-	        mainScreen.remove(mercenaryImage);
-	        contents.remove(mercenaryImage);
-	        mercenaryImage = null;
+	    if (currentMode == ShopMode.SELL) {
+	        if (itemRefs.isEmpty()) return;
+	        if (selectedIndex < 0 || selectedIndex >= itemRefs.size()) return;
+	    } else {
+	        if (inventory.getItems().isEmpty()) return;
+	        if (selectedIndex < 0 || selectedIndex >= inventory.getItems().size()) return;
 	    }
 
 	    Object obj;
 
-	    if (sellingMode) {
-	        if (playerItemRefs.isEmpty()) return;
-	        if (selectedIndex < 0 || selectedIndex >= playerItemRefs.size()) return;
-
-	        obj = playerItemRefs.get(selectedIndex);
+	    if (currentMode == ShopMode.SELL) {
+	        obj = itemRefs.get(selectedIndex);
 	    } else {
-	        if (inventory.getItems().isEmpty()) return;
-	        if (selectedIndex < 0 || selectedIndex >= inventory.getItems().size()) return;
-
 	        obj = inventory.getItems().get(selectedIndex).getItem();
 	    }
 
@@ -680,14 +677,14 @@ public class ShopPane extends GraphicsPane {
 	    }
 	    priceLabels.clear();
 
-	    playerItemRefs.clear();
+	    itemRefs.clear();
 
 	    int y = 190;
 
 	    // Weapons
 	    for (WeaponItem w : playerInventory.getExtraWeapons()) {
 
-	    	GLabel name = new GLabel(getSellDisplayText(w), 40, y);
+	    	GLabel name = new GLabel(w.toString(), 40, y);
 	    	name.setFont("DialogInput-BOLD-18");
 	    	name.setColor(Color.YELLOW);
 
@@ -695,8 +692,8 @@ public class ShopPane extends GraphicsPane {
 	    	price.setFont("DialogInput-BOLD-18");
 	    	price.setColor(Color.YELLOW);
 
-	        int index = playerItemRefs.size();
-	        playerItemRefs.add(w);
+	        int index = itemRefs.size();
+	        itemRefs.add(w);
 
 	        addSellListeners(name, index);
 
@@ -722,8 +719,8 @@ public class ShopPane extends GraphicsPane {
 	    	price.setFont("DialogInput-BOLD-18");
 	    	price.setColor(Color.YELLOW);
 
-	        int index = playerItemRefs.size();
-	        playerItemRefs.add(a);
+	        int index = itemRefs.size();
+	        itemRefs.add(a);
 
 	        addSellListeners(name, index);
 
@@ -750,8 +747,8 @@ public class ShopPane extends GraphicsPane {
 	        price.setFont("DialogInput-BOLD-18");
 	        price.setColor(Color.YELLOW);
 
-	        int index = playerItemRefs.size();
-	        playerItemRefs.add(c);
+	        int index = itemRefs.size();
+	        itemRefs.add(c);
 
 	        addSellListeners(name, index);
 
@@ -766,8 +763,15 @@ public class ShopPane extends GraphicsPane {
 	        y += 35;
 	    }
 
+	    if (itemRefs.isEmpty()) {
+	        selectedIndex = -1;
+	    } else if (selectedIndex >= itemRefs.size()) {
+	        selectedIndex = itemRefs.size() - 1;
+	    }
+
 	    updateSelectionVisual();
 	    drawCursor();
+	    updateItemPreview();
 	}
 	
 	//handles clicking sell item:
@@ -797,34 +801,45 @@ public class ShopPane extends GraphicsPane {
 	//sell method:
 	private void sellItem(int index) {
 
-	    if (index < 0 || index >= playerItemRefs.size()) return;
+	    if (itemRefs.isEmpty()) return;
+	    if (index < 0 || index >= itemRefs.size()) return;
 
-	    Object obj = playerItemRefs.get(index);
-	    int price = getSellPrice(obj);
+	    Object obj = itemRefs.get(index);
 
-	    if (obj instanceof WeaponItem) {
-	        playerInventory.getExtraWeapons().remove(obj);
-	    }
-	    else if (obj instanceof ArmorItem) {
-	        playerInventory.getExtraArmors().remove(obj);
-	    }
-	    else if (obj instanceof Character) {
-
+	    if (obj instanceof Character) {
 	        if (!canSellCharacter()) {
-	            setClerkMessage("You must keep at least one party member!", "mad");
+	            setClerkMessage("You must keep at least one mercenary!", "mad");
 	            return;
 	        }
-
-	        removeMercenary((Character)obj);
 	    }
 
-	    applySellBoost();
+	    int price = getSellPrice(obj);
 
 	    playerInventory.setGold(playerInventory.getGold() + price);
 	    updateGoldDisplay();
 
+
+	    if (obj instanceof WeaponItem) {
+	        removeWeapon((WeaponItem) obj);
+	    }
+	    else if (obj instanceof ArmorItem) {
+	        removeArmor((ArmorItem) obj);
+	    }
+	    else if (obj instanceof Character) {
+	        removeMercenary((Character) obj);
+	    }
+
+	    applySellBoost(obj);
+
 	    displayPlayerItems();
 	    updatePlayerInfo();
+
+	    hoverIndex = -1;
+	    selectedIndex = 0;
+
+	    updateItemPreview();
+	    updateSelectionVisual();
+	    drawCursor();
 	}
 	
 	//method to check if there is only one character in party
@@ -855,57 +870,45 @@ public class ShopPane extends GraphicsPane {
 	    
 	}
 	
-	//displays the weapons/armor/merc stats:
-	private String getSellDisplayText(Object obj) {
-
-	    if (obj instanceof WeaponItem) {
-	        WeaponItem w = (WeaponItem) obj;
-	        return "Weapon: " + w.getType()
-	             + " | DMG: " + w.getBaseDamage()
-	             + " | Affinity: " + w.getAffinity();
-	    }
-
-	    if (obj instanceof ArmorItem) {
-	        ArmorItem a = (ArmorItem) obj;
-	        return "Armor | Weight: " + a.getWeight()
-	             + " | Affinity: " + a.getAffinity();
-	    }
-
-	    if (obj instanceof Character) {
-	        Character c = (Character) obj;
-	        return "Mercenary: " + c.getProfession()
-	             + " | HP: " + c.getHp() + "/" + c.getHpMax()
-	             + " | MP: " + c.getMana() + "/" + c.getManaMax();
-	    }
-
-	    return obj.toString();
-	}
-	
 	//boost stats after selling
-	private void applySellBoost() {
+	private void applySellBoost(Object soldItem) {
 
 	    Character[] party = playerInventory.getPartyMembers();
 
-	    for (Character member : party) {
+	    if (soldItem instanceof WeaponItem || soldItem instanceof ArmorItem) {
 
-	        if (member == null) continue;
+	        for (Character member : party) {
+	            if (member == null) continue;
 
-	        // Increase ALL stats by 10
-	        for (int i = 0; i < member.getStatSpread().length; i++) {
-	            member.increaseStat(i, 10);
+	            for (int i = 0; i < member.getStatSpread().length; i++) {
+	                member.increaseStat(i, 5);
+	            }
 	        }
 
-	        // Increase HP
-	        member.setHpMax(member.getHpMax() + 100);
-	        member.setHp(member.getHpMax());
-
-	        // Increase Mana
-	        member.setManaMax(member.getManaMax() + 50);
-	        member.setMana(member.getManaMax());
+	        setClerkMessage(
+	            "▲ EQUIPMENT SOLD! GIFTED A SURGE OF ENERGY! (+5 ALL STATS) ▲",
+	            "happy"
+	        );
 	    }
-	    setClerkMessage("▲ POWER SURGES THROUGH YOUR PARTY! (+10 ALL STATS/ HP UP/ MANA UP ▲ )", "surprised");
+
+	    else if (soldItem instanceof Character) {
+
+	        for (Character member : party) {
+	            if (member == null) continue;
+
+	            member.setHpMax(member.getHpMax() + 100);
+	            member.setHp(member.getHpMax());
+
+	            member.setManaMax(member.getManaMax() + 100);
+	            member.setMana(member.getManaMax());
+	        }
+
+	        setClerkMessage(
+	            "▲ MERCENARY has RETIRED! PULSE OF ENERGY EMERGES ! (+100 HP / +100 MP) ▲",
+	            "surprised"
+	        );
+	    }
 	}
-	
 
 	//sells mercenary:
 	private void removeMercenary(Character c) {
@@ -919,55 +922,69 @@ public class ShopPane extends GraphicsPane {
 	    }
 	}
 	
+	//remove weapon
+	private void removeWeapon(WeaponItem w) {
+	    playerInventory.getExtraWeapons().remove(w);
+	}
+	
+	//remove armor
+	private void removeArmor(ArmorItem a) {
+	    playerInventory.getExtraArmors().remove(a);
+	}
+
+	
 	//buy button
 	private void addBuyButton() {
-	    GLabel buyBtn = new GLabel("BUY", 920, 300);
-	    buyBtn.setFont("DialogInput-BOLD-20");
-	    buyBtn.setColor(Color.GREEN);
+		buyBtn = new GLabel("BUY", 920, 300);
+		buyBtn.setFont("DialogInput-BOLD-20");
+		buyBtn.setColor(Color.GREEN);
 
-	    buyBtn.addMouseListener(new MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-	            switchToBuyMode(); 
-	        }
-	    });
+		buyBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				switchMode(ShopMode.BUY);
+			}
+		});
 
-	    contents.add(buyBtn);
-	    mainScreen.add(buyBtn);
+		contents.add(buyBtn);
+		mainScreen.add(buyBtn);
 	}
 	
-	
-	//sell button:
+	//sell button
 	private void addSellButton() {
-	    GLabel sellBtn = new GLabel("SELL", 980, 300);
-	    sellBtn.setFont("DialogInput-BOLD-20");
-	    sellBtn.setColor(Color.ORANGE);
+		sellBtn = new GLabel("SELL", 980, 300);
+		sellBtn.setFont("DialogInput-BOLD-20");
+		sellBtn.setColor(Color.ORANGE);
 
-	    sellBtn.addMouseListener(new MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-	            switchToSellMode();
-	        }
-	    });
+		sellBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				switchMode(ShopMode.SELL);
+			}
+		});
 
-	    contents.add(sellBtn);
-	    mainScreen.add(sellBtn);
+		contents.add(sellBtn);
+		mainScreen.add(sellBtn);
 	}
 	
-	//Sell mode:
-	private void switchToSellMode() {
-	    sellingMode = true;
-	    displayPlayerItems();
-	    selectedIndex = 0; 
+	//sell and buy mode
+	private void switchMode(ShopMode mode) {
+
+	    currentMode = mode;
+	    selectedIndex = 0;
+	    hoverIndex = -1;
+
+	    if (currentMode == ShopMode.BUY) {
+	        displayItems();
+	    } else {
+	        displayPlayerItems();
+	    }
+
 	    updateItemPreview();
-	    setClerkMessage("Whatcha sellin'? I'll make it worth yer while...", "idle");
-	}
-	
-	//buy mode
-	private void switchToBuyMode() {  
-	    sellingMode = false;
-	    displayItems();
-	    selectedIndex = 0; 
-	    updateItemPreview();
-	    setClerkMessage("What would you like to buy?", "idle");
+
+	    if (mode == ShopMode.BUY) {
+	        setClerkMessage("What would you like to buy?", "idle");
+	    } else {
+	        setClerkMessage("Whatcha sellin'? I'll make it worth yer while...", "idle");
+	    }
 	}
 
 	//return button
