@@ -325,12 +325,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		if (won==true||lost==true) {
-			if (won==true) {
-				MapPane.currPosition.cleared();
-				displayRewards();
+			if (lost==true) {
+				displayGameOver();
 			}
 			else {
-				displayGameOver();
+				MapPane.currPosition.cleared();
+				displayRewards();
 			}
 			return true;
 		}
