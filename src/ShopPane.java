@@ -568,7 +568,7 @@ public class ShopPane extends GraphicsPane {
 	    switch (profession.toLowerCase()) {
 	        case "knight": return "spr_knight.png";
 	        case "samurai": return "spr_samurai.png";
-	        case "thief": return "spr_thief.png";
+	        case "thief": return "spr_thief.png"; 
 	        case "viking": return "spr_viking.png";
 	        case "cleric": return "spr_cleric.png";
 	        case "sorcerer": return "spr_sorcerer.png";
