@@ -63,9 +63,11 @@ public class Animation {
 			 animTime = 1;
 			 break;
 		 case "Explode":
-			 animation.setImage("spr_ATTACK_blast.gif");
-			 animation.setLocation(target.getX(), target.getY());
-			 animations.add(animation);
+			 for (GImage image: targets){
+				 animation = new GImage("spr_ATTACK_blast.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+			 };
 			 animTime = 1;
 			 break;
 		 case "Buff":
@@ -77,6 +79,17 @@ public class Animation {
 		 case "BuffAllies":
 			 for (GImage image: allies){
 				 animation = new GImage("spr_SKILL_buff.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+			 }
+			 animTime = 0.5;
+			 break;
+		 case "BuffAndAttackAll":
+			 animation.setImage("spr_SKILL_buff.gif");
+			 animation.setLocation(user.getX(), user.getY());
+			 animations.add(animation);
+			 for (GImage image: targets){
+				 animation = new GImage("spr_ATTACK_slash.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
 			 }
