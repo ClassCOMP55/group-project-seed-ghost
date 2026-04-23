@@ -129,7 +129,7 @@ public class MapPane extends GraphicsPane {
 		GRect box1 = new GRect(buttonWidth+20,(buttonHeight*(weapons.size()+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*0), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
-		box1.setColor(Color.BLUE);
+		box1.setColor(new Color(11,35,64));
 		contents.add(box1);
 		mainScreen.add(box1);
 		extra.add(box1);
@@ -172,7 +172,7 @@ public class MapPane extends GraphicsPane {
 		box1 = new GRect(buttonWidth+20,(buttonHeight*(armors.size()+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*1), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
-		box1.setColor(Color.RED);
+		box1.setColor(new Color(11,35,64));
 		contents.add(box1);
 		mainScreen.add(box1);
 		extra.add(box1);
@@ -213,7 +213,7 @@ public class MapPane extends GraphicsPane {
 		box1 = new GRect(buttonWidth+20,(buttonHeight*(consumables.length+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-allBoxWidth)/2+(box1.getWidth()*2), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
-		box1.setColor(Color.GREEN);
+		box1.setColor(new Color(11,35,64));
 		contents.add(box1);
 		mainScreen.add(box1);
 		extra.add(box1);
@@ -323,7 +323,7 @@ public class MapPane extends GraphicsPane {
 		
 		partyOpen = true;
 		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
-		double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
+		double buttonWidth = MainApplication.WINDOW_WIDTH*(300.0/800.0);
 		PlayerInventory inventory = CharacterSelectionPane.myInventory;
 		int partySize = 0;
 		Character[] myParty = inventory.getPartyMembers();
@@ -335,7 +335,7 @@ public class MapPane extends GraphicsPane {
 		GRect box1 = new GRect(buttonWidth+20,(buttonHeight*(partySize+1))+20);
 		box1.setLocation((MainApplication.WINDOW_WIDTH-box1.getWidth())/2+(box1.getWidth()*0), (MainApplication.WINDOW_HEIGHT-box1.getHeight())/2);
 		box1.setFilled(true);
-		box1.setColor(Color.MAGENTA);
+		box1.setColor(new Color(11,35,64));
 		contents.add(box1);
 		mainScreen.add(box1);
 		extra.add(box1);
@@ -349,6 +349,8 @@ public class MapPane extends GraphicsPane {
 		extra.add(extraRect);
 		
 		GLabel extraLabel = new GLabel("Select a Party Member to use the item");
+		extraLabel.setColor(Color.BLACK);
+		extraLabel.setFont("DialogInput-Bold-17");
 		extraLabel.setLocation(extraRect.getX()+(extraRect.getWidth()-extraLabel.getWidth())/2, extraRect.getY()+(extraRect.getHeight()-extraLabel.getHeight())/2+extraLabel.getHeight());
 		contents.add(extraLabel);
 		mainScreen.add(extraLabel);
@@ -362,8 +364,10 @@ public class MapPane extends GraphicsPane {
 			contents.add(button);
 			mainScreen.add(button);
 			charButtons.add(button);
-			
-			GLabel label = new GLabel(myParty[i].toString());
+			GLabel label = new GLabel(myParty[i].toString()+", 	Armor: "+myParty[i].getArmor().toString());
+			if (forConsumable == true) label = new GLabel(myParty[i].toString()+", 	Health: "+myParty[i].getHp()+"/"+myParty[i].getHpMax()+", 	Mana: "+myParty[i].getMana()+"/"+myParty[i].getManaMax());
+			if (forWeapon == true) label = new GLabel(myParty[i].toString()+", 	Weapon: "+myParty[i].getWeapon().toString());
+			label.setColor(Color.WHITE);
 			label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+label.getHeight());
 			contents.add(label);
 			mainScreen.add(label);
@@ -696,13 +700,29 @@ private void createMap() {
 		else if (charButtons.contains(obj)&& forConsumable ==true) {
 			int index = charButtons.indexOf(obj);
 			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
-
-			System.out.println(consumableItem.getType().toString()+" Used on: "+c);
-			CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex].use(c);
-			CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex] =null;
 			
-			hideParty();
-			forConsumable =false;
+			if (c.getHp()>0) {
+				System.out.println(consumableItem.getType().toString()+" Used on: "+c);
+				CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex].use(c);
+				CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex] =null;
+				
+				hideParty();
+				forConsumable =false;
+				
+				description.setLabel("");
+				descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
+				descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
+				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+			}
+			else {
+				description.setLabel("Cannot use on a dead character!");
+				descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
+				descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
+				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
+				descriptionBox.sendToFront();
+				description.sendToFront();
+			}
+
 		}
 		
 		if (myNodeObjects.contains(obj)) {
