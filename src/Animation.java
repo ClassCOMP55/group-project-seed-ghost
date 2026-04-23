@@ -11,12 +11,18 @@ public class Animation {
 	private GImage animation;
 	private ArrayList<GImage> animations = new ArrayList<>();
 	
-	public void animate(String type, GImage target,GImage user, MainApplication mainScreen, ArrayList<GObject> contents, GImage[] aliveEnemeies, GImage[] aliveCharacters) {
+	public void animate(String type, GImage target,GImage user, MainApplication mainScreen, ArrayList<GObject> contents, GImage[] targets, GImage[] allies) {
 		animation = new GImage("spr_SHIELD_guard.gif");
 		double animTime = 0.25;
 		
 		 switch(type) {
 		 case "DefenseOrUtility":
+			 animation.setImage("spr_SHIELD_guard.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animations.add(animation);
+			 animTime = 0.5;
+			 break;
+		 case "DefenseOrUtilitySelf":
 			 animation.setImage("spr_SHIELD_guard.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
@@ -38,9 +44,11 @@ public class Animation {
 			 animations.add(animation);
 			 break;
 		 case "FireAttack":
-			 animation.setImage("spr_ATTACK_fire.gif");
-			 animation.setLocation(target.getX(), target.getY());
-			 animations.add(animation);
+			 for (GImage image: targets){
+				 animation = new GImage("spr_ATTACK_fire.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+			 }
 			 break;
 		 case "TriSlash":
 			 animation.setImage("spr_ATTACK_trislash.gif");
@@ -66,10 +74,26 @@ public class Animation {
 			 animations.add(animation);
 			 animTime = 0.5;
 			 break;
+		 case "BuffAllies":
+			 for (GImage image: allies){
+				 animation = new GImage("spr_SKILL_buff.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+			 }
+			 animTime = 0.5;
+			 break;
 		 case "Debuff":
 			 animation.setImage("spr_SKILL_debuff.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 animTime = 0.5;
+			 break;
+		 case "DebuffAll":
+			 for (GImage image: targets){
+				 animation = new GImage("spr_SKILL_debuff.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+			 }
 			 animTime = 0.5;
 			 break;
 		 }
