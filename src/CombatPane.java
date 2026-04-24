@@ -23,7 +23,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
-	private GImage background,highlightedCharacter,arrow;
+	private GImage background,arrow;
 	
 	private boolean skill;
 	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
@@ -46,23 +46,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	@Override
 	public void showContent() {
 		
-		play = new Animation();
-		hideContent();
-		allSkillsButtonLabels = new ArrayList<>();
-		allSkillsButton = new ArrayList<>();
-		allConsumableButton = new ArrayList<>();
-		allConsumableButtonLabels = new ArrayList<>();
-		toolTipBoxes = new ArrayList<>();
-		toolTipLabels = new ArrayList<>();
-	
-		otherEntity = new Enemy();
-		highlighted = new GRect(0,0);
-		inventory = false;
-		forSkills = false;
-		forConsumable = false;
-		skill=false;
-		counter = 0;
-			
+		initialize();
 		addButtons();
 		generateEnemiesAndAllies();
 		otherEntity = myArrEnemies[0]; //Temporary Fix for glitch
@@ -79,6 +63,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.clear();
 	}
 	
+	/*
+	 * Creates basic buttons and arrows for character turn
+	 * 
+	 */
 	public void addButtons() {
 		screenHeight = MainApplication.WINDOW_HEIGHT;
 		screenWidth = MainApplication.WINDOW_WIDTH;
@@ -94,6 +82,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		contents.add(arrow);
 	}
 	
+	/*
+	 * Generates background based off affinity
+	 * 
+	 */
 	public void addBackground() {
 		
 		background = null;
@@ -123,7 +115,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	/*
 	 * Updates the Mana and Health Labels of Entities
-	 * 
+	 *  Also marks and removes dead characters
 	 */
 	public void update() {
 		for (Entity entity:allEntities) {
@@ -174,7 +166,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
-	
+	/*
+	 * Clears the abilities of characters
+	 * 
+	 */
 	public void clearCharacters() {
 		for (Character c: myArrAllies) {
 			if (c.getLastUsedSkill()!=null) {
@@ -187,7 +182,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 * Creates Enemies based on affinity
 	 * Stores the Enemies in a basic array
 	 */
-	
 	private void generateEnemiesAndAllies(){
 		
 		myArrAllies = CharacterSelectionPane.myInventory.getPartyMembers();
@@ -233,7 +227,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			image.setSize(140, 140);
 			allImages.add(image);
 		}
-		highlightedCharacter = allImages.get(0);
 		setLocationandAddToScreen();
 	}
 	
@@ -300,8 +293,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	}
 	
 	/*
-	 * 
-	 * 
+	 * Checks to see if all enemies or allies are dead
+	 * displays win/loss screen based off result
 	 */
 	
 	public boolean checkResult() {
@@ -339,6 +332,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	/*
+	 * Creates an array based off the instinct of entities
+	 * This array is the order entities have attack
+	 */
 	public void rollForInitiative() {
 		
 		initiativeArr = new ArrayList<>();
@@ -355,6 +352,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
+	/*
+	 * This is where enemies attack
+	 * Enemies skill animation/audio is triggered through here
+	 */
 	public void EnemyAttack() {
 		Enemy e = (Enemy) currentEntity;
 		Character c = e.playTurn(this);
@@ -363,6 +364,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		update();
 	}
 	
+	/*
+	 * This method runs the main combat of the game
+	 * Determines if next entity is a character or enemy and runs appropriate actions
+	 */
 	public void nextCombat() {
 		
 		if (counter==initiativeArr.size()) counter = 0;
@@ -408,6 +413,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
+	/*
+	 * Updates the counter that will be used in combat to grab next entity
+	 * 
+	 */
 	public void updateCounter(int prevSize,int previousIndex) {
 		update();
 
@@ -432,6 +441,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
+	/*
+	 * Creates buttons
+	 * @Param x The buttons x coordinate
+	 * @Param Y The buttons x coordinate
+	 * @return The button created
+	 */
 	public GRect createButton(double x,double y,String str){
 		GRect button = new GRect(buttonWidth,buttonHeight);
 		if (forSkills==true || forConsumable == true) button.setSize(screenWidth*(320.0/800.0), buttonHeight);
@@ -456,6 +471,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return button;
 	}
 	
+	/*
+	 * Creates text for the game
+	 * 
+	 */
 	public void addText() {
 		description = new GLabel("");
 		description.setColor(Color.WHITE);
@@ -481,6 +500,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	/*
+	 * Creates mana and health labels in array and stores them in array
+	 * 
+	 */
 	public void createHealthAndManaLabels() {
 		
 		healthLabels = new ArrayList<>();
@@ -514,6 +537,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		createStatsBar();
 	}
 	
+	/*
+	 * Creates the health/mana bars for characters and stores them in a array
+	 * 
+	 */
 	public void createStatsBar() {
 		
 		GRect health,mana,nameDisplay;
@@ -587,6 +614,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 	}
+	
+	/*
+	 * Updates the size of character health bars
+	 * 
+	 */
 	public void updateHealthAndManaBarSize(Character c) {
 		int index = allEntities.indexOf(c);
 		GRect health = healthBars.get(index);
@@ -597,7 +629,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mana.setSize(barSizeChar*ratio, mana.getHeight());
 	}
 	
-	
+	/*
+	 * Updates the size of enemy health bars
+	 * 
+	 */
 	public void updateHealthAndManaBarSize(Enemy e) {
 		int index = allEntities.indexOf(e);
 		GRect health = healthBars.get(index);
@@ -605,6 +640,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		health.setSize(barSizeEnemy*ratio, health.getHeight());
 	}
 	
+	/*
+	 * Checks to see if a entity is death
+	 * @return The result of the check
+	 */
 	public boolean isDead() {
 		if (otherEntity instanceof Enemy) {
 			Enemy e = (Enemy) otherEntity;
@@ -617,13 +656,39 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return false;
 	}
 	
+	/*
+	 * Clears arrays
+	 * 
+	 */
 	public void clearArrays() {
 		allEntities.clear(); temp.clear(); initiativeArr.clear();
 		allImages.clear(); allSkillsButton.clear(); healthBars.clear(); manaBars.clear();
 		allSkillsButtonLabels.clear(); healthLabels.clear(); manaLabels.clear();
 	}
 	
+	public void initialize() {
+		play = new Animation();
+		hideContent();
+		allSkillsButtonLabels = new ArrayList<>();
+		allSkillsButton = new ArrayList<>();
+		allConsumableButton = new ArrayList<>();
+		allConsumableButtonLabels = new ArrayList<>();
+		toolTipBoxes = new ArrayList<>();
+		toolTipLabels = new ArrayList<>();
 	
+		otherEntity = new Enemy();
+		highlighted = new GRect(0,0);
+		inventory = false;
+		forSkills = false;
+		forConsumable = false;
+		skill=false;
+		counter = 0;
+	}
+	
+	/*
+	 * Displays the skills of a character
+	 * 
+	 */
 	public void displaySkills(Character myChar) {
 		
 		skill = true;
@@ -653,6 +718,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		closeButton = createButton(extra.getX(),extra.getY()+(buttonHeight*(mySkills.length+1)),"Close");
 	}
 	
+	/*
+	 * Hides the skills of a character
+	 * 
+	 */
 	public void hideSkills() {
 		for (GRect rect:allSkillsButton) {
 			contents.remove(rect);
@@ -676,6 +745,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		forSkills =false;
 	}
 		
+	/*
+	 * Shows the consumables in player inventory
+	 * 
+	 */
 	public void showConsumables() {
 		double consumableWidth = screenWidth*(320.0/800.0);
 		ConsumableItem[] myConsumables = CharacterSelectionPane.myInventory.getConsumables();
@@ -709,6 +782,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		closeButton = createButton(extra.getX(),extra.getY()+(buttonHeight*(myConsumables.length+1)),"Close");
 	}
 	
+	/*
+	 * Hides the consumables in player inventory
+	 * 
+	 */
 	public void hideConsumables() {
 		for (GRect rect:allConsumableButton) {
 			contents.remove(rect);
@@ -732,6 +809,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		forConsumable =false;
 	}
 	
+	/*
+	 * Displays the rewards after winning combat
+	 * 
+	 */
 	public void displayRewards() {
 		
 		GameSounds.playVictory();
@@ -809,6 +890,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	/*
+	 * Gets a weapon reward based off node affinity
+	 * @return the weapon reward
+	 */
 	public WeaponItem getWeaponReward() {
 		String type = MapPane.currPosition.getCombatAffinity();
 		WeaponItem weapon = null;
@@ -830,6 +915,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return weapon;
 	}
 	
+	/*
+	 * Gets a armor reward based off node affinity
+	 * @return the armor reward
+	 */
 	public ArmorItem getArmorReward() {
 		String type = MapPane.currPosition.getCombatAffinity();
 		ArmorItem armor = null;
@@ -851,7 +940,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return armor;
 	}
 		
-	
+	/*
+	 * Displays a game over screen if player loses
+	 *
+	 */
 	public void displayGameOver() {
 		
 		GameSounds.playGameOver();
@@ -886,6 +978,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
+	/*
+	 * Displays a tooltip for a character
+	 * @Param the character whos tips need to be displayed
+	 */
 	public void toolTips(Character c) {
 		
 		GLabel armor = new GLabel(c.getArmor().printStats());
@@ -943,6 +1039,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	/*
+	 * Hides character tooltip
+	 *
+	 */
 	public void hideToolTips() {
 		 for (GRect rect:toolTipBoxes) {
 			 contents.remove(rect);
@@ -957,6 +1057,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		 toolTipLabels.clear();
 	}
 	
+	/*
+	 * Shows the intent of an enemy
+	 *@ Param e The enemy who's intent is being displayed
+	 */
 	public void intent(Enemy e) {
 		intent.setLabel(e.getIntent());
 		
@@ -974,6 +1078,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 	}
 	
+	/*
+	 * Updates the description GLabel
+	 * @param str The string used in the GLabel
+	 */
 	public void setDescription(String str) {
 		description.setLabel(str);
 		descriptionBox.setSize(description.getWidth()+10, description.getHeight()+10);
@@ -981,6 +1089,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
 	}
 	
+	/*
+	 * Puts a red x on a dead entity
+	 * @param The entity being marked
+	 */
 	public void yourDead(Entity entity) {
 		GImage image = entityToImage(entity);
 		GLine line1 = new GLine(image.getX(),image.getY(),image.getX()+image.getWidth(),image.getY()+image.getHeight());
@@ -995,6 +1107,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.add(line2);
 	}
 	
+	/*
+	 * Creates an array based off alive characters
+	 * @return A array of alive characters
+	 */
 	public Character[] aliveAllies() {
 		int length =0;
 		int num = 0;
@@ -1014,6 +1130,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return myArr;
 	}
 	
+	/*
+	 * Creates an array of alive ally images
+	 * @return A array of alive character images
+	 */
 	public GImage[] aliveAlliesImages() {
 		GImage[] myArr = new GImage[aliveAllies().length];
 		int i =0;
@@ -1027,6 +1147,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return myArr;
 	}
 	
+	/*
+	 * Creates an array based off alive enemies
+	 * @return A array of alive enemies
+	 */
 	public Enemy[] aliveEnemies() {
 		int length =0;
 		int num = 0;
@@ -1046,6 +1170,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return myArr;
 	}
 	
+	/*
+	 * Creates an array of alive enemy image
+	 * @return A array of alive enemy images
+	 *
+	 */
 	public GImage[] aliveEnemiesImages() {
 		GImage[] myArr = new GImage[aliveEnemies().length];
 		int i =0;
@@ -1059,6 +1188,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		return myArr;
 	}
 	
+	/*
+	 * This is where all the click actions take place for the user
+	 * They can pick a skill/consumable and use it if its the users turn 
+	 */
 	public void mouseClicked(MouseEvent e) {
 		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
@@ -1191,6 +1324,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 	}
 	
+	/*
+	 * This is where all the mouse move actions take place for the user
+	 * It shows character tooltips, enemy intent, and highlights buttons
+	 */
 	public void mouseMoved(MouseEvent e) {
 		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
@@ -1266,6 +1403,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		//Empty
 		
 	}
+	
+	//Getters and setters are below this comment
 
 	public ArrayList<Entity> getAllEntities() {
 		return allEntities;
