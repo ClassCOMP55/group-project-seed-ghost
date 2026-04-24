@@ -23,7 +23,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
-	private GImage background,animation,highlightedCharacter,arrow;
+	private GImage background,highlightedCharacter,arrow;
 	
 	private boolean skill;
 	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
@@ -1186,6 +1186,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		else if ((obj==menuButton||obj==menuButtonLabel)&&lost==true) {
 			clearArrays();
+			CharacterSelectionPane.active = false;
 			mainScreen.switchToMenuPane();
 		}
 	}

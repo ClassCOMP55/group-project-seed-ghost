@@ -757,7 +757,7 @@ private void createMap() {
 		if (myNodeObjects.contains(obj)) {
 			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			
-			if (currPosition.hasAccess(myNodeObjects.indexOf(image))==true) {
+			if (currPosition.hasAccess(myNodeObjects.indexOf(image))==true && currPosition.isCleared()) {
 				currPosition = imageToNode(image);
 				GameSounds.playMapNodeAttach();
 				switch(imageToNode(image).getType()){

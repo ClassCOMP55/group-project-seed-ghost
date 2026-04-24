@@ -100,8 +100,8 @@ public class MenuPane extends GraphicsPane {
 		else if (obj == settingsButton||obj==options) {
 			mainScreen.switchToSettingsPane();
 		}
-		else if (obj == continueGameButton||obj==continueGame) {
-			mainScreen.switchToCharacterSelectionPane();
+		else if ((obj == continueGameButton||obj==continueGame) && CharacterSelectionPane.active == true) {
+			mainScreen.switchToMapPane();
 		}
 	}
 	

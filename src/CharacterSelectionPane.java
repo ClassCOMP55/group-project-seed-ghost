@@ -17,6 +17,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private GRect close,highlighted;
 	private GLabel closeLabel;
 	private boolean open;
+	public static boolean active;
 	public static PlayerInventory myInventory;
 
 	public CharacterSelectionPane(MainApplication mainScreen) {
@@ -29,6 +30,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		MapPane.createPath();
 		MapPane.currPosition = MapPane.mapPath.get(0);
 		
+		active = false;
 		myChars = new ArrayList<>();
 		myImages = new ArrayList<>();
 		infoLabels = new ArrayList<>();
@@ -348,18 +350,21 @@ public class CharacterSelectionPane extends GraphicsPane {
 			myInventory = new PlayerInventory(myChars.get(0));
 			System.out.println("option 1");
 			System.out.println("You are a "+myChars.get(0).getProfession());
+			active = true;
 			mainScreen.switchToMapPane();
 		}
 		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(3)) {
 			myInventory = new PlayerInventory(myChars.get(1));
 			System.out.println("option 2");
 			System.out.println("You are a "+myChars.get(1).getProfession());
+			active = true;
 			mainScreen.switchToMapPane();
 		}
 		else if (mainScreen.getElementAtLocation(e.getX(), e.getY()) == contents.get(4)) {
 			myInventory = new PlayerInventory(myChars.get(2));
 			System.out.println("option 3");
 			System.out.println("You are a "+myChars.get(2).getProfession());
+			active = true;
 			mainScreen.switchToMapPane();
 		}
 		else if (infoButtons.contains(obj) && open == false) {
