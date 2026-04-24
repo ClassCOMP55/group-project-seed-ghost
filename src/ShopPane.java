@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -143,7 +144,7 @@ public class ShopPane extends GraphicsPane {
 
 			ShopItem item = inventory.getItems().get(i);
 
-			itemRefs.add(item.getItem()); // ✅ FIX
+			itemRefs.add(item.getItem()); 
 
 			GLabel name = new GLabel(item.getDisplayName(), 40, y);
 			name.setFont("DialogInput-BOLD-18");
@@ -183,25 +184,41 @@ public class ShopPane extends GraphicsPane {
 	//Mouse Cursor
 	private void setSelected(int index) {
 
-	    if (itemLabels.size() == 0) return;
-	    if (index < 0 || index >= itemLabels.size()) return;
+	    int size;
+
+	    if (currentMode == ShopMode.BUY) {
+	        size = inventory.getItems().size();
+	    } else {
+	        size = itemRefs.size();
+	    }
+
+	    if (size == 0) return;
+	    if (index < 0 || index >= size) return;
 
 	    selectedIndex = index;
-	    playSound("SelectShop.wav");
-	    
-	    
-	    
-	    
+	    AudioManager.playSfxOnce("SelectShop.wav");
+
 	    updateSelectionVisual();
 	    drawCursor();
 	    updateItemPreview();
 	}
 	
+	//fixing item index
 	private void fixSelectedIndex() {
-	    if (inventory.getItems().isEmpty()) {
+	    int size;
+
+	    if (currentMode == ShopMode.BUY) {
+	        size = inventory.getItems().size();
+	    } else {
+	        size = itemRefs.size();
+	    }
+
+	    if (size == 0) {
 	        selectedIndex = -1;
-	    } else if (selectedIndex >= inventory.getItems().size()) {
-	        selectedIndex = inventory.getItems().size() - 1;
+	    } else if (selectedIndex >= size) {
+	        selectedIndex = size - 1;
+	    } else if (selectedIndex < 0) {
+	        selectedIndex = 0;
 	    }
 	}
 	
@@ -213,7 +230,7 @@ public class ShopPane extends GraphicsPane {
 	        contents.remove(cursor);
 	    }
 
-	    if (selectedIndex < 0 || itemLabels.isEmpty() || selectedIndex >= itemLabels.size()) return;
+	    if (selectedIndex < 0 || selectedIndex >= itemLabels.size()) return;
 
 	    GLabel selected = itemLabels.get(selectedIndex);
 
@@ -378,7 +395,7 @@ public class ShopPane extends GraphicsPane {
 	        previewLines.add(line);
 	        contents.add(line);
 	        mainScreen.add(line);
-
+   
 	        currentY += lineHeight;
 	    }
 
@@ -521,21 +538,17 @@ public class ShopPane extends GraphicsPane {
 	        setClerkMessage("Well you got sum one to join ya..huh","surprised");
 
 	        inventory.getItems().set(index, generateMercenaryItem());
-
-	        displayItems();
-	        selectedIndex = index;
-	        updateItemPreview();
-	        drawCursor();
-	        updatePlayerInfo();
+   
+	        fixSelectedIndex();
+	        refreshUI();
 
 	        return;
 	    }
 
 	    System.out.println("Bought: " + shopItem.getDisplayName());
 
-	    updatePlayerInfo();
 	    fixSelectedIndex();
-	    displayItems();
+	    refreshUI();
 	}
 
 	//Mercenary Generate for shop
@@ -787,12 +800,7 @@ public class ShopPane extends GraphicsPane {
 	        y += 35;
 	    }
 
-	    if (itemRefs.isEmpty()) {
-	        selectedIndex = -1;
-	    } else if (selectedIndex >= itemRefs.size()) {
-	        selectedIndex = itemRefs.size() - 1;
-	    }
-
+	    fixSelectedIndex();
 	    updateSelectionVisual();
 	    drawCursor();
 	    updateItemPreview();
@@ -859,15 +867,10 @@ public class ShopPane extends GraphicsPane {
 
 	    applySellBoost(obj);
 
-	    displayPlayerItems();
-	    updatePlayerInfo();
-
 	    hoverIndex = -1;
-	    selectedIndex = 0;
-
-	    updateItemPreview();
-	    updateSelectionVisual();
-	    drawCursor();
+	    
+	    fixSelectedIndex();
+	    refreshUI();
 	}
 	
 	//method to check if there is only one character in party
@@ -953,8 +956,14 @@ public class ShopPane extends GraphicsPane {
 	    Character[] party = playerInventory.getPartyMembers();
 
 	    for (int i = 0; i < party.length; i++) {
-	        if (party[i] == c) {
-	            party[i] = null;
+	    	if (party[i] != null && party[i].equals(c)) {
+
+	            for (int j = i; j < party.length - 1; j++) {
+	                party[j] = party[j + 1];
+	            }
+
+	            party[party.length - 1] = null;
+
 	            return;
 	        }
 	    }
@@ -963,18 +972,6 @@ public class ShopPane extends GraphicsPane {
 	//remove weapon
 	private void removeWeapon(WeaponItem w) {
 	    playerInventory.getExtraWeapons().remove(w);
-	}
-	//plays sound from the folder
-	private void playSound(String filename) {
-	    try {
-	        java.io.InputStream is = getClass().getResourceAsStream("/audio/" + filename);
-	        javax.sound.sampled.AudioInputStream audio = javax.sound.sampled.AudioSystem.getAudioInputStream(new java.io.BufferedInputStream(is));
-	        javax.sound.sampled.Clip clip = javax.sound.sampled.AudioSystem.getClip();
-	        clip.open(audio);
-	        clip.start();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
 	}
 	
 	//remove armor
@@ -1092,8 +1089,6 @@ public class ShopPane extends GraphicsPane {
 	
 	//pop up
 	private void executeTransaction() {
-		playSound("PurchaseItemShop.wav");
-		
 	    if (pendingBuy) {
 	        buyItem(pendingIndex);
 	    } else {
@@ -1106,15 +1101,44 @@ public class ShopPane extends GraphicsPane {
 
 	    isConfirmOpen = false;
 
-	    mainScreen.remove(confirmBox);
-	    mainScreen.remove(confirmText);
-	    mainScreen.remove(yesBtn);
-	    mainScreen.remove(noBtn);
+	    if (confirmBox != null) {
+	        mainScreen.remove(confirmBox);
+	        contents.remove(confirmBox);
+	        confirmBox = null;
+	    }
 
-	    contents.remove(confirmBox);
-	    contents.remove(confirmText);
-	    contents.remove(yesBtn);
-	    contents.remove(noBtn);
+	    if (confirmText != null) {
+	        mainScreen.remove(confirmText);
+	        contents.remove(confirmText);
+	        confirmText = null;
+	    }
+
+	    if (yesBtn != null) {
+	        mainScreen.remove(yesBtn);
+	        contents.remove(yesBtn);
+	        yesBtn = null;
+	    }
+
+	    if (noBtn != null) {
+	        mainScreen.remove(noBtn);
+	        contents.remove(noBtn);
+	        noBtn = null;
+	    }
+	}
+	
+	//refreshes the UI
+	private void refreshUI() {
+	    if (currentMode == ShopMode.BUY) {
+	        displayItems();
+	    } else {
+	        displayPlayerItems();
+	    }
+
+	    updatePlayerInfo();
+	    updateItemPreview();
+	    updateHoverVisual();
+	    updateSelectionVisual();
+	    drawCursor();
 	}
 
 	//return button
