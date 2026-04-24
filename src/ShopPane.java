@@ -597,7 +597,7 @@ public class ShopPane extends GraphicsPane {
 	
 	//The old man clerk
 	private void addClerk() {
-	    clerkMessage = new GLabel("What would you like to buy?", 200, 120);
+	    clerkMessage = new GLabel("What would you like to buy?(Press Enter to Purchase)", 200, 120);
 	    clerkMessage.setFont("DialogInput-BOLD-18");
 	    clerkMessage.setColor(Color.WHITE);
 	    
@@ -981,9 +981,9 @@ public class ShopPane extends GraphicsPane {
 	    updateItemPreview();
 
 	    if (mode == ShopMode.BUY) {
-	        setClerkMessage("What would you like to buy?", "idle");
+	        setClerkMessage("What would you like to buy?(Press Enter to Purchase)", "idle");
 	    } else {
-	        setClerkMessage("Whatcha sellin'? I'll make it worth yer while...", "idle");
+	        setClerkMessage("Whatcha sellin'? I'll make it worth yer while...(Press Enter to SELL)", "idle");
 	    }
 	}
 
