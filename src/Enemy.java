@@ -178,8 +178,8 @@ public class Enemy extends Entity {
 				damageResist[DamageType.BLAST.ordinal()] = 0.4;
 				damageResist[DamageType.FIRE.ordinal()] = 0.2;
 				
-				weaponDamage[DamageType.SLASH.ordinal()] = 60;
-				weaponDamage[DamageType.FIRE.ordinal()] = 20;
+				weaponDamage[DamageType.SLASH.ordinal()] = 30;
+				weaponDamage[DamageType.FIRE.ordinal()] = 10;
 				weaponScales[EntityStats.STR.ordinal()] = scaling;
 				str = 30;
 				ist = 0;
