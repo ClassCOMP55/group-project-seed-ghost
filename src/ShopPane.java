@@ -1,7 +1,7 @@
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.util.Random;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
@@ -892,21 +892,31 @@ public class ShopPane extends GraphicsPane {
 	private void applySellBoost(Object soldItem) {
 
 	    Character[] party = playerInventory.getPartyMembers();
+	    Random rand = new Random();
 
 	    if (soldItem instanceof WeaponItem || soldItem instanceof ArmorItem) {
+
+	        String[] statNames = {"STR","DEX","PRC","IST","CON","WIL","FTH","ARC"};
+
+	        StringBuilder message = new StringBuilder("▲ STATS BOOSTS +2 APPLIED: ");
 
 	        for (Character member : party) {
 	            if (member == null) continue;
 
-	            for (int i = 0; i < member.getStatSpread().length; i++) {
-	                member.increaseStat(i, 5);
-	            }
+	            int randomStat = rand.nextInt(statNames.length);
+	            member.increaseStat(randomStat, 2);
+
+	            message.append(member.getProfession())
+	                   .append(" +")
+	                   .append(statNames[randomStat])
+	                   .append(", ");
+	        }     
+ 
+	        if (message.length() > 2) {
+	            message.setLength(message.length() - 2);
 	        }
 
-	        setClerkMessage(
-	            "▲ EQUIPMENT SOLD! GIFTED A SURGE OF ENERGY! (+5 ALL STATS) ▲",
-	            "happy"
-	        );
+	        setClerkMessage(message.toString(), "happy");
 	    }
 
 	    else if (soldItem instanceof Character) {
@@ -914,15 +924,15 @@ public class ShopPane extends GraphicsPane {
 	        for (Character member : party) {
 	            if (member == null) continue;
 
-	            member.setHpMax(member.getHpMax() + 100);
+	            member.setHpMax(member.getHpMax() + 10);
 	            member.setHp(member.getHpMax());
 
-	            member.setManaMax(member.getManaMax() + 100);
+	            member.setManaMax(member.getManaMax() + 10);
 	            member.setMana(member.getManaMax());
 	        }
 
 	        setClerkMessage(
-	            "▲ MERCENARY has RETIRED! PULSE OF ENERGY EMERGES ! (+100 HP / +100 MP) ▲",
+	            "▲ MERCENARY RETIRED! +10 HP / +10 MP FOR ALL! ▲",
 	            "surprised"
 	        );
 	    }
