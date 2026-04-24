@@ -168,6 +168,7 @@ public class Animation {
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
 				 AudioManager.playSfxOnce("multi_attack.wav");
+				 animTime = 1;
 			 }
 		 }
 		 
