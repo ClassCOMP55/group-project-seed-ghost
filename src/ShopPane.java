@@ -28,6 +28,13 @@ public class ShopPane extends GraphicsPane {
 	private String clerkState = "idle";
 	private GLabel buyBtn;
 	private GLabel sellBtn;
+	private GRect confirmBox;
+	private GLabel confirmText;
+	private GLabel yesBtn;
+	private GLabel noBtn;
+	private int pendingIndex;
+	private boolean pendingBuy;
+	private boolean isConfirmOpen = false;
 
 	private enum ShopMode {
 		BUY,
@@ -146,9 +153,13 @@ public class ShopPane extends GraphicsPane {
 			final int index = i;
 
 			name.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					setSelected(index);
-				}
+			    public void mouseClicked(MouseEvent e) {
+			        setSelected(index);
+
+			        if (!isConfirmOpen) {
+			            confirmTransaction(index, true);
+			        }
+			    }
 			});
 
 			contents.add(name);
@@ -225,7 +236,7 @@ public class ShopPane extends GraphicsPane {
 	//Key button options
 	@Override
 	public void keyPressed(java.awt.event.KeyEvent e) {
-
+		if (isConfirmOpen) return;
 		 if (itemLabels.size() == 0) return;
 
 		    if (e.getKeyCode() == java.awt.event.KeyEvent.VK_DOWN) {
@@ -237,11 +248,14 @@ public class ShopPane extends GraphicsPane {
 		    }
 
 		    if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-		    	if (currentMode == ShopMode.SELL) {
-		    	    sellItem(selectedIndex);
-		    	} else {
-		    	    buyItem(selectedIndex);
-		    	}
+
+		        if (!isConfirmOpen) {
+		            if (currentMode == ShopMode.SELL) {
+		                confirmTransaction(selectedIndex, false);
+		            } else {
+		                confirmTransaction(selectedIndex, true);
+		            }
+		        }
 		    }
 	}
 	
@@ -597,7 +611,7 @@ public class ShopPane extends GraphicsPane {
 	
 	//The old man clerk
 	private void addClerk() {
-	    clerkMessage = new GLabel("What would you like to buy?(Press Enter to Purchase)", 200, 120);
+	    clerkMessage = new GLabel("What would you like to buy?(Press Enter Key to Purchase)", 200, 120);
 	    clerkMessage.setFont("DialogInput-BOLD-18");
 	    clerkMessage.setColor(Color.WHITE);
 	    
@@ -779,10 +793,14 @@ public class ShopPane extends GraphicsPane {
 
 	    label.addMouseListener(new MouseAdapter() {
 
-	        @Override
-	        public void mouseClicked(MouseEvent e) {
-	            setSelected(index);
-	        }
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    	    setSelected(index);
+
+	    	    if (!isConfirmOpen) {
+	    	        confirmTransaction(index, false);
+	    	    }
+	    	}
 
 	        @Override
 	        public void mouseEntered(MouseEvent e) {
@@ -981,10 +999,88 @@ public class ShopPane extends GraphicsPane {
 	    updateItemPreview();
 
 	    if (mode == ShopMode.BUY) {
-	        setClerkMessage("What would you like to buy?(Press Enter to Purchase)", "idle");
+	        setClerkMessage("What would you like to buy?(Press Enter key to Purchase)", "idle");
 	    } else {
-	        setClerkMessage("Whatcha sellin'? I'll make it worth yer while...(Press Enter to SELL)", "idle");
+	        setClerkMessage("Whatcha sellin'? I'll make it worth yer while...(Press Enter key to SELL)", "idle");
 	    }
+	}
+	
+	//pop up confirm
+	private void confirmTransaction(int index, boolean isBuy) {
+
+	    if (isConfirmOpen) return; // prevents stacking popups
+	    isConfirmOpen = true;
+
+	    pendingIndex = index;
+	    pendingBuy = isBuy;
+
+	    confirmBox = new GRect(500, 250, 300, 120);
+	    confirmBox.setFilled(true);
+	    confirmBox.setFillColor(Color.BLACK);
+	    confirmBox.setColor(Color.WHITE);
+
+	    confirmText = new GLabel(
+	    	    isBuy ? "Confirm Purchase?" : "Confirm Sale?",
+	    	    550, 285
+	    	);
+	    confirmText.setColor(Color.WHITE);
+	    confirmText.setFont("DialogInput-BOLD-20");
+
+	    yesBtn = new GLabel("YES", 540, 320);
+	    yesBtn.setColor(Color.GREEN);
+	    yesBtn.setFont("DialogInput-BOLD-18");
+
+	    noBtn = new GLabel("NO", 700, 320);
+	    noBtn.setColor(Color.RED);
+	    noBtn.setFont("DialogInput-BOLD-18");
+
+	    yesBtn.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	            executeTransaction();
+	            removeConfirmBox();
+	        }
+	    });
+
+	    noBtn.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	            removeConfirmBox();
+	        }
+	    });
+
+	    contents.add(confirmBox);
+	    contents.add(confirmText);
+	    contents.add(yesBtn);
+	    contents.add(noBtn);
+
+	    mainScreen.add(confirmBox);
+	    mainScreen.add(confirmText);
+	    mainScreen.add(yesBtn);
+	    mainScreen.add(noBtn);
+	}
+	
+	//pop up
+	private void executeTransaction() {
+	    if (pendingBuy) {
+	        buyItem(pendingIndex);
+	    } else {
+	        sellItem(pendingIndex);
+	    }
+	}
+	
+	//clear pop up
+	private void removeConfirmBox() {
+
+	    isConfirmOpen = false;
+
+	    mainScreen.remove(confirmBox);
+	    mainScreen.remove(confirmText);
+	    mainScreen.remove(yesBtn);
+	    mainScreen.remove(noBtn);
+
+	    contents.remove(confirmBox);
+	    contents.remove(confirmText);
+	    contents.remove(yesBtn);
+	    contents.remove(noBtn);
 	}
 
 	//return button
