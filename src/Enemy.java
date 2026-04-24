@@ -555,6 +555,10 @@ public class Enemy extends Entity {
 				
 				sprScale = 2.5;
 				
+				if (Chance.coinflip(0.1)) {
+					spr = "spr_BOSS_DeathKnightAlt.gif";
+				}
+				
 				HP = 700;
 			break;
 			case "boss_spiritofstorms": //22
