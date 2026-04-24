@@ -598,7 +598,7 @@ public class Enemy extends Entity {
 			defSkill.add(new SKILL_BasicAttack());
 		}
 		
-		HP *= 1.0 + (((double)(scaling)) / 5.0);
+		HP *= 1.0 + (((double)(scaling)) / 10.0);
 		HP += scaling * 10;
 		
 		WeaponItem KILL = new WeaponItem (weaponDamage, weaponScales, ranged, magic);
