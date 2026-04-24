@@ -70,7 +70,7 @@ public class Animation {
 			 AudioManager.playSfxOnce("Cause Fear.wav");
 			 animTime = 1;
 			 break;
-		 case "Explode":
+		 case "Explode": // the explode sound needs to be added here
 			 for (GImage image: targets){
 				 animation = new GImage("spr_ATTACK_blast.gif");
 				 animation.setLocation(image.getX(), image.getY());
@@ -95,7 +95,7 @@ public class Animation {
 			 AudioManager.playSfxOnce("Buff.wav");
 			 animTime = 0.5;
 			 break;
-		 case "BuffAndAttackAll":
+		 case "BuffAndAttackAll": // determenation 
 			 animation.setImage("spr_SKILL_buff.gif");
 			 animation.setLocation(user.getX(), user.getY());
 			 animations.add(animation);
@@ -145,7 +145,7 @@ public class Animation {
 			 animation.setImage("spr_ATTACK_slash.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
-			 AudioManager.playSfxOnce("");//Greed audio file goes below here
+			 AudioManager.playSfxOnce("GoldCoinPick.wav");//Greed audio file goes below here
 			 break;
 		 case "Taunt":
 			 for (GImage image: targets){
