@@ -152,7 +152,7 @@ public class Animation {
 				 animation = new GImage("spr_SKILL_debuff.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
-				 AudioManager.playSfxOnce(""); //Taunt audio file goes here
+				 AudioManager.playSfxOnce("Taunt.wav"); //Taunt audio file goes here
 			 }
 			 animTime = 0.5;
 			 break;
