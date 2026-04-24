@@ -11,7 +11,7 @@ public class SKILL_LightningBolt extends Skill {
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.WIL.ordinal()]*0.4);
-		dmg[DamageType.ELEC.ordinal()] = 10 * Chance.softExponential(1.06, scaling, 2000, 4);
+		dmg[DamageType.ELEC.ordinal()] = 10 * Chance.softExponential(1.06, scaling, 1200, 1.1);
 		System.out.println(dmg[DamageType.ELEC.ordinal()]);
 		target.attackMe(dmg);
 		
@@ -20,6 +20,6 @@ public class SKILL_LightningBolt extends Skill {
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
 		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()]*0.6 + me.getStatSpread()[EntityStats.WIL.ordinal()]*0.4);
-		return "Intends to Lightning Bolt the " + target + " for " + ((Character)target).calculateDamage(10 * Chance.softExponential(1.06, scaling, 2000, 4), DamageType.ELEC) + " damage!";
+		return "Intends to Lightning Bolt the " + target + " for " + (int)((Character)target).calculateDamage(10 * Chance.softExponential(1.06, scaling, 1200, 1.1), DamageType.ELEC) + " damage!";
 	}
 }

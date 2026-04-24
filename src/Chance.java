@@ -49,11 +49,12 @@ public class Chance {
 	public static double softExponential (double base, double exponent, double ceil, double logBase) {
 		double val = Math.pow(base, exponent);
 		
-		if (val > ceil) {
-			val -= ceil;
+		if ((10 * val) > ceil) {
+			val -= (ceil / 10);
 			
-			val = Math.log(val) / Math.log(logBase);
-			val += ceil;
+			val = Math.log(val);
+			val /= Math.log(logBase);
+			val += (ceil / 10);
 		}
 		
 		return val;

@@ -15,7 +15,7 @@ public class SKILL_SelfSacrifice extends Skill {
 		
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
 		int scaling = (int) (me.getStatSpread()[EntityStats.FTH.ordinal()]*0.5 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.5);
-		dmg[DamageType.HOLY.ordinal()] = 12 * Chance.softExponential(1.07, scaling, 2000, 4);
+		dmg[DamageType.HOLY.ordinal()] = 10 * Chance.softExponential(1.07, scaling, 3000, 1.1);
 		target.attackMe(dmg);
 		
 		me.drainMana(getManaCost());
@@ -27,6 +27,6 @@ public class SKILL_SelfSacrifice extends Skill {
 	
 	public String getEnemyIntentMsg(Entity me, Entity target) {
 		int scaling = (int) (me.getStatSpread()[EntityStats.FTH.ordinal()]*0.5 + me.getStatSpread()[EntityStats.CON.ordinal()]*0.5);
-		return "Intends to sacrifice " + SELF_DAMAGE + " HP and attack " + target + " for " + ((Character)target).calculateDamage(12 * Chance.softExponential(1.07, scaling, 2000, 4), DamageType.HOLY) + " damage!";
+		return "Intends to sacrifice " + SELF_DAMAGE + " HP and attack " + target + " for " + (int)((Character)target).calculateDamage(10 * Chance.softExponential(1.07, scaling, 3000, 1.1), DamageType.HOLY) + " damage!";
 	}
 }
