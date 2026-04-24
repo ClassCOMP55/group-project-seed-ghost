@@ -137,6 +137,12 @@ public class WeaponItem {
 				statScaling[EntityStats.STR.ordinal()] = 1.1;
 				setPurchaseCost(Chance.range(20, 50));
 			break;
+			case "Sweetheart's Mace":
+				baseAttack[DamageType.CRUSH.ordinal()] = Chance.range(50,60);
+				statScaling[EntityStats.STR.ordinal()] = 1.2;
+				statScaling[EntityStats.FTH.ordinal()] = 1.2;
+				setPurchaseCost(Chance.range(100, 500));
+			break;
 			case "longbow":
 				baseAttack[DamageType.PIERCE.ordinal()] = Chance.range(25,45);
 				statScaling[EntityStats.STR.ordinal()] = 0.7;

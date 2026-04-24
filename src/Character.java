@@ -120,9 +120,13 @@ public class Character extends Entity {
 				tempCon = (int)Chance.range(20, 40);
 				tempSprite = "spr_Knight.png";
 				
-				allowedArmors = new String[] {"medium","heavy"};
+				allowedArmors = new String[] {"light","medium","heavy"};
 				
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Taunt()};
+				
+				if (Chance.coinflip(0.3)) {
+					mySkills = new Skill[] {new SKILL_ProneShot(), new SKILL_Drain(), new SKILL_WeakenFoe(), new SKILL_Taunt()};
+				}
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"greatsword","shortsword","polearm"}), Chance.choose(allowedAffinities));
@@ -191,8 +195,14 @@ public class Character extends Entity {
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), Chance.choose(allowedAffinities));
 				tempSprite = "spr_Cleric.png";
 				
-				if (Chance.coinflip(0.05)) {
-					tempSprite = "spr_Sweetheart";
+				if (Chance.coinflip(0.5)) {
+					mySkills[3]= new SKILL_AllyBuffAllies();
+				}
+				if (Chance.coinflip(0.15)) {
+					tempSprite = "spr_Sweetheart.png";
+					name = "Sweetheart";
+					myWeapon = new WeaponItem("Sweetheart's Mace","null");
+					mySkills[3] = new SKILL_BladeStorm();
 				}
 			break;
 			case "sorcerer":
@@ -206,11 +216,20 @@ public class Character extends Entity {
 				tempSprite = "spr_Sorcerer.png";
 				allowedArmors = new String[] {"light"};
 				
-				if (Chance.coinflip(0.05)) {
-					tempSprite = "spr_SnowGirl";
+				if (Chance.coinflip(0.15)) {
+					tempSprite = "spr_SnowGirl.png";
+					name = "Aurora Meridianus";
 				}
 				
-				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_LightningBolt(), new SKILL_Fireball()};
+				mySkills = new Skill[] {new SKILL_Recovery(), new SKILL_HolyShield(), new SKILL_LightningBolt(), new SKILL_Fireball()};
+				
+				if (Chance.coinflip(0.4)) {
+					mySkills[2] = new SKILL_BladeStorm();
+					mySkills[3]= new SKILL_Overcharge();
+				}
+				if (Chance.coinflip(0.5)) {
+					mySkills[3]= new SKILL_AllyBuffAllies();
+				}
 				
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"stave","talisman"}), "magic");
@@ -226,7 +245,7 @@ public class Character extends Entity {
 				
 				tempSprite = "spr_Paladin.png";
 				
-				allowedArmors = new String[] {"medium","heavy"};
+				allowedArmors = new String[] {"light","medium","heavy"};
 				
 				mySkills = new Skill[] {new SKILL_HeavyAttack(), new SKILL_HolyShield(), new SKILL_SelfSacrifice(), new SKILL_IronWave()};
 				
