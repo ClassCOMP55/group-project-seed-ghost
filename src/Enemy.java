@@ -573,7 +573,7 @@ public class Enemy extends Entity {
 				fth = scaling + 3;
 				spr = "spr_BOSS_SpiritofStorms.jpg";
 				
-				if (Chance.coinflip(0.05)) {
+				if (Chance.coinflip(0.1)) {
 					spr = "spr_Miku.png";
 				}
 				
