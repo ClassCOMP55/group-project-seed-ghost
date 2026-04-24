@@ -225,6 +225,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		works = new GImage("theone.gif");
 		works.setVisible(false);
 		works.setLocation(str.getX() + 120, str.getY() - 40);
+		
 
 		contents.add(works);
 		mainScreen.add(works);
@@ -406,6 +407,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 
 		    if (strClicks >= 5 && works != null) {
 		        works.setVisible(true);
+		        AudioManager.playSfxOnce("sound-omori.wav");
 		        System.out.println("Easter egg unlocked!");
 		    }
 		}
