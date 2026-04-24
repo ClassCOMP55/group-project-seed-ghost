@@ -187,6 +187,10 @@ public class ShopPane extends GraphicsPane {
 	    if (index < 0 || index >= itemLabels.size()) return;
 
 	    selectedIndex = index;
+	    playSound("SelectShop.wav");
+	    
+	    
+	    
 	    
 	    updateSelectionVisual();
 	    drawCursor();
@@ -960,6 +964,18 @@ public class ShopPane extends GraphicsPane {
 	private void removeWeapon(WeaponItem w) {
 	    playerInventory.getExtraWeapons().remove(w);
 	}
+	//plays sound from the folder
+	private void playSound(String filename) {
+	    try {
+	        java.io.InputStream is = getClass().getResourceAsStream("/audio/" + filename);
+	        javax.sound.sampled.AudioInputStream audio = javax.sound.sampled.AudioSystem.getAudioInputStream(new java.io.BufferedInputStream(is));
+	        javax.sound.sampled.Clip clip = javax.sound.sampled.AudioSystem.getClip();
+	        clip.open(audio);
+	        clip.start();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 	
 	//remove armor
 	private void removeArmor(ArmorItem a) {
@@ -1076,6 +1092,8 @@ public class ShopPane extends GraphicsPane {
 	
 	//pop up
 	private void executeTransaction() {
+		playSound("PurchaseItemShop.wav");
+		
 	    if (pendingBuy) {
 	        buyItem(pendingIndex);
 	    } else {
