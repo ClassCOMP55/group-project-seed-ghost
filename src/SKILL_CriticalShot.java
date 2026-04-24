@@ -5,7 +5,7 @@ public class SKILL_CriticalShot extends Skill {
 		setName("Perfect Precision");
 		setDescription("Fire a perfectly accurate shot at an enemy, dealing immense PIERCE and BLAST damage. Costs 300 mana.");
 		setvTarget("ENEMY");
-		setAnimationType("MagicAttack");
+		setAnimationType("Perfect percision");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

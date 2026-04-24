@@ -5,7 +5,7 @@ public class SKILL_SleightOfGreed extends Skill {
 		setName("Sleight of Greed");
 		setDescription("Attack for heavy damage. If fatal, gain 100 gold.");
 		setvTarget("ENEMY");
-		setAnimationType("NonMagicAttack");
+		setAnimationType("Greed");
 	}
 	
 	public void activationEffect (Entity me, Entity target) {

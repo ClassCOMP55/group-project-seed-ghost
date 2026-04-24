@@ -20,18 +20,22 @@ public class Animation {
 			 animation.setImage("spr_SHIELD_guard.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("Shield Counter B.wav");
+
 			 animTime = 0.5;
 			 break;
 		 case "DefenseOrUtilitySelf":
 			 animation.setImage("spr_SHIELD_guard.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("Shield Counter B.wav");
 			 animTime = 0.5;
 			 break;
 		 case "NonMagicAttack":
 			 animation.setImage("spr_ATTACK_slash.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("AttackBlock.wav");
 			 break;
 		 case "MagicAttack":
 			 animation.setImage("spr_ATTACK_blast.gif");
@@ -42,24 +46,28 @@ public class Animation {
 			 animation.setImage("spr_ATTACK_bolt.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("Electric Whip D.wav");
 			 break;
 		 case "FireAttack":
 			 for (GImage image: targets){
 				 animation = new GImage("spr_ATTACK_fire.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
+				 AudioManager.playSfxOnce("Fire Shuriken.wav");
 			 }
 			 break;
 		 case "TriSlash":
 			 animation.setImage("spr_ATTACK_trislash.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("multi_attack.wav");
 			 animTime = 1;
 			 break;
 		 case "SelfSac":
 			 animation.setImage("spr_ATTACK_judge.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("Cause Fear.wav");
 			 animTime = 1;
 			 break;
 		 case "Explode":
@@ -74,6 +82,7 @@ public class Animation {
 			 animation.setImage("spr_SKILL_buff.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("Buff.wav");
 			 animTime = 0.5;
 			 break;
 		 case "BuffAllies":
@@ -82,6 +91,7 @@ public class Animation {
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
 			 }
+			 AudioManager.playSfxOnce("Buff.wav");
 			 animTime = 0.5;
 			 break;
 		 case "BuffAndAttackAll":
@@ -92,6 +102,7 @@ public class Animation {
 				 animation = new GImage("spr_ATTACK_slash.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
+				 AudioManager.playSfxOnce("AttackBlock.wav");
 			 }
 			 animTime = 0.5;
 			 break;
@@ -99,6 +110,7 @@ public class Animation {
 			 animation.setImage("spr_SKILL_debuff.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
+			 AudioManager.playSfxOnce("Poison Hit A.wav");
 			 animTime = 0.5;
 			 break;
 		 case "DebuffAll":
@@ -106,8 +118,33 @@ public class Animation {
 				 animation = new GImage("spr_SKILL_debuff.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
+				 AudioManager.playSfxOnce("Poison Hit A.wav");
 			 }
 			 animTime = 0.5;
+			 break;
+		 case "50 Cal":
+			 animation.setImage("spr_ATTACK_blast.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animations.add(animation);
+			 AudioManager.playSfxOnce("5.56 M4 Rifle - Gunshot B 004.wav");
+			 break;
+		 case "Perfect percision":
+			 animation.setImage("spr_ATTACK_blast.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animations.add(animation);
+			 AudioManager.playSfxOnce("30-30 Lever Action Rifle - Gunshot A 003.wav");
+			 break;
+		 case "Prone shot":
+			 animation.setImage("spr_ATTACK_slash.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animations.add(animation);
+			 AudioManager.playSfxOnce("30-30 Lever Action Rifle - Gunshot A 003.wav");
+			 break;
+		 case "Greed":
+			 animation.setImage("spr_ATTACK_slash.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animations.add(animation);
+			 AudioManager.playSfxOnce("30-30 Lever Action Rifle - Gunshot A 003.wav");
 			 break;
 		 }
 		 
