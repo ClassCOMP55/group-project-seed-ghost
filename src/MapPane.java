@@ -22,8 +22,8 @@ public class MapPane extends GraphicsPane {
 	private ConsumableItem consumableItem;
 	public static Node currPosition;
 	int count, consumeableIndex;
-	GRect inventoryButton,closeButton,descriptionBox,menuButton;
-	GLabel inventoryButtonLabel, description,menuLabel;
+	GRect inventoryButton,closeButton,descriptionBox,menuButton, highlighted;
+	GLabel inventoryButtonLabel, description,menuLabel,menuButtonLabel;
 	GImage arrow;
 	
 	public MapPane(MainApplication mainScreen) {
@@ -33,18 +33,7 @@ public class MapPane extends GraphicsPane {
 	
 	@Override
 	public void showContent() {
-		extraWeaponButtons = new ArrayList<>();
-		extraWeaponLabel = new ArrayList<>();
-		extraArmorButtons = new ArrayList<>();
-		extraArmorLabels = new ArrayList<>();
-		consumablesButtons = new ArrayList<>();
-		consumablesLabel = new ArrayList<>();
-		extra = new ArrayList<>();
-		extraLabels = new ArrayList<>();
-		myNodeObjects = new ArrayList<>();
-		charButtons = new ArrayList<>();
-		charLabels = new ArrayList<>();
-		 partyOpen =false;
+		initialize();
 		createBackground();
 		addText();
 		addButtons();
@@ -614,6 +603,22 @@ private void createMap() {
 		return myNodeObjects.get(mapPath.indexOf(node));
 	}
 	
+	public void initialize() {
+		extraWeaponButtons = new ArrayList<>();
+		extraWeaponLabel = new ArrayList<>();
+		extraArmorButtons = new ArrayList<>();
+		extraArmorLabels = new ArrayList<>();
+		consumablesButtons = new ArrayList<>();
+		consumablesLabel = new ArrayList<>();
+		extra = new ArrayList<>();
+		extraLabels = new ArrayList<>();
+		myNodeObjects = new ArrayList<>();
+		charButtons = new ArrayList<>();
+		charLabels = new ArrayList<>();
+		 partyOpen =false;
+		 highlighted = new GRect(0,0);
+	}
+	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -777,9 +782,7 @@ private void createMap() {
 				case "Loot": mainScreen.switchToLootPane(); break;
 				}
 				
-			}
-			//&& currPosition.isCleared()
-			
+			}	
 			
 		}
 		if (obj == menuButton || obj == menuLabel) {
@@ -791,6 +794,25 @@ private void createMap() {
 		    if (label.getLabel().startsWith("Gold:")) {
 		    	AudioManager.playSfxOnce("DankBidoof.wav");
 		    }
+		}
+		
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
+		if (obj==menuButton || obj == menuLabel) {
+			if (highlighted != obj) highlighted.setFillColor(Color.DARK_GRAY);
+			menuButton.setFillColor(Color.LIGHT_GRAY);
+			highlighted = menuButton;
+		}
+		else if (obj==inventoryButton || obj == inventoryButtonLabel) {
+			if (highlighted != obj) highlighted.setFillColor(Color.DARK_GRAY);
+			inventoryButton.setFillColor(Color.LIGHT_GRAY);
+			highlighted = inventoryButton;
+		}
+		else {
+			highlighted.setFillColor(Color.DARK_GRAY);
 		}
 	}
 		
