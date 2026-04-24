@@ -601,9 +601,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		barSizeEnemy = 137;
 		for (int i = 0;i<enemyNumber;i++) {
 			health = new GRect(barSizeEnemy,15);
+			GRect backBoard = new GRect(barSizeEnemy,15); //Added a back board to help with text visibility
 			int index = allEntities.indexOf(myArrEnemies[i]);
 			GLabel healthLabel = healthLabels.get(index);
+			healthLabel.setColor(Color.WHITE);
+			
 			health.setLocation(allImages.get(index).getX(), allImages.get(index).getY());
+			backBoard.setLocation(health.getX(), health.getY());
+			
+			backBoard.setFillColor(Color.BLACK);
+			backBoard.setFilled(true);
+			contents.add(backBoard);
+			mainScreen.add(backBoard);
+			
 			healthLabel.setLocation(health.getX(), health.getY()+15);
 			health.setColor(Color.RED);
 			health.setFilled(true);
