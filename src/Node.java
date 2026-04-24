@@ -9,7 +9,7 @@ boolean cleared, isBoss;
 Enemy boss;
 String[] pool;
 GImage sprite;
-
+private static double[] bossWeights = new double[] {1.0,1.0,1.0,1.0,1.0};
 
 public Node(int i) {
 	index = i;
@@ -161,39 +161,89 @@ private String[] getPool() {
 	}
 	else {
 		temp = Enemy.getBossEnemies();
-		int hornet = Chance.range(0, 5);
 		
-		if (hornet == 1) {
+		double cap = 0.0;
+		System.out.println();
+		System.out.print("{");
+		for (double x : bossWeights) {
+			cap += x;
+			System.out.print("min: " + (cap - x) + " max: " + cap + ",");
+		}
+		System.out.println("}");
+		
+		double hornet = Chance.range(0.0, cap);
+		System.out.println(" Select: " + hornet);
+		
+		if (hornet <= bossWeights[0]) {
 			boss = new Enemy ("boss_drip",10);
 			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(50, 50);
+			
+			bossWeights[0] /= 2.0;
+			bossWeights[1] += 1.0;
+			bossWeights[2] += 1.0;
+			bossWeights[3] += 1.0;
+			bossWeights[4] += 1.0;
+			
 			return temp[1];
-		}
-		
-		switch(combatAffinity) {
-		case "combatHoly":
+		} else if ((hornet <= bossWeights[1] + bossWeights[0]) && (hornet > bossWeights[0])) {
 			boss = new Enemy ("boss_seraphim",10);
 			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(50, 50);
+			
+			bossWeights[0] += 1.0;
+			bossWeights[1] /= 2.0;
+			bossWeights[2] += 1.0;
+			bossWeights[3] += 1.0;
+			bossWeights[4] += 1.0;
+			
+			combatAffinity = "combatHoly";
+			
 			return temp[0];
-		case "combatFire":
+		} else if ((hornet <= bossWeights[2] + bossWeights[1] + bossWeights[0]) && (hornet > bossWeights[1] + bossWeights[0])) {
 			boss = new Enemy ("boss_deathknight",10);
 			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(50, 50);
+			
+			bossWeights[0] += 1.0;
+			bossWeights[1] += 1.0;
+			bossWeights[2] /= 2.0;
+			bossWeights[3] += 1.0;
+			bossWeights[4] += 1.0;
+			
+			combatAffinity = "combatFire";
+			
 			return temp[3];
-		case "combatMagic":
+		} else if ((hornet <= bossWeights[3] + bossWeights[2] + bossWeights[1] + bossWeights[0]) && (hornet > bossWeights[2] + bossWeights[1] + bossWeights[0])) {
 			boss = new Enemy ("boss_mage",10);
 			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(50, 50);
+			
+			bossWeights[0] += 1.0;
+			bossWeights[1] += 1.0;
+			bossWeights[2] += 1.0;
+			bossWeights[3] /= 2.0;
+			bossWeights[4] += 1.0;
+			
+			combatAffinity = "combatMagic";
+			
 			return temp[2];
-		case "combatLightning":
+		} else if ((hornet <= bossWeights[4] + bossWeights[3] + bossWeights[2] + bossWeights[1] + bossWeights[0]) && (hornet > bossWeights[3] + bossWeights[2] + bossWeights[1] + bossWeights[0])) {
 			boss = new Enemy ("boss_spiritofstorms",10);
 			sprite = new GImage("spr_BossNode.png");
 			sprite.setSize(50, 50);
+			
+			bossWeights[0] += 1.0;
+			bossWeights[1] += 1.0;
+			bossWeights[2] += 1.0;
+			bossWeights[3] += 1.0;
+			bossWeights[4] /= 2.0;
+			
+			combatAffinity = "combatLightning";
+			
 			return temp[4];
 		}
 	}
-	
 	int tier = Chance.range(0, temp.length-1);
 	return temp[tier];
 }
