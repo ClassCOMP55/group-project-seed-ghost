@@ -10,8 +10,8 @@ public class SKILL_Overcharge extends Skill {
 	
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
-		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()] + me.getMana()*0.4);
-		dmg[DamageType.MAGIC.ordinal()] = 10 * Chance.softExponential(1.055, scaling, 3000, 1.2);
+		int scaling = (int)Math.round(me.getStatSpread()[EntityStats.ARC.ordinal()] + me.getMana()*0.1);
+		dmg[DamageType.MAGIC.ordinal()] = 10 * Chance.softExponential(1.055, scaling, 2000, 1.2);
 		System.out.println(dmg[DamageType.MAGIC.ordinal()]);
 		
 		CombatPane currentBattle = MainApplication.combatPane;
