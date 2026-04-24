@@ -195,7 +195,7 @@ public class CampFirePane extends GraphicsPane{
 	                    healParty();
 	                }
 	            } else {
-	                showMessage("Party already fully restored!");
+	                showMessage("Party already fully healed!");
 	            }
 	            break;
             case "revive":
