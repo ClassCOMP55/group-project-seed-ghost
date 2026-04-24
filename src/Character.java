@@ -314,7 +314,8 @@ public class Character extends Entity {
 									       "Jotaro","Joseph","Josuke","Jorge","Johnny","Jonathan","Winter","Summer","Afsoon",
 									       "Malenia","Miquella","Marika","Cyan","Grungus","Silent","Ironclad","Watcher","Necrobinder",
 									       "Sir.","Lady","King","Queen","Poor","Defect","Phineas","Cheese","Perry","Ramona","Vanessa",
-									       "Gangsta","Golden","Ashley","Big"}) 
+									       "Gangsta","Golden","Ashley","Big","Kyle","Ghostman","A","Queston","Quinton","Hayden","Haven",
+									       "Faye","Harmonia","Virginia","Hikiko","Damianos","Chuck","Donald","DIO"}) 
 				+ " " + 
 			   Chance.choose(new String[] {"Una","Gaster","Beckett","Smith","White","Hamilton","Burr","Prosecco",
 					   					   "Pane'e","Luther","Swinson","Franks","Ochoa","Vang","Green","Suzuki","Sora",
@@ -324,7 +325,8 @@ public class Character extends Entity {
 					   					   "Fantastic","Chungus","Corporeal","Swiss","Vengeance","Blessed","Aeshma","Wongo",
 					   					   "Joestar","Ghoodjani","Triumph","Yousefi","Rich","Crimson","Metallica","Bravo",
 					   					   "Fletcher","Shrieber","Kim","Harold","Flynn","Burger","Platypus","Doofenshmirtz","星",
-					   					   "Rittenhouse","Cropduster","Allard","Toussard","Ball"});
+					   					   "Wormster","Cropduster","Allard","Toussard","Ball","Fruity","Steele","Sharpe","Lumin",
+					   					   "Aurum","Reagan","Meridianus","the Conqueror"});
 	}
 	
 	/*

@@ -10,17 +10,17 @@ public class SKILL_BladeStorm extends Skill {
 	
 	public void activationEffect (Entity me, Entity target) {
 		double[] dmg = new double[] {0,0,0,0,0,0,0,0};
-		dmg[DamageType.MAGIC.ordinal()] = 10.0;
-		System.out.println(dmg[DamageType.MAGIC.ordinal()] * me.getStatSpread()[EntityStats.ARC.ordinal()]);
+		dmg[DamageType.SLASH.ordinal()] = 10.0;
+		System.out.println(dmg[DamageType.SLASH.ordinal()] * me.getStatSpread()[EntityStats.ARC.ordinal()]);
 		
 		CombatPane currentBattle = MainApplication.combatPane;
 		if (me instanceof Character) {
 			for (int i = 0; i < me.getStatSpread()[EntityStats.ARC.ordinal()]; i++) {
-				currentBattle.aliveEnemies()[Chance.range(0, currentBattle.aliveEnemies().length)].attackMe(dmg);
+				currentBattle.aliveEnemies()[Chance.range(0, currentBattle.aliveEnemies().length - 1)].attackMe(dmg);
 			}
 		} else if (me instanceof Enemy) {
 			for (int i = 0; i < me.getStatSpread()[EntityStats.ARC.ordinal()]; i++) {
-				currentBattle.aliveAllies()[Chance.range(0, currentBattle.aliveAllies().length)].attackMe(dmg);
+				currentBattle.aliveAllies()[Chance.range(0, currentBattle.aliveAllies().length - 1)].attackMe(dmg);
 			}
 		}
 		
