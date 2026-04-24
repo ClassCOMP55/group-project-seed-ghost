@@ -26,7 +26,7 @@ public class Animation {
 			 break;
 		 case "DefenseOrUtilitySelf":
 			 animation.setImage("spr_SHIELD_guard.gif");
-			 animation.setLocation(target.getX(), target.getY());
+			 animation.setLocation(user.getX(), user.getY());
 			 animations.add(animation);
 			 AudioManager.playSfxOnce("Shield Counter B.wav");
 			 animTime = 0.5;
@@ -95,7 +95,7 @@ public class Animation {
 			 AudioManager.playSfxOnce("Buff.wav");
 			 animTime = 0.5;
 			 break;
-		 case "BuffAndAttackAll": // determenation 
+		 case "BuffAndAttackAll": // determination 
 			 animation.setImage("spr_SKILL_buff.gif");
 			 animation.setLocation(user.getX(), user.getY());
 			 animations.add(animation);
@@ -162,6 +162,13 @@ public class Animation {
 			 animations.add(animation);
 			 AudioManager.playSfxOnce("Iron wave.wav"); // Iron wave goes here
 			 break;
+		 case "BladeStorm":
+			 for (GImage image: targets){
+				 animation = new GImage("spr_ATTACK_trislash.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+				 AudioManager.playSfxOnce("multi_attack.wav");
+			 }
 		 }
 		 
 		 for (GImage image: animations) {
