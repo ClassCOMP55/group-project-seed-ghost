@@ -594,7 +594,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			manaLabels.get(i).setLocation(mana.getX()+2,mana.getY()+15);
 			manaLabels.get(i).sendToFront();
 			
-			name.setFont("DialogInput-PLAIN-18");
+			name.setFont("DialogInput-PLAIN-16");
 			name.setLocation(nameDisplay.getX()+(nameDisplay.getWidth()-name.getWidth())/2,nameDisplay.getY()+15);
 			contents.add(name);
 			mainScreen.add(name);
