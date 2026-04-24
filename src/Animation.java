@@ -75,7 +75,7 @@ public class Animation {
 				 animation = new GImage("spr_ATTACK_blast.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
-				 AudioManager.playSfxOnce(""); //Explode audio goes here
+				 AudioManager.playSfxOnce("Explode.wav"); //Explode audio goes here
 			 };
 			 animTime = 1;
 			 break;
