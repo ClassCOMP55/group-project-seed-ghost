@@ -16,11 +16,15 @@ public class SKILL_BladeStorm extends Skill {
 		CombatPane currentBattle = MainApplication.combatPane;
 		if (me instanceof Character) {
 			for (int i = 0; i < me.getStatSpread()[EntityStats.ARC.ordinal()]; i++) {
-				currentBattle.aliveEnemies()[Chance.range(0, currentBattle.aliveEnemies().length - 1)].attackMe(dmg);
+				if (currentBattle.aliveEnemies().length > 0) {
+					currentBattle.aliveEnemies()[Chance.range(0, currentBattle.aliveEnemies().length - 1)].attackMe(dmg);
+				}
 			}
 		} else if (me instanceof Enemy) {
 			for (int i = 0; i < me.getStatSpread()[EntityStats.ARC.ordinal()]; i++) {
-				currentBattle.aliveAllies()[Chance.range(0, currentBattle.aliveAllies().length - 1)].attackMe(dmg);
+				if (currentBattle.aliveAllies().length > 0) {
+					currentBattle.aliveAllies()[Chance.range(0, currentBattle.aliveAllies().length - 1)].attackMe(dmg);
+				}
 			}
 		}
 		
