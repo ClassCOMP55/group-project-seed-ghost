@@ -785,6 +785,13 @@ private void createMap() {
 		if (obj == menuButton || obj == menuLabel) {
 			mainScreen.switchToMenuPane();
 		}	
+		
+		if (obj instanceof GLabel) {
+		    GLabel label = (GLabel) obj;
+		    if (label.getLabel().startsWith("Gold:")) {
+		    	AudioManager.playSfxOnce("DankBidoof.wav");
+		    }
+		}
 	}
 		
 
