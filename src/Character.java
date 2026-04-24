@@ -119,6 +119,7 @@ public class Character extends Entity {
 				tempDex = (int)Chance.range(20, 50);
 				tempCon = (int)Chance.range(20, 40);
 				tempSprite = "spr_Knight.png";
+				
 				allowedArmors = new String[] {"medium","heavy"};
 				
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_Guard(), new SKILL_IronWave(), new SKILL_Taunt()};
@@ -189,6 +190,10 @@ public class Character extends Entity {
 				myArmor = new ArmorItem(Chance.choose(allowedArmors), "null");
 				myWeapon = new WeaponItem(Chance.choose(new String[] {"talisman","stave","hammer"}), Chance.choose(allowedAffinities));
 				tempSprite = "spr_Cleric.png";
+				
+				if (Chance.coinflip(0.05)) {
+					tempSprite = "spr_Sweetheart";
+				}
 			break;
 			case "sorcerer":
 				tempHp = Chance.range(70, 120);
@@ -200,6 +205,10 @@ public class Character extends Entity {
 				tempArc = (int)Chance.range(60, 100);
 				tempSprite = "spr_Sorcerer.png";
 				allowedArmors = new String[] {"light"};
+				
+				if (Chance.coinflip(0.05)) {
+					tempSprite = "spr_SnowGirl";
+				}
 				
 				mySkills = new Skill[] {new SKILL_BasicAttack(), new SKILL_HolyShield(), new SKILL_LightningBolt(), new SKILL_Fireball()};
 				
