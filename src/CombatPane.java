@@ -22,7 +22,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
-	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list;
+	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list,skillsLabel,inventoryLabel;
 	private GImage background,arrow;
 	
 	private boolean skill;
@@ -462,6 +462,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(x+(button.getWidth()-label.getWidth())/2, y+(button.getHeight()-label.getHeight())/2+15);
 		
+		if (str == "Skills") skillsLabel = label;
+		if (str == "Inventory") inventoryLabel = label;
 		if (str == "Skill List"||str == "Consumable List") list = label;
 		if (forSkills==true && str != "Skill List") allSkillsButtonLabels.add(label);
 		if (forConsumable==true && str != "Consumable List") allConsumableButtonLabels.add(label);
@@ -1205,10 +1207,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	public void mouseClicked(MouseEvent e) {
 		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
-		if (obj == skillButton && playersTurn == true && forConsumable == false && skill ==false) {
+		if ((obj == skillButton || obj == skillsLabel) && playersTurn == true && forConsumable == false && skill ==false) {
 			displaySkills((Character) currentEntity);
 		}
-		else if (obj == inventoryButton && playersTurn == true && forSkills == false && forConsumable == false) {
+		else if ((obj == inventoryButton || obj == inventoryLabel) && playersTurn == true && forSkills == false && forConsumable == false) {
 			showConsumables();
 		}
 		else if (obj == closeButton && skill == true) {
@@ -1371,13 +1373,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		else if (skill==false && inventory==false && playersTurn == true ) {
-			if (obj==skillButton) {
-				if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
+			if (obj==skillButton || obj == skillsLabel) {
+				if (highlighted != obj) highlighted.setFillColor(Color.DARK_GRAY);
 				skillButton.setFillColor(Color.LIGHT_GRAY);
 				highlighted = skillButton;
 			}
-			else if (obj==inventoryButton) {
-				if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
+			else if (obj==inventoryButton || obj == inventoryLabel) {
+				if (highlighted != obj) highlighted.setFillColor(Color.DARK_GRAY);
 				inventoryButton.setFillColor(Color.LIGHT_GRAY);
 				highlighted = inventoryButton;
 			}
