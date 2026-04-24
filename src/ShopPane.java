@@ -83,6 +83,12 @@ public class ShopPane extends GraphicsPane {
 		title.setFont("DialogInput-PLAIN-80");
 		title.setLocation((mainScreen.getWidth() - title.getWidth()) / 2, 70);
 		
+		title.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	AudioManager.playSfxOnce("discord_sund.wav");
+	        }
+	    });
+
 		contents.add(title);
 		mainScreen.add(title);
 	}
@@ -910,7 +916,7 @@ public class ShopPane extends GraphicsPane {
 	                   .append(" +")
 	                   .append(statNames[randomStat])
 	                   .append(", ");
-	        }     
+	        }        
  
 	        if (message.length() > 2) {
 	            message.setLength(message.length() - 2);
@@ -1018,7 +1024,7 @@ public class ShopPane extends GraphicsPane {
 	//pop up confirm
 	private void confirmTransaction(int index, boolean isBuy) {
 
-	    if (isConfirmOpen) return; // prevents stacking popups
+	    if (isConfirmOpen) return; 
 	    isConfirmOpen = true;
 
 	    pendingIndex = index;
