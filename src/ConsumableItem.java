@@ -9,24 +9,12 @@ public class ConsumableItem {
     public ConsumableType getType() {
         return type;
     }
-    private static void playSound(String filename) {
-        try {
-            java.io.InputStream is = ConsumableItem.class.getResourceAsStream("/Audio/" + filename);
-            javax.sound.sampled.AudioInputStream audio = javax.sound.sampled.AudioSystem.getAudioInputStream(new java.io.BufferedInputStream(is));
-            javax.sound.sampled.Clip clip = javax.sound.sampled.AudioSystem.getClip();
-            clip.open(audio);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+  
     /*
      * Use on a single target (the player or mercenary)
      */
     public void use(Entity target) {
-    	playSound("Equip A Weapon.wav");
-
+    	AudioManager.playSfxOnce("Equip A Weapon.wav");
         switch (type) {
 
             case HEALTH:
