@@ -75,6 +75,7 @@ public class Animation {
 				 animation = new GImage("spr_ATTACK_blast.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
+				 AudioManager.playSfxOnce(""); //Explode audio goes here
 			 };
 			 animTime = 1;
 			 break;
@@ -144,7 +145,22 @@ public class Animation {
 			 animation.setImage("spr_ATTACK_slash.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
-			 AudioManager.playSfxOnce("30-30 Lever Action Rifle - Gunshot A 003.wav");
+			 AudioManager.playSfxOnce("");//Greed audio file goes below here
+			 break;
+		 case "Taunt":
+			 for (GImage image: targets){
+				 animation = new GImage("spr_SKILL_debuff.gif");
+				 animation.setLocation(image.getX(), image.getY());
+				 animations.add(animation);
+				 AudioManager.playSfxOnce(""); //Taunt audio file goes here
+			 }
+			 animTime = 0.5;
+			 break;
+		 case "IronWave":
+			 animation.setImage("spr_ATTACK_slash.gif");
+			 animation.setLocation(target.getX(), target.getY());
+			 animations.add(animation);
+			 AudioManager.playSfxOnce(""); // Iron wave goes here
 			 break;
 		 }
 		 
