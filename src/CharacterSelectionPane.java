@@ -18,7 +18,10 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private GLabel closeLabel;
 	private GLabel str;
 	private GImage works;
+	private GLabel fth;
+	private GImage wall;
 	private int strClicks = 0;
+	private int fthClicks = 0;
 	private boolean open;
 	public static boolean active;
 	public static PlayerInventory myInventory;
@@ -270,13 +273,20 @@ public class CharacterSelectionPane extends GraphicsPane {
 		mainScreen.add(wil);
 		extraLabels.add(wil);
 		
-		GLabel fth = new GLabel(". Faith: "+stats[6]);
+		fth = new GLabel(". Faith: "+stats[6]);
 		fth.setFont("ARIEL-Bold-15");
 		fth.setLocation(box.getX()+5,wil.getY()+fth.getHeight());
 		fth.setColor(Color.WHITE);
 		contents.add(fth);
 		mainScreen.add(fth);
 		extraLabels.add(fth);
+		
+		wall = new GImage("WALL-E.png");
+		wall.setVisible(false);
+		wall.setLocation(str.getX() + 120, str.getY() - 40);
+		
+		contents.add(wall);
+		mainScreen.add(wall);
 		
 		GLabel arc = new GLabel(". Arcane: "+stats[7]);
 		arc.setFont("ARIEL-Bold-15");
@@ -407,6 +417,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 
 		    if (strClicks >= 5 && works != null) {
 		        works.setVisible(true);
+		        works.sendToFront();
 		        AudioManager.playSfxOnce("sound-omori.wav");
 		        System.out.println("Easter egg unlocked!");
 		    }
@@ -414,6 +425,20 @@ public class CharacterSelectionPane extends GraphicsPane {
 		else if (obj == works && works != null && works.isVisible()) {
 		    works.setVisible(false);
 		    strClicks = 0;
+		}
+		else if (obj == fth) {
+		    fthClicks++;
+
+		    if (fthClicks >= 3 && wall != null) {
+		        wall.setVisible(true);
+		        wall.sendToFront();
+		        AudioManager.playSfxOnce("sound-omori.wav");
+		        System.out.println("Easter egg unlocked!");
+		    }
+		}
+		else if (obj == wall && wall != null && wall.isVisible()) {
+		    wall.setVisible(false);
+		    fthClicks = 0;
 		}
 		
 	}
