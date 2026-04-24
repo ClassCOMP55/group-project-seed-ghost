@@ -152,7 +152,7 @@ public class Animation {
 				 animation = new GImage("spr_SKILL_debuff.gif");
 				 animation.setLocation(image.getX(), image.getY());
 				 animations.add(animation);
-				 AudioManager.playSfxOnce("Taunt.wav"); //Taunt audio file goes here
+				 AudioManager.playSfxOnce(""); //Taunt audio file goes here
 			 }
 			 animTime = 0.5;
 			 break;
@@ -160,7 +160,7 @@ public class Animation {
 			 animation.setImage("spr_ATTACK_slash.gif");
 			 animation.setLocation(target.getX(), target.getY());
 			 animations.add(animation);
-			 AudioManager.playSfxOnce(""); // Iron wave goes here
+			 AudioManager.playSfxOnce("Iron wave.wav"); // Iron wave goes here
 			 break;
 		 }
 		 
