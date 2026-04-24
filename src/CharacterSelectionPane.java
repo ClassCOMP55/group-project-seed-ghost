@@ -16,6 +16,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 	private ArrayList<GRect> infoButtons,extraRects;
 	private GRect close,highlighted;
 	private GLabel closeLabel;
+	private GLabel str;
+	private GImage works;
+	private int strClicks = 0;
 	private boolean open;
 	public static boolean active;
 	public static PlayerInventory myInventory;
@@ -128,7 +131,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 	
 	private void showStats(Character myChar) {
 		
-		
+		if (works != null) {
+		    mainScreen.remove(works);
+		    contents.remove(works);
+		    works = null;
+		}
 		
 		GRect border = new GRect(300,400);
 		double x = (MainApplication.WINDOW_WIDTH - border.getWidth()) / 2.0;
@@ -207,13 +214,20 @@ public class CharacterSelectionPane extends GraphicsPane {
 		
 		int[] stats = myChar.getStatSpread();
 		
-		GLabel str = new GLabel(". Strength: "+stats[0]);
+		str = new GLabel(". Strength: "+stats[0]);
 		str.setFont("ARIEL-Bold-15");
 		str.setLocation(box.getX()+5, armor.getY()+str.getHeight());
 		str.setColor(Color.WHITE);
 		contents.add(str);
 		mainScreen.add(str);
 		extraLabels.add(str);
+		
+		works = new GImage("theone.gif");
+		works.setVisible(false);
+		works.setLocation(str.getX() + 120, str.getY() - 40);
+
+		contents.add(works);
+		mainScreen.add(works);
 		
 		GLabel dex = new GLabel(". Dexterity: "+stats[1]);
 		dex.setFont("ARIEL-Bold-15");
@@ -284,6 +298,12 @@ public class CharacterSelectionPane extends GraphicsPane {
 			mainScreen.remove(label);
 		}
 		extraLabels.clear();
+		
+		if (works != null) {
+		    mainScreen.remove(works);
+		    contents.remove(works);
+		    works = null;
+		}
 		
 		mainScreen.remove(close);
 		contents.remove(close);
@@ -380,6 +400,18 @@ public class CharacterSelectionPane extends GraphicsPane {
 		else if (obj == close || obj == closeLabel) {
 			hideStats();
 			open = false;
+		}
+		else if (obj == str) {
+		    strClicks++;
+
+		    if (strClicks >= 5 && works != null) {
+		        works.setVisible(true);
+		        System.out.println("Easter egg unlocked!");
+		    }
+		}
+		else if (obj == works && works != null && works.isVisible()) {
+		    works.setVisible(false);
+		    strClicks = 0;
 		}
 		
 	}
