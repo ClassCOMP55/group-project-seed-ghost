@@ -49,12 +49,19 @@ public class MapPane extends GraphicsPane {
 		contents.clear();
 	}
 	
+	/*
+	 * Creates a map path of nodes
+	 * Each map consist of 14 nodes
+	 */
 	public static void createPath() {
 		for (int i=0;i<14;i++) {
 			mapPath.add(new Node(i));
 		}
 	}
 	
+	/*
+	 * Adds text to the screen
+	 */
 	private void addText() {
 		
 		GLabel title = new GLabel("Map", MainApplication.WINDOW_WIDTH*(100.0/800.0), MainApplication.WINDOW_HEIGHT*(100.0/600.0));
@@ -85,6 +92,10 @@ public class MapPane extends GraphicsPane {
 		mainScreen.add(description);
 	}
 	
+	/*
+	 * Adds buttons to the screen
+	 * Also adds Gold display
+	 */
 	private void addButtons() {
 		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
 		double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
@@ -133,6 +144,10 @@ public class MapPane extends GraphicsPane {
 		
 	}
 	
+	/*
+	 * Displays a players inventory
+	 * That includes extra weapons,armors, and consumables
+	 */
 	private void displayInventory() {
 		
 		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
@@ -279,6 +294,9 @@ public class MapPane extends GraphicsPane {
 		
 	}
 	
+	/*
+	 * Hides the player inventory
+	 */
 	private void  hideInventory() {
 		
 		double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
@@ -337,6 +355,9 @@ public class MapPane extends GraphicsPane {
 		
 	}
 	
+	/*
+	 * Displays your party
+	 */
 	public void displayParty() {
 		
 		partyOpen = true;
@@ -392,6 +413,10 @@ public class MapPane extends GraphicsPane {
 			charLabels.add(label);
 		}
 	}
+	
+	/*
+	 * Hides your party
+	 */
 	public void hideParty() {
 		partyOpen = false;
 		
@@ -423,8 +448,11 @@ public class MapPane extends GraphicsPane {
 		extraLabels.clear();
 	}
 	
-private void createMap() {
-	count =0;
+	/*
+	 * Creates and displays the map on the screen
+	 */
+	private void createMap() {
+		count =0;
 		double screenHeight = MainApplication.WINDOW_HEIGHT;
 		createRow(1,((mainScreen.getWidth() - 40) / 2),screenHeight * (550.0/600.0));
 		createRow(2,((mainScreen.getWidth() - 40) / 2)-50,screenHeight * (450.0/600.0));
@@ -441,7 +469,10 @@ private void createMap() {
 		contents.add(arrow);
 		mainScreen.add(arrow);
 	}
-
+	
+	/*
+	 * Draws the lines between nodes
+	 */
 	public void drawLines() {
 		for (int e = 0;e<myNodeObjects.size()-1;e++) {
 			GImage image = mapPath.get(e).getSprite();
@@ -462,6 +493,12 @@ private void createMap() {
 		}
 	}
 	
+	/*
+	 * Creates a row of the map
+	 * @param limit The Amount of nodes on that row
+	 * @param startX The starting X coordinate
+	 *  @param startY The starting Y coordinate
+	 */
 	private void createRow(int limit, double startX, double startY) {
 		for (int i = 0;i<limit;i++) {
 			GImage node = mapPath.get(count).getSprite();
@@ -474,14 +511,20 @@ private void createMap() {
 		}
 	}
 	
+	/*
+	 * Sets the map background
+	 */
 	private void createBackground() {
 		GImage background = new GImage("MapTowerBackground.jpeg");
-		background.setSize(1366,700);
+		background.setSize(MainApplication.WINDOW_WIDTH,MainApplication.WINDOW_HEIGHT);
 		background.setLocation(0, 0);
 		contents.add(background);
 		mainScreen.add(background);
 	}
 	
+	/*
+	 * Sets the boss info to the top left of screen
+	 */
 	private void bossInfo() {
 		GRect box = new GRect(182,182);
 		box.setLocation(0,0);
@@ -541,6 +584,11 @@ private void createMap() {
 		 	
 	}
 	
+	/*
+	 * Creates a string of boss resistances
+	 * @param The name of the boss
+	 * @return The boss resistances string
+	 */
 	public String resistances(String name) {
 		String str = "";
 		
@@ -559,6 +607,11 @@ private void createMap() {
 		return str;
 	}
 	
+	/*
+	 * Creates a string of boss vulnerabilities
+	 * @param The name of the boss
+	 * @return The boss vulnerabilities string
+	 */
 	public String vulnerabilities(String name) {
 		String str = "";
 		
@@ -577,6 +630,11 @@ private void createMap() {
 		return str;
 	}
 	
+	/*
+	 * Creates a string of boss attack type
+	 * @param The name of the boss
+	 * @return The boss attack type string
+	 */
 	public String attackType(String name) {
 		String str = "";
 		
@@ -595,14 +653,27 @@ private void createMap() {
 		return str;
 	}
 	
+	/*
+	 * Converts a image to its corresponding node
+	 * @param The image being converted
+	 * @return The corresponding node
+	 */
 	public Node imageToNode(GObject obj) {
 		return mapPath.get(myNodeObjects.indexOf(obj));
 	}
 	
+	/*
+	 * Converts a node to its corresponding image
+	 * @param The node being converted
+	 * @return The corresponding image
+	 */
 	public GObject nodeToImage(Node node) {
 		return myNodeObjects.get(mapPath.indexOf(node));
 	}
 	
+	/*
+	 * A place to put various initializations
+	 */
 	public void initialize() {
 		extraWeaponButtons = new ArrayList<>();
 		extraWeaponLabel = new ArrayList<>();
@@ -619,13 +690,15 @@ private void createMap() {
 		 highlighted = new GRect(0,0);
 	}
 	
-	
+	/*
+	 * Takes various actions based on user mouse click
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		
 		if (obj == inventoryButton && inventoryOpen == false && partyOpen ==false) {
-			displayInventory();
+			displayInventory(); //opens player inventory
 			inventoryOpen = true;
 		}
 		else if (obj == inventoryButton && inventoryOpen == true) {
@@ -633,7 +706,7 @@ private void createMap() {
 			double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
 			double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
 			
-			hideInventory();
+			hideInventory(); //closes player inventory
 				
 			inventoryOpen = false;
 			inventoryButtonLabel.setLabel("Inventory");
@@ -644,7 +717,7 @@ private void createMap() {
 			double buttonHeight = (MainApplication.WINDOW_HEIGHT/10.0);
 			double buttonWidth = MainApplication.WINDOW_WIDTH*(200.0/800.0);
 			
-			hideParty();
+			hideParty(); //Allows you to closes player inventory from party screen
 			
 			inventoryButtonLabel.setLabel("Inventory");
 			inventoryButtonLabel.setLocation(inventoryButton.getX()+(buttonWidth-inventoryButtonLabel.getWidth())/2, inventoryButton.getY()+(buttonHeight-inventoryButtonLabel.getHeight())/2+inventoryButtonLabel.getHeight());
@@ -660,7 +733,7 @@ private void createMap() {
 		else if (inventoryOpen==true && extraWeaponButtons.contains(obj)) {
 			int index = extraWeaponButtons.indexOf(obj);
 			hideInventory();
-			forWeapon = true;
+			forWeapon = true; //Grabs the weapon you want to equip and opens party
 			displayParty();
 			PlayerInventory inventory = CharacterSelectionPane.myInventory;
 			 weaponItem = inventory.getExtraWeapons().get(index);
@@ -669,7 +742,7 @@ private void createMap() {
 		else if (inventoryOpen==true && extraArmorButtons.contains(obj)) {
 			int index = extraArmorButtons.indexOf(obj);
 			hideInventory();
-			forArmor = true;
+			forArmor = true; //Grabs the armor you want to equip and opens party
 			displayParty();
 			PlayerInventory inventory = CharacterSelectionPane.myInventory;
 			 armorItem = inventory.getExtraArmors().get(index);
@@ -682,7 +755,7 @@ private void createMap() {
 			 
 			 if (consumableItem!=null) {
 				 hideInventory();
-					forConsumable = true;
+					forConsumable = true; //Grabs the consumable you want to use and opens party
 					displayParty();
 					inventoryOpen = false;
 			 }
@@ -694,7 +767,7 @@ private void createMap() {
 			
 			System.out.println("Old weapon "+c.getWeapon().toString());
 			WeaponItem temp = c.getWeapon();
-			c.setWeapon(weaponItem);
+			c.setWeapon(weaponItem); //Sets the new weapon
 			System.out.println("New weapon "+c.getWeapon().toString());
 			
 			CharacterSelectionPane.myInventory.getExtraWeapons().add(temp);
@@ -709,7 +782,7 @@ private void createMap() {
 			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
 			
 			ArmorItem temp = c.getArmor();
-			if (c.setArmor(armorItem)){
+			if (c.setArmor(armorItem)){ //Sets the new armor if compatible
 				System.out.println("Old Armor "+temp.toString());
 				System.out.println("New Armor "+c.getArmor().toString());
 				CharacterSelectionPane.myInventory.getExtraArmors().add(temp);
@@ -722,7 +795,7 @@ private void createMap() {
 				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
 			}
 			else {
-				description.setLabel("Not a Compatable armor for "+c);
+				description.setLabel("Not a Compatable armor for "+c); //Warning that the armors not compatible
 				descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
 				descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
 				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
@@ -735,7 +808,7 @@ private void createMap() {
 			int index = charButtons.indexOf(obj);
 			Character c = CharacterSelectionPane.myInventory.getPartyMembers()[index];
 			
-			if (c.getHp()>0) {
+			if (c.getHp()>0) { //Uses the consumable if the character is alive
 				System.out.println(consumableItem.getType().toString()+" Used on: "+c);
 				CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex].use(c);
 				CharacterSelectionPane.myInventory.getConsumables()[consumeableIndex] =null;
@@ -749,7 +822,7 @@ private void createMap() {
 				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
 			}
 			else {
-				description.setLabel("Cannot use on a dead character!");
+				description.setLabel("Cannot use on a dead character!"); //Warning that character is dead
 				descriptionBox.setSize(description.getWidth()+2,description.getHeight()+2);
 				descriptionBox.setLocation((MainApplication.WINDOW_WIDTH-descriptionBox.getWidth())/2, descriptionBox.getY());
 				description.setLocation(descriptionBox.getX()+(descriptionBox.getWidth()-description.getWidth())/2,descriptionBox.getY()+(descriptionBox.getHeight()+description.getAscent())/2);
@@ -759,7 +832,7 @@ private void createMap() {
 
 		}
 		
-		if (myNodeObjects.contains(obj)) {
+		if (myNodeObjects.contains(obj)) { //Switches to a pane based on node type and map position 
 			GObject image = mainScreen.getElementAtLocation(e.getX(), e.getY());
 			
 			if (currPosition.hasAccess(myNodeObjects.indexOf(image))==true && currPosition.isCleared()) {
@@ -787,7 +860,7 @@ private void createMap() {
 		}
 		if (obj == menuButton || obj == menuLabel) {
 			mainScreen.switchToMenuPane();
-		}	
+		}	//Allows you to switch back to menu
 		
 		if (obj instanceof GLabel) {
 		    GLabel label = (GLabel) obj;
@@ -798,6 +871,10 @@ private void createMap() {
 		
 	}
 	
+	/*
+	 * All mouse move actions
+	 * Mainly just to highlight certain buttons
+	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());

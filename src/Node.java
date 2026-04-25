@@ -3,12 +3,12 @@ import acm.graphics.GObject;
 
 public class Node {
 private String type,combatAffinity;
-int[] accessibleNodes;
-int index,difficulty;
-boolean cleared, isBoss;
-Enemy boss;
-String[] pool;
-GImage sprite;
+public int[] accessibleNodes;
+private int index,difficulty;
+public boolean cleared, isBoss;
+public Enemy boss;
+public String[] pool;
+private GImage sprite;
 private static double[] bossWeights = new double[] {1.0,1.0,1.0,1.0,1.0};
 
 public Node(int i) {
@@ -21,6 +21,7 @@ public Node(int i) {
 	if (combatAffinity!=null) pool = getPool();
 }
 
+
 public boolean isCleared() {
 	return cleared;
 }
@@ -29,6 +30,10 @@ public void setCleared(boolean cleared) {
 	this.cleared = cleared;
 }
 
+/*
+ * @return A random non combat node type
+ * 
+ */
 public String getRandomType() {
 	
 	int randomNum = Chance.range(0, 2);
@@ -42,6 +47,10 @@ public String getRandomType() {
 	
 }
 
+/*
+ * Assigns node type and combat affinity for combat nodes
+ * Also sets base difficulty for combat nodes
+ */
 public void assignType(int i) {
 	
 	switch(i) {
@@ -61,10 +70,18 @@ public void assignType(int i) {
 	if (i==13) isBoss=true;
 }
 
+/*
+ * Assigns a random combat affinity
+ * 
+ */
 public void assignCombatAffinity(int i) {
 	combatAffinity = Chance.choose(new String[] {"combatFire","combatHoly","combatLightning","combatMagic",});
 }
 
+/*
+ * Assigns the difficulty of the node based on index
+ * @param i The node Index
+ */
 public void assignDifficulty(int i) {
 	switch(i) {
 	case 0: difficulty =1;break;
@@ -77,6 +94,11 @@ public void assignDifficulty(int i) {
 	
 	}
 }
+
+/*
+ * Sets available nodes for a node based on index
+ * @param i The node Index
+ */
 public int[] setAvailableNodes() {
 			
 	switch(index){
@@ -98,6 +120,11 @@ public int[] setAvailableNodes() {
 	return null;
 }
 
+/*
+ * Checks to see if a node has access to another node
+ * @param i The node Index
+ * @return The boolean result of the check
+ */
 public boolean hasAccess(int i) {
 	for (int n:accessibleNodes) {
 		if (n==i)return true;
@@ -105,6 +132,10 @@ public boolean hasAccess(int i) {
 	return false;
 }
 
+/*
+ * Sets sprite based on node type
+ * Combat nodes have multiple possible sprites based on affinity
+ */
 public void loadSprite() {
 	switch(type) {
 	case "Shop": sprite = new GImage("ShopNode.png"); break;
@@ -123,6 +154,10 @@ public void loadSprite() {
 	sprite.setSize(50, 50);
 }
 
+/*
+ * Gets the enemy pool for a node
+ * @return The enemy pool
+ */
 private String[] getPool() {
 	String[][] temp = null;
 	
@@ -289,6 +324,10 @@ public String getType() {
 	return type;
 }
 
+/*
+ * Clears a node and replaces its sprite
+ * 
+ */
 public void cleared() {
 	sprite.setImage("spr_FinishedNode.png");
 	sprite.setSize(40, 40);

@@ -19,7 +19,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private ArrayList<GLabel> allSkillsButtonLabels,healthLabels,manaLabels,allConsumableButtonLabels,toolTipLabels;
 	private Character[] myArrAllies;
 	private Enemy[] myArrEnemies;
-	Skill[] mySkills;
+	private Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
 	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list,skillsLabel,inventoryLabel;
@@ -51,7 +51,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		generateEnemiesAndAllies();
 		otherEntity = myArrEnemies[0]; //Temporary Fix for glitch
 		update();
-		nextCombat();
+		nextCombat(); //Starts combat
 		addBackground();
 	}
 
@@ -128,7 +128,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				healthLabels.get(index).setLabel("Health: "+Math.round(e.getHp())+"/"+Math.round(e.getHpMax()));
 				updateHealthAndManaBarSize(e);
 				if (e.isDead()) {
-					if(healthLabels.get(index).getLabel()!="Dead") initiativeArr.remove(e);
+					if(healthLabels.get(index).getLabel()!="Dead") initiativeArr.remove(e); //Removes enemy from rotation
 					healthLabels.get(index).setLabel("Dead");
 					 yourDead(e);
 				}
@@ -141,7 +141,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				updateHealthAndManaBarSize(c);
 				if (!(c.getHp()>0)) {
 					if(healthLabels.get(index).getLabel()!="Dead") {
-						initiativeArr.remove(c);
+						initiativeArr.remove(c); //Removes character from rotation and clears them
 						c.startTurn();
 					}
 					healthLabels.get(index).setLabel("Dead");
@@ -319,11 +319,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (won==true||lost==true) {
 			if (lost==true) {
-				displayGameOver();
+				displayGameOver(); // You lost
 			}
 			else {
 				MapPane.currPosition.cleared();
-				displayRewards();
+				displayRewards(); // You won
 			}
 			return true;
 		}
@@ -375,10 +375,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (checkResult()) return;
 		yourTurn(entityToImage(currentEntity));
 		
-		prevSize = initiativeArr.size();
-		previousIndex = initiativeArr.indexOf(currentEntity);
+		prevSize = initiativeArr.size(); //Stores array size to update counter later
+		previousIndex = initiativeArr.indexOf(currentEntity); //Stores index to update counter later
 		
-		if (currentEntity instanceof Character) {
+		if (currentEntity instanceof Character) { //Characters (User) turn
 			playersTurn = true;
 			Character c = (Character) currentEntity;
 			System.out.println("Player: "+c+" had a turn counter: "+counter);
@@ -391,7 +391,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 			return;
 		}
-		else if (currentEntity instanceof Enemy) {
+		else if (currentEntity instanceof Enemy) { //Enemies turn
 			Enemy e = (Enemy) currentEntity;
 			setDescription(e+" Acts on intent:  "+e.getIntent());
 			System.out.println("Enemy: "+e+" had a turn counter: "+counter);
@@ -448,7 +448,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	 * @return The button created
 	 */
 	public GRect createButton(double x,double y,String str){
-		GRect button = new GRect(buttonWidth,buttonHeight);
+		GRect button = new GRect(buttonWidth,buttonHeight); //Skill buttons have unique size
 		if (forSkills==true || forConsumable == true) button.setSize(screenWidth*(320.0/800.0), buttonHeight);
 		button.setLocation(x,y);
 		button.setFilled(true);
@@ -462,11 +462,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		label.setFont("DialogInput-PLAIN-15");
 		label.setLocation(x+(button.getWidth()-label.getWidth())/2, y+(button.getHeight()-label.getHeight())/2+15);
 		
-		if (str == "Skills") skillsLabel = label;
-		if (str == "Inventory") inventoryLabel = label;
-		if (str == "Skill List"||str == "Consumable List") list = label;
-		if (forSkills==true && str != "Skill List") allSkillsButtonLabels.add(label);
-		if (forConsumable==true && str != "Consumable List") allConsumableButtonLabels.add(label);
+		if (str == "Skills") skillsLabel = label; // So I can detect skill label in mouseclick
+		if (str == "Inventory") inventoryLabel = label; //So I can detect inventory label in mouseclick
+		if (str == "Skill List"||str == "Consumable List") list = label; //So I can detect and remove later
+		if (forSkills==true && str != "Skill List") allSkillsButtonLabels.add(label); //So I can detect and remove later
+		if (forConsumable==true && str != "Consumable List") allConsumableButtonLabels.add(label); //So I can detect and remove later
 		
 		contents.add(label);
 		mainScreen.add(label);
@@ -552,7 +552,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		double barHeight = inventoryButton.getHeight()/3.0;
 		
 		
-		for (int i = 0;i<allyNumber;i++) {
+		for (int i = 0;i<allyNumber;i++) { //Ally stat bars
 			double width = screenWidth*(540.0/800);
 			health = new GRect(width,barHeight);
 			mana = new GRect(width,barHeight);
@@ -601,7 +601,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		barSizeEnemy = 137;
-		for (int i = 0;i<enemyNumber;i++) {
+		for (int i = 0;i<enemyNumber;i++) { //Enemy stat bar
 			health = new GRect(barSizeEnemy,15);
 			GRect backBoard = new GRect(barSizeEnemy,15); //Added a back board to help with text visibility
 			int index = allEntities.indexOf(myArrEnemies[i]);
@@ -670,7 +670,6 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	/*
 	 * Clears arrays
-	 * 
 	 */
 	public void clearArrays() {
 		allEntities.clear(); temp.clear(); initiativeArr.clear();
@@ -678,6 +677,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		allSkillsButtonLabels.clear(); healthLabels.clear(); manaLabels.clear();
 	}
 	
+	/*
+	 * Used for various initializations
+	 */
 	public void initialize() {
 		play = new Animation();
 		hideContent();
@@ -1071,7 +1073,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	
 	/*
 	 * Shows the intent of an enemy
-	 *@ Param e The enemy who's intent is being displayed
+	 *@Param e The enemy who's intent is being displayed
 	 */
 	public void intent(Enemy e) {
 		intent.setLabel(e.getIntent());
@@ -1208,10 +1210,10 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		if ((obj == skillButton || obj == skillsLabel) && playersTurn == true && forConsumable == false && skill ==false) {
-			displaySkills((Character) currentEntity);
+			displaySkills((Character) currentEntity); //Displays skills of character
 		}
 		else if ((obj == inventoryButton || obj == inventoryLabel) && playersTurn == true && forSkills == false && forConsumable == false) {
-			showConsumables();
+			showConsumables(); //Displays consumables
 		}
 		else if (obj == closeButton && skill == true) {
 			hideSkills();
@@ -1221,11 +1223,11 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		else if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
 			
-			if (allSkillsButton.contains(obj)) {
+			if (allSkillsButton.contains(obj)) { //Allows user to pick a skill
 				skillIndex = allSkillsButton.indexOf(obj);
 				
 				if (mySkills[skillIndex].preconditionsMet(currentEntity, currentEntity)) {
-					if (mySkills[skillIndex].getvTarget()=="NA") {
+					if (mySkills[skillIndex].getvTarget()=="NA") { //Theses skills require no target
 						play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents,aliveEnemiesImages(),aliveAlliesImages());
 						mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 						update();
@@ -1253,6 +1255,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		}
 		
 		if (allConsumableButton.size()!=0 && playersTurn == true && forConsumable==true) {
+			//Allows user to pick and use a consumable if available
 			if (allConsumableButton.contains(obj)) {
 				if (CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)]!=null) {
 					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)].use(currentEntity);
@@ -1279,7 +1282,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (obj instanceof GImage && playersTurn == true && skillReady==true && obj != background && obj != arrow) {
 			otherEntity = imageToEntity((GImage) obj);
-			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {
+			if (otherEntity instanceof Enemy && mySkills[skillIndex].getvTarget()=="ENEMY") {//These Skill target enemies
 				
 				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents,aliveEnemiesImages(),aliveAlliesImages());
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
@@ -1294,7 +1297,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	            nextCombat();
 				return;
 			}
-			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") {
+			else if (otherEntity instanceof Character && mySkills[skillIndex].getvTarget()=="CHARA") { //These Skill target players
 				play.animate(mySkills[skillIndex].getAnimationType(), entityToImage(otherEntity),entityToImage(currentEntity), mainScreen,contents,aliveEnemiesImages(),aliveAlliesImages());
 				mySkills[skillIndex].activationEffect(currentEntity,otherEntity);
 				//GameSounds.playCharacterAction((Character) currentEntity, mySkills[skillIndex]);
@@ -1313,14 +1316,14 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			}
 	
 		}
-		
+		//Allows user to leave combat if they lose or win
 		if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss==false) {
-			clearArrays();
+			clearArrays(); //Won a regular combat node
 			clearCharacters();
 			mainScreen.switchToMapPane();
 		}
 		else if ((obj==mapButton||obj==mapButtonLabel)&&won==true && MapPane.currPosition.isBoss== true) {
-			clearArrays();
+			clearArrays(); //Won a boss combat node
 			scaling = scaling + (scaling + 1);
 			MapPane.mapPath.clear();
 			MapPane.createPath();
@@ -1330,7 +1333,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 			
 		}
 		else if ((obj==menuButton||obj==menuButtonLabel)&&lost==true) {
-			clearArrays();
+			clearArrays(); //Lost a combat node
 			CharacterSelectionPane.active = false;
 			mainScreen.switchToMenuPane();
 		}
