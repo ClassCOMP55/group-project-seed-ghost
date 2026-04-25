@@ -22,12 +22,12 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 	private Skill[] mySkills;
 	
 	private GRect skillButton,inventoryButton,displayBox,extra,highlighted,mapButton,menuButton,closeButton,descriptionBox,intentBox;
-	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list,skillsLabel,inventoryLabel;
+	private GLabel displayBoxLabel,description,mapButtonLabel,menuButtonLabel,intent,list,skillsLabel,inventoryLabel,closeLabel;
 	private GImage background,arrow;
 	
 	private boolean skill;
 	private boolean inventory,enemyTurn,forSkills,skillReady,on,won,lost,forConsumable;
-	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling,previousIndex,prevSize;
+	private int turn,counter,skillIndex,enemyNumber,allyNumber,scaling,previousIndex,prevSize,consumeIndex;
 	private double barSizeChar,barSizeEnemy,buttonHeight,buttonWidth,screenHeight,screenWidth;
 	private boolean playersTurn;
 	private boolean heartbeatPlaying;
@@ -465,9 +465,9 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		if (str == "Skills") skillsLabel = label; // So I can detect skill label in mouseclick
 		if (str == "Inventory") inventoryLabel = label; //So I can detect inventory label in mouseclick
 		if (str == "Skill List"||str == "Consumable List") list = label; //So I can detect and remove later
-		if (forSkills==true && str != "Skill List") allSkillsButtonLabels.add(label); //So I can detect and remove later
-		if (forConsumable==true && str != "Consumable List") allConsumableButtonLabels.add(label); //So I can detect and remove later
-		
+		if (forSkills==true && str != "Skill List" && str != "Close") allSkillsButtonLabels.add(label); //So I can detect and remove later
+		if (forConsumable==true && str != "Consumable List" && str != "Close") allConsumableButtonLabels.add(label); //So I can detect and remove later
+		if ((forConsumable==true || forSkills==true) &&  str == "Close") closeLabel = label; //So I can detect and remove later
 		contents.add(label);
 		mainScreen.add(label);
 		return button;
@@ -755,6 +755,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.remove(list);
 		contents.remove(closeButton);
 		mainScreen.remove(closeButton);
+		contents.remove(closeLabel);
+		mainScreen.remove(closeLabel);
 		allSkillsButtonLabels.clear();
 		forSkills =false;
 	}
@@ -819,6 +821,8 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		mainScreen.remove(list);
 		contents.remove(closeButton);
 		mainScreen.remove(closeButton);
+		contents.remove(closeLabel);
+		mainScreen.remove(closeLabel);
 		allConsumableButtonLabels.clear();
 		forConsumable =false;
 	}
@@ -1215,7 +1219,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		else if ((obj == inventoryButton || obj == inventoryLabel) && playersTurn == true && forSkills == false && forConsumable == false) {
 			showConsumables(); //Displays consumables
 		}
-		else if (obj == closeButton && skill == true) {
+		else if ((obj == closeButton || obj == closeLabel) && skill == true) {
 			hideSkills();
 			setDescription("Choose a Action");
 			skill =false;
@@ -1223,8 +1227,13 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		else if (allSkillsButton.size()!=0 && playersTurn == true && skill==true) {
 			
-			if (allSkillsButton.contains(obj)) { //Allows user to pick a skill
-				skillIndex = allSkillsButton.indexOf(obj);
+			if (allSkillsButton.contains(obj)||allSkillsButtonLabels.contains(obj)) { //Allows user to pick a skill
+				if(allSkillsButton.contains(obj)) {
+					skillIndex = allSkillsButton.indexOf(obj);
+				}
+				else {
+					skillIndex = allSkillsButtonLabels.indexOf(obj);
+				}
 				
 				if (mySkills[skillIndex].preconditionsMet(currentEntity, currentEntity)) {
 					if (mySkills[skillIndex].getvTarget()=="NA") { //Theses skills require no target
@@ -1256,13 +1265,19 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		if (allConsumableButton.size()!=0 && playersTurn == true && forConsumable==true) {
 			//Allows user to pick and use a consumable if available
-			if (allConsumableButton.contains(obj)) {
-				if (CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)]!=null) {
-					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)].use(currentEntity);
+			if (allConsumableButton.contains(obj) || allConsumableButtonLabels.contains(obj)  ) {
+				if(allConsumableButton.contains(obj)) {
+					consumeIndex = allConsumableButton.indexOf(obj);
+				}
+				else {
+					consumeIndex = allConsumableButtonLabels.indexOf(obj);
+				}
+				if (CharacterSelectionPane.myInventory.getConsumables()[consumeIndex]!=null) {
+					CharacterSelectionPane.myInventory.getConsumables()[consumeIndex].use(currentEntity);
 					GameSounds.playConsumableUse();
-					CharacterSelectionPane.myInventory.getConsumables()[allConsumableButton.indexOf(obj)] = null;
+					CharacterSelectionPane.myInventory.getConsumables()[consumeIndex] = null;
 					
-					GRect button = (GRect) obj;
+					GRect button = allConsumableButton.get(consumeIndex);
 					GLabel label = allConsumableButtonLabels.get(allConsumableButton.indexOf(obj));
 					label.setLabel("Empty");
 					label.setLocation(button.getX()+(button.getWidth()-label.getWidth())/2, button.getY()+(button.getHeight()-label.getHeight())/2+15);
@@ -1274,7 +1289,7 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 				}
 				
 			}
-			else if (obj == closeButton) {
+			else if ((obj == closeButton || obj == closeLabel)) {
 				hideConsumables();
 				setDescription("Choose a Action");
 			}
@@ -1347,31 +1362,42 @@ public class CombatPane extends GraphicsPane implements ActionListener {
 		
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		
-		if (skill == true && allSkillsButton.contains(obj)) {
-			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
-			highlighted =(GRect) obj;
+		if (skill == true && (allSkillsButton.contains(obj) || allSkillsButtonLabels.contains(obj))) {
+			if(allSkillsButton.contains(obj)) {
+				skillIndex = allSkillsButton.indexOf(obj);
+			}
+			else {
+				skillIndex = allSkillsButtonLabels.indexOf(obj);
+			}
+			if (highlighted !=allSkillsButton.get(skillIndex)) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =allSkillsButton.get(skillIndex);
 			highlighted.setFillColor(Color.LIGHT_GRAY);
 			int index = allSkillsButton.indexOf(highlighted);
 			Character c = (Character) currentEntity;
 			Skill temp = c.getMySkills()[index];
 			setDescription(temp.getDescription());
 		}
-		else if (skill == true && closeButton == obj) {
+		else if (skill == true && (closeButton == obj || closeLabel == obj)) {
 			
-			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
-			highlighted =(GRect) obj;
+			if (highlighted != closeButton) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =closeButton;
 			highlighted.setFillColor(Color.LIGHT_GRAY);
 		}
-		else if (forConsumable == true && allConsumableButton.contains(obj)) {
-			
-			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
-			highlighted =(GRect) obj;
+		else if (forConsumable == true && (allConsumableButton.contains(obj) || allConsumableButtonLabels.contains(obj))) {
+			if(allConsumableButton.contains(obj)) {
+				consumeIndex = allConsumableButton.indexOf(obj);
+			}
+			else {
+				consumeIndex = allConsumableButtonLabels.indexOf(obj);
+			}
+			if (highlighted !=allConsumableButton.get(consumeIndex)) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =allConsumableButton.get(consumeIndex);
 			highlighted.setFillColor(Color.LIGHT_GRAY);
 		}
-		else if (forConsumable == true && obj == closeButton) {
+		else if (forConsumable == true && (obj == closeButton || obj == closeLabel)) {
 			
-			if (highlighted !=(GRect) obj) highlighted.setFillColor(Color.DARK_GRAY);
-			highlighted =(GRect) obj;
+			if (highlighted !=closeButton) highlighted.setFillColor(Color.DARK_GRAY);
+			highlighted =closeButton;
 			highlighted.setFillColor(Color.LIGHT_GRAY);
 		}
 		
