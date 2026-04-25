@@ -59,6 +59,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 		contents.clear();
 	}
 	
+	/*
+	 * Adds text to the screen
+	 */
 	private void addText() {
 		GLabel title = new GLabel("Choose your character!", 100, 70);
 		title.setColor(Color.RED);
@@ -70,6 +73,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 		
 	}
 	
+	/*
+	 * Adds background to the screen
+	 */
 	private void createBackground() {
 		GImage background = new GImage("CharacterSelectionBackground.jpeg");
 		background.setSize(1366,700);
@@ -78,6 +84,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 		mainScreen.add(background);
 	}
 	
+	/*
+	 * Sets a array of 3 random characters
+	 */
 	private void createCharacters() {
 		ArrayList<String> professions = new ArrayList<>(Arrays.asList("knight","samurai","thief","viking","sorcerer","paladin","marksman","cleric","ranger"));
 		for (int i = 0;i<3;i++) {
@@ -89,6 +98,10 @@ public class CharacterSelectionPane extends GraphicsPane {
 		}
 	}
 	
+	/*
+	 * Sets the images based off the myChars array and adds them to a image array and the screen
+	 * @param i The index of the sprite
+	 */
 	private void DrawCharacter(int i) {
 		GImage charImage;
 		
@@ -132,6 +145,10 @@ public class CharacterSelectionPane extends GraphicsPane {
 		mainScreen.add(charImage);
 	}
 	
+	/*
+	 * Shows the stats of a character
+	 * @param myChar The character being show
+	 */
 	private void showStats(Character myChar) {
 		
 		if (works != null) {
@@ -297,6 +314,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 		extraLabels.add(arc);
 	}
 	
+	/*
+	 * Hides the stats of a character
+	 */
 	public void hideStats() {
 		for (GRect rect: extraRects) {
 			contents.remove(rect);
@@ -322,6 +342,9 @@ public class CharacterSelectionPane extends GraphicsPane {
 		contents.remove(closeLabel);
 	}
 	
+	/*
+	 * Adds character name display and info button to screen
+	 */
 	public void nameAndInfoDisplay(){
 		for (Character c:myChars) {
 			
@@ -373,6 +396,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 		
 	}
 	
+	
+	/*
+	 * Handles user mouse clicked actions
+	 * Mainly used to choose a character or show a characters info
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
@@ -400,7 +428,7 @@ public class CharacterSelectionPane extends GraphicsPane {
 		}
 		else if (infoButtons.contains(obj) && open == false) {
 			int index = infoButtons.indexOf(obj);
-			showStats(myChars.get(index));
+			showStats(myChars.get(index)); //Shows the info of a character if clicked
 			open = true;
 		}
 		else if (infoLabels.contains(obj) && open == false) {
@@ -443,6 +471,11 @@ public class CharacterSelectionPane extends GraphicsPane {
 		
 	}
 	
+	
+	/*
+	 * Handles mouse moved actions
+	 * Only used to highlight buttons
+	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		

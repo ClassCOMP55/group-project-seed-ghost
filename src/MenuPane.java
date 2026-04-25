@@ -30,6 +30,9 @@ public class MenuPane extends GraphicsPane {
 		contents.clear();
 	}
 	
+	/*
+	 * Adds text to the screen
+	 */
 	private void addText() {
 		
 		newGameButton.setLocation((mainScreen.getWidth() - newGameButton.getWidth()) / 2, 290);
@@ -82,6 +85,9 @@ public class MenuPane extends GraphicsPane {
 		
 	}
 	
+	/*
+	 * Adds background to the screen
+	 */
 	private void createBackground() {
 		GImage background = new GImage("spr_MenuBackground.jpeg");
 		background.setSize(1366,700);
@@ -90,6 +96,10 @@ public class MenuPane extends GraphicsPane {
 		mainScreen.add(background);
 	}
 	
+	/*
+	 * Handles mouse clicked actions
+	 * Just used to click buttons and switch pages
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
@@ -105,6 +115,10 @@ public class MenuPane extends GraphicsPane {
 		}
 	}
 	
+	/*
+	 * Handles mouse moved actions
+	 * Only used to highlight buttons
+	 */
 	public void mouseMoved(MouseEvent e) {
 		GObject obj = mainScreen.getElementAtLocation(e.getX(), e.getY());
 		
